@@ -1,0 +1,18 @@
+[logic]
+active = camper2
+on_death = on_death
+
+[on_death]
+on_info = %+mil_crazy_dead +sar2_death_24%
+
+[camper1]
+path_walk = mil_zomb_stalker_walk1
+path_look = mil_zomb_stalker_look1
+on_actor_in_zone = crazy_zone | camper2
+radius = 0
+
+[camper2]
+path_walk = mil_zomb_stalker_walk2
+path_look = mil_zomb_stalker_look2
+radius = 10
+no_retreat = true

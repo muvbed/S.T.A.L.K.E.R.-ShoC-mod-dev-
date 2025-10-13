@@ -1,0 +1,47 @@
+--[[-----------------------------------------------------------------------------------------------
+ File			: ui_weight_static.script
+ Description 	: Вывод статика перегруза
+ Author  		: Secret Trails, Shadows, Muvbed
+--]]-----------------------------------------------------------------------------------------------
+
+function attach(sm)
+	sm:subscribe({signal = "on_update", fun = this.update})
+end
+
+function update()
+	ogse_signals.get_mgr():reschedule(250)
+
+	local inv_weight = db.actor:get_inventory_weight()
+	local max_weight = db.actor:get_max_weight()
+	local max_walk_weight = db.actor:get_max_walk_weight()
+	local median = max_weight + (max_walk_weight - max_weight) * 0.5
+
+    if inv_weight >= max_walk_weight then
+        add_weight_static("inv_weight_static_red")
+    elseif inv_weight >= median and inv_weight < max_walk_weight then
+        add_weight_static("inv_weight_static_yellow")
+    elseif inv_weight > max_weight and inv_weight < median then
+        add_weight_static("inv_weight_static_green")
+    else
+    	remove_weight_static()
+    end
+end
+
+function add_weight_static(static)
+	local hud = get_hud()
+
+	remove_weight_static()
+	hud:AddCustomStatic(static, true)
+end
+
+function remove_weight_static()
+	local hud = get_hud()
+
+	if hud:GetCustomStatic("inv_weight_static_green") then
+		hud:RemoveCustomStatic("inv_weight_static_green")
+	elseif hud:GetCustomStatic("inv_weight_static_yellow") then
+		hud:RemoveCustomStatic("inv_weight_static_yellow")
+	elseif hud:GetCustomStatic("inv_weight_static_red") then
+		hud:RemoveCustomStatic("inv_weight_static_red")
+	end
+end

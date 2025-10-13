@@ -1,0 +1,24 @@
+	<string id="ogse_sleep_mgr_warn_1_text">
+	    <text>Вы не можете спать во время Выброса</text>
+	</string>
+	<string id="ogse_sleep_mgr_warn_3_text">
+	    <text>Вы проснулись от острого ощущения опасности</text>
+	</string>
+	<string id="ogse_sleep_mgr_warn_4_text">
+	    <text>Нельзя спать, так как ваше состояние ухудшается</text>
+	</string>
+	<string id="ogse_sleep_mgr_warn_5_text">
+	    <text>Вы не можете спать, когда поблизости есть враги</text>
+	</string>
+	<string id="ogse_sleep_mgr_warn_7_text">
+	    <text>Нельзя спать прямо под дождём — найдите укрытие</text>
+	</string>
+	<string id="ogse_sleep_mgr_warn_8_text">
+	    <text>Это место слишком опасно для сна</text>
+	</string>
+	<string id="ogse_sleep_mgr_warn_9_text">
+	    <text>Вы не можете спать из-за действия энергетика</text>
+	</string>        
+	<string id="ogse_sleep_mgr_warn_12_text">
+	    <text>Вы не хотите спать</text>
+	</string>

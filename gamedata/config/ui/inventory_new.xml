@@ -1,0 +1,214 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<!-- ИНВЕНТАРЬ -->
+<w>
+	<!-- Состояние предмета -->
+	<condition_progess_bar x="1" y="1" width="30" height="5" animated="1" horz="1" min="0" max="100" pos="1">
+		<min_color color="inv_condition_min"/>
+		<middle_color color="inv_condition_mid"/>
+		<max_color color="inv_condition_max"/>
+		<background>
+			<texture x="0" y="908" width="30" height="5" color="inv_condition_base">ui_inv_shk_itembar</texture>
+		</background>
+		<progress>
+			<texture>ui_inv_shk_itembar</texture>
+		</progress>
+	</condition_progess_bar>
+
+	<!-- Состояние костюма -->
+	<condition_outfit_progress x="30" y="444" width="58" height="5" animated="1" horz="1" min="0" max="100" pos="100">
+		<min_color color="inv_condition_min"/>
+		<middle_color color="inv_condition_mid"/>
+		<max_color color="inv_condition_max"/>
+		<progress>
+			<texture>ui_inv_shk_itembar</texture>
+		</progress>
+    </condition_outfit_progress>
+
+	<!-- Состояние оружия 1 слота -->
+    <condition_weapon1_progress x="157" y="556" width="58" height="5" animated="1" horz="1" min="0" max="100" pos="100">
+		<min_color color="inv_condition_min"/>
+		<middle_color color="inv_condition_mid"/>
+		<max_color color="inv_condition_max"/>
+		<progress>
+			<texture>ui_inv_shk_itembar</texture>
+		</progress>
+    </condition_weapon1_progress>
+
+	<!-- Состояние оружия 2 слота -->
+    <condition_weapon2_progress x="157" y="668" width="58" height="5" animated="1" horz="1" min="0" max="100" pos="100">
+		<min_color color="inv_condition_min"/>
+		<middle_color color="inv_condition_mid"/>
+		<max_color color="inv_condition_max"/>
+		<progress>
+			<texture>ui_inv_shk_itembar</texture>
+		</progress>
+    </condition_weapon2_progress>
+
+	<!-- Счетчик предметов -->
+	<cell_item_text x="0" y="0" width="30" height="14" stretch="1">
+		<texture a="180">ui_fast_use_count_back</texture>
+		<text x="-1" y="-1" width="30" height="16" font="letterica16" color="white_4" align="c" vert_align="t"/>
+	</cell_item_text>
+
+	<!-- Контекстное меню -->
+	<properties_box>
+		<texture>ui_cb_listbox</texture>
+		<list x="0" y="0" width="10" height="10" item_height="18"  always_show_scroll="0" can_select="1" bottom_indent="10" right_ident="10" left_ident="20">
+			<font_s color="white_2"/>
+			<font color="grey_2" font="letterica16"/>
+		</list>
+	</properties_box>
+
+	<!-- Главное окно -->
+	<main x="0" y="0" width="1024" height="768"/>
+    
+    <!-- Быстрый сброс -->
+    <static_ruck x="52" y="130" width="75" height="93.8" stretch="1">
+    	<texture x="0" y="0" width="100" height="125">ui\ruck_static</texture>
+    </static_ruck>
+
+	<back x="0" y="0" width="1024" height="768">
+		<texture>ui_inventory_main</texture>
+	</back>
+
+	<!-- Деньги ГГ -->
+    <money_static x="232" y="56" width="119" height="46">
+		<text align="r" y="16" font="arial_14" color="white_3" complex_mode="0"/>
+    </money_static>
+
+	<!-- Рюкзак -->
+    <dragdrop_bag x="7" y="51" width="634" height="586"
+			cell_width="46" cell_height="46" rows_num="12" cols_num="13"
+			unlimited="1" group_similar="0" condition_progress_bar="1" 
+			always_show_scroll="0" a="0" />
+
+	<!-- Слот костюма -->
+    <dragdrop_outfit x="225" y="138" width="92" height="184" custom_placement="0"
+            cell_width="46" cell_height="46" rows_num="4" cols_num="2"
+            virtual_cells="1" vc_vert_align="c" vc_horiz_align="c"
+			condition_progress_bar="0" a="0" />
+
+	<!-- Слот пистолета -->
+    <dragdrop_pistol x="23" y="395" width="322" height="92" custom_placement="0"
+            cell_width="46" cell_height="46" rows_num="2" cols_num="7"
+            virtual_cells="1" vc_vert_align="c" vc_horiz_align="c"
+			condition_progress_bar="0" a="0" />
+
+	<!-- Слот автомата -->
+    <dragdrop_automatic x="23" y="548" width="322" height="92" custom_placement="0"
+            cell_width="46" cell_height="46" rows_num="2" cols_num="7"
+            virtual_cells="1" vc_vert_align="c" vc_horiz_align="c"
+			condition_progress_bar="0" a="0" />
+
+	<!-- Пояс -->
+	<dragdrop_belt x="372" y="15" width="644" height="46"
+            cell_width="46" cell_height="46" rows_num="1" cols_num="14"/>
+
+	<!-- Слоты OGSE -->
+	<dragdrop_knife x="35" y="681" width="92" height="46" custom_placement="0"
+            cell_width="46" cell_height="46" rows_num="1" cols_num="2"
+			virtual_cells="1" vc_vert_align="c" vc_horiz_align="c" a="0"/>
+	<dragdrop_binocular x="42" y="266" width="92" height="92" custom_placement="0"
+            cell_width="46" cell_height="46" rows_num="2" cols_num="2"
+			virtual_cells="1" vc_vert_align="c" vc_horiz_align="c" a="0"/>
+	<dragdrop_detector x="309" y="681" width="46" height="46" custom_placement="0"
+            cell_width="46" cell_height="46" rows_num="1" cols_num="1"
+			virtual_cells="1" vc_vert_align="c" vc_horiz_align="c" a="0"/>
+	<dragdrop_torch x="182" y="681" width="92" height="46" custom_placement="0"
+            cell_width="46" cell_height="46" rows_num="1" cols_num="2"
+			virtual_cells="1" vc_vert_align="c" vc_horiz_align="c" a="0"/>
+	<dragdrop_helmet x="99999" y="186" width="92" height="92" custom_placement="0"
+            cell_width="46" cell_height="46" rows_num="2" cols_num="2"
+			virtual_cells="1" vc_vert_align="c" vc_horiz_align="c" a="0"/>
+	<dragdrop_biodetector x="99999" y="245" width="46" height="46" custom_placement="0"
+            cell_width="46" cell_height="46" rows_num="1" cols_num="1"
+			virtual_cells="1" vc_vert_align="c" vc_horiz_align="c" a="0"/>
+	<dragdrop_nv x="99999" y="191" width="92" height="46" custom_placement="0"
+            cell_width="46" cell_height="46" rows_num="1" cols_num="2"
+			virtual_cells="1" vc_vert_align="c" vc_horiz_align="c" a="0"/>
+
+	<!-- Отображение отключенных слотов -->
+	<slots_cover x="10" y="184">
+		<texture>ui_slots_cover</texture>
+	</slots_cover>
+
+	<!-- Параметры костюма -->
+	<outfit_info x="0" y="0" width="0" height="0">
+		<scroll_view x="0" y="0" width="0" height="0"
+		always_show_scroll="0" scroll_profile="pda"/>
+	</outfit_info>
+
+	<static_personal/>
+
+	<!-- Шкала здоровья -->
+    <progress_bar_health x="14" y="39" width="214" height="15" horz="1" min="0" max="100" pos="0">
+		<progress>
+			<texture color="red">ui_inv_shk_healthbar</texture>
+		</progress>
+    </progress_bar_health>
+
+	<!-- Шкала пси-здоровья -->
+    <progress_bar_psy/>
+
+	<!-- Шкала радиационного заражения -->
+	<progress_bar_radiation/>
+
+	<!-- Шкала опыта -->
+    <progress_bar_rank/>
+
+	<!-- Фон для текстур состояния -->
+    <progress_background/>
+
+	<!-- Тектура фона опыта (МП) -->
+    <progress_back_rank/>
+
+	<!-- Теустура фона и иконки уровня (МП) -->
+    <rank x="277" y="10" width="75" height="65">
+		<texture>ui_inventory_rank</texture>
+		<pic x="14" y="17" width="46" height="47"/>
+    </rank>
+
+	<!-- Вес -->
+	<bag_static x="369" y="25" width="645" height="692" complex_mode="1">
+      	<text x="482" y="656" font="letterica16" color="grey_3" complex_mode="1"/>
+    </bag_static>
+
+	<!-- "Время" -->
+    <time_static x="751" y="99999" width="200" height="30">
+        <text font="letterica16" color="grey_3">ui_inv_time</text>
+	</time_static>
+
+	<!-- Часы -->
+    <time_static_str x="-34" y="99999" width="107" height="30">
+         <text align="r" font="letterica16" color="white_3"/>
+	</time_static_str>
+
+	<!-- Окно описания -->
+    <descr_static/>
+
+	<!-- "Костюм" -->
+    <character_frame_window/>
+
+	<bottom_static/>
+	<belt_slots/>
+
+	<!-- Выход -->
+    <exit_button x="867" y="715" width="121" height="29">
+		<texture>ui_button_ordinary</texture>
+		<text align="c" font="letterica16" color="white_1">ui_inv_exit</text>
+    </exit_button>
+
+	<!-- Звуки действий в инвентаре -->
+	<action_sounds>
+		<snd_open>interface\inv_open</snd_open>
+		<snd_close>interface\inv_close</snd_close>
+		<snd_item_to_slot>interface\inv_slot</snd_item_to_slot>
+		<snd_item_to_belt>interface\inv_belt</snd_item_to_belt>
+		<snd_item_to_ruck>interface\inv_ruck</snd_item_to_ruck>
+		<snd_properties>interface\inv_properties</snd_properties>
+		<snd_drop_item>interface\inv_drop</snd_drop_item>
+		<snd_attach_addon>interface\inv_attach_addon</snd_attach_addon>
+		<snd_detach_addon>interface\inv_detach_addon</snd_detach_addon>
+		<snd_item_use>interface\inv_slot</snd_item_use>
+	</action_sounds>
+</w>

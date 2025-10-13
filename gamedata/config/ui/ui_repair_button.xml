@@ -1,0 +1,25 @@
+<ui_texture>
+	<file_name>ui\ui_repair_button</file_name>
+
+	<texture id="ui_repair_bf_s1_h" x="143" y="352" width="142" height="64" />
+	<texture id="ui_repair_bf_s2_h" x="143" y="256" width="340" height="82" />
+	<texture id="ui_repair_bf_s6_h" x="298" y="352" width="163" height="146" />
+	<texture id="ui_repair_bf_s1_h_16" x="389" y="0" width="106" height="64" />
+	<texture id="ui_repair_bf_s2_h_16" x="0" y="0" width="255" height="82" />
+	<texture id="ui_repair_bf_s6_h_16" x="261" y="0" width="122" height="146" />
+
+	<texture id="ui_repair_bf_s1_s_16" x="277" y="152" width="106" height="64" />	
+	<texture id="ui_repair_bf_s2_s_16" x="0" y="96" width="255" height="82" />
+	<texture id="ui_repair_bf_s6_s_16" x="389" y="70" width="122" height="146" />
+	
+	<texture id="ui_repair_b_h" x="0" y="185" width="56" height="57" />
+	<texture id="ui_repair_b_t" x="56" y="185" width="56" height="57" />
+	<texture id="ui_repair_b_e" x="112" y="185" width="56" height="57" />
+	<texture id="ui_repair_b_d" x="168" y="185" width="56" height="57" />
+	<texture id="ui_repair_b_h_16" x="229" y="185" width="42" height="57" />
+	<texture id="ui_repair_b_t_16" x="0" y="247" width="42" height="57" />
+	<texture id="ui_repair_b_e_16" x="42" y="247" width="42" height="57" />
+	<texture id="ui_repair_b_d_16" x="84" y="247" width="42" height="57" />
+
+	<texture id="ui_radio_t_red" x="277" y="219" width="32" height="23" />
+</ui_texture>

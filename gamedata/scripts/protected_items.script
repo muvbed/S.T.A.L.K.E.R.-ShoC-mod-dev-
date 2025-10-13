@@ -1,0 +1,124 @@
+local string_find = string.find
+local string_sub = string.sub
+
+-- квестовое оружие, которое спавнится скриптово на "землю".
+local tabl_wpn_keep = {
+    ["wpn_rg6"] = true,
+}
+
+-- уникальные оружие и бронь
+local tabl_upgrade_keep = {
+    "_m1$", 
+    "_m2$",
+    "_m3$",
+    "_uniq"
+}
+
+-- таблица игнорирования проверки (по точному совпадению)
+local tabl_ignore = {}
+
+-- Получаем имя секции проверяемого объекта
+-- obj может быть как игровым, так и серверным объектом (см. news_main.get_object_name(obj))
+function get_obj_name(obj)
+    local s_name = ""
+    if not obj then return s_name end
+    s_name = obj:name() --obj:section_name()
+    if (s_name == nil) then s_name = "" end
+    return s_name
+end
+
+local table_by_name = {
+    ["items_protected"] = {
+        ["tbl"] = table.copy(always_keep_item),
+        ["method"] = "exactly",
+        ["use_names"] = false
+    },
+    ["tabl_wpn_keep"] = {
+        ["tbl"] = tabl_wpn_keep,
+        ["method"] = "exactly",
+        ["use_names"] = false
+    },
+    ["tabl_upgrade_keep"] = {
+        ["tbl"] = tabl_upgrade_keep,
+        ["method"] = "like",
+        ["use_names"] = false
+    }
+}
+
+-- Здесь проверка по имени секции по таблицам выбранным методом
+-- Вернет true, если предмет внесен в исключени
+-- параметры:
+-- sobj - объект для проверки
+-- tabl - по какой таблице прверять
+-- method - либо "exactly" - по точному имени секции, либо "like" - по части имени
+-- прим.: таблицы для проверки точного совпадения - свои, для частичного - свои
+function obj_is_protected(obj, tabl_name)
+    local result = false
+    local item_str
+
+    if table_by_name[tabl_name]["use_names"] then
+        item_str = get_obj_name(obj)
+    else
+        if obj.section_name then -- серверный объект
+            item_str = obj:section_name()
+        else
+            item_str = obj:section()
+        end
+    end
+
+    local tabl = table_by_name[tabl_name]["tbl"]
+
+    -- более быстрый метод, без цикла
+    if table_by_name[tabl_name]["method"] == "exactly" then
+        if tabl[item_str] then
+            result = true
+        end
+        -- более медленный, перебираем таблицу, нашли совпадение - прерываем
+    elseif table_by_name[tabl_name]["method"] == "like" then
+        for i = 1, #tabl do
+            if string_find(item_str, tabl[i]) then
+                result = true
+                break
+            end
+        end
+    end
+
+    return result
+end
+
+function obj_is_ignored(obj)
+    local result = false
+    if obj then
+        local item_str
+
+        if obj.section_name then -- серверный объект
+            item_str = obj:section_name()
+        elseif obj.section then
+            item_str = obj:section()
+        end
+
+		result = tabl_ignore[item_str] == true
+    end
+    return result
+end
+
+function doNotTouchItemEquipment(sobj)
+    return not obj_is_ignored(sobj) 
+    	and (
+    		obj_is_protected(sobj, "items_protected")
+    	)
+end
+
+function doNotTouchItem(sobj)
+    return not obj_is_ignored(sobj) and obj_is_protected(sobj, "items_protected")
+end
+
+function doNotTouchAnything(sobj)
+    return sobj.m_story_id ~= 4294967295 
+    	or not obj_is_ignored(sobj) and
+        (
+            obj_is_protected(sobj, "items_protected") 
+            or obj_is_protected(sobj, "tabl_upgrade_keep") 
+            or obj_is_protected(sobj, "tabl_wpn_keep")
+        )
+end

@@ -1,0 +1,164 @@
+---------------------- Stalkers are not blind ---------------------
+------------------------- Copyright Red75 -------------------------
+
+local anom_list = nil
+local cur_level = nil
+
+local radius_anom = {
+    zone_ameba = 4,
+    zone_burning_fuzz = 3,
+    zone_burning_fuzz1 = 3,
+    zone_burning_fuzz_weak = 3,
+    zone_burning_fuzz_average = 3,
+    zone_burning_fuzz_strong = 3,
+    zone_burning_fuzz_bottom_weak = 3,
+    zone_burning_fuzz_bottom_average = 3,
+    zone_burning_fuzz_bottom_strong = 3,
+    zone_buzz = 2,
+    zone_buzz_weak = 2,
+    zone_buzz_average = 2,
+    zone_buzz_strong = 2,
+    zone_gravi_zone = 7,
+    zone_gravi_zone_weak = 7,
+    zone_gravi_zone_weak_noart = 7,
+    zone_gravi_zone_average = 8,
+    zone_gravi_zone_strong = 8,
+    zone_gravi_zone_killing = 8,
+    zone_mincer = 7,
+    zone_mincer_weak = 7,
+    zone_mincer_weak_noart = 7,
+    zone_mincer_average = 8,
+    zone_mincer_strong = 8,
+    zone_mosquito_bald = 7,
+    zone_mosquito_bald_weak = 7,
+    zone_mosquito_bald_weak_noart = 7,
+    zone_mosquito_bald_average = 8,
+    zone_mosquito_bald_strong = 8,
+    zone_mosquito_bald_strong_noart = 8,
+    zone_sarcofag = 5,
+    zone_witches_galantine = 7,
+    zone_witches_galantine_weak = 7,
+    zone_witches_galantine_average = 8,
+    zone_witches_galantine_strong = 8,
+    zone_zharka_static = 5,
+    zone_zharka_static_weak = 5,
+    zone_zharka_static_average = 5,
+    zone_zharka_static_strong = 5,
+    zone_mine_field = 2,
+    zone_death = 2,
+    noartf_buzz_weak = 2,
+    noartf_buzz_average = 2,
+    noartf_buzz_strong = 2,
+    noartf_gravi_zone_weak = 7,
+    noartf_gravi_zone_average = 8,
+    noartf_gravi_zone_strong = 8,
+    noartf_mincer_weak = 7,
+    noartf_mincer_average = 8,
+    noartf_mincer_strong = 8,
+    noartf_mosquito_bald_weak = 7,
+    noartf_mosquito_bald_average = 8,
+    noartf_mosquito_bald_strong = 8,
+    noartf_witches_galantine_weak = 7,
+    noartf_witches_galantine_average = 8,
+    noartf_witches_galantine_strong = 8,
+    noartf_zharka_static_weak = 5,
+    noartf_zharka_static_average = 5,
+    noartf_zharka_static_strong = 5
+}
+
+function get_radius_for_section(sect)
+    return radius_anom[sect] or 4
+end
+
+function add_anomaly(id, cls, sect, rad_a)
+    if anom_list == nil then
+        anom_list = {}
+    end
+    if cur_level ~= level.name() then
+        anom_list = {}
+        cur_level = level.name()
+    end
+
+    rad_a = rad_a or get_radius_for_section(sect)
+    
+    if string.find(sect, "mincer") or string.find(sect, "gravi") or string.find(sect, "mosquito") then
+        rad_a = rad_a + 2
+    end
+    
+    local status = ogse_anomaly.get_anomaly_mode(nil, id)
+    
+    if status == "anom_off" then 
+        return 
+    end
+
+    anom_list[id] = {
+        pos = 0, 
+        clsid = cls, 
+        radius = rad_a, 
+        section = sect
+    }
+end
+
+function remove_anomaly(id)
+    if anom_list then
+        anom_list[id] = nil
+    end
+end
+
+
+function get_nearest_anomaly(npc, dirp)
+    if not anom_list or not npc then
+        return false
+    end
+    
+    local posn = npc:position()
+    local dir = dirp or npc:direction()
+    local anomid = nil
+    local mindist = 10000000
+    local pos1 = nil
+    local cls = 0
+    local anomdesc = {}
+    
+    for id, o in pairs(anom_list) do
+        if o then
+            if o.pos == 0 then
+                local obj = level.object_by_id(id)
+                
+                if obj then
+                    o.pos = obj:position()
+                end
+            end
+            if o.pos ~= 0 then
+                local delta = vector():set(o.pos):sub(posn)
+	            local delta_xz = math.sqrt(delta.x * delta.x + delta.z * delta.z)
+                local scalarmul = (delta.x * dir.x + delta.z * dir.z) / delta_xz
+                
+                if scalarmul > -0.4 then
+                    local dist = posn:distance_to(o.pos) - radius_formatter(o.radius, 5)
+                    
+                    if dist < mindist then
+                        mindist = dist
+                        anomid = id
+                        pos1 = o.pos
+                        cls = o.clsid
+                        anomdesc = o
+                    end
+                end
+            end
+        end
+    end
+    
+    if anomid then
+        return true, anomid, pos1, cls, mindist + anomdesc.radius, anomdesc.radius, anomdesc.section
+    else
+        return false
+    end
+end
+
+--[[
+
+Если вы собираетесь использовать данный скрипт целиком или частично в своих 
+разработках по игре S.T.A.L.K.E.R., пожалуйста не удаляйте копирайты, указывайте настоящего 
+автора(ов) и не выдавайте чужие идеи и их реализацию за свои. Спасибо за понимание.
+
+]]--

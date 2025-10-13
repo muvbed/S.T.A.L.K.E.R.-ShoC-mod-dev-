@@ -1,0 +1,127 @@
+;--------------------------------------
+; Модуль knife
+; Rulix aka Bak
+;--------------------------------------
+
+[main]
+weapon_to_spawn = wpn_knife			; секция ножа для выдачи
+spawn_chance = 1.0				; шанс на выдачу новенькому сталкеру ножа
+forbidden_factions = zombied,prezombied,ecolog,trader	; группировки, для которых схема будет отключена (community)
+
+[forbidden_npcs]	; имена НПС, для которых схема будет отключена (name,section,profile_name)
+mil_Svoboda_zombi_stalker
+pri_followers
+
+;---------------------------------------
+; список классов, на которых разрешено применение
+; тип существа = минимально требуемая величина courage
+
+[attack_courage]
+tushkano	= 20
+zombie		= 30
+flesh		= 30
+cat			= 40
+dog			= 40
+actor		= 50
+stalker		= 50
+fracture	= 50
+boar		= 60
+pseudodog	= 60
+snork		= 60
+burer		= 70
+psy_dog		= 70
+bloodsucker	= 80
+controller	= 80
+chimera		= 90
+giant		= 90
+
+;---------------------------------------
+[mutant_defend] ;классы мутантов, для которых доступна схема mutant_defend
+bloodsucker
+boar
+burer
+cat
+dog
+flesh
+fracture
+pseudodog
+psy_dog
+psy_dog_phantom
+snork
+tushkano
+zombie
+
+;---------------------------------------
+; настройки для разных рангов НПС
+; добавка урона при ударе
+
+[novice]
+addhit_actor = 0.0
+addhit_stalker = 0.0
+addhit_mutant = 0.0
+
+[experienced]
+addhit_actor = 0.1
+addhit_stalker = 0.1
+addhit_mutant = 0.2
+
+[veteran]
+addhit_actor = 0.15
+addhit_stalker = 0.15
+addhit_mutant = 0.3
+
+[master]
+addhit_actor = 0.2
+addhit_stalker = 0.2
+addhit_mutant = 0.4
+
+;---------------------------------------
+; настройки для разных группировок
+
+[stalker]
+courage = 0.8		; чтобы идти в атаку с ножом, нужна смелость
+mutant_hunt = true	; можно ли охотиться на монстров
+
+[bandit]
+courage = 0.7
+mutant_hunt = false
+
+[prebandit]
+courage = 0.7
+mutant_hunt = false
+
+[freedom]
+courage = 0.8
+mutant_hunt = true
+
+[prefreedom]
+courage = 0.8
+mutant_hunt = true
+
+[dolg]
+courage 		= 0.8
+mutant_hunt = true
+
+[predolg]
+courage 		= 0.8
+mutant_hunt = true
+
+[killer]
+courage 		= 0.7
+mutant_hunt = true
+
+[military]
+courage 		= 0.8
+mutant_hunt = false
+
+[premilitary]
+courage 		= 0.8
+mutant_hunt = false
+
+[monolith]
+courage 		= 0.8
+mutant_hunt = false
+
+
+; управление из логики:
+; can_use_knife = false в секции схемы или в секции логики

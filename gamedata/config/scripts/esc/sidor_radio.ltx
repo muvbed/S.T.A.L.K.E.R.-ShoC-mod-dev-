@@ -1,0 +1,52 @@
+[logic]
+active = ph_sound@day
+on_hit = hit@mafon
+
+[ph_sound@day]
+tips = switcher_on
+nonscript_usable = false
+on_use = %+sidor_receiver_off =play_snd_from_obj2(device\click10b)%
+snd = sidor_music_day
+volume_control = sidor_radio_volume_control
+on_info = {-blowout -sidor_receiver_off} ph_sound@day
+on_info2 = {+blowout -sidor_receiver_off} ph_sound@horrortime
+on_info3 = {+sidor_receiver_broke} sr_particle@smoke
+on_info4 = {+sidor_receiver_off} ph_sound@off
+
+[ph_sound@horrortime]
+;?не доигрывает, перекл. на ph_sound@day (что-то убирает horror_time?)
+tips = switcher_on
+nonscript_usable = false
+on_use = %+sidor_receiver_off =play_snd_from_obj2(device\click10b)%
+snd = music_horror_time
+on_info = {+blowout -sidor_receiver_off} ph_sound@horrortime
+on_info2 = {-blowout -sidor_receiver_off} ph_sound@day
+on_info3 = {+sidor_receiver_broke} sr_particle@smoke
+on_info4 = {+sidor_receiver_off} ph_sound@off
+
+
+[ph_sound@off]
+on_info = {+sidor_receiver_broke} sr_particle@smoke
+;В sound_theme.script в секции ph_themes прописать пустой звук ph_snd_themes["no_music"] = {[[no_sound]]
+;и проиграть его snd = no_music
+;или - сделать тише volume_control = 0.0
+;или - не дать схеме звук :) 
+tips = switcher_off
+nonscript_usable = false
+on_use =  %-sidor_receiver_off =play_snd_from_obj2(device\click10b)% ph_sound@day
+
+
+[hit@mafon]
+;по дефолту НЕ отрабатывается, надо physic_destroyable_object!!!
+on_info = %+sidor_receiver_broke%
+
+
+[sr_particle@smoke]
+name = hit_fx\hit_metal_00
+;одиночный вейпоинт, не требует НИ
+path = esc_gorizont_look
+mode = 2
+looped = false
+;on_signal = particle_end | nil
+;можно "починить" :)
+on_info = {-sidor_receiver_broke} ph_sound@day

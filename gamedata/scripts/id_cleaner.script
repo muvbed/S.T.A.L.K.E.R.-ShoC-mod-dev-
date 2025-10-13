@@ -1,0 +1,11 @@
+
+
+-- Чистильщик ID для OGSE
+-- Авторы: Stalbar, KamikaZze
+
+function do_not_touch(item)
+	local section = item:section()
+
+	return get_bool(section, "quest_item", false) 
+		or always_keep_item[section] == true
+end

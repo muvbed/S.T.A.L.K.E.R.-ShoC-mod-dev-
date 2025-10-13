@@ -1,0 +1,255 @@
+function attach( sm )
+  sm:subscribe({ signal = "on_npc_death", fun = this.on_death })
+  sm:subscribe({ signal = "on_npc_first_update", fun = this.on_first_update })
+end
+
+function on_first_update( obj )
+  if not obj:alive() then
+    create_release_item( obj )
+  end
+end
+
+function on_death( obj )
+  create_release_item( obj )
+end
+
+
+remove_this_shit_immediately = { -- Таблица с секциями предметов, которые надо удалять из трупов. Вызывается так же из db.
+	["fake_grenades_base"] 				= true,
+	["grenade_f1_test"] 				= true,
+	["grenade_rgd5_test"] 				= true,
+	["grenade_f1_1"] 					= true,
+	["grenade_rgd5_1"] 					= true,
+	["grenade_f1_fake"] 				= true,
+	["grenade_rgd5_fake"] 				= true,
+	["gl_test_shell"] 					= true,
+	["wpn_fake_missile"] 				= true,
+	["gl_test_shell_ammo_vog-25"] 		= true,
+	["gl_test_shell_ammo_vog-25p"] 		= true,
+	["gl_test_shell_ammo_m209"] 		= true,
+	["gl_fake_missile"] 				= true,
+	["gl_fake_missile_ammo_vog-25"] 	= true,
+	["gl_fake_missile_ammo_vog-25p"] 	= true,
+	["gl_fake_missile_ammo_m209"] 		= true,
+	["device_pda"] 						= true,
+	["kolbasa_a"] 						= true,
+	["vodka_a"] 						= true,
+	["bread_a"] 						= true,
+	["binocular_a"] 					= true,
+	["guitar_a"] 						= true,
+	["harmonica_a"] 					= true,
+	["yad"] 							= true,
+	["hand_radio"] 						= true,
+	["sigaret"] 						= true,
+	["bolt"] 							= true,
+	["grenade_separator"] 				= true,
+	["zip_separator"] 					= true,
+	["m_phantom"] 						= true,
+}
+
+local forbidden_npc_names = { -- Таблица трупов, с которых запрещено снимать костюмы
+	["esc_novice_attacker1"] = true,
+	["esc_blokpost_commander"] = true,
+	["agr_ratcatcher"] = true,
+	["val_lager_bandits_borov"] = true,
+	["gar_wounded_bandit"] = true,
+	["bar_dolg_leader"] = true,
+	["bar_dolg_petrenko"] = true,
+	["mil_freedom_member0012"] = true,
+	["mil_freedom_member0018"] = true,
+	["mil_stalker0012"] = true,
+	["mil_stalker0023"] = true,
+	["mil_ara"] = true,
+	["mil_blockpost_freedomstalker001"] = true,
+	["bar_ecolog_professor"] = true,
+	["yan_scientist_help"] = true,
+	["yan_specnaz_dead"] = true,
+	["x16_stalker_ghost"] = true,
+	["yantar_semenov"] = true,
+}
+
+--' Предметы, которые нельзя сильно портить
+rare_item = {
+	["wpn_gauss"] 						= true,
+	["wpn_rpg7"] 						= true,
+	["wpn_rg-6"] 						= true,
+	["wpn_rg6_m1"] 						= true
+}
+
+--' Нижний/Верхний уровень износа редких стволов
+local low_damage_rar,high_damage_rar = 65, 95
+
+local rank_to_mult = {
+	novice      	= {0, 15}, -- {<for low boundary>, <for upper boundary>}
+	experienced 	= {5, 10},
+	veteran     	= {10, 5},
+	master      	= {15, 0},
+}
+local comm_to_par = {
+	zombied  		= {{25, 1}, {55, 1}},
+	prezombied  	= {{30, 1}, {60, 1}},
+	bandit   		= {{35, 1}, {70, 1}},
+	prebandit		= {{35, 1}, {70, 1}},
+	stalker  		= {{35, 1}, {70, 1}}, 
+	freedom  		= {{45, 1}, {70, 1}},
+	prefreedom  	= {{45, 1}, {70, 1}},
+	monolith 		= {{50, 1}, {70, 1}},
+	dolg     		= {{60, 1}, {80, 1}},
+	predolg     	= {{60, 1}, {80, 1}},
+	killer   		= {{65, 1}, {85, 1}},
+	military 		= {{70, 1}, {90, 1}},
+	premilitary 	= {{60, 1}, {80, 1}},
+	ecolog 			= {{85, 1}, {95, 1}},
+}
+--' Возвращает нижний/верхний уровень износа стволов в зависимости от коммьюнити
+function damage_boundaries(npc)
+	if not npc then
+		return 35, 70
+	end
+	local community = npc:character_community()
+	local npc_rank = ranks.get_obj_rank_name(npc)
+	local mult1 = rank_to_mult[npc_rank][1] or 0
+	local mult2 = rank_to_mult[npc_rank][2] or 0
+	local params = comm_to_par[community]
+	if params then
+		return (params[1][1] + mult1 * params[1][2]), (params[2][1] - mult2 * params[2][2])
+	end
+	return 35, 70
+end
+
+function set_weapon_drop_condition(item,npc)
+	local section = item:section()
+	if section ~= "wpn_knife" and math.random(1,100) > 25 then
+		item:unload_magazine()
+	end
+	local l,h = low_damage_rar, high_damage_rar
+	if not rare_item[section] then
+		l,h = damage_boundaries(npc)
+	end
+	item:set_condition(math.random(l,h)/100)
+end
+
+local quest_needed = {}
+
+function offline_dead_quest_check(npc)
+	npc:iterate_inventory(keep_offline_item, npc)
+	if quest_needed[npc:id()] == true then
+		quest_needed = {}
+		return true
+	else	
+		quest_needed = {}
+		return false
+	end
+	quest_needed = {}
+end
+
+function keep_offline_item(npc, item)
+	if not item or not alife():object(item:id()) then return end
+    local section = item:section()
+    if always_keep_item[section] == true 
+    	or string.find(section,"_m1") 
+		or string.find(section,"_m2") 
+    	or get_bool(section, "quest_item", false) 
+    then
+        quest_needed[npc:id()] = true
+    end
+end
+
+function create_release_item(npc)
+	--' Спрашиваем у серверного объекта генерились ли предметы
+	local se_obj = alife():object(npc:id())
+	if not se_obj or se_obj.death_dropped then return end
+	se_obj.death_dropped = true
+
+	--' Запускаем итератор на удаление предметов
+    npc:iterate_inventory(keep_item, npc)
+
+    --' Проверка на отсутствие спауна лута
+    local ini = npc:spawn_ini()
+    if ini and ini:section_exist("dont_spawn_loot") then
+        return
+    end
+
+    local sect = ogse_real_armor.vis_to_armor(npc) -- RealArmor by KamikaZze
+
+	if	sect
+		and not forbidden_npc_names[npc:name()]
+		and not string.find(npc:name(), "gar_dm_bandit")
+		and not string.find(npc:section(), "arena")
+		and not string.find(npc:section(), "aem")
+		and not string.find(npc:character_community(), "zombied")
+		and npc:character_community() ~= "arena_enemy"
+	then
+		local rnd = ogsm_options.marauder
+		local otf = create_items(npc, sect, 1, rnd)
+
+		if otf then
+			level.client_spawn_manager():add( otf.id, -1, function(id, obj)
+				obj:set_condition( (10+math.random(6,65))/100 )
+			end )
+		end
+	end
+end
+
+--' Функция вызывается для каждого предмета в инвентаре убитого НПС
+function keep_item(npc, item)
+    if not item or not npc then return end
+
+    local item_id = item:id()
+    local srv_obj = alife():object(item_id)
+
+	if not srv_obj then return end
+    
+    local section = srv_obj:section_name()
+    
+    if remove_this_shit_immediately[section] then
+		alife():release(srv_obj, true)
+	elseif item:is_ammo() then
+		local ammo_sz = get_ammo_size(item)
+		if ammo_sz > 0 then
+			local ammo_new_sz = math.random(ammo_sz)
+			set_ammo_size(item, ammo_new_sz)
+		else
+			alife():release(srv_obj, true)
+		end
+	end
+
+	local item_in_slot
+	item_in_slot = npc:item_in_slot(0)
+    if item_in_slot ~= nil and
+       item_in_slot:id() == item_id
+    then
+        set_weapon_drop_condition(item,npc)
+    end
+	item_in_slot = npc:item_in_slot(1)
+    if item_in_slot ~= nil and
+       item_in_slot:id() == item_id
+    then
+        set_weapon_drop_condition(item,npc)
+    end
+    item_in_slot = npc:item_in_slot(2)
+    if item_in_slot ~= nil and
+       item_in_slot:id() == item_id
+    then
+        set_weapon_drop_condition(item,npc)
+    end
+end
+
+--' Функция спавнит необходимое число предметов
+function create_items(npc, section, number, rnd)
+	if npc == nil then return end
+	local obj
+    for i=1,number do
+  	--' Проверяем вероятность появить каждый объект в отдельности
+        if math.random(100) <= rnd then
+			obj = alife():create(
+            	section, 
+            	npc:position(), 
+            	npc:level_vertex_id(), 
+            	npc:game_vertex_id(), 
+            	npc:id()
+            )
+        end
+    end   
+	if obj then return obj end
+end

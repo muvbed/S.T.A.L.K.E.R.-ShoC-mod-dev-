@@ -1,0 +1,165 @@
+-------------------------------------------------------------------------
+--	created:	2005/02/12
+--	created:	12:2:2005   12:59
+--	filename: 	x:\gamedata\scripts\dialogs_military.script
+--	file path:	x:\gamedata\scripts
+--	file base:	dialogs_military
+--	file ext:	script
+--	author:		Tunduk Vladimir aka Sidorovich
+--	
+--	purpose:	dialog support for military
+-------------------------------------------------------------------------
+
+-- Оплата долговцем наших услуг по устранению снайпера
+function mil_dolg_payment (stalker, player)
+	if not has_alife_info("military_scull_give_reward_1") then
+		dialogs.relocate_money(stalker, 4000, "in")
+		db.actor:give_info_portion("military_scull_give_reward_1")
+	end
+end
+
+function mil_dolg_payment2 (stalker, player)
+	if not has_alife_info("military_scull_give_reward_2") then
+		dialogs.relocate_money(stalker, 8000, "in")
+		db.actor:give_info_portion("military_scull_give_reward_2")
+	end
+end
+
+function mil_dolg_payment3 (stalker, player)
+	if not has_alife_info("military_scull_give_reward_2") then
+		dialogs.relocate_money(stalker, 6000, "in")
+		db.actor:give_info_portion("military_scull_give_reward_2")
+	end
+end
+
+function lukash_payment (stalker, player)
+    dialogs.relocate_money (stalker, 7000, "in")
+end
+
+function lukash_payment_for_info (stalker, player)
+    dialogs.relocate_money (stalker, 1000, "in")
+end
+
+function lukash_payment_one (stalker, player)
+    dialogs.relocate_money (stalker, 5000, "in")
+end
+
+-- Отмечаем провал задачи
+function mil_dolg_sniper_failed (stalker, player)
+    level_tasks.set_task_state (task.fail, "mil_kill_sniper", 0)
+    level_tasks.set_task_state (task.fail, "mil_kill_sniper", 1)
+end
+
+-- отмечаем выполнение задачи
+function mil_dolg_sniper_complete (stalker, player)
+    level_tasks.set_task_state (task.completed, "mil_kill_sniper", 0)
+end
+
+function transfer_flash (player, stalker)
+	dialogs.relocate_item_section(stalker, "crazy_flash", "out")
+end
+
+function set_freedom_enemy (player, stalker)
+    --db.actor:set_character_community ("dolg")
+    relation_registry.set_community_goodwill ("freedom", db.actor:id (), -5000)
+    relation_registry.set_community_goodwill ("prefreedom", db.actor:id (), -5000)
+end
+
+-- Банальную передачу водки заменяем конкретным бухаловым за счет Меченого
+function transfer_vodka (actor)
+    if db.actor:object ("vodka") == nil then return end
+	local vodka = db.actor:object("vodka")
+	if vodka then
+		db.actor:eat(vodka)
+	end
+	-- dialogs.relocate_item (stalker, player:object ("vodka"), "out")
+end
+
+function have_a_vodka (stalker, player)
+    return db.actor:object ("vodka") ~= nil
+end
+
+function commander_transfer (actor, npc)
+	dialogs.relocate_money(npc, 5000, "in")
+end
+
+function set_ugrumy_mapspot (actor, npc)
+    level_tasks.add_location_by_sid (story_ids.Mil_Hunter3, "mil_ugrumy_location") 
+end
+
+function remove_ugrumy_mapspot (actor, npc)
+    level_tasks.remove_location_by_sid (story_ids.Mil_Hunter3, "mil_ugrumy_location") 
+end
+
+function mil_remove_base_spot (actor, npc)
+    level_tasks.remove_location_by_sid (story_ids.Mil_Freedom_base, "mil_freedom_location")
+end
+
+function mil_cook_subtask_completed (actor, npc)
+    level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 1)
+end
+
+function set_cook_subtask2_complete (actor, npc)
+    level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 2)
+end
+
+function send_artefact (npc, actor)
+    dialogs.relocate_item_section(npc, "af_cristall", "in")
+end
+
+function send_artefact_min (npc, actor)
+    dialogs.relocate_item_section(npc, "af_fireball", "in")
+end
+
+function send_desert_eagle (actor, npc)
+    dialogs.relocate_item_section(npc, "wpn_desert_eagle", "in")
+    
+    if not has_alife_info("mil_max_owner_flash_get") then
+    	db.actor:give_info_portion("mil_max_owner_flash_get") 
+    end
+end
+
+function killactor (actor, npc)
+    xr_gulag.setGulagEnemy ("mil_dolg", actor)
+    npc:set_relation(game_object.enemy, actor)
+end
+
+function set_actor_enemy_for (sid)
+    local npc = level_object_by_sid (sid)
+    if npc == nil or npc:alive () == false then
+       return 
+    end    
+    npc:set_relation (game_object.enemy, db.actor)
+end
+
+function transfer_scope (npc, actor)
+    dialogs.relocate_item_section(npc, "vodka", "out")
+    dialogs.relocate_item_section(npc, "wpn_addon_scope", "in") 
+end
+
+function check_lukash_dialog_dolg_task()
+	return not has_alife_info("mil_dolg_dead") 
+        and (has_alife_info("mil_lukash_dolg_task") or has_alife_info("mil_lukash_dolg_task_reject"))
+end
+
+function check_dialog_fblockpost_end()
+	return has_alife_info("mil_fblockpost_quest_complete") 
+        or has_alife_info("mil_fblockpost_quest_fail") 
+        or has_alife_info("mil_fblockpost_commander_dead")
+end
+
+function check_dialog_fblockpost_not()
+	return not this.check_dialog_fblockpost_end()
+end
+
+function check_lukash_dialog_nothing()
+	return has_alife_info("mil_lukash_task_dolg_end")
+		and (has_alife_info("mil_leader_quest2_complete") or mil_tasks.courier_job_failed())
+		and (has_alife_info("mil_fblockpost_quest_complete") or mil_tasks.fblockpost_job_failed())
+end
+
+function actor_set_freedom (actor, npc)
+	if db.actor then
+       db.actor:set_character_community ("actor_freedom", 0, 0)
+	end
+end

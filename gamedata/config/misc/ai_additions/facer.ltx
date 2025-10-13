@@ -1,0 +1,68 @@
+;--------------------------------------
+; Модуль facer
+; Rulix aka Bak
+;--------------------------------------
+
+[main]
+forbidden_factions = zombied,prezombied	; группировки, для которых схема будет отключена (community)
+forbidden_npcs = bar_barman	; имена, профили НПС, для которых схема будет отключена (name,profile_name)
+
+;---------------------------------------
+[attack_classes] ;классы существ, которых можно бить
+actor
+stalker
+
+bloodsucker
+boar
+burer
+cat
+dog
+flesh
+fracture
+pseudodog
+psy_dog
+psy_dog_phantom
+snork
+tushkano
+zombie
+
+;---------------------------------------
+; настройки для разных рангов НПС
+
+[novice]
+power = 50 ; сила удара	
+min_delay = 2000 ;мс; минимальное время между ударами
+
+; коэффициенты
+k_mutant = 0.5 ; бьем монстра		
+k_friend = 0.05 ; бьем друга(нейтрала)
+k_stalker = 0.3 ; бьем нпс		
+k_actor = 0.3 ; бьем гг	
+
+[experienced]
+power = 60			
+min_delay = 1500
+
+k_mutant = 0.6		
+k_friend = 0.05		
+k_stalker = 0.4		
+k_actor = 0.4		
+
+[veteran]
+power 						= 60			
+min_delay 					= 1500	
+
+k_mutant 					= 0.7		
+k_friend = 0.05		
+k_stalker 					= 0.5	
+k_actor 					= 0.5		
+
+[master]
+power = 70			
+min_delay 					= 1500
+
+k_mutant = 0.7		
+k_friend = 0.05		
+k_stalker = 0.5		
+k_actor = 0.5		
+

@@ -1,0 +1,77 @@
+function proceed()
+	-- nv 071008 some optimization
+	if has_alife_info("agr_krot_band_start") then return end
+	if db.actor ~= nil and 
+		has_alife_info("garbage_meetstalker_die") and
+		has_alife_info("agr_can_ask_krot_about_gunslinger")
+	then
+		db.actor:give_info_portion("agr_krot_band_start")
+		news_manager.send_tip(db.actor, "gar_seryi_info")
+	end
+end
+
+function process_info_portion(info_id)					
+	if info_id == "gar_wounded_help" and not has_alife_info("agroprom_military_case_done") then
+		news_manager.send_tip(db.actor, "val_sos_pda", nil, "stalker", nil)
+		level_tasks.add_location_by_sid(story_ids.gar_wounded, "blue_location", "gar_wounded_help", 1)
+
+	elseif info_id == "gar_wounded_fight" or has_alife_info("agroprom_military_case_done") then
+		level_tasks.remove_location_by_sid(story_ids.gar_wounded, "blue_location")
+		
+	end
+	
+	if info_id == "gar_add_fake_spot2" and not has_alife_info("gar_remove_fake_spot2") then
+		level_tasks.add_location_by_sid(story_ids.gar_spot_secret1, "gar_spot_secret1_location", "gar_secret1")
+
+	elseif info_id == "gar_remove_fake_spot2" then
+		level_tasks.remove_location_by_sid(story_ids.gar_spot_secret1, "gar_spot_secret1_location")
+			
+	end
+	
+	return false
+end
+
+function task_hellcar_complete()
+	if has_alife_info("gar_hellcar_help") and
+	   has_alife_info("gar_bandits_killed") and
+	   (has_alife_info("gar_hellcar_death") or
+	   has_alife_info("gar_hellcar_dialog_end"))
+	then
+		return true
+	else
+		return false
+	end
+end
+
+function task_hellcar_fail()
+	if has_alife_info("gar_hellcar_death") or
+		xr_effects.is_actor_enemy(107)
+	then
+		return true
+	else
+		return false
+	end
+end
+
+function task_hellcar_fail2()
+	local actor = db.actor
+	if 	(xr_gulag.getCasualities("gar_hellcar_group") > 0 and
+	   not has_alife_info("gar_hellcar_help")) or 
+	   has_alife_info("gar_hellcar_death") or
+	   xr_effects.is_actor_enemy(107)
+	then
+	   return true
+	else
+		return false
+	end
+end
+
+function task_seriy_fail()
+	if has_alife_info("garbage_meetstalker_die") or
+	   xr_effects.is_actor_enemy(100)
+	then
+	   return true
+	else
+		return false
+	end
+end

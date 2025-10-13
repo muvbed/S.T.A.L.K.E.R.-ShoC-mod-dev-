@@ -1,0 +1,153 @@
+
+
+-------------------------------------------
+----- Скрипт определения реальной брони
+----- по визуалу непися, OGSE мод,
+----- автор KamikaZze
+----- UPD by Muvbed: обновил под оригинал + OGSM
+-------------------------------------------
+local cached = {} --таблица вида { [visual_name] = [section] }
+
+function vis_to_armor(npc)
+	local vis = table.remove( string.explode( "\\", npc:get_visual_name() ) )
+	if not cached[ vis ] then
+			local section = "nil"
+
+			-- Нейтралы
+			if vis == "green_stalker_2" or
+			   vis == "green_stalker_3" or
+			   vis == "green_stalker_4" or
+			   vis == "green_stalker_6" or
+			   vis == "green_stalker_7" or
+			   vis == "green_stalker_8" or
+			   vis == "green_stalker_9" then
+				section = "novice_outfit"
+			end
+			if string.find(vis,"stalker_neytral_balon") or
+			   string.find(vis,"stalker_neytral_hood") or
+			   string.find(vis,"stalker_neytral_rukzak") then
+				section = "stalker_outfit"
+			end
+			if vis == "stalker_neytral_nauchniy" then
+				section = "scientific_outfit"
+			end
+			if vis == "stalker_neytral_exoskeleton" then
+				section = "exo_outfit"
+			end
+		
+			-- Бандиты
+			if vis == "stalker_bandit_1" or
+			   vis == "stalker_bandit_2" or
+			   vis == "stalker_bandit_3" or
+			   vis == "stalker_bandit_4" or
+			   vis == "stalker_bandit_5" or
+			   vis == "stalker_bandit_6" or
+			   vis == "stalker_bandit_7" or
+			   vis == "stalker_bandit_8" or
+			   vis == "stalker_bandit_9" or
+			   vis == "stalker_bandit_drunk" then 
+				section = "bandit_outfit" 
+			end
+			if vis == "stalker_bandit_veteran" then 
+				section = "bandit_veteran_outfit" 
+			end 
+			if vis == "stalker_bandit_master" then 
+				section = "bandit_master_outfit" 
+			end
+		
+			-- Свобода
+			if vis == "stalker_sv_hood_91" or
+			   vis == "stalker_sv_rukzak_1_1" or 
+			   vis == "stalker_sv_rukzak_3" then 
+			   	section = "svoboda_light_outfit" 
+			end
+			if vis == "stalker_sv_balon_1" or
+			   vis == "stalker_sv_balon_10" or 
+			   vis == "stalker_sv_cook" or 
+			   vis == "stalker_sv_hood_9" or
+			   vis == "stalker_sv_leader" or
+			   vis == "stalker_sv_max" or
+			   vis == "stalker_sv_rukzak_1" or
+			   vis == "stalker_sv_rukzak_2" or
+			   vis == "stalker_sv_rukzak_3_1" then 
+				section = "svoboda_heavy_outfit" 
+			end
+			if vis == "stalker_sv_nauchniy" then 
+				section = "freedom_scientific_outfit" 
+			end
+			if vis == "stalker_sv_exoskeleton" then 
+				section = "svoboda_exoskeleton" 
+			end
+		
+			-- Долг
+			if vis == "stalker_do_antigas" or
+			   string.find(vis,"stalker_do_balon") or
+			   vis == "stalker_do_komandir" or 
+			   string.find(vis,"stalker_do_mask") then 
+				section = "dolg_outfit" 
+			end
+			if vis == "stalker_do_nauchniy" then 
+				section = "dolg_scientific_outfit" 
+			end
+			if vis == "stalker_do_exoskeleton" then 
+				section = "dolg_black_exoskeleton" 
+			end
+		
+			-- Наёмники
+			if vis == "stalker_ki_antigas" or
+			   vis == "stalker_ki_hero" or
+			   vis == "stalker_ki_informator" or
+			   vis == "stalker_ki_mask" or
+			   string.find(vis,"stalker_ki_head") then 
+				section = "killer_outfit" 
+			end
+			if vis == "stalker_ki_nauchniy" then 
+				section = "merc_scientific_outfit" 
+			end
+			if vis == "stalker_ki_exoskeleton" then 
+				section = "killer_blue_exoskeleton" 
+			end
+		
+			-- Монолит
+			if vis == "stalker_mo_komandir" or
+			   vis == "stalker_mo_mask" or 
+			   string.find(vis,"stalker_mo_head") or
+			   string.find(vis,"stalker_mo_hood") then 
+				section = "monolit_outfit" 
+			end
+			if vis == "stalker_mo_nauchniy" then 
+				section = "monolit_scientific_outfit" 
+			end
+			if vis == "stalker_mo_exo" then 
+				section = "monolit_exoskeleton" 
+			end
+		
+			-- Армия
+			if string.find(vis,"soldier_bandana") or
+			   vis == "soldier_obichniy" then 
+				section = "soldier_outfit" 
+			end
+			if vis == "soldier_antigas" or
+			   vis == "soldier_spetsnaz" then  
+				section = "specops_outfit" 
+			end
+			if vis == "stalker_militari_1" then
+				section = "military_outfit" 
+			end
+		
+			-- Учёные
+			if vis == "stalker_ecolog" then  
+				section = "ecolog_outfit" 
+			end
+			if vis == "stalker_ecolog_military" then
+				section = "protection_outfit" 
+			end
+			--
+			cached[ vis ] = section
+	end
+
+	if cached[ vis ] ~= "nil" then
+		return cached[ vis ]
+	end
+	return nil
+end

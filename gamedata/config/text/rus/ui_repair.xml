@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="ui_repair_title_1">
+		<text>Ремонт снаряжения</text>
+	</string>
+	<string id="ui_repair_money">
+		<text>Денег всего:</text>
+	</string>
+	<string id="ui_repair_cost">
+		<text>Стоимость ремонта:</text>
+	</string>
+	<string id="ui_repair_dialog">
+		<text>Мне нужно кое-что починить.</text>
+	</string>
+</string_table>

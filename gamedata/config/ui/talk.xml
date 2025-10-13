@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<!-- ОКНО ДИАЛОГА -->
+<window>
+	<!-- Диалоговое окно -->
+	<top_background x="0" y="0">
+		<auto_static x="212" y="724" width="608" height="36" stretch="1">
+			<texture color="yellow">ui\seq\ui_dialog_pane</texture>
+		</auto_static>
+		<auto_static x="200">
+			<texture>ui_talk_dialogue</texture>
+		</auto_static>
+		<auto_static x="484" y="512">
+			<texture color="yellow">ui\seq\ui_dialog_connect</texture>
+		</auto_static>
+	</top_background>
+
+	<bottom_background/>
+	<left_character_icon x="-2000"/>
+	<right_character_icon x="-2000"/>
+
+	<!-- Кнопка "Торговать" -->
+	<button x="456" y="727" width="121" height="29" accel="kT">
+		<texture>ui_button_ordinary</texture>
+		<text align="c" font="letterica16" color="white_1">ui_st_trade</text>
+    </button>
+
+	<!-- Разделенное диалоговое окно (не используется, ибо frameline игнорирует stretch) -->
+	<frame_line_window x="-1782" y="15" width="2600" height="600" vertical="1">
+		<texture>null</texture>
+		<title x="-2000"/>
+	</frame_line_window>
+	<frame_line_window x="-1782" y="485" width="2600" height="250" vertical="1">
+		<texture>null</texture>
+		<title x="-2000"/>
+	</frame_line_window>
+
+	<!-- Границы текста диалогов: вопросы ГГ(10) и лог диалога -->
+	<questions_list x="2022" y="48" width="558" height="188" right_ident="0" always_show_scroll="0"/>
+	<answers_list	x="2022" y="22" width="558" height="448" right_ident="0" always_show_scroll="0"/>
+
+	<!-- Стартовый диалог к НПС -->
+	<question_item x="0" y="0" width="527" height="20" min_height="13">
+		<num_text>
+			<text font="letterica18" color="grey_5"/>
+		</num_text>
+		<content_text x="26" y="0" width="520" height="20">
+			<text font="letterica18" color="grey_5" align="l" complex_mode="1"/>
+			<text_color>
+				<e color="grey_5"/>
+				<h color="white_4"/>
+				<t color="grey_3"/>
+			</text_color>
+		</content_text>
+	</question_item>
+
+	<!-- ГГ: имя и реплика -->
+	<actor_answer_item x="0" y="0" width="530" height="0" min_height="13" bottom_footer="10">
+		<name_caption x="0" y="0" width="520" height="10">
+			<text font="graffiti22" color="green" complex_mode="0"/>
+		</name_caption>
+		<content_text x="20" y="26" width="510" height="10" complex_mode="1">
+			<text font="letterica18" color="grey_5"/>
+		</content_text>
+	</actor_answer_item>
+
+	<!-- ГГ: имя, реплика и значок сообщения -->
+	<iconed_answer_item x="0" y="0" width="530" height="0" min_height="30" bottom_footer="5">
+		<name_caption x="0" y="0" width="0" height="0"/>
+		<content_text x="75" y="0" width="510" height="29" complex_mode="1">
+			<text font="letterica16" color="grey_5"/> <!-- ! -->
+		</content_text>
+		<msg_icon x="20" y="3" width="49" height="29">
+		</msg_icon>
+	</iconed_answer_item>
+
+	<!-- НПС: имя и реплика -->
+	<other_answer_item x="0" y="0" width="530" height="0" min_height="13" bottom_footer="5">
+		<name_caption x="0" y="0" width="520" height="10">
+			<text font="graffiti22" color="yellow" complex_mode="0"/>
+		</name_caption>
+		<content_text x="20" y="26" width="510" height="10" complex_mode="1">
+			<text font="letterica18" color="grey_5"/>
+		</content_text>
+	</other_answer_item>
+
+	<!-- НПС: имя, реплика и значок сообщения -->
+	<iconed_trade_info x="0" y="0" width="530" height="0" min_height="20" bottom_footer="5">
+		<name_caption x="0" y="0" width="0" height="0"/>
+		<content_text x="65" y="2" width="510" height="20" complex_mode="1">
+			<text font="letterica18" color="grey_3"/>
+		</content_text>
+		<msg_icon x="20" y="0" width="34" height="20">
+		</msg_icon>
+	</iconed_trade_info>
+
+	<!-- НПС: имя, реплика и без значка -->
+	<simple_answer_item x="0" y="0" width="530" height="0" min_height="20" bottom_footer="5">
+		<name_caption x="0" y="0" width="0" height="0"/>
+		<content_text x="20" y="0" width="510" height="20" complex_mode="1">
+			<text font="letterica18" color="grey_3"/>
+		</content_text>
+		<msg_icon x="0" y="0" width="0" height="0">
+		</msg_icon>
+	</simple_answer_item>
+</window>

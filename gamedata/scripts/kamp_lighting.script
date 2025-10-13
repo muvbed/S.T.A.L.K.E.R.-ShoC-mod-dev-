@@ -1,0 +1,331 @@
+-- From NS OGSR. Refactor by Muvbed: 02.10.24
+
+function attach(sm) -- для менеджера сигналов
+    sm:subscribe({signal = "on_update", fun = this.on_update})
+end
+
+local lvl_objs = {}
+local kamps_list = {}
+local current_kamp = nil
+local prev_actor_pos
+local start_stand_time = time_global()
+local is_tip = false
+local scan_flag = false
+
+function on_init()
+    for id, sobj in alife():objects() do
+    	if sobj then
+    		local obj = level.object_by_id(id)
+
+	        if obj then
+	            local section = obj:section()
+	            local name = obj:name()
+	
+	            if section and section == "zone_flame_small" then
+	                table.insert(lvl_objs, obj)
+	                obj:disable_anomaly()
+	            elseif name and string.find(name, "r1_r2") then
+	                obj:get_hanging_lamp():turn_off()
+	            end
+	        end
+    	end
+    end
+end
+
+function stand_time()
+    return time_global() - start_stand_time
+end
+
+function set_static(static, flag)
+    local hud = get_hud()
+    
+    if not hud then return end
+    
+	local custom_static = hud:GetCustomStatic(static)
+
+    if flag and not custom_static then
+        hud:AddCustomStatic(static, true)
+    elseif not flag and custom_static then
+        hud:RemoveCustomStatic(static)
+    end
+end
+
+function on_actor_update()
+    local actor = db.actor
+
+    if not actor then return end
+    
+    local current_pos = actor:position()
+
+    if not prev_actor_pos then
+        prev_actor_pos = current_pos
+    end
+
+    if prev_actor_pos:distance_to(current_pos) > 0.1 then
+        start_stand_time = time_global()
+    end
+
+    prev_actor_pos = current_pos
+
+	local near_campfire = false
+    local local_kamp = current_kamp and kamps_list[current_kamp:id()]
+
+    if local_kamp and local_kamp.is_active then
+    	local kamp_pos = current_kamp:position()
+        local dist = prev_actor_pos:distance_to(kamp_pos)
+        
+        near_campfire = dist < 2
+
+        if near_campfire and stand_time() > 3000 then
+            local looking_into_flame = dsh.is_actor_looking_to_pos(kamp_pos, 0.5)
+
+            if looking_into_flame and actor.psy_health < 1 then
+                actor.psy_health = 0.02
+            end
+        end
+    end
+
+	amk.save_variable("near_campfire", near_campfire)
+    set_static("game_save_indicator", near_campfire)
+    set_static("campfire_lit", is_tip)
+end
+
+function on_update()
+    ogse_signals.get_mgr():reschedule(500)
+
+    if not scan_flag then
+        scan_flag = true
+        on_init()
+    end
+
+    local loading = time_global()
+	local actor = db.actor
+    if not actor then return end
+    
+    local actor_pos = actor:position()
+
+    for i = 1, #lvl_objs do
+        local obj = lvl_objs[i]
+        if obj then
+            local obj_id = obj:id()
+
+            if actor_pos:distance_to_sqr(obj:position()) <= 9 then
+                current_kamp = obj
+
+                if not (kamps_list[obj_id] and kamps_list[obj_id].obj) then
+                    kamps_list[obj_id] = {
+                        obj = obj,
+                        event = nil,
+                        time = 0,
+                        is_active = false,
+                        is_ready = false,
+                        is_foreign = false,
+                        is_ours = false,
+                        is_locked = false
+                    }
+                end
+            end
+
+			local local_kamp = kamps_list[obj_id]
+			if local_kamp then
+	            for k, v in pairs(ogse_campfire.lights) do
+					if v then
+		            	local flame = ogse_campfire.get_flame_next_to_light(v.object)
+		                if flame and flame:id() == obj_id then
+		                    if v.state and v.state.flag then
+		                        local_kamp.is_ours = false
+		                        local_kamp.is_foreign = true
+		                        local_kamp.is_active = true
+		                    else
+		                        local_kamp.is_foreign = false
+		
+		                        if not local_kamp.is_ours then
+		                            local_kamp.is_active = false
+		                        end
+		                    end
+		                end
+		            end
+	            end
+	        end
+        end
+    end
+
+    is_tip = false
+
+    for id, kamp in pairs(kamps_list) do
+        if kamp and kamp.obj then
+            local pos = kamp.obj:position()
+            local dist = actor_pos:distance_to(pos)
+            local looking = dsh.is_actor_looking_to_pos(pos, 0.5)
+
+            if (not looking or dist > 2 or kamp.is_foreign) and kamp.event then
+                ogse_signals.get_mgr():unsubscribe(kamp.event)
+                kamp.event = nil
+            end
+            
+            if not kamp.is_foreign then
+            	if not kamp.is_active then
+	                if not kamp.is_ready then
+	                    if dist <= 2 and looking and not kamp.is_locked then
+	                        is_tip = true
+	
+	                        if not kamp.event then
+	                            kamp.event = {
+	                                signal = "on_key_down",
+	                                fun = this.on_key_down
+	                            }
+	
+	                            ogse_signals.get_mgr():subscribe(kamp.event)
+	                        end
+	                    end
+	                else
+	                    kamp.obj:enable_anomaly()
+	                    kamp.is_active = true
+	                    kamp.is_ready = false
+	                    kamp.is_ours = true
+	                end
+	            else
+	                if dist > 25 and not kamp.is_ready then
+	                    kamp.time = time_global()
+	                    kamp.is_ready = true
+	                elseif dist <= 25 and kamp.is_ready then
+	                    kamp.is_ready = false
+	                end
+	
+	                if kamp.is_ready and kamp.time + ogse_campfire.FLAME_FADING < loading then
+	                    if current_kamp and current_kamp:id() == kamp.obj:id() then
+	                        current_kamp = nil
+	                    end
+	
+	                    kamp.obj:disable_anomaly()
+	                    kamp.obj = nil
+	                    kamp.time = 0
+	                    kamp.is_active = false
+	                    kamp.is_ready = false
+	                    kamp.is_ours = false
+	                end
+	            end
+            end
+        else
+        	kamps_list[id] = nil
+        end
+    end
+
+    on_actor_update()
+end
+
+function spawn_matches_flame(delay)
+	if not current_kamp then return end
+    
+    local pos = current_kamp:position()
+
+    pos.y = pos.y + 1
+
+    local sobj = ogse_anomaly.spawn_anomaly(
+        "zone_flame_matches",
+        pos,
+        current_kamp:level_vertex_id(),
+        current_kamp:game_vertex_id(),
+        {shtype = 0, radius = 1, center = {0, 0, 0}}
+    )
+
+	if sobj then
+	    sobj = alife():object(sobj.id)
+		if sobj then
+		    local sr = sobj:get_space_restrictor()
+			if sr then
+		    	sr.restrictor_type = global_flags.eRestrictorTypeNone
+		    end
+		    
+		    dsh.timeout(delay, function()
+				if sobj then
+		        	alife():release(sobj)
+				end
+		    end)
+	    end
+    end
+end
+
+function fire_campfire_fx()
+    if not current_kamp then return end
+    
+    local matches = db.actor:object("matches")
+    
+	if not matches then
+		ogse.send_tip(game.translate_string("warn_no_matches"), nil, 0, 3, "note")
+        return
+    end
+    
+    local matches_id = matches:id()
+    local matches_quantity = amk.load_variable("matches_"..matches_id, 15)
+    
+    if matches_quantity <= 1 then
+	    ogse.remove_item_from_inventory( matches )
+    else
+    	amk.save_variable("matches_"..matches_id, matches_quantity - 1)
+    end
+
+    local local_kamp = kamps_list[current_kamp:id()]
+    if not local_kamp then return end
+
+    if local_kamp.event then
+        ogse_signals.get_mgr():unsubscribe(local_kamp.event)
+        local_kamp.event = nil
+    end
+
+    local_kamp.is_locked = true
+    level.disable_input()
+    bind_stalker.hide_weapon()
+    set_static("campfire_lit", false)
+    --jr_actor_animation.toggle_force_crouch()
+
+    local rnd = 0.5
+	local rain = level.rain_factor()
+
+    if rain > 0 and not isIndoor(level.name()) then
+        local pos = local_kamp.obj:position()
+
+        pos.y = pos.y + 1
+
+        local rq = level.ray_query(pos, vector():set(0, 1, 0), 100, rq_target.rqtBoth, db.actor)
+
+        if not rq or not rq.result then
+            rnd = 0.2 + (rnd - 0.2) * (1 - rain)
+        end
+    end
+
+    local idx = math.random(3)
+    local matches_delays = {3500, 4000, 4600}
+    local snd = xr_sound.get_safe_sound_object("scripts\\nlc6\\matches_" .. idx)
+    if snd then
+    	snd:play(db.actor, 0, sound_object.s2d)
+    end
+
+    local delay = matches_delays[idx] + 1000
+
+    spawn_matches_flame(delay)
+
+    dsh.timeout(delay, function()
+        if math.random() < rnd then
+            local_kamp.is_ready = true
+        else
+            local no_light_snd = xr_sound.get_safe_sound_object("scripts\\nlc6\\matches_no_light_" .. idx)
+            if no_light_snd then
+                no_light_snd:play(db.actor, 0, sound_object.s2d)
+            end
+        end
+
+        local_kamp.is_locked = false
+        level.enable_input()
+        bind_stalker.restore_weapon()
+        --jr_actor_animation.toggle_force_crouch()
+    end)
+end
+
+function on_key_down(key, bind)
+    if level.main_input_receiver() or bind ~= key_bindings.kUSE then
+        return
+    end
+
+    fire_campfire_fx()
+end

@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding="windows-1251"?>
+<!-- Removed info_portions unused in vanilla; delete this file if you need them -->
+<game_information_portions>
+    <info_portion id="cit_jail_doctor_pryp_task">
+		<task>cit_doctor_task</task>
+		<article>cit_doctor_meet_conclusion_art</article>
+		<article>cit_doctor_task</article>
+    </info_portion>
+</game_information_portions>

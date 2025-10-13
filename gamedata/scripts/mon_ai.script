@@ -1,0 +1,84 @@
+------------------------------------
+-- Внешние функции к Monnoroch's AI modification
+-- Created by Monnoroch
+-- 15.07.09
+------------------------------------
+
+function load_schemes()
+	if mon_sleep then
+		load_scheme("mon_sleep","sleep",stype_stalker)
+	end
+    if mon_trade then
+        load_scheme("mon_trade", "trade", stype_stalker)
+    end
+    if mon_drink then
+        load_scheme("mon_drink", "drink", stype_stalker)
+    end
+end
+
+function disable_schemes(npc)
+end
+
+function enable_schemes(ini, npc)
+	if mon_sleep then
+		mon_sleep.set_scheme(npc,ini,"sleep","sleep")
+	end
+    if mon_trade then
+        mon_trade.set_scheme(npc, ini, "trade", "trade")
+    end
+    if mon_drink then
+        mon_drink.set_scheme(npc, ini, "drink", "drink")
+    end
+end
+
+function addCommonPrecondition(action)
+	if mon_sleep then
+		action:add_precondition(world_property(mon_sleep.evid_sleep,false))
+	end
+    if mon_trade then
+        action:add_precondition(world_property(mon_trade.evid_trade, false))
+    end
+    if mon_drink then
+        action:add_precondition(world_property(mon_drink.evid_drink, false))
+    end
+end
+
+evid_mon_base = 18826
+actid_mon_base = evid_mon_base
+
+function issue_event(npc, name, ...)
+    local st = db.storage[npc:id()]
+    if not st or not st.mon_callbacks then
+        return
+    end
+    for k, v in pairs(st.mon_callbacks) do
+        if v and k[name] then
+            k[name](k, ...)
+        end
+    end
+end
+
+function subscribe_for_events(npc, obj)
+    local st = db.storage[npc:id()]
+    if not st.mon_callbacks then
+        st.mon_callbacks = {}
+    end
+    st.mon_callbacks[obj] = true
+end
+
+function unsubscribe_from_events(npc, obj)
+    local st = npc and db.storage[npc:id()]
+    if st and st.mon_callbacks then
+        if obj then
+            st.mon_callbacks[obj] = nil
+        else
+            st.mon_callbacks = nil
+        end
+    end
+end
+
+function npc_hit(npc, amount, dir, who, bone_id)
+    if npc and amount ~= 0 then
+        issue_event(npc, "hit_callback", amount, dir, who, bone_id)
+    end
+end

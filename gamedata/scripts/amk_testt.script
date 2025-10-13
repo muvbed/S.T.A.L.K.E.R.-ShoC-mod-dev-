@@ -1,0 +1,60 @@
+local tab = {} --таблица положительных неписей (не врагов)
+
+function IsNpcStalker(sobj)
+    local m_s_c = ""
+    if sobj then
+        if (sobj.character_community) then
+            m_s_c = sobj:character_community()
+        elseif (sobj.community) then
+            m_s_c = sobj:community()
+        end
+    end
+    if m_s_c == "stalker" or m_s_c == "ecolog" then
+        return true
+    end
+end
+
+function fake_name()
+    local name, sname = amk_names_lists.get_strings()
+    return name .. " " .. sname
+end
+
+function non_quest() -- возвращает рандомное имя НЕквестового живого нпс
+    local npc = ogo()
+    local sobj = alife():object(npc.id)
+    if sobj and ogse.is_quest_npc(sobj) then
+        return fake_name()
+    end
+    return npc.name
+end
+
+function name_npc() -- возвращает имя НПС
+    local npc = ogo()
+	local sobj = alife():object(npc.id)
+	if sobj then
+		return npc.name
+	end
+    return fake_name()
+end
+
+function ogo()
+    return tab[math.random(#tab)]
+end
+
+function table_update_pda() --обновляем таблицу реально существующих и живых НПС во время каждой загрузки уровня
+    tab = {}
+    for _, sobj in alife():objects() do
+        if 
+          sobj 
+          and IsStalker(sobj, sobj:clsid())
+          and IsNpcStalker(sobj) 
+          and sobj:alive() 
+        then
+            table.insert(tab, { 
+              id = sobj.id, 
+              name = sobj:character_name(), 
+              SID = sobj.m_story_id 
+            })
+        end
+    end
+end

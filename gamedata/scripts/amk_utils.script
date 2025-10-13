@@ -1,0 +1,72 @@
+--[[
+
+File:  amk_utils .script
+Created:  23.05.2008
+Copyright:  © 2008 AMK team
+Version:  1.1.0.5
+
+--]]
+--* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+-- *			                         Callback 					                 *
+--* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+--Callback на взятие предмета в инвентарь гг
+function actor_item_take(obj)
+    inventory_update(obj, 1)
+end
+
+--Callback на потерю предмета из инвенаря гг
+function actor_item_drop(obj)
+    inventory_update(obj, -1)
+end
+
+--* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+-- *			                         Inventory					       *
+--* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+--Кеш текущего состояния инвентаря ГГ (только предметы проверяемые функцией inventory_search, их обычно немного)
+--Структура: [секция_предмета] = количество_в_инвентаре
+InventoryState = {}
+InventoryStateByCLSID = {}
+
+
+--Проверка на количество предметов в инвентаре гг
+function inventory_search(iItemSection, iNeededCount)
+    --Взятие из кеша текущего состояния инвентаря:
+    local vCount = InventoryState[iItemSection]
+    --Загрузка текущего состояния инвентаря в кеш:
+    if vCount == nil then
+        vCount = 0
+        db.actor:iterate_inventory(function(dummy, vItem)
+            if vItem:section() == iItemSection then
+                vCount = vCount + 1
+            end
+        end, nil)
+        InventoryState[iItemSection] = vCount
+    end
+    --Выдача результата проверки:
+    return vCount >= iNeededCount
+end
+
+--Обработчик появления или исчезновения предмета в инвентаре (нужно обновить кеш):
+function inventory_update(iObject, iCountDelta)
+    if iObject == nil then return end
+    local vItemSection = iObject:section()
+    --Взятие из кеша текущего состояния инвентаря:
+    local vCount = InventoryState[vItemSection]
+    --Обновление текущего состояния инвентаря в кеше:
+    local object_type = trade_generic.getObjectType(iObject)
+
+    if InventoryStateByCLSID[object_type] == nil then
+        InventoryStateByCLSID[object_type] = {}
+    end
+
+    local priority = trade_generic.object_priority_function(db.actor, iObject)
+    if InventoryStateByCLSID[object_type][vItemSection] == nil then
+        InventoryStateByCLSID[object_type][vItemSection] = {}
+    end
+    InventoryState[vItemSection] = (vCount or 0) + iCountDelta
+
+    InventoryStateByCLSID[object_type][vItemSection]["count"] = InventoryState[vItemSection]
+    InventoryStateByCLSID[object_type][vItemSection]["priority"] = priority
+end

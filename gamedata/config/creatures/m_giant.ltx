@@ -1,0 +1,327 @@
+[m_gigant_e]:monster_base
+GroupControlSection                     = spawn_group
+SpaceRestrictionSection                 = space_restrictor,zone_mosquito_bald
+$spawn                                  = "monsters\old\gigant"
+$npc                                    = on
+$prefetch                               = 16
+Scheduled                               = on
+Human                                   = off
+Health                                  = 600
+MinSpeed                                = 1.0
+MaxSpeed                                = 5.0
+going_speed                             = 2
+current_level_going_speed               = 1
+search_speed                            = 1.5
+visual                                  = monsters\psevdogigant\psevdogigant
+corpse_visual                           = monsters\psevdogigant\psevdogigant_dead
+icon                                    = ui_npc_monster_psevdogigant
+MaxHealthValue                          = 200
+
+smart_terrain_choose_interval           = 00:15:00
+
+ef_creature_type                        = 19
+ef_weapon_type                          = 3
+ef_detector_type                        = 1
+panic_threshold                         = 0.0
+
+cform                                   = skeleton
+class                                   = SM_GIANT
+
+script_binding                          = bind_monster.bind
+
+bone_torso                              = spine
+bone_head                               = head
+bone_fire                               = head
+weapon_usage                            = 0
+
+Spawn_Inventory_Item_Section            = mutant_psevdogigant_hand
+Spawn_Inventory_Item_Probability        = 0.5
+
+ph_box0_center                          = 0.0,0.9,0.0
+ph_box0_size                            = 0.6,0.9,0.6
+ph_box1_center                          = 0.0,0.6,0.0
+ph_box1_size                            = 0.40,0.6,0.40
+ph_crash_speed_min                      = 100
+ph_crash_speed_max                      = 300
+ph_collision_damage_factor              = 0.1
+ph_mass                                 = 5000
+
+destroyed_vis_name                      = physics\dead_body\skelet_crash_monster
+
+ph_skeleton_airr_lin_factor             = 2.0
+ph_skeleton_airr_ang_factor             = 0.0
+ph_skeleton_hinger_factor1              = 1.0
+ph_skeleton_ddelay                      = 15.0
+ph_skel_fatal_impulse_factor            = 12.0
+ph_after_death_velocity_factor          = 0.75
+ph_skel_shot_up_factor                  = 0.25
+
+Velocity_Stand							= 0,		6.0,			6.0,		1,		1
+Velocity_WalkFwdNormal					= 5.25,		4.0,			4.0,		0.1,	2.5
+Velocity_RunFwdNormal					= 13.75,	4.0,			4.0,		0.2,	1	
+Velocity_WalkFwdDamaged					= 3.12,		3.0,			3.0,		0.5,	1.5	
+Velocity_RunFwdDamaged					= 7.5,  	4.0,			4.0,		0.2,	1
+Velocity_Drag							= 1.25,		3.0,			3.0,		1,		1
+Velocity_Steal							= 1.87,		3.0,			3.0,		1,		1
+Velocity_JumpPrepare					= 6.0,		1.0,			1.0,		1,		1
+Velocity_JumpGround						= 12.5,	    2.0,			2.0,		0.16,	1	
+
+Accel_Generic                           = 1.5
+Accel_Calm                              = 1.5
+Accel_Aggressive                        = 15.5
+
+MinAttackDist                           = 1.8
+MaxAttackDist                           = 2.4
+
+as_min_dist                             = 1.5
+as_step                                 = 0.3
+Melee_Rotation_Factor                   = 3.0
+
+Run_Attack_Dist                         = 4.5,8.0
+Run_Attack_Delay                        = 3000,6000
+
+DayTime_Begin                           = 0
+DayTime_End                             = 21
+Min_Satiety                             = 0.1
+Max_Satiety                             = 0.9
+
+distance_to_corpse                      = 1.2
+
+selector_approach                       = 20.0,1.0,1000.0,0.0,0.0,1000.0,10000.0
+
+terrain                                 = giant_terrain
+
+hit_type                                = wound
+
+satiety_v                               = 0.00001
+radiation_v                             = 0.00001
+satiety_power_v                         = 0.001
+satiety_health_v                        = 0.001
+satiety_critical                        = -1.0
+radiation_health_v                      = 0.0
+morale_v                                = 0.01
+health_hit_part                         = 0.3
+power_hit_part                          = 1.0
+psy_health_v                            = 0.1
+health_restore_v                        = 0.0002
+
+immunities_sect                         = giant_immunities
+
+bleeding_v                              = 0.01
+wound_incarnation_v                     = 0.02
+min_wound_size                          = 0.01
+
+sleep_health                            = 1.0
+sleep_power                             = 1.0
+sleep_satiety                           = 1.0
+sleep_radiation                         = 1.0
+sleep_psy_health                        = 1.0
+
+satiety_threshold                       = 0.5
+
+eat_freq                                = 5.0
+eat_slice                               = 0.001
+eat_slice_weight                        = 10.0
+
+Morale_Hit_Quant                        = 0.001
+Morale_Attack_Success_Quant             = 0.1
+Morale_Take_Heart_Speed                 = 0.1
+Morale_Despondent_Speed                 = 0.1
+Morale_Stable_Speed                     = 0.01
+Morale_Despondent_Threashold            = 0.5
+
+sound_idle                              = monsters\giant\giant_idle_
+sound_eat                               = monsters\boar\boar_eat_
+sound_aggressive                        = monsters\giant\giant_aggressive_
+sound_attack_hit                        = monsters\giant\giant_attack_
+sound_take_damage                       = monsters\giant\giant_hurt_
+sound_die                               = monsters\giant\giant_death_
+sound_bkgnd                             = monsters\biting\def_
+sound_threaten                          = monsters\giant\giant_threaten_
+sound_landing                           = monsters\boar\landing_
+sound_steal                             = monsters\biting\def_
+sound_panic                             = monsters\biting\def_
+sound_growling                          = monsters\giant\giant_breath_
+sound_die_in_anomaly                    = monsters\giant\giant_death_
+sound_threaten_hit                      = monsters\giant\giant_stomp_0
+sound_threaten_start                    = monsters\giant\giant_attack_0
+
+SoundThreshold                          = 0.1
+max_hear_dist                           = 50
+
+killer_clsids                           = Z_MINCER,Z_GALANT,ZS_BFUZZ,ZS_MBALD,ZS_GALAN,ZS_MINCE
+
+idle_sound_delay                        = 85000
+eat_sound_delay                         = 3000
+attack_sound_delay                      = 14000
+
+sound_distant_idle                      = monsters\giant\giant_breath_
+distant_idle_sound_delay                = 80000
+distant_idle_sound_range                = 100.0
+
+DamagedThreshold                        = 0.3
+
+material                                = creatures\large
+
+squad_attack_algorithm                  = 1
+attack_effector                         = m_giant_attack_effector
+
+attack_params                           = m_gigant_attack_params
+step_params                             = m_gigant_step_params
+damage                                  = m_giant_damage
+threaten_effector                       = pseudogigant_threaten_effector
+
+LegsCount                               = 2
+
+species                                 = giant
+rank                                    = 401
+spec_rank                               = normal
+community                               = pseudo_gigant
+
+step_effector_time                      = 0.5
+step_effector_amplitude                 = 1.5
+step_effector_period_number             = 5.0
+
+jump_delay                              = 30000
+jump_factor                             = 1.7
+jump_ground_trace_range                 = 1.4
+jump_hit_trace_range                    = 3.0
+jump_build_line_distance                = 5.0
+jump_min_distance                       = 5.0
+jump_max_distance                       = 15.0
+jump_max_angle                          = 0.3
+
+HugeKick_Damage                         = 1.5
+HugeKick_Particles                      = _ecp\mutant_giant_wave
+HugeKick_MinMaxDist                     = 5,20
+HugeKick_MinMaxDelay                    = 13000,22000
+HugeKick_Time_SlowDown                  = 4000
+monster_type                            = outdoor
+critical_wound_threshold                = -1
+critical_wound_decrease_quant           = 0.
+
+eye_fov                                 = 100
+eye_range                               = 95
+
+DynamicObjectsCount                     = 32
+
+vision_free_section                     = giant_vision_free
+vision_danger_section                   = giant_vision_danger
+
+[giant_vision_free]
+min_view_distance                       = 0.5
+max_view_distance                       = 1.0
+visibility_threshold                    = 100.0
+always_visible_distance                 = 0.3
+time_quant                              = 0.001
+decrease_value                          = 0.01
+velocity_factor                         = 0.5
+luminocity_factor                       = 0.5
+transparency_threshold                  = 0.25
+
+[giant_vision_danger]
+min_view_distance                       = 0.5
+max_view_distance                       = 1.0
+visibility_threshold                    = 100.0
+always_visible_distance                 = 0.3
+time_quant                              = 0.001
+decrease_value                          = 0.01
+velocity_factor                         = 0.5
+luminocity_factor                       = 0.5
+transparency_threshold                  = 0.25
+
+[m_giant_damage]
+default                                 = 0.1, -1, 0.1
+
+hip                                     = 0.5, -1, 0.1
+spine                                   = 0.5, -1, 0.1
+head                                    = 0.3, -1, 0.2, 1
+
+[m_gigant_attack_params]
+stand_attack_0        					=  0.25,   0.60,   150,   0.50,   1.00,   0.50,  -0.80,   0.80,  -1.80,   1.80,   2.4
+stand_attack_1        					=  0.40,   0.60,   200,   5.00,   2.50,   4.00,  -0.60,   0.60,  -1.80,   1.80,   2.4
+stand_attack_2        					=  0.25,   0.60,   150,   0.50,   1.00,   5.00,  -0.80,   0.80,  -1.80,   1.80,   2.4
+stand_attack_run_0    					=  0.50,   0.80,   275,   0.50,   1.00,   5.00,  -0.60,   1.30,  -1.80,   1.80,   2.4
+jump_attack_1         					=  0.10,   1.80,   775,   0.50,   1.00,   5.00,  -1.00,   1.30,  -1.60,   1.60,   5.5
+
+[m_giant_attack_effector]
+duality_h                               = 0.05
+duality_v                               = 0.08
+blur                                    = 0.01
+gray                                    = 0.5
+noise_intensity                         = 0.0
+noise_grain                             = 1
+noise_fps                               = 120
+color_base                              = 0.65,0.15,0.1
+color_gray                              = 0.333,0.333,0.333
+color_add                               = 0,0,0
+time                                    = 1.5
+time_attack                             = 0.05
+time_release                            = 0.65
+
+ce_time                                 = 0.85
+ce_amplitude                            = 25.0
+ce_period_number                        = 3.0
+ce_power                                = 3.0
+
+[m_gigant_step_params]
+stand_walk_fwd_0                        = 1,0.5,1,0.1,0.7
+stand_walk_fwd_dmg_0                    = 1,0.2,1,0.25,0.7
+stand_steal_0                           = 1,0.2,1,0.5,0.7
+
+[pseudogigant_threaten_effector]
+duality_h                               = 0.1
+duality_v                               = 0.1
+blur                                    = 0.01
+gray                                    = 0.3
+noise_intensity                         = 1.0
+noise_grain                             = 0.2
+noise_fps                               = 120
+color_base                              = 0.3,0.2,0.2
+color_gray                              = 0.333,0.333,0.333
+color_add                               = 0.0,0.0,0.0
+time                                    = 2.0
+time_attack                             = 0.1
+time_release                            = 0.3
+
+ce_time                                 = 1.7
+ce_amplitude                            = 6.0
+ce_period_number                        = 20.0
+ce_power                                = 1.3
+
+[giant_terrain]
+	255,000,255,255
+
+[giant_immunities]
+burn_immunity                           = 0.4
+strike_immunity                         = 0.15
+shock_immunity                          = 0.5
+wound_immunity                          = 0.2
+radiation_immunity                      = 0.0
+telepatic_immunity                      = 1.0
+chemical_burn_immunity                  = 0.35
+explosion_immunity                      = 0.25
+fire_wound_immunity                     = 0.1
+
+[gigant_normal]:m_gigant_e
+$spawn                                  = "monsters\gigants\gigant_normal"
+
+[gigant_strong]:gigant_normal
+$spawn                                  = "monsters\gigants\gigant_strong"
+icon                                    = ui_npc_monster_psevdogigant_strong
+Spawn_Inventory_Item_Probability        = 0.6
+rank                                    = 801
+spec_rank                               = strong
+health_hit_part                         = 0.25
+attack_params                           = gigant_attack_params_strong
+
+[gigant_attack_params_strong]
+stand_attack_0        					=  0.25,   0.70,   150,   0.50,   1.00,   0.50,  -0.80,   0.80,  -1.80,   1.80,   2.4
+stand_attack_1        					=  0.40,   0.70,   200,   5.00,   2.50,   4.00,  -0.60,   0.60,  -1.80,   1.80,   2.4
+stand_attack_2        					=  0.25,   0.70,   150,   0.50,   1.00,   5.00,  -0.80,   0.80,  -1.80,   1.80,   2.4
+stand_attack_run_0    					=  0.50,   0.90,   275,   0.50,   1.00,   5.00,  -0.60,   1.30,  -1.80,   1.80,   2.4
+jump_attack_1         					=  0.10,   2.00,   775,   0.50,   1.00,   5.00,  -1.00,   1.30,  -1.60,   1.60,   5.5
+
+[arena_gigant_1]:gigant_normal
+$spawn                                  = "monsters\gigants\arena_gigant_1"
+custom_data                             = scripts\arena_mob_1.ltx

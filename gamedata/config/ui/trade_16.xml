@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<!-- ОКНО ТОРГОВЛИ -->
+<window>
+	<!-- Состояние предмета -->
+	<condition_progess_bar x="0" y="0" width="22.4" height="5" animated="1" horz="1" min="0" max="100" pos="1">
+		<min_color color="inv_condition_min"/>
+		<middle_color color="inv_condition_mid"/>
+		<max_color color="inv_condition_max"/>
+		<background width="22.4" height="5" stretch="1">
+			<texture x="0" y="908" width="30" height="5" color="inv_condition_base">ui_inv_shk_itembar</texture>
+		</background>
+		<progress width="22.4" height="5" stretch="1">
+			<texture x="0" y="908" width="30" height="5">ui_inv_shk_itembar</texture>
+		</progress>
+	</condition_progess_bar>
+
+	<!-- Главное окно -->
+	<main x="0" y="0" width="1024" height="768">
+		<auto_static x="128" y="0" width="767.6" height="768" stretch="1">
+			<texture>ui_trade_wnd</texture>
+		</auto_static>
+	</main>
+	<top_background x="131" y="332" width="388" height="37" stretch="1">
+		<texture>ui_trade_wnd_left</texture>
+	</top_background>
+	<bottom_background x="511" y="332" width="388" height="37" stretch="1">
+		<texture>ui_trade_wnd_right</texture>
+	</bottom_background>
+
+	<!-- Иконка ГГ (не используется) -->
+	<static_icon x="763.5" y="11" width="123.6" height="108"/>
+
+	<!-- Иконка НПС -->
+	<static_icon x="383.5" y="11" width="123.6" height="108"/>
+
+	<!-- ГГ: панель "продать", сумма денег, сетка инвентаря-->
+	<our_bag_static x="510" y="222" width="369" height="506" always_show_scroll="0" />
+
+	<our_money_static x="121" y="-123" width="119" height="46">
+		<text align="r" font="arial_14" color="white_3" complex_mode="0"/>
+	</our_money_static>
+
+	<dragdrop_list x="9" y="148" width="367" height="356"
+			cell_width="34.4" cell_height="46" rows_num="7" cols_num="10"
+			group_similar="0" unlimited="1" condition_progress_bar="1" 
+			always_show_scroll="0"/>
+
+	<!-- НПС: панель "продать", сумма денег, сетка инвентаря-->
+	<others_bag_static x="134" y="222" width="372" height="506" stretch="1" always_show_scroll="0" />
+
+	<other_money_static x="117" y="-123" width="119" height="46">
+		<text align="r" font="arial_14" color="white_3" complex_mode="0"/>
+	</other_money_static>
+
+	<dragdrop_list x="5" y="148" width="367" height="356"
+			cell_width="34.4" cell_height="46" rows_num="7" cols_num="10"
+			group_similar="0" unlimited="1" condition_progress_bar="1" 
+			always_show_scroll="0" />
+
+	<!-- ГГ: содержимое на продажу-->
+	<static x="515" y="130" width="368" height="199"/>
+	<dragdrop_list x="4" y="4" width="367" height="198"
+			cell_width = "29.2" cell_height="39" rows_num="5" cols_num="12"
+			group_similar="0" unlimited="1" condition_progress_bar="1" 
+			always_show_scroll="0"/>
+
+	<!-- НПС: содержимое на продажу-->
+	<static x="135" y="130" width="368" height="199"/>
+	<dragdrop_list x="4" y="4" width="367" height="198"
+			cell_width = "29.2" cell_height="39" rows_num="5" cols_num="12"
+			group_similar="0" unlimited="1" condition_progress_bar="1" 
+			always_show_scroll="0"/>
+
+	<!-- Характеристики ГГ -->
+	<actor_chars>
+		<!-- иконка -->
+		<icon_static x="763.5" y="11" width="123.6" height="108" stretch="1"/>
+		
+		<!-- покрытие -->
+		<layer_actor x="762.5" y="10" width="125.1" height="110" stretch="1"/>
+		<layer_npc x="382.5" y="10" width="125.1" height="110" stretch="1"/>
+	</actor_chars>
+
+	<!-- Цена за хабар -->
+	<price_mt_static x="125" y="212" width="128" height="20">
+		<phrase x="0" y="2000" width="170" font="letterica18" color="grey_4"></phrase>
+		<phrase x="0" y="2000" font="letterica18" color="grey_4"></phrase>
+		<phrase align="l" font="letterica18" color="grey_4"></phrase>
+	</price_mt_static>
+
+	<desc_frame_window/>
+	<desc_static/>
+
+	<!-- Торговать -->	
+	<button x="260" y="735" width="121" height="29" accel="kT">
+		<texture>ui_button_ordinary</texture>
+		<sound_t>interface\inv_money</sound_t>
+		<text align="c" font="letterica16" color="white_1">ui_st_trade</text>
+    </button>
+
+	<!-- Уйти -->    
+    <button x="639" y="735" width="121" height="29" accel="kQ">
+		<texture>ui_button_ordinary</texture>
+		<text align="c" font="letterica16" color="white_1">ui_st_leave</text>
+    </button>
+</window>

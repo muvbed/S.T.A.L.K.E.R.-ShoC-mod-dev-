@@ -1,0 +1,1981 @@
+-- файл из мода "Народной солянки 2009" от 14.06.
+-- Адаптирован для Менеджера оружия. Rulix aka Bak от 2.07.09
+-- Адатировал: Idler.
+
+function attach(sm)
+    sm:subscribe({ signal = "on_before_update", fun = this.generate_npc })
+    sm:subscribe({ signal = "on_update", fun = this.update })
+end
+
+local sim
+
+off_npcs = {}
+items = {}
+relation_matrix = {}
+
+local wpn_ammo_w = {} -- wpn_ammo_w[ствол][патроны]
+
+local wpn_fp = {}
+-- Пора апдейт делать
+local bFlag = false
+-- Номер последнего отработанного обьекта
+local iCounter = 0
+-- Время последнего глобального апдейта
+local iTime = -1
+-- Как часто делать апдейты, игровые минуты
+local iFreq = 120
+local initialized = false
+
+local monster_params = {}
+
+local maps = {
+    "l01_escape",
+    "l02_garbage",
+    "l03_agroprom",
+    "l04_darkvalley",
+    "l05_bar",
+    "l06_rostok",
+    "l07_military",
+    "l08_yantar",
+    "l10_radar",
+    "l11_pripyat",
+    "l12_stancia",
+    "l12_stancia_2"
+}
+
+protected = {
+    names = {}, -- имена объектов (стоит добавлять только уникальные имена!)
+    sections = {
+        -- секции объектов
+        ["rx_inventory_box"] = true,
+        ["yad"] = true,
+        ["rx_attach_bandage"] = true,
+    },
+    ids = {}, -- ID объектов
+    story_ids = {
+        -- story ID объектов
+        [5008] = true,
+        [5013] = true,
+        [32] = true,
+        [5014] = true,
+        [5041] = true,
+        [5065] = true,
+        [5084] = true,
+        [5104] = true,
+        [5205] = true,
+        [5222] = true,
+        [5226] = true,
+        [5237] = true,
+        [5238] = true,
+        [5243] = true,
+        [5244] = true,
+        [5245] = true,
+        [5246] = true,
+        [5247] = true,
+        [5248] = true,
+        [5249] = true,
+        [5250] = true,
+        [5254] = true,
+        [5255] = true,
+        [5408] = true,
+        [5413] = true,
+        [5428] = true,
+        [5433] = true,
+        [5434] = true,
+        [5444] = true,
+        [5446] = true,
+        [5470] = true,
+        [5471] = true,
+        [5472] = true,
+        [5473] = true,
+        [5474] = true,
+        [573] = true
+    }
+}
+
+local smart_filters = {
+    ["esc_blokpost"] = true
+}
+
+local is_good_stalker = {
+    ["stalker"] = true,
+    ["ecolog"] = true,
+    ["prebandit"] = true,
+    ["premilitary"] = true,
+    ["predolg"] = true,
+    ["prefreedom"] = true,
+    ["prezombied"] = true,
+    ["dolg"] = true,
+    ["freedom"] = true
+}
+
+local rel_enemy, rel_friend
+
+--интенсивность поиска (количество отрабатываемых неписей)
+local search_intensivity = 30
+-- продолжительность боев
+local max_rounds = 8
+-- При каком уровне здоровья НПС считается раненым
+local health_wound = 0.20
+local health_wound_set = 0.02
+-- Эталон firepower\distance при distance = 1 который снимет 100% health
+local base_fp = 1400
+-- Коэффициент для расстояния
+local dist_coeff = 8
+-- Вещи дешевле продает торговцам
+local sell_limit = 2000
+-- Рейтинг за убийство. При убийстве более слабого - 0.5 * rate_kill_base, более сильного - 2 * rate_kill_base
+local rate_kill_base = 100
+local rate_art_found = 100
+local to_actor = 1500
+local look_radius_box = 25 * 25
+local look_radius_art = 50 * 50
+local look_radius_stalker = 140
+local look_radius_monster = 170
+local allow_box = true
+
+wpn_priors_by_comms = {
+    -- community[section] == slot или 1
+    military = {
+        ["wpn_ak74"] = 3,
+        ["wpn_ak74u"] = 3,
+        ["wpn_abakan"] = 3,
+        ["wpn_pm"] = 2,
+        ["wpn_val"] = 3,
+        ["wpn_walther"] = 2,
+        ["wpn_vintorez"] = 3,
+        ["wpn_groza"] = 3
+    }
+} -- end of wpn_priors_by_comms
+
+--- no freeplay ---
+function init()
+    if (initialized == false) then
+        build_tables()
+        iTime = (amk.game_minutes() - iFreq) + 3
+        initialized = true
+    end
+end
+
+--- lsclon ---
+
+function update()
+	ogse_signals.get_mgr():reschedule(200)
+	
+    if (bFlag == false and iTime ~= -1) then
+        if (amk.game_minutes() - iTime > iFreq) then
+            bFlag = true
+            off_npcs = {}
+            items = {}
+            iCounter = 1
+        end
+    end
+    if (bFlag == true) then
+        if (iCounter >= 65535) then
+            bFlag = false
+            iTime = amk.game_minutes()
+            iCounter = 1
+        else
+            local obj
+            obj = alife():object(iCounter)
+            add_fresh_meat(obj)
+            iCounter = iCounter + 1
+        end
+    end
+end
+
+--on_death - не убиваем!
+--on_hit - не обрабатываем!
+local ignored_sections = {
+    ["rat_weak"] = true
+}
+
+function add_fresh_meat(obj)
+    if obj and obj.m_game_vertex_id and game_graph():valid_vertex_id(obj.m_game_vertex_id)
+        and db.actor and db.actor:id() ~= obj.id and not protected_items.doNotTouchItemEquipment(obj)
+        and not ignored_sections[obj:section_name()]
+    then
+        local map = alife():level_name(game_graph():vertex(obj.m_game_vertex_id):level_id())
+        if not off_npcs[map] then
+            off_npcs[map] = { monsters = {}, stalkers = {}, weapons = {}, artefacts = {}, inv_boxes = {} }
+        end
+        if IsMonster(obj, obj:clsid()) and obj.alive and obj:alive() and obj.health and obj:health() > 0 and obj.m_story_id == 4294967295 then
+            local flags = get_flags(obj.id)
+            if flags == 0 or flags == 2 then --Уберем тех, у кого on_hit есть.
+                table_insert(off_npcs[map].monsters, { id = obj.id, name = obj:name() })
+            end
+        elseif IsStalker(obj, obj:clsid()) and obj.alive and obj:alive() and obj.health and obj:health() > 0 and not ogse.is_quest_npc(obj) then
+            local flags = get_flags(obj.id)
+            if flags == 0 or flags == 2 then --Уберем тех, у кого on_hit есть.
+                if not string.find(obj:community(), "zombied") then
+                    table_insert(off_npcs[map].stalkers, { id = obj.id, name = obj:name() })
+                else
+                    table_insert(off_npcs[map].monsters, { id = obj.id, name = obj:name() })
+                end
+            end
+        elseif IAmAWeapon[obj:clsid()] then
+            if obj.m_story_id == 4294967295 then
+                if obj.parent_id then
+                    local p_obj = alife():object(obj.parent_id)
+                    if p_obj then
+                        if p_obj.m_game_vertex_id and game_graph():valid_vertex_id(p_obj.m_game_vertex_id) then
+                            if p_obj:clsid() == clsid.inventory_box then
+                                -- НПС "не видят" этого
+                                map = ""
+                            else
+                                local p_map = alife():level_name(game_graph():vertex(p_obj.m_game_vertex_id):level_id())
+                                if p_map ~= map then
+                                    if not off_npcs[p_map] then
+                                        off_npcs[p_map] = {
+                                            monsters = {},
+                                            stalkers = {},
+                                            weapons = {},
+                                            artefacts = {},
+                                            inv_boxes = {}
+                                        }
+                                    end
+                                    map = p_map
+                                end
+                            end
+                        else
+                            map = ""
+                        end
+                    end
+                end
+                if map ~= "" then
+                    table_insert(off_npcs[map].weapons, { id = obj.id, name = obj:name() })
+                end
+            end
+        elseif string_sub(obj:section_name(), 1, 3) == "af_" then
+            if obj.parent_id then
+                local p_obj = alife():object(obj.parent_id)
+                if p_obj then
+                    if p_obj.m_game_vertex_id and game_graph():valid_vertex_id(p_obj.m_game_vertex_id) then
+                        if p_obj:clsid() == clsid.inventory_box then
+                            -- НПС "не видят" этого
+                            map = ""
+                        else
+                            local p_map = alife():level_name(game_graph():vertex(p_obj.m_game_vertex_id):level_id())
+                            if p_map ~= map then
+                                if not off_npcs[p_map] then
+                                    off_npcs[p_map] = {
+                                        monsters = {},
+                                        stalkers = {},
+                                        weapons = {},
+                                        artefacts = {},
+                                        inv_boxes = {}
+                                    }
+                                end
+                                map = p_map
+                            end
+                        end
+                    else
+                        map = ""
+                    end
+                end
+            end
+            if map ~= "" then
+                table_insert(off_npcs[map].artefacts, { id = obj.id, name = obj:name() })
+            end
+        elseif obj:clsid() == clsid.inventory_box and not box_is_protected(obj) then
+            table_insert(off_npcs[map].inv_boxes, { id = obj.id, name = obj:name() })
+        end
+
+        if obj.parent_id and obj.m_story_id == 4294967295 and not IsMonster(obj, obj:clsid()) and not IsStalker(obj, obj:clsid()) and obj:clsid() ~= clsid.script_trader then
+            local zz = alife():object(obj.parent_id)
+            if zz and zz:section_name() ~= "rx_inventory_box" then
+                if not items[obj.parent_id] then
+                    items[obj.parent_id] = {}
+                end
+                table_insert(items[obj.parent_id], { id = obj.id, name = obj:name() })
+            end
+        end
+    end
+end
+
+--строим таблицу неписей, монстров и оружия
+function build_tables()
+    -- Почистим таблицу
+
+    rel_enemy, rel_friend = getIniValueFloatSimple("game_relations", "goodwill_enemy", -1000),
+        getIniValueFloatSimple("game_relations", "goodwill_friend", 1000)
+    local s_comm_list = getIniValueStringSimple("game_relations", "communities", "")
+    local comm_list = {}
+    local s_value = Parse_StrToTbl(s_comm_list, ",")
+    for a = 1, #s_value, 2 do
+        local s_comm = s_value[a]
+        table_insert(comm_list, s_comm)
+    end
+
+    local tmp = {}
+    local result, id, value = nil, nil, nil
+    local n = iniLinesCountSimple("communities_relations")
+    for a = 0, n - 1 do
+        result, id, value = getIniLineSimple("communities_relations", a, "", "")
+        if id ~= nil and trim(id) ~= "" and trim(id) ~= nil then
+            relation_matrix[trim(id)] = {}
+            table_insert(tmp, trim(id))
+        end
+    end
+
+    for a = 1, #tmp do
+        local value = getIniValueStringSimple("communities_relations", tmp[a], "")
+        local idx = tmp[a]
+        local m_value = Parse_StrToTbl(value, ",")
+        for i = 1, #m_value do
+            local idx2 = comm_list[i]
+            local v = m_value[i]
+            if relation_matrix[idx] and idx2 ~= nil and v ~= nil then
+                relation_matrix[idx][idx2] = tonumber(trim(v))
+            end
+        end
+    end
+end
+
+function update_npc_tables()
+    off_npcs = {}
+    local obj
+    local sim = alife()
+    for a = 1, 65534 do
+        obj = sim:object(a)
+        if obj then
+            add_fresh_meat(obj)
+        end
+    end
+    bFlag = false
+    iTime = amk.game_minutes()
+    iCounter = 1
+end
+
+--генерируем оффлайн события
+function offline_alife()
+    local lname = maps[math_random(#maps)]
+    local st = 0
+    if off_npcs[lname] then st = #off_npcs[lname].stalkers end
+    if st > 0 then
+        for search = 1, search_intensivity do
+            local rnd = math_random(st)
+            if off_npcs[lname].stalkers[rnd] then
+                local victim = alife():object(off_npcs[lname].stalkers[rnd].id)
+                if victim and not victim.online and victim.health and victim.can_switch_online and victim:health() > 0 and victim:can_switch_online() and victim:name() == off_npcs[lname].stalkers[rnd].name then
+                    local vdata = collect_info(victim, lname)
+                    if #vdata.enemies > 0 then
+                        --есть вражина - воюем нах!
+                        on_enemies_found(victim, vdata, lname, rnd)
+                        break --прерываем цикл - событие отработано
+                    elseif #vdata.monsters > 0 then
+                        --есть монстрятина - видели, слышали, убили, сдохли...
+                        on_monsters_found(victim, vdata, lname, rnd)
+                        break --прерываем цикл - событие отработано
+                    elseif #vdata.corpses.stalkers > 0 then
+                        --есть труп сталкера
+                        on_npc_corpses_found(victim, vdata)
+                        break --прерываем цикл - событие отработано
+                    elseif #vdata.corpses.monsters > 0 then
+                        --есть труп монстра
+                        on_monster_corpses_found(victim, vdata)
+                        break --прерываем цикл - событие отработано
+                    elseif #vdata.weapons.seen > 0 then
+                        --есть бесхозное оружие
+                        on_weapons_found(victim, vdata)
+                        break --прерываем цикл - событие отработано
+                    elseif #vdata.artefacts > 0 then
+                        --есть арты
+                        on_artifacts_found(victim, vdata)
+                        break --прерываем цикл - событие отработано
+                    elseif #vdata.inv_boxes > 0 then
+                        --есть контейнеры. Надо обыскать.
+                        on_inv_boxes_found(victim, vdata)
+                        break --прерываем цикл - событие отработано
+                    elseif items[victim.id] and #items[victim.id] > 0 then
+                        --попробуем продать всякого
+                        process_trade(victim)
+                        break
+                    else
+                    end
+                end
+            end
+        end
+    end
+end
+
+--собираем инфу о неписе
+function collect_info(victim, map)
+    local vdata = {}
+    vdata.rank = victim:rank()           --ранг
+    vdata.health = victim:health()       --хелсы
+    vdata.community = victim:community() --группировка
+
+    --пытаемся определить пушку
+    local wp = #off_npcs[map].weapons
+    --условная огневая мощь
+    vdata.fire_power = 0
+
+    local sim = alife()
+    vdata.weapons = { own = {}, seen = {} }
+    -- если есть пушки в карманах, выбираем лучшую (по условной мощности)
+    if wp > 0 then
+        for w = 1, wp do
+            if off_npcs[map].weapons[w] then
+                local www = sim:object(off_npcs[map].weapons[w].id)
+                if www and www:name() == off_npcs[map].weapons[w].name then
+                    if www.parent_id == victim.id then
+                        table_insert(vdata.weapons.own, { id = www.id, name = www:name() })
+                        local fp = get_weapon_firepower(www)
+                        if vdata.fire_power < fp then vdata.fire_power = fp end
+                    elseif www:can_switch_online() and victim.position:distance_to_sqr(www.position) < look_radius_box and sobj_is_far(www, to_actor) then
+                        if www.parent_id == nil or www.parent_id == 65535 then
+                            table_insert(vdata.weapons.seen, { id = www.id, name = www:name() })
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    --составляем списки друзей и врагов в зоне "видимости"
+    -- Для тех, у кого смарт в фильтрах - не собираем врагов
+    -- Для остальных - не учитываем врагов из смартов
+    local npc_peaceful = npc_smart_is_peaceful(victim)
+
+    vdata.friends = {}
+    vdata.enemies = {}
+    vdata.corpses = { monsters = {}, stalkers = {} }
+    if #off_npcs[map].stalkers > 0 then
+        for a = 1, #off_npcs[map].stalkers do
+            if off_npcs[map].stalkers[a] then
+                local opponent = sim:object(off_npcs[map].stalkers[a].id)
+                if opponent and opponent.id ~= victim.id and opponent.health and opponent.can_switch_online and opponent:can_switch_online() and opponent:name() == off_npcs[map].stalkers[a].name then
+                    if victim.position:distance_to(opponent.position) < look_radius_stalker then -- DC --
+                        if opponent:health() > 0 then
+                            local rel = relation_check(victim, opponent)
+                            if rel >= 0 then
+                                table_insert(vdata.friends,
+                                    { id = opponent.id, name = opponent:name(), stalker_number = a, stalker_map = map })
+                            elseif rel < 0 then
+                                if npc_peaceful == false and npc_smart_is_peaceful(opponent) == false then
+                                    table_insert(vdata.enemies,
+                                        { id = opponent.id, name = opponent:name(), stalker_number = a, stalker_map = map })
+                                end
+                            else
+
+                            end
+                        else
+                            if (sobj_is_far(opponent, to_actor)) then
+                                table_insert(vdata.corpses.stalkers, { id = opponent.id, name = opponent:name() })
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    --составляем список монстряков в зоне "видимости"
+    vdata.monsters = {}
+    if off_npcs[map].monsters then
+        if #off_npcs[map].monsters > 0 then
+            for a = 1, #off_npcs[map].monsters do
+                if off_npcs[map].monsters[a] then
+                    local monster = sim:object(off_npcs[map].monsters[a].id)
+                    if monster and monster.health and monster.can_switch_online and monster:can_switch_online() and monster:name() == off_npcs[map].monsters[a].name and victim.position:distance_to(monster.position) < look_radius_monster then -- DC --
+                        if monster:health() > 0 then
+                            table_insert(vdata.monsters,
+                                { id = monster.id, name = monster:name(), monster_number = a, monster_map = map })
+                        else
+                            if (sobj_is_far(monster, to_actor)) then
+                                table_insert(vdata.corpses.monsters, { id = monster.id, name = monster:name() })
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    --составляем список артов в зоне "видимости"
+    vdata.artefacts = {}
+    if off_npcs[map].artefacts then
+        if #off_npcs[map].artefacts > 0 then
+            for a = 1, #off_npcs[map].artefacts do
+                if off_npcs[map].artefacts[a] then
+                    local artefact = sim:object(off_npcs[map].artefacts[a].id)
+                    if (
+                            artefact and artefact.can_switch_online and artefact:can_switch_online() and artefact:name() == off_npcs[map].artefacts[a].name and victim.position:distance_to_sqr(artefact.position) < look_radius_art and
+                            sobj_is_far(artefact, to_actor)) then -- DC --
+                        if artefact.parent_id == nil or artefact.parent_id == 65535 or (sim:object(artefact.parent_id) and rx_utils.is_anomaly(nil, sim:object(artefact.parent_id):clsid())) then
+                            table_insert(vdata.artefacts, { id = artefact.id, name = artefact:name() })
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    --составляем список контейнеров в зоне "видимости"
+    vdata.inv_boxes = {}
+    if off_npcs[map].inv_boxes then
+        if #off_npcs[map].inv_boxes > 0 then
+            for a = 1, #off_npcs[map].inv_boxes do
+                if off_npcs[map].inv_boxes[a] then
+                    local inv_box = sim:object(off_npcs[map].inv_boxes[a].id)
+                    if (
+                            inv_box and inv_box.can_switch_online and inv_box:can_switch_online() and inv_box:name() == off_npcs[map].inv_boxes[a].name and victim.position:distance_to_sqr(inv_box.position) <= look_radius_box and
+                            sobj_is_far(inv_box, to_actor)
+                        ) then
+                        local zdist = victim.position:distance_to(inv_box.position) / 100
+                        if math_random() > zdist then
+                            if inv_box.parent_id == nil or inv_box.parent_id == 65535 then
+                                table_insert(vdata.inv_boxes, { id = inv_box.id, name = inv_box:name() })
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    return vdata
+end
+
+-- получаем отношение группировки к неписю, в оффлайне фактически равно личным отношениям неписей
+function relation_check(victim, opponent)
+    if relation_matrix[opponent:community()] and relation_matrix[opponent:community()][victim:community()] then
+        return relation_matrix[opponent:community()][victim:community()]
+    else
+        return 0
+    end
+end
+
+function okay(attacker, defender)
+    local asas = attacker.player.SID
+    local sasa = defender.player.SID
+
+    if ogse.is_quest_npc(attacker.player) or ogse.is_quest_npc(defender.player) then
+        return false
+    else
+        return true
+    end
+end
+
+local urodi = { "aes_soldier_commander" }
+
+function check_sniper(victim, vdata)
+    local object1
+    local object2
+    if vdata then
+        object2 = vdata.name
+    end
+    if victim then
+        object1 = victim.name
+    end
+
+    for i = 1, #urodi do
+        if string.find(tostring(object1), urodi[i]) or string.find(tostring(object2), urodi[i]) then
+            return false
+        end
+    end
+end
+
+-- Вокруг враги! Что же делать..
+function on_enemies_found(victim, vdata, victim_map, victim_number)
+    if (victim == nil or vdata == nil) then return end
+    if check_sniper(victim, vdata) then return end
+    if (victim.level_name == "l11_pripyat" and db.actor:dont_has_info("pri_helicopters_start")) or (db.actor:dont_has_info("val_escort_scene_end") and victim.level_name == "l04_darkvalley") then return end
+    local obj, v_obj
+    local team_A = {}
+    local team_B = {}
+    -- Собираем weapons
+    -- Учитываем rank, weapon, distance...
+    local wpn = get_npc_weapon(victim)
+    local rank = victim:rank()
+    local health = victim:health()
+    local SID = victim.m_story_id
+    local firepower = get_weapon_firepower(wpn)
+    local player = {
+        player = victim,
+        weapon = wpn,
+        rank = rank,
+        SID = SID,
+        health = health,
+        firepower = firepower,
+        flags = get_flags(victim.id),
+        stalker_number = victim_number,
+        stalker_map = victim_map
+    }
+    table_insert(team_A, player)
+    if (vdata.friends and #vdata.friends > 0) then
+        for i = 1, #vdata.friends do
+            v_obj = vdata.friends[i]
+            if v_obj then
+                obj = alife():object(v_obj.id)
+                if (obj and obj:name() == v_obj.name) then
+                    wpn = get_npc_weapon(obj)
+                    rank = obj:rank()
+                    SID = obj.m_story_id
+                    health = obj:health()
+                    firepower = get_weapon_firepower(wpn)
+                    player = {
+                        player = obj,
+                        weapon = wpn,
+                        rank = rank,
+                        SID = SID,
+                        health = health,
+                        firepower = firepower,
+                        flags = get_flags(obj.id),
+                        stalker_number = v_obj.stalker_number,
+                        stalker_map = v_obj.stalker_map
+                    }
+                    table_insert(team_A, player)
+                end
+            end
+        end
+    end
+    for i = 1, #vdata.enemies do
+        v_obj = vdata.enemies[i]
+        obj = alife():object(v_obj.id)
+        if (obj and obj:name() == v_obj.name) then
+            wpn = get_npc_weapon(obj)
+            rank = obj:rank()
+            SID = obj.m_story_id
+            health = obj:health()
+            firepower = get_weapon_firepower(wpn)
+            player = {
+                player = obj,
+                weapon = wpn,
+                SID = SID,
+                rank = rank,
+                health = health,
+                firepower = firepower,
+                flags = get_flags(obj.id),
+                stalker_number = v_obj.stalker_number,
+                stalker_map = v_obj.stalker_map
+            }
+            table_insert(team_B, player)
+        end
+    end
+    local distances = {}
+    for a = 1, #team_A do
+        local from = team_A[a].player
+        distances[from.id] = {}
+        for b = 1, #team_B do
+            local to = team_B[b].player
+            distances[to.id] = {}
+            if (from and to and from.id and to.id) then
+                local dist = math_floor(from.position:distance_to(to.position))
+                local fp_A = math_floor(team_A[a].firepower / (dist / dist_coeff))
+                local fp_B = math_floor(team_B[b].firepower / (dist / dist_coeff))
+                local item = { distance = dist, fpA = fp_A, fpB = fp_B }
+                distances[from.id][to.id] = { distance = dist, fp = fp_A }
+                distances[to.id][from.id] = { distance = dist, fp = fp_B }
+            end
+        end
+    end
+    -- Берем тех, у кого самый высокий rank и мин. distance
+    table_sort(team_A, function(a, b) return a.rank > b.rank end)
+    table_sort(team_B, function(a, b) return a.rank > b.rank end)
+    -- 10 раундов
+    local size_A = #team_A
+    local size_B = #team_B
+    local died_A = 0
+    local died_B = 0
+    local state
+    state = 0
+    for i = 1, max_rounds do
+        if (#team_A > 0 and #team_B > 0) then
+            local index = #team_A
+            local attacker
+            local defender
+            local attack_info
+            local rank_hit_chance
+            local distance_hit_chance
+            local hit_chance
+            if (#team_B > index) then index = #team_B end
+
+            for j = 1, index do
+                attacker = team_A[j]
+                defender = team_B[math_random(#team_B)]
+
+                if (attacker and defender and attacker.player and defender.player and attacker.health > 0 and defender.health > 0 and distances[attacker.player.id][defender.player.id]) then
+                    if okay(attacker, defender) then
+                        --сообщение by aster
+                        --работает, выдается сообщение от одного первого атакующего или защищающегося
+                        if math.random() < 0.5 then
+                            if state == 0 and math.random() < news_main.off_prob then
+                                news_main.hear_fight(defender.player, attacker.player)
+                                state = 1
+                            end
+                        else
+                            if state == 0 and math.random() < news_main.off_prob then -- введём антиспам
+                                --НЕЙТРАЛЫ ЗАЩИЩАЮТСЯ --
+                                if defender.player:community() == "stalker" then
+                                    local m_where = news_main.get_point_description(
+                                        news_main.get_object_levelname(defender.player),
+                                        news_main.get_object_position(defender.player))
+                                    if attacker.player:community() == "military" then
+                                        local text, place, name =
+                                            news_data.military_attack_to_stalker
+                                            [math.random(#news_data.military_attack_to_stalker)], m_where,
+                                            defender.player:character_name()
+                                        news_main.message_offwar(text, place, name)
+                                    elseif attacker.player:community() == "bandit" then
+                                        local text, place, name =
+                                            news_data.bandit_attack_to_stalker
+                                            [math.random(#news_data.bandit_attack_to_stalker)], m_where,
+                                            defender.player:character_name()
+                                        news_main.message_offwar(text, place, name)
+                                    elseif attacker.player:community() == "monolith" then
+                                        local text, place, name =
+                                            news_data.monolith_attack_to_stalker
+                                            [math.random(#news_data.monolith_attack_to_stalker)], m_where,
+                                            defender.player:character_name()
+                                        news_main.message_offwar(text, place, name)
+                                    elseif attacker.player:community() == "killer" then
+                                        local text, place, name =
+                                            news_data.killer_attack_to_stalker
+                                            [math.random(#news_data.killer_attack_to_stalker)], m_where,
+                                            defender.player:character_name()
+                                        news_main.message_offwar(text, place, name)
+                                    elseif string.find(attacker.player:community(), "zombied") then
+                                        local text, place, name =
+                                            news_data.zombied_attack_to_stalker
+                                            [math.random(#news_data.zombied_attack_to_stalker)], m_where,
+                                            defender.player:character_name()
+                                        news_main.message_offwar(text, place, name)
+                                    end
+
+                                    --НЕЙТРАЛЫ АТАКУЮТ НАЧАЛО--
+                                elseif attacker.player:community() == "stalker" then
+                                    local m_where = news_main.get_point_description(
+                                        news_main.get_object_levelname(attacker.player),
+                                        news_main.get_object_position(attacker.player))
+                                    if defender.player:community() == "military" then
+                                        local text, place, name =
+                                            news_data.military_defender_to_stalker
+                                            [math.random(#news_data.military_defender_to_stalker)], m_where,
+                                            attacker.player:character_name()
+                                        news_main.message_offwar(text, place, name)
+                                    elseif defender.player:community() == "bandit" then
+                                        local text, place, name =
+                                            news_data.bandit_defender_to_stalker
+                                            [math.random(#news_data.bandit_defender_to_stalker)], m_where,
+                                            attacker.player:character_name()
+                                        news_main.message_offwar(text, place, name)
+                                    elseif defender.player:community() == "monolith" then
+                                        local text, place, name =
+                                            news_data.monolith_defender_to_stalker
+                                            [math.random(#news_data.monolith_defender_to_stalker)], m_where,
+                                            attacker.player:character_name()
+                                        news_main.message_offwar(text, place, name)
+                                    elseif attacker.player:community() == "killer" then
+                                        local text, place, name =
+                                            news_data.killer_defender_to_stalker
+                                            [math.random(#news_data.killer_defender_to_stalker)], m_where,
+                                            attacker.player:character_name()
+                                        news_main.message_offwar(text, place, name)
+                                    elseif string.find(attacker.player:community(), "zombied") then
+                                        local text, place, name =
+                                            news_data.zombied_defender_to_stalker
+                                            [math.random(#news_data.zombied_defender_to_stalker)], m_where,
+                                            attacker.player:character_name()
+                                        news_main.message_offwar(text, place, name)
+                                    end
+                                end
+                                state = 1
+                            end
+                        end
+                        --сообщение by aster
+
+
+                        attack_info = distances[attacker.player.id][defender.player.id]
+                        -- Попал или нет? Зависит от: расстояния, рангов
+                        -- master to novice - 30% max
+                        -- 100 метров - 33% 10 метров - 100% 1 метр - 115% Каждый метр - минус 1.5% попасть.
+                        rank_hit_chance = math_floor((attacker.rank - defender.rank) / 50)
+                        distance_hit_chance = 100 - math_floor((attack_info.distance) / 1.5)
+                        hit_chance = distance_hit_chance + rank_hit_chance
+                        if ((math_random() * 100) < hit_chance) then
+                            -- Попал таки, гад. Посмотрим, как сильно.
+                            if (attack_info.fp >= base_fp) then
+                                -- Все, убил.
+                                defender.health = 0
+                            else
+                                defender.health = defender.health - (attack_info.fp / base_fp)
+                                if (defender.health < 0) then defender.health = 0 end
+                                local sobj = defender.player
+                            end
+                            if (defender.health <= 0) then
+                                if (defender.flags >= 2) and math.random() < 0.3 then
+                                    defender.health = health_wound
+                                else
+                                    -- Если сталкер - дадим опыт.
+                                    if attacker.player and IsStalker(attacker.player, attacker.player:clsid()) and attacker.player.community then
+                                        local m_comm = attacker.player:community()
+                                        if (
+                                          m_comm == "stalker" 
+                                          or string.find(m_comm, "dolg") 
+                                          or string.find(m_comm, "freedom")
+                                        ) then
+                                            -- Будет теперь опытным.
+                                            local coeff = 1
+                                            if (defender.rank < attacker.rank) then coeff = 0.5 end
+                                            if (defender.rank > attacker.rank) then coeff = 2 end
+                                            attacker.player:set_rank(attacker.player:rank() +
+                                                math_floor(rate_kill_base * coeff))
+                                        end
+                                    end
+                                    -- Заберем вещички с трупа
+                                    local itA, v_itA
+                                    local l_objA
+                                    if (items[defender.player.id] and #items[defender.player.id] > 0) then
+                                        for a = 1, #items[defender.player.id] do
+                                            v_itA = items[defender.player.id][a]
+                                            if (v_itA) then
+                                                itA = alife():object(v_itA.id)
+                                                if (itA and itA:name() == v_itA.name and itA.parent_id == defender.player.id) then
+                                                    l_objA = pick_item(attacker.player, itA)
+                                                else
+                                                    if (itA) then
+                                                        local mm = itA.parent_id
+                                                        if mm == nil then mm = "nil" end
+                                                    end
+                                                end
+                                            end
+                                        end
+                                    end
+                                    process_trade(attacker.player)
+                                end
+                            end
+                        end
+                    end
+                end
+                -- team_B - защищается
+                if (team_B[j] ~= nil) then
+                    attacker = team_B[j]
+                    defender = team_A[math_random(#team_A)]
+                    if (attacker and defender and attacker.player and defender.player and attacker.health > 0 and defender.health > 0 and distances[attacker.player.id][defender.player.id]) then
+                        attack_info = distances[attacker.player.id][defender.player.id]
+                        -- Попал или нет? Зависит от: расстояния, рангов
+                        -- master to novice - 30% max
+                        -- 100 метров - 33% 10 метров - 100% 1 метр - 115% Каждый метр - минус 1.5% попасть.
+                        rank_hit_chance = math_floor((attacker.rank - defender.rank) / 50)
+                        distance_hit_chance = 100 - math_floor((attack_info.distance) / 1.5)
+                        hit_chance = distance_hit_chance + rank_hit_chance
+                        if math_random() * 100 < hit_chance then
+                            -- Попал таки, гад. Посмотрим, как сильно.
+                            if attack_info.fp >= base_fp then
+                                -- Все, убил.
+                                defender.health = 0
+                            else
+                                defender.health = defender.health - (attack_info.fp / base_fp)
+                                if (defender.health < 0) then defender.health = 0 end
+                            end
+                            if (defender.health <= 0) then
+                                if (defender.flags >= 2) and math.random() < 0.3 then
+                                    defender.health = health_wound
+                                else
+                                    -- Если сталкер - дадим опыт.
+                                    if attacker.player and IsStalker(attacker.player, attacker.player:clsid()) and attacker.player.community then
+                                        local m_comm = attacker.player:community()
+                                        if (
+                                          m_comm == "stalker" 
+                                          or string.find(m_comm, "dolg") 
+                                          or string.find(m_comm, "freedom")
+                                        ) then
+                                            -- Будет теперь опытным.
+                                            local coeff = 1
+                                            if (defender.rank < attacker.rank) then coeff = 0.5 end
+                                            if (defender.rank > attacker.rank) then coeff = 2 end
+                                            attacker.player:set_rank(attacker.player:rank() +
+                                                math_floor(rate_kill_base * coeff))
+                                        end
+                                    end
+                                    -- Заберем вещички с трупа
+                                    local itB, v_itB
+                                    local l_objB
+                                    if (items[defender.player.id] and #items[defender.player.id] > 0) then
+                                        for a = 1, #items[defender.player.id] do
+                                            v_itB = items[defender.player.id][a]
+                                            if (v_itB) then
+                                                itB = alife():object(v_itB.id)
+                                                if (itB and itB:name() == v_itB.name and itB.parent_id == defender.player.id) then
+                                                    l_objB = pick_item(attacker.player, itB)
+                                                else
+                                                    if (itB) then
+                                                        local mm = itB.parent_id
+                                                        if mm == nil then mm = "nil" end
+                                                    end
+                                                end
+                                            end
+                                        end
+                                    end
+                                    process_trade(attacker.player)
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        else
+            -- Теперь и событие можно сформировать для новостей
+            break
+        end
+        -- Почистим таблицы от трупов
+        for kk, vv in pairs(team_A) do
+            if (vv.health <= 0) then
+                set_npc_health(vv.player, 0)
+                table_remove(team_A, kk)
+                table_remove(off_npcs[vv.stalker_map].stalkers, vv.stalker_number)
+                died_A = died_A + 1
+            elseif (vv.health <= health_wound and vv.health > 0) then
+                set_npc_health(vv.player, health_wound_set)
+                news_main.on_offline_wound(vv.player)
+                table_remove(team_A, kk)
+                table_remove(off_npcs[vv.stalker_map].stalkers, vv.stalker_number)
+            end
+        end
+        for kk, vv in pairs(team_B) do
+            if (vv.health <= 0) then
+                set_npc_health(vv.player, 0)
+                table_remove(team_B, kk)
+                table_remove(off_npcs[vv.stalker_map].stalkers, vv.stalker_number)
+                died_B = died_B + 1
+            elseif (vv.health <= health_wound and vv.health > 0) then
+                set_npc_health(vv.player, health_wound_set)
+                news_main.on_offline_wound(vv.player)
+                table_remove(team_B, kk)
+                table_remove(off_npcs[vv.stalker_map].stalkers, vv.stalker_number)
+            end
+        end
+        state = 1
+    end
+end
+
+-- Вокруг монстры! Что же делать..
+function on_monsters_found(victim, vdata, victim_map, victim_number)
+    if (victim == nil or vdata == nil) then return end
+    if (victim.level_name == "l11_pripyat" and db.actor:dont_has_info("pri_helicopters_start")) or (db.actor:dont_has_info("val_escort_scene_end") and victim.level_name == "l04_darkvalley") then return end
+    -- Собираем комманды.
+    local obj, v_obj
+    local team_A = {}
+    local team_B = {}
+    local wpn = get_npc_weapon(victim)
+    local rank = victim:rank()
+    local health = victim:health()
+    local firepower = get_weapon_firepower(wpn)
+    local state
+    local player = {
+        player = victim,
+        weapon = wpn,
+        rank = rank,
+        health = health,
+        firepower = firepower,
+        flags = get_flags(victim.id),
+        stalker_number = victim_number,
+        stalker_map = victim_map
+    }
+    table_insert(team_A, player)
+    if (vdata.friends and #vdata.friends > 0) then
+        for i = 1, #vdata.friends do
+            v_obj = vdata.friends[i]
+            obj = alife():object(v_obj.id)
+            if (obj and obj:name() == v_obj.name) then
+                wpn = get_npc_weapon(obj)
+                rank = obj:rank()
+                health = obj:health()
+                firepower = get_weapon_firepower(wpn)
+                player = {
+                    player = obj,
+                    weapon = wpn,
+                    rank = rank,
+                    health = health,
+                    firepower = firepower,
+                    flags = get_flags(obj.id),
+                    stalker_number = v_obj.stalker_number,
+                    stalker_map = v_obj.stalker_map
+                }
+                table_insert(team_A, player)
+            end
+        end
+    end
+    local params
+    for i = 1, #vdata.monsters do
+        v_obj = vdata.monsters[i]
+        obj = alife():object(v_obj.id)
+        if (obj and obj:name() == v_obj.name) then
+            params = get_monster_params(obj)
+            if (params) then
+                rank = obj:rank()
+                health = obj:health()
+                firepower = params.attack * base_fp
+                player = {
+                    player = obj,
+                    speed = params.speed,
+                    attack_dist = params.dist,
+                    immunity = params.immunity,
+                    rank = rank,
+                    health = health,
+                    firepower = firepower,
+                    flags = get_flags(obj.id),
+                    monster_number = v_obj.monster_number,
+                    monster_map = v_obj.monster_map
+                }
+                table_insert(team_B, player)
+            else
+            end
+        end
+    end
+    local distances = {}
+    for a = 1, #team_A do
+        local from = team_A[a].player
+        distances[from.id] = {}
+        for b = 1, #team_B do
+            local to = team_B[b].player
+            distances[to.id] = {}
+            if (from and to and from.id and to.id) then
+                local dist = math_floor(from.position:distance_to(to.position))
+                local fp_A = math_floor(team_A[a].firepower / (dist / dist_coeff))
+                local fp_B = math_floor(team_B[b].firepower)
+                local item = { distance = dist, fpA = fp_A, fpB = fp_B }
+                distances[from.id][to.id] = { distance = dist, fp = fp_A }
+                distances[to.id][from.id] = { distance = dist, fp = fp_B }
+            end
+        end
+    end
+    -- Берем тех, у кого самый высокий rank и мин. distance
+    table_sort(team_A, function(a, b) return a.rank > b.rank end)
+    table_sort(team_B, function(a, b) return a.rank > b.rank end)
+    -- 10 раундов
+    local size_A = #team_A
+    local size_B = #team_B
+    local died_A = 0
+    local died_B = 0
+    state = 0
+    for i = 1, max_rounds do
+        if (#team_A > 0 and #team_B > 0) then
+            local index = #team_A
+            local attacker
+            local defender
+            local attack_info
+            local rank_hit_chance
+            local distance_hit_chance
+            local hit_chance
+            if (#team_B > index) then index = #team_B end
+            for j = 1, index do
+                attacker = team_A[j]
+                defender = team_B[math_random(#team_B)]
+
+                --начало атаки людей тим А
+                if (attacker and defender and attacker.player and defender.player and attacker.health > 0 and defender.health > 0 and distances[attacker.player.id][defender.player.id]) then
+                    attack_info = distances[attacker.player.id][defender.player.id]
+                    -- Попал или нет? Зависит от: расстояния, рангов
+                    rank_hit_chance = math_floor((attacker.rank - defender.rank) / 50)
+                    local dii = math_floor(attack_info.distance - defender.speed * i * 5)
+                    if (dii <= 8) then dii = 45 end -- Вблизи еще и фиг попадешь...
+                    distance_hit_chance = 100 - math_floor(dii / 1.5)
+                    hit_chance = distance_hit_chance + rank_hit_chance
+                    if ((math_random() * 100) < hit_chance) then
+                        -- Попал таки, гад. Посмотрим, как сильно.
+                        if (math_floor(attack_info.fp * defender.immunity) >= base_fp) then
+                            -- Все, убил.
+                            defender.health = 0
+                        else
+                            defender.health = defender.health - (attack_info.fp / base_fp) * defender.immunity
+                            if (defender.health < 0) then defender.health = 0 end
+                        end
+                        if (defender.health <= 0) then
+                            if (defender.flags >= 2) and math.random() < 0.3 then
+                                defender.health = health_wound
+                            else
+                                -- Если сталкер - дадим опыт.
+                                if attacker.player and IsStalker(attacker.player, attacker.player:clsid()) and attacker.player.community then
+                                    local m_comm = attacker.player:community()
+                                    if (
+                                      m_comm == "stalker" 
+                                      or string.find(m_comm, "dolg") 
+                                      or string.find(m_comm, "freedom")
+                                    ) then
+                                        -- Будет теперь опытным. --aster тут атакуют люди, причём успешно всех перебили
+                                        local coeff = 1
+                                        if (defender.rank < attacker.rank) then coeff = 0.5 end
+                                        if (defender.rank > attacker.rank) then coeff = 2 end
+                                        attacker.player:set_rank(attacker.player:rank() +
+                                            math_floor(rate_kill_base * coeff))
+                                        local m_where = news_main.get_point_description(
+                                            news_main.get_object_levelname(attacker.player),
+                                            news_main.get_object_position(attacker.player))
+                                        if state == 0 then
+                                            news_main.hear_fight(attacker.player, nil)
+                                        end
+                                        if state == 0 and math.random() < news_main.off_prob then
+                                            local text, place, name =
+                                                news_data.human_good_attack[math.random(#news_data.human_good_attack)],
+                                                m_where, attacker.player:character_name()
+                                            news_main.message_offwar(text, place, name)
+                                            state = 1
+                                        end
+                                    end
+                                end
+                                -- Заберем вещички с трупа
+                                local itA, v_itA
+                                local l_objA
+                                if (items[defender.player.id] and #items[defender.player.id] > 0) then
+                                    for a = 1, #items[defender.player.id] do
+                                        v_itA = items[defender.player.id][a]
+                                        if (v_itA) then
+                                            itA = alife():object(v_itA.id)
+                                            if (itA and itA:name() == v_itA.name and itA.parent_id == defender.player.id) then
+                                                l_objA = pick_item(attacker.player, itA)
+                                            else
+                                                if (itA) then
+                                                    local mm = itA.parent_id
+                                                    if mm == nil then mm = "nil" end
+                                                end
+                                            end
+                                        end
+                                    end
+                                end
+                                process_trade(attacker.player)
+                            end
+                        end
+                    end
+                end
+                -- team_B - Атакует, Атакуют монстры
+                if (team_B[j] ~= nil) then
+                    attacker = team_B[j]                    --люди
+                    defender = team_A[math_random(#team_A)] --монстры
+                    if (attacker and defender and attacker.player and defender.player and attacker.health > 0 and defender.health > 0 and distances[attacker.player.id][defender.player.id]) then
+                        attack_info = distances[attacker.player.id][defender.player.id]
+                        local svidetel = news_main.get_nearest_stalker(news_main.get_object_levelname(defender.player),
+                            news_main.get_object_position(defender.player), 200, 0)
+                        if (svidetel) then
+                            local wwhere = news_main.get_point_description(
+                                news_main.get_object_levelname(defender.player),
+                                news_main.get_object_position(defender.player))
+                            if state == 0 then
+                                news_main.hear_fight(nil, defender.player)
+                                local text, place, name = news_data.svidetel[math.random(#news_data.svidetel)], wwhere,
+                                    svidetel:character_name()
+                                news_main.message_offwar(text, place, name)
+                                state = 1
+                            end
+                        end
+                        -- Для начала неплохо бы узнать, добежал ли монстрик до дистанции атаки.
+                        if (attack_info.distance - attacker.speed * i * 5 < attacker.attack_dist) then
+                            rank_hit_chance = math_floor((attacker.rank - defender.rank) / 50)
+                            distance_hit_chance = 100
+                            hit_chance = distance_hit_chance + rank_hit_chance
+                            if math_random() * 100 < hit_chance then
+                                -- Попал таки, гад. Посмотрим, как сильно.
+                                if attack_info.fp >= base_fp then
+                                    -- Все, убил.
+                                    defender.health = 0
+                                else
+                                    defender.health = defender.health - (attack_info.fp / base_fp)
+                                    if (defender.health < 0) then defender.health = 0 end
+                                end
+                                if (defender.health == 0) then
+                                    if (defender.flags >= 2) and math.random() < 0.3 then
+                                        defender.health = health_wound
+                                    else
+                                        local coeff = 1
+                                        if (defender.rank < attacker.rank) then coeff = 0.5 end
+                                        if (defender.rank > attacker.rank) then coeff = 2 end
+                                        local m_where = news_main.get_point_description(
+                                            news_main.get_object_levelname(defender.player),
+                                            news_main.get_object_position(defender.player))
+                                        if state == 0 then
+                                            news_main.hear_fight(nil, defender.player)
+                                        end
+                                        if state == 0 and math.random() < news_main.off_prob then
+                                            if m_where then
+                                                amk.send_tip(
+                                                    news_data.human_good_defend
+                                                    [math.random(#news_data.human_good_defend)] .. " " .. m_where,
+                                                    defender.player:character_name(), 3, 15, "common_channel")
+                                                state = 1
+                                            else
+                                                state = 1
+                                                amk.send_tip(
+                                                    news_data.human_good_defend
+                                                    [math.random(#news_data.human_good_defend)],
+                                                    defender.player:character_name(), 3, 15, "common_channel")
+                                            end
+                                        end
+                                        -- Забитрать вещички с трупа не будем. Хотя, может некоторые клептоманы...
+                                        -- А вот труп грохнуть... Надо подумать :)
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        else
+            -- Теперь и событие можно сформировать для новостей
+            break
+        end
+        -- Почистим таблицы от трупов
+        for kk, vv in pairs(team_A) do
+            if (vv.health <= 0) then
+                set_npc_health(vv.player, 0)
+                table_remove(team_A, kk)
+                table_remove(off_npcs[vv.stalker_map].stalkers, vv.stalker_number)
+                died_A = died_A + 1
+            elseif (vv.health <= health_wound and vv.health > 0) then
+                set_npc_health(vv.player, health_wound_set)
+                news_main.on_offline_wound(vv.player)
+                table_remove(team_A, kk)
+                table_remove(off_npcs[vv.stalker_map].stalkers, vv.stalker_number)
+            end
+        end
+        for kk, vv in pairs(team_B) do
+            if (vv.health <= 0) then
+                set_npc_health(vv.player, 0)
+                table_remove(team_B, kk)
+                table_remove(off_npcs[vv.monster_map].monsters, vv.monster_number)
+                died_B = died_B + 1
+            elseif (vv.health <= health_wound and vv.health > 0) then
+                set_npc_health(vv.player, health_wound_set)
+                news_main.on_offline_wound(vv.player)
+                table_remove(team_B, kk)
+                table_remove(off_npcs[vv.monster_map].monsters, vv.monster_number)
+            end
+        end
+        state = 1
+    end
+end
+
+-- О, трупик. Щас шмонать будем.
+function on_npc_corpses_found(victim, vdata)
+    if (victim == nil or vdata == nil) then return end
+    if (vdata.corpses == nil) then return end
+    if (vdata.corpses.stalkers == nil) then return end
+    local obj, v_obj
+    local id
+    local state = 0
+    local v_id = victim.id
+    for i = 1, #vdata.corpses.stalkers do
+        v_obj = vdata.corpses.stalkers[i]
+        local corpse = alife():object(v_obj.id)
+        if (corpse and corpse:name() == v_obj.name) then
+            if state == 0 then
+                state = 1
+            end
+            id = corpse.id
+            if (id and items[id]) then
+                for a = 1, #items[id] do
+                    local v_itA = items[id][a]
+                    if (v_itA) then
+                        local itA = alife():object(v_itA.id)
+                        if (itA and itA:name() == v_itA.name and itA.parent_id == id) then
+                            local l_objA = pick_item(victim, itA)
+                        end
+                    end
+                end
+            end
+        end
+    end
+    process_trade(victim)
+end
+
+-- О, трупик монстра. Будем шмонать?
+function on_monster_corpses_found(victim, vdata)
+    if (victim == nil or vdata == nil) then return end
+    if (vdata.corpses == nil) then return end
+    if (vdata.corpses.monsters == nil) then return end
+    local obj, v_obj
+    local object
+    local id
+    local state = 0
+    local v_id = victim.id
+    for i = 1, #vdata.corpses.monsters do
+        v_obj = vdata.corpses.monsters[i]
+        local corpse = alife():object(v_obj.id)
+        if (corpse and corpse:name() == v_obj.name) then
+            if state == 0 then
+                state = 1
+            end
+            id = corpse.id
+            if (id and items[id]) then
+                for a = 1, #items[id] do
+                    local v_itA = items[id][a]
+                    if (v_itA) then
+                        local itA = alife():object(v_itA.id)
+                        if (itA and itA:name() == v_itA.name and itA.parent_id == id) then
+                            local l_objA = pick_item(victim, itA)
+                        end
+                    end
+                end
+            end
+        end
+    end
+    process_trade(victim)
+end
+
+-- Хорошая пушка - не помешает.
+function on_weapons_found(victim, vdata)
+    if (victim == nil or vdata == nil) then return end
+    local obj, v_obj
+    local object
+    local v_id = victim.id
+    for i = 1, #vdata.weapons.seen do
+        v_obj = vdata.weapons.seen[i]
+        if (v_obj) then
+            object = alife():object(v_obj.id)
+            if (object and object:name() == v_obj.name) then
+                obj = pick_item(victim, object)
+            end
+        end
+    end
+    process_trade(victim)
+end
+
+-- Моя прелесссть
+function on_artifacts_found(victim, vdata)
+    if (victim == nil or vdata == nil) then return end
+    local obj, v_obj
+    local object
+    local v_id = victim.id
+    local b_stalker = false
+    -- Если сталкер - дадим опыт.
+    if victim and IsStalker(victim, victim:clsid()) and victim.community then
+        if is_good_stalker[victim:community()] then
+            b_stalker = true
+        end
+    end
+    for i = 1, #vdata.artefacts do
+        v_obj = vdata.artefacts[i]
+        if (v_obj) then
+            object = alife():object(v_obj.id)
+            if (object and object:name() == v_obj.name) then
+                obj = pick_item(victim, object)
+                if (obj) then
+                    if (b_stalker == true) then
+                        victim:set_rank(victim:rank() + rate_art_found)
+                    end
+                end
+            end
+        end
+    end
+    process_trade(victim)
+end
+
+-- О, нычка - это гуд.
+-- Idler ++
+-- проверим, а сможет ли непись долезть до  тайника.
+-- если есть аномалии в радиусе 20м, меньше шансов или если тайник высоко, тоже не факт что долезет.
+function inv_box_is_avail(victim, box)
+    if (victim == nil or box == nil or box.id == 0) then return false end
+
+    local n_rnd
+    if victim.position and box.position then
+        n_rnd = math_random(3, 10)
+        if math_abs(box.position.y - victim.position.y) > n_rnd then
+            return false
+        end
+    end
+
+    local anom_list = ogse_anomaly.get_all_nearest_anomalies_by_point_in_radius(box.position, 20)
+    local n_anoms = #anom_list
+    n_rnd = math_random(1, 100)
+    if n_rnd < n_anoms * 20 then -- смотрим вероятность. Чем больше аномалий, тем меньше шансов. При 5 - точно до ящика не доберется
+        return false
+    end
+    return true
+end
+
+-- Idler --
+
+function on_inv_boxes_found(victim, vdata)
+    if (victim == nil or vdata == nil) then return end
+    local obj, v_obj
+    local object
+    local v_id = victim.id
+    local b_stalker = false
+    -- Если сталкер - дадим опыт.
+    if victim and IsStalker(victim, victim:clsid()) and victim.community then
+        if is_good_stalker[victim:community()] then
+            b_stalker = true
+        end
+    end
+    for i = 1, #vdata.inv_boxes do
+        v_obj = vdata.inv_boxes[i]
+        if (v_obj and allow_box) then -- DC --
+            object = alife():object(v_obj.id)
+            if (object and object:name() == v_obj.name) then
+                if inv_box_is_avail(victim, object) then -- Idler ++-- если нычка доступна - можно шмонать
+                    if items[v_obj.id] and #items[v_obj.id] > 0 then
+                        for a = 1, #items[v_obj.id] do
+                            local v_itA = items[v_obj.id][a]
+                            if (v_itA) then
+                                local itA = alife():object(v_itA.id)
+                                if (itA and itA:name() == v_itA.name and itA.parent_id == v_obj.id) then
+                                    -- Решим, подбираем или нет?
+                                    local bTake = is_valuable(itA)
+                                    if bTake then
+                                        local l_objA = pick_item(victim, itA)
+                                    end
+                                else
+                                    if (itA) then
+                                        local mm = itA.parent_id
+                                        if mm == nil then mm = "nil" end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+        if (b_stalker == true) then
+            victim:set_rank(victim:rank() + rate_art_found)
+        end
+    end
+    process_trade(victim)
+end
+
+function pick_item(npc, obj)
+    local new = nil
+    if (npc and obj and db.actor and obj.id ~= db.actor:id()) then
+        local o, n, pid = obj:name() or "===nil===", npc:name() or "===nil===", obj.parent_id
+        local p, pn = nil, "===nil==="
+        if pid then p = alife():object(pid) end
+        if p then pn = p:name() or "===nil===" end
+        local section = obj:section_name()
+        new = alife():create(section, npc.position, npc.m_level_vertex_id, npc.m_game_vertex_id, npc.id)
+        if (new) then
+            if (new.parent_id) then
+                if not items[new.parent_id] then items[new.parent_id] = {} end
+                table_insert(items[new.parent_id], { id = new.id, name = new:name() })
+            end
+            if (obj.parent_id and items[obj.parent_id] and #items[obj.parent_id] > 0) then
+                for z = 1, #items[obj.parent_id] do
+                    if (items[obj.parent_id][z] and items[obj.parent_id][z].id == obj.id) then
+                        table_remove(items[obj.parent_id], z)
+                        break
+                    end
+                end
+            end
+            alife():release(alife():object(obj.id), true)
+        end
+    end
+    return new
+end
+
+function get_npc_weapon(npc)
+    local obj
+    local fp = 0
+    sim = alife()
+    local obj_list = items and npc and npc.id and items[npc.id]
+    if obj_list and sim then
+        for i = 1, #obj_list do
+            local v = obj_list[i]
+            local obj_id = v and v["id"]
+            local wpn = obj_id and sim:object(obj_id)
+            if wpn and IAmAWeaponFireOnly[wpn:clsid()] and wpn:name() == v.name and wpn.parent_id == npc.id then
+                local sect = wpn:section_name()
+                local cur_fp = 0
+                local modes = rx_wmgr.read_wm_modes(npc:community(), ranks.get_obj_rank_name(npc), npc:section_name())
+                local params = rx_wmgr.read_wpn_params(sect)
+                if modes.mode1 == "1" then
+                    cur_fp = params.cst + modes.addcost
+                elseif modes.mode1 == "2" then
+                    local kf = rx_wmgr.wm_modes.koeffs[modes.koeffs]
+                    cur_fp = (params.dmg * kf.dmg) + (params.rpm * kf.rpm) + (params.dst * kf.dst) +
+                        ((100 / params.dsp) * kf.dsp)
+                elseif modes.mode1 == "3" then
+                    cur_fp = rx_wmgr.wm_modes.priors[modes.priors][sect]
+                end
+                if cur_fp > fp then
+                    fp = cur_fp
+                    obj = wpn
+                end
+            end
+        end
+    end
+    return obj
+end
+
+function get_weapon_firepower(wpn)
+    local result = 0
+    if wpn then
+        local cls_id = wpn:clsid()
+        if IAmAWeaponFireOnly[cls_id] then
+            local sect = wpn:section_name()
+            if wpn_fp[sect] then
+                result = wpn_fp[sect]
+            else
+                local priority = getIniValueFloatSimple(sect, "ef_weapon_type", 1)
+                local priority2 = getIniValueFloatSimple(sect, "ef_main_weapon_type", 0)
+                local GetRPM = ui_wpn_params.GetRPM(sect)
+                local GetDamage = ui_wpn_params.GetDamage(sect)
+                local GetHandling = ui_wpn_params.GetHandling(sect)
+                local GetAccuracy = ui_wpn_params.GetAccuracy(sect)
+                local fp = 1
+                if priority > 1 then
+                    if priority2 > 0 then priority = priority + priority2 end
+                end
+                fp = math_ceil(priority * 1000 + GetAccuracy * 100 + GetRPM * 3 + GetDamage * 8) - 5000
+                if GetHandling >= 99 then fp = fp + 1500 end
+                result = fp
+                wpn_fp[sect] = fp
+            end
+        end
+    end
+    return result
+end
+
+function get_item_cost(item)
+    if (item and item.section_name) then return getIniValueFloatSimple(item:section_name(), "cost", 0) end
+    return 0
+end
+
+function set_npc_health(obj, health)
+    if obj and health then
+        if IsMonster(obj, obj:clsid()) or IsStalker(obj, obj:clsid()) then
+            obj:set_health(health)
+        end
+        if health <= 0 then
+            on_death(obj.id)
+        end
+    end
+end
+
+--[[
+	Уникальные предметы НЕ ПРОДАЕМ. Максимум - в новости.
+	Отсортировали оружие по firepower (можем еще ef_weapon_type добавить.)
+	Оставили себе то, для которого есть патроны. (а) - wpn..ammo_class + item_dependence
+	Оставили одно, которое лучше (а), но патронов нет (б) (%)
+	Одно, которое лучше (а), но хуже (б) - в новости на продажу
+	Остальное на продажу
+	Патроны оставили только те, что подходят к (а), остальные на продажу
+	Для вояк - только родной калаш надо бы... Не продавать вобще?
+	Оставляем не более 2 аптечек и бинтов, антирада
+	Оставляем 1-2 гранаты (%)
+	Оставляем не более 1 шт: фонарик, рация, ПДА, бинокль, нож, детекторы
+	Еда, водка - не более 1-2 шт (%)
+	Броники наверное продаем...
+	Части монстров? Тоже продаем наверное, максимум 1-2 оставим.
+]]
+function process_trade(npc)
+    local sell_list, duplicate = {}, {}
+    local m_comm, b_stalker
+    -- Имеет смысл проверять на наличие trade в секции [logic]...
+    local obj_list = npc and IsStalker(npc, npc:clsid()) and npc:alive() and not ogse.is_quest_npc(npc)
+        and not npc.online and items[npc.id]
+    if obj_list and #obj_list > 0 then
+        m_comm = npc:community()
+        if string.find(m_comm, "zombied") then
+            return
+        elseif is_good_stalker[m_comm] and (npc.name and npc:name() ~= "agr_ratcatcher") then --aster: а может и врагам дать возможность развиваться в оффлайне?
+            b_stalker = true
+        else
+            b_stalker = false
+        end
+    else
+        return
+    end
+    sim = alife()
+    local i_list = {
+        ["arts"]             = { ["type"] = "arts", ["cnt"] = 0, ["max"] = 4, ["items"] = {} },
+        ["wpn"]              = { ["type"] = "wpn", ["cnt"] = 0, ["max"] = 4, ["items"] = {} },
+        ["ammo"]             = { ["type"] = "ammo", ["cnt"] = 0, ["max"] = 4, ["items"] = {} },
+        ["medkit"]           = { ["type"] = "medkit", ["cnt"] = 0, ["max"] = 3, ["items"] = {} },
+        ["antirad"]          = { ["type"] = "antirad", ["cnt"] = 0, ["max"] = 3, ["items"] = {} },
+        ["bandage"]          = { ["type"] = "bandage", ["cnt"] = 0, ["max"] = 3, ["items"] = {} },
+        ["grenade"]          = { ["type"] = "grenade", ["cnt"] = 0, ["max"] = 3, ["items"] = {} },
+        ["food"]             = { ["type"] = "food", ["cnt"] = 0, ["max"] = 3, ["items"] = {} },
+        ["bottle"]           = { ["type"] = "bottle", ["cnt"] = 0, ["max"] = 3, ["items"] = {} },
+        ["torch"]            = { ["type"] = "torch", ["cnt"] = 0, ["max"] = 2, ["items"] = {} },
+        ["pda"]              = { ["type"] = "pda", ["cnt"] = 0, ["max"] = 2, ["items"] = {} },
+        ["binoc"]            = { ["type"] = "binoc", ["cnt"] = 0, ["max"] = 2, ["items"] = {} },
+        ["knife"]            = { ["type"] = "knife", ["cnt"] = 0, ["max"] = 2, ["items"] = {} },
+        ["detector"]         = { ["type"] = "detector", ["cnt"] = 0, ["max"] = 2, ["items"] = {} },
+        ["scope"]            = { ["type"] = "scope", ["cnt"] = 0, ["max"] = 4, ["items"] = {} },
+        ["silencer"]         = { ["type"] = "silencer", ["cnt"] = 0, ["max"] = 4, ["items"] = {} },
+        ["grenade_launcher"] = { ["type"] = "grenade_launcher", ["cnt"] = 0, ["max"] = 4, ["items"] = {} },
+        ["mutant_part"]      = { ["type"] = "mutant_part", ["cnt"] = 0, ["max"] = 4, ["items"] = {} },
+        ["outfit"]           = { ["type"] = "outfit", ["cnt"] = 0, ["max"] = 2, ["items"] = {} },
+    }
+    for object_type, object_type_info in pairs(i_list) do
+        -- если это обвесы для стволов
+        if trade_generic.items_keep_count[object_type] == -1 then
+            object_type_info["max"] = trade_generic.items_keep_count["wpn"] + 1
+        else -- если всё остальное
+            object_type_info["max"] = trade_generic.items_keep_count[object_type] + 1
+        end
+    end
+    local sections_list = {}
+    local ammo_keep, ammo_max = {}, i_list["ammo"]["max"]
+    local items_t
+
+
+    local obj, obj_id, obj_name, obj_section, obj_clsid, obj_class, obj_value, obj_t, ammo_t
+    local item, item_id
+    for i = 1, #obj_list do
+        item = obj_list[i]
+        if item then
+            obj_id = item["id"]
+            if duplicate[obj_id] then
+                obj, obj_name = nil, nil
+            else
+                duplicate[obj_id] = true
+                obj = sim:object(obj_id)
+                obj_name = obj and obj.online == false
+                    and obj.parent_id and obj.parent_id == npc.id and obj:name()
+            end
+            if obj_name and obj_name == item["name"] then
+                -- если есть имя, и совпадает с тем, что было - есть и сам предмет
+                obj_section = obj:section_name()
+                obj_value = sections_list[obj_section]
+                if not obj_value then
+                    obj_value = getIniValueFloatSimple(obj_section, "cost", 0)
+                    sections_list[obj_section] = obj_value
+                end
+            else -- иначе вычеркиваем
+                obj_value = 0
+                obj_list[i] = false
+            end
+        end
+        -- в sections_list имеем секции того, что есть в наличии, и цены как бонус
+        -- сейчас попробуем разобрать по группам сами предметы
+        if obj_value > 0 then
+            obj_clsid = obj:clsid()
+            obj_class = object_type_i_sect[obj_section] or object_type_i[obj_clsid]
+
+            items_t = i_list[obj_class]
+            if items_t then
+                table_insert(items_t["items"],
+                    { ["section"] = obj_section, ["obj"] = obj, ["key"] = i, ["value"] = obj_value })
+            elseif protected.sections[obj_section] then
+                obj_value = 0
+                obj_list[i] = false
+            end
+        end
+    end
+
+    -- Выберем, что за оружие оставит себе NPC.
+    local wpn_prior, weapons_types = {}, {}
+    local wpn_prior_comm = wpn_priors_by_comms[m_comm]
+    local modes = rx_wmgr.read_wm_modes(m_comm, ranks.get_obj_rank_name(npc), npc:section_name())
+
+    items_t = i_list["wpn"]["items"]
+    local priors_mem = {}
+    for i = 1, #items_t do
+        local obj_t = items_t[i]
+        obj_section = obj_t["section"]
+
+        local wpn_f_aoa = obj_t["obj"]
+        local prm = rx_wmgr.get_weapon_prior(obj_t, rx_utils.get_addon_flag_old(obj_t, true), priors_mem, modes,
+            npc.name and npc:name() or "unnamed") --0
+
+        -- есть ли патроны ?
+        -- а пофиг - пускай в офлайне их достают (если получится доспавнить) и используют оружие (sapsan)
+
+        local ammo_not_found = {}
+        wpn_ammo_w[obj_section] = repair_check.getAmmoForWeapon(obj_section)
+        for j = 1, #wpn_ammo_w[obj_section] do
+            local ammo_sect = wpn_ammo_w[obj_section][j]
+            if sections_list[ammo_sect] then
+                ammo_keep[ammo_sect] = ammo_max
+                ammo_not_found[ammo_sect] = true -- чтобы избежать дубликатов
+            end
+        end
+        for ammo_sect, _ in pairs(ammo_not_found) do
+            local box_size = getIniValueU32Simple(ammo_sect, "box_size")
+            local new_ammo = alife():create_ammo(ammo_sect, npc.position, npc.m_level_vertex_id, npc.m_game_vertex_id,
+                npc.id, box_size)
+            table_insert(items[npc.id], { id = new_ammo.id, name = new_ammo:name() })
+        end
+        -- проверяем на "родные" стволы для коммьюнити
+        -- а пофиг - хороший ствол важнее понтов (sapsan)
+        
+        obj_t["prm"] = prm
+    end
+    if #items_t >= 2 then -- лишние стволы - в список на продажу
+        table_sort(items_t, function(a, b) return a["prm"] > b["prm"] end)
+        for i = i_list["wpn"]["max"] + 1, #items_t do
+            table_insert(sell_list, items_t[i])
+        end
+    end
+    i_list["wpn"] = nil -- оружейную таблицу больше не надо
+
+    items_t = i_list["grenade_launcher"]["items"]
+    for i = 1, #items_t do
+        local obj_t = items_t[i]
+        obj_section = obj_t["section"]
+
+        -- есть ли патроны ?
+        -- а пофиг - пускай в офлайне их достают (если получится доспавнить) и используют оружие (sapsan)
+
+        local ammo_not_found = {}
+        wpn_ammo_w[obj_section] = repair_check.getAmmoForWeapon(obj_section)
+        for j = 1, #wpn_ammo_w[obj_section] do
+            local ammo_sect = wpn_ammo_w[obj_section][j]
+            if sections_list[ammo_sect] then
+                ammo_keep[ammo_sect] = ammo_max
+                ammo_not_found[ammo_sect] = true -- чтобы избежать дубликатов
+            end
+        end
+        for ammo_sect, _ in pairs(ammo_not_found) do
+            local box_size = getIniValueU32Simple(ammo_sect, "box_size")
+            local new_ammo = alife():create_ammo(ammo_sect, npc.position, npc.m_level_vertex_id, npc.m_game_vertex_id,
+                npc.id, box_size)
+            table_insert(items[npc.id], { id = new_ammo.id, name = new_ammo:name() })
+        end
+    end
+    if #items_t >= 2 then -- лишние стволы - в список на продажу
+        table_sort(items_t, function(a, b) return a["value"] > b["value"] end)
+        for i = i_list["grenade_launcher"]["max"] + 1, #items_t do
+            table_insert(sell_list, items_t[i])
+        end
+    end
+    i_list["grenade_launcher"] = nil -- оружейную таблицу больше не надо
+
+    local item_cnt
+    items_t = i_list["ammo"]["items"] -- ненужные патроны - в продажу
+    for i = 1, #items_t do
+        obj_t = items_t[i]
+        item_cnt = ammo_keep[obj_t["section"]]
+        if item_cnt then
+            item_cnt = item_cnt - 1
+            if item_cnt < 1 then
+                item_cnt = nil
+            end
+            ammo_keep[obj_t["section"]] = item_cnt
+        else
+            table_insert(sell_list, obj_t)
+        end
+    end
+    i_list["ammo"] = nil -- таблицу с патронами больше не надо
+
+    for k, v in pairs(i_list) do -- смотрим, что еще лишнее
+        items_t = v["items"]
+        if #items_t >= 2 then
+            table_sort(items_t, function(a, b) return a["value"] > b["value"] end)
+            for i = v["max"] + 1, #items_t do
+                table_insert(sell_list, items_t[i])
+            end
+        end
+    end
+
+    local trade_via_news = true
+    local money = 0
+    for i = 1, #sell_list do
+        obj_t = sell_list[i]
+        obj = obj_t["obj"]
+        if not (always_keep_item[obj_t["section"]] or protected_items.doNotTouchAnything(obj)) then
+            obj_value = obj_t["value"]
+            if obj_value > sell_limit then -- что-нибудь выставим на продажу через новости
+                if trade_via_news then     -- но только что-нибудь одно
+                    news_main.on_offline_trade(npc, obj)
+                    trade_via_news = false
+                end
+            else
+                obj_list[obj_t["key"]] = false
+                money = money + math_floor(obj_value * (0.3 + math_random() / 3))
+                sim:release(obj, true)
+            end
+        end
+    end
+    items_t = {} -- чистим таблицу шмота непися от мусора
+    for k, v in pairs(obj_list) do
+        if v then
+            table_insert(items_t, v)
+        end
+    end
+    items[npc.id] = items_t
+
+    if (money > 0) then
+        npc.money = npc.money + money
+    end
+end
+
+-- Строим таблицы, если надо.
+-- В них - макс. скорость, сила атаки, дистанция атаки.
+-- Не забываем про иммунитеты.
+-- Поучаем immunities_sect
+-- В immunities_sect читаем fire_wound_immunity. Все повреждения множим на него.
+function get_monster_params(obj)
+    local sect = obj:section_name()
+    if (obj and IsMonster(obj, obj:clsid())) or (obj and obj.community and string.find(obj:community(), "zombied")) then
+        if (monster_params and monster_params[sect]) then
+            return monster_params[sect]
+        else
+            local speed    = getIniValueFloatSimple(sect, "MaxSpeed", 5)
+            local dist     = getIniValueFloatSimple(sect, "MaxAttackDist", 3)
+            local imm_sect = getIniValueStringSimple(sect, "immunities_sect", "")
+            local immunity = getIniValueFloatSimple(imm_sect, "fire_wound_immunity", 1)
+            local att_sect = getIniValueStringSimple(sect, "attack_params", "")
+            local attack   = 0
+            if (iniSectionExistSimple(att_sect)) then
+                local result, id, value = nil, nil, nil
+                local max_attack = 0
+                for a = 0, iniLinesCountSimple(att_sect) - 1 do
+                    result, id, value = getIniLineSimple(att_sect, a, "", "")
+                    if id ~= nil and trim(id) ~= "" and trim(id) ~= nil and value ~= nil then
+                        local m_value = Parse_StrToTbl(value, ",")
+                        if (m_value and #m_value > 2) then
+                            local v = tonumber(m_value[2])
+                            if (v and v > max_attack) then
+                                max_attack = v
+                            end
+                        end
+                    end
+                end
+                attack = max_attack
+            end
+            monster_params[sect] = { speed = speed, dist = dist, immunity = immunity, attack = attack }
+            return monster_params[sect]
+        end
+    else
+        return nil
+    end
+end
+
+function sobj_is_far(obj, distance)
+    local result = true
+    if (db.actor and obj and distance and obj.position and db.actor.position) then
+        -- на одном ли уровне?
+        if obj.m_game_vertex_id and game_graph():valid_vertex_id(obj.m_game_vertex_id) then
+            local map = alife():level_name(game_graph():vertex(obj.m_game_vertex_id):level_id())
+            if (map and level.name() == map) then
+                -- Достаточно ли далеко?
+                if (obj.position:distance_to(db.actor:position()) < distance) then
+                    result = false
+                end
+            end
+        end
+    end
+    return result
+end
+
+function box_is_protected(v)
+    local result = v and
+        (protected.ids[v.id] or protected.story_ids[v.m_story_id] or protected.names[v:name()] or protected.sections[v:section_name()])
+    return result
+end
+
+function npc_smart_is_peaceful(sobj)
+    local result = false
+    if sobj and #smart_filters > 0 then
+        if sobj.smart_terrain_id then
+            local smrt_tr_id = sobj:smart_terrain_id()
+            if smrt_tr_id and smrt_tr_id ~= 65535 then
+                local sm = alife():object(smrt_tr_id)
+                if sm and sm.name then
+                    local sn = sm:name()
+                    if sn and smart_filters[sn] then
+                        for ks, vs in pairs(smart_filters) do
+                            if vs == sn then
+                                -- Ага, он у нас мирный.
+
+                                result = false
+
+                                break
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return result
+end
+
+function on_death(npc_id)
+    smart_terrain.on_death(npc_id)
+end
+
+function get_flags(npc_id)
+    local flags = 0
+    local obj = alife():object(npc_id)
+    if obj then
+        if IsMonster(obj, obj:clsid()) or IsStalker(obj, obj:clsid()) then
+            local char_ini = xr_logic.get_customdata_or_ini_file(obj, "<customdata>")
+            if char_ini:section_exist("logic") then
+                local from = ""
+                local items = ""
+                if char_ini:line_exist("logic", "on_hit") then
+                    flags = 1
+                end
+                if char_ini:line_exist("logic", "on_death") then
+                    flags = flags + 2
+                end
+            end
+        end
+    end
+    return flags
+end
+
+function is_valuable(item)
+    local result = false
+    if item and not (IsMonster(item, item:clsid()) or IsStalker(item, item:clsid()))
+        and not (protected_items.doNotTouchItemEquipment(item) or always_keep_item[item:section_name()]) then
+
+        local cost = get_item_cost(item)
+        if IAmAWeapon[item:clsid()] and cost >= 1000 then
+            result = true
+        elseif cost >= 800 then
+            result = true
+        end
+    end
+    return result
+end
+
+local tt --time target
+local last_id = math.random(1, 65534)
+
+function generate_npc() -- Вызываемая ф-ция. Если истина - выполняется тело цикла
+    local obj
+    if not tt then
+        tt = time_global() + 15 * 60 * 1000
+    end
+    if tt > time_global() then return end
+    while not check_random_npc(obj) do
+        obj = alife():object(last_id)
+        if last_id == 65534 then last_id = 0 end
+        last_id = last_id + 1
+    end
+    local glg = xr_gulag.get_npc_gulag(obj)
+    if glg and not glg:can_obj_begin_job(obj.id) then
+        death_npc_by_anomaly(obj)
+    end
+    tt = time_global() + 15 * 60 * 1000
+end
+
+function check_random_npc(obj)
+    local maps = {
+        ["l01_escape"] = true,
+        ["l02_garbage"] = true,
+        ["l03_agroprom"] = true,
+        ["l04_darkvalley"] = true,
+        ["l06_rostok"] = true,
+        ["l07_military"] = true,
+        ["l08_yantar"] = true,
+        ["l10_radar"] = true,
+        ["l11_pripyat"] = true
+    }
+    if obj and maps[obj.level_name] and IsStalker(obj, obj:clsid()) and obj:alive() and obj:community() ~= "military" and obj:community() ~= "monolith" and not ogse.is_quest_npc(obj) then
+        return true
+    end
+end
+
+function death_npc_by_anomaly(npc)
+    for i, v in pairs(se_zones.anoms) do
+        if (npc.position:distance_to(v.position) < 7) then
+            if npc:rank() <= 700 then
+                if math.random() < 0.2 then
+                    set_npc_health(npc, -1)
+                    return
+                end
+            elseif npc:rank() > 700 then
+                if math.random() < 0.1 then
+                    set_npc_health(npc, -1)
+                    return
+                end
+            end
+        end
+    end
+end

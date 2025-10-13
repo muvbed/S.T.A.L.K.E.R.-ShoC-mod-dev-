@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="helmet_name">
+        <text>Шлем/маска</text>
+    </string>
+    <string id="helmet_descr">
+        <text>Шлем/маска, входящая в комплект с костюмом.</text>
+    </string>
+    
+    <string id="pda_bunker_name">
+        <text>Старый КПК</text>
+    </string>
+    <string id="pda_bunker_descr">
+        <text>Очень старый КПК, обнаруженный у скелета возле рубильника Выжигателя. Наивно было бы надеяться, что он работает, но на оборотной стороне можно едва рассмотреть выцарапанные цифры: 2011533/342089. Серийный номер?</text>
+    </string>
+    
+    <string id="sigaret_name">
+        <text>Сигареты</text>
+    </string>
+    <string id="enc_equipment_sigaret">
+        <text>Вроде обычные сигареты, но из чего они состоят, можно судить по тому, какие имена дают им сталкеры: "Сказки Венского леса", "Бабушкин матрас", "Уголёк".</text>
+    </string>
+    
+	<string id="zapiska">
+        <text>Записка</text>
+    </string>
+    <string id="zapiska_s">
+        <text>Записка</text>
+    </string>
+    <string id="zapiska_l">
+        <text>Клочок бумаги, на котором написано: "".</text>
+    </string>
+    
+    <string id="hand_radio1">
+        <text>Сломанная рация</text>
+    </string>
+    <string id="enc_equipment_devic_hand_radio1">
+        <text>Какой-то мастер-ломастер пытался сделать из армейской рации FM-радиоприёмник. Но, видимо, у него ничего не получилось.</text>
+    </string>
+    
+    <string id="cit_doctors_key_short_desc">
+        <text>Ключ Доктора</text>
+    </string>
+    <string id="cit_doctors_key_desc">
+        <text>Ключ Доктора от тайника в Припяти.</text>
+    </string>
+    
+	<string id="guitar">
+		<text>Гитара</text>
+	</string>
+	<string id="enc_equipment_food_guitar1">
+    	<text>Обычная шестиструнная гитара. После походов в небезопасные места Зоны сталкеры любят вечерком посидеть у костра и побренчать на гитаре - это успокаивает и расслабляет.</text>
+	</string>
+	
+	<string id="harmonica">
+		<text>Губная гармошка</text>
+	</string>
+	<string id="enc_equipment_food_harmonica1">
+    	<text>В Зоне, где каждый лишний килограмм в рюкзаке может стоить жизни, губная гармошка весьма популярна у любителей живой музыки.</text>
+	</string>
+	
+    <string id="item_case_esc_name">
+		<text>Документы с блокпоста</text>
+	</string>
+	<string id="item_case_esc_desc">
+		<text>Кейс с документами. Сделан из огнеупорного материала.</text>
+	</string>
+	
+    <string id="item_decoder_name">
+		<text>Декодер</text>
+	</string>
+	<string id="item_decoder_desc">
+		<text>Нечто вроде мощной электронной отмычки. Похоже, что она создавалась с целью взломать какой-то специфический электронный замок. Как ни странно, конструкция не подразумевает универсальности - оно создавалось для конкретного замка и не способно взламывать какие-либо другие коды.</text>
+	</string>
+
+    <string id="item_detector_yantar_name">
+		<text>Сенсор ПП-4а</text>
+	</string>
+	<string id="item_detector_yantar_desc">
+		<text>Устройство для замеров пси-излучения.</text>
+	</string>
+
+    <string id="item_doc_x16_name">
+		<text>Документы из лаборатории Х-16</text>
+	</string>
+	<string id="item_doc_x16_desc">
+		<text>Полиэтиленовый файл с документами. Без учёной степени по биологии сложно что-то в них понять.</text>
+	</string>
+
+	<string id="item_doc_x18p1_name">
+		<text>Документы из Х-18 часть 1</text>
+	</string>
+	<string id="item_doc_x18p2_name">
+		<text>Документы из Х-18 часть 2</text>
+	</string>
+	<string id="item_doc_x18p3_name">
+		<text>Документы из Х-18 часть 3</text>
+	</string>
+	<string id="item_doc_x18p4_name">
+		<text>Документы из Х-18</text>
+	</string>
+	<string id="item_doc_x18p5_name">
+		<text>Документы из Х-18 часть 5</text>
+	</string>
+    <string id="item_doc_x18_desc">
+		<text>Толстая стопка научных бумаг. Сплошные термины, формулы и диаграммы.</text>
+	</string>
+	
+    <string id="item_docs_hiden_pri_name">
+		<text>Документы из Припяти</text>
+	</string>
+	<string id="item_docs_hiden_pri_desc">
+		<text>Потёртая рукопись в кожаной обложке. Написана Стрелком. Судя по заглавиям, в ней раскрываются некоторые загадки Зоны.</text>
+	</string>
+
+    <string id="item_dynamite_esc_name">
+		<text>Ящик с динамитом</text>
+	</string>
+	<string id="item_dynamite_esc_desc">
+		<text>Тяжёлый деревянный ящик с надписями "Взрывоопасно" на нескольких языках.</text>
+	</string>
+
+    <string id="item_flash_crazy_mil_name">
+		<text>Флешка сумасшедшего</text>
+	</string>
+	<string id="item_flash_crazy_mil_desc">
+		<text>Флеш-диск - удобное устройство для переноса информации.</text>
+	</string>
+
+    <string id="item_flash_eco_rost_name">
+		<text>Флешка профессора Круглова</text>
+	</string>
+	<string id="item_flash_eco_rost_desc">
+		<text>Флеш-диск - удобное устройство для переноса информации.</text>
+	</string>
+
+    <string id="item_flash_esc_name">
+		<text>Флешка пленного</text>
+	</string>
+	<string id="item_flash_esc_desc">
+		<text>Флеш-диск - удобное устройство для переноса информации.</text>
+	</string>
+
+    <string id="item_flash_gslinger_agro_name">
+		<text>Флешка Стрелка</text>
+	</string>
+	<string id="item_flash_gslinger_agro_desc">
+		<text>Флеш-диск - удобное устройство для переноса информации.</text>
+	</string>
+
+    <string id="item_key_x18_name">
+		<text>Ключ Борова</text>
+	</string>
+	<string id="item_key_x18_desc">
+		<text>Электронный ключ от подземной лаборатории Х-18.</text>
+	</string>
+
+	<string id="item_krot_flash">
+		<text>Флешка Крота</text>
+	</string>
+	
+    <string id="item_PDA_lucky_name">
+		<text>КПК Счастливчика</text>
+	</string>
+	<string id="item_PDA_lucky_desc">
+		<text>Карманный персональный компьютер. Незаменимое устройство в Зоне.</text>
+	</string>
+
+    <string id="item_PDA_tiran_name">
+		<text>КПК Тирана</text>
+	</string>
+	<string id="item_PDA_tiran_desc">
+		<text>Карманный персональный компьютер. Незаменимое устройство в Зоне.</text>
+	</string>
+
+    <string id="item_quest_case_02_name">
+		<text>Документы с Агропрома</text>
+	</string>
+	<string id="item_quest_case_02_desc">
+		<text>Кейс с документами. Сделан из огнеупорного материала.</text>
+	</string>
+
+    <string id="yan_bad_psy_helmet_name">
+		<text>Ненастроенный пси-шлем</text>
+	</string>
+	<string id="yan_bad_psy_helmet_desc">
+		<text>Ненастроенный прототип, разработанный учёными для защиты от пси-излучения.</text>
+	</string>
+
+    <string id="yan_good_psy_helmet_name">
+		<text>Настроенный пси-шлем</text>
+	</string>
+	<string id="yan_good_psy_helmet_desc">
+		<text>Настроенный прототип, разработанный учёными для защиты от пси-излучения.</text>
+	</string>
+</string_table>

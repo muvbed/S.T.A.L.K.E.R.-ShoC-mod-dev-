@@ -1,0 +1,150 @@
+-----------------------------------------------------
+-- Смена динамического худа по бинду
+-- Автор Muvbed, материалы взяты из MUI, OGSR
+-- 09/12/2024
+-----------------------------------------------------
+
+function attach(sm)
+	sm:subscribe({ signal = "on_spawn", fun = this.init })
+	sm:subscribe({ signal = "on_update", fun = this.update })
+	sm:subscribe({ signal = "on_actor_before_use", fun = this.before_use })
+end
+
+-- Эффекты при снятии/надевании шлема
+function use_effect(flag)
+	db.actor:hide_weapon()
+	
+	level.add_pp_effector ("black_unfade.ppe", 7031, false)
+	level.add_cam_effector("camera_effects\\item_use_slow.anm", 7032, false, "")
+
+	local outfit = db.actor:get_current_outfit()
+	local helmet_prev = db.actor:item_in_slot(10)
+	
+	if helmet_prev then
+		ogse.remove_inv_items_by_section(helmet_prev:section(), 1)
+	end
+	
+	local note = xr_sound.get_safe_sound_object([[actor\gasmask_off]])
+	local note1 = xr_sound.get_safe_sound_object([[actor\gasmask_on]])
+
+	if flag then
+		local helmet = get_string( outfit:section(), "helmet_section" )
+		
+		ogse.spawn_item_in_inv(helmet)
+		cmd("r2_mask_control 1")
+		cmd("r2_visor_refl_control 1")
+		cmd("r2_visor_refl_intensity 0.6")
+		cmd("r2_rain_drops_control 1")
+		note:play(db.actor, 0, sound_object.s2d)
+		
+		amk.save_variable("hud_enabled", true)
+	else	
+		cmd("r2_mask_control 0")
+		cmd("r2_visor_refl_control 0")
+		cmd("r2_visor_refl_intensity 0")
+		cmd("r2_rain_drops_control 0")
+		note1:play(db.actor, 0, sound_object.s2d)
+		
+		amk.save_variable("hud_enabled", false)
+	end
+	
+	dsh.timeout(3000, function() 
+		db.actor:restore_weapon()
+	end)
+end
+
+-- Снять/надеть шлем по бинду 
+function on_key()
+	local outfit = db.actor:get_current_outfit()
+	local helmet_section = outfit and get_string(outfit:section(), "helmet_section")
+	
+	if helmet_section then
+		use_effect(not amk.load_variable("hud_enabled", false))
+	end
+end
+
+-- Начальные проверки 
+function init()
+	local outfit = db.actor:get_current_outfit()
+	local helmet = db.actor:item_in_slot(10)
+	local remove_flag = false
+	
+	if not outfit then
+		if helmet then
+			ogse.remove_inv_items_by_section(helmet:section(), 1)
+		end
+
+		remove_flag = true
+	elseif not helmet then
+		remove_flag = true
+	end
+	
+	if remove_flag then
+		cmd("r2_mask_control 0")
+		cmd("r2_visor_refl_control 0")
+		cmd("r2_visor_refl_intensity 0")
+		cmd("r2_rain_drops_control 0")
+		
+		amk.save_variable("hud_enabled", false)
+	end
+end
+
+-- Проверка на наличие экипированного шлема
+function update()
+	ogse_signals.get_mgr():reschedule( 300 )
+
+	local outfit = db.actor:get_current_outfit()
+	local helmet = db.actor:item_in_slot(10)
+	local hud_enabled = amk.load_variable("hud_enabled", false)
+	
+	if outfit and helmet and not hud_enabled then
+		use_effect(true)
+	elseif not (outfit and helmet) and hud_enabled then
+		use_effect(false)
+	end
+end
+
+-- Проверка на возможность использования предмета
+function check_item_abble(section)
+	local helmet = db.actor:item_in_slot(10)
+	
+	if 
+	  helmet and (
+		section == "bread" or  
+		section == "kolbasa" or 
+		section == "conserva" or 
+		section == "vodka" or 
+		section == "energy_drink"
+	  )
+	then
+		local wnd = level.main_input_receiver()
+		if wnd then
+			level.start_stop_menu(wnd, true)
+		end
+		ogse.send_tip(game.translate_string("tip_eat_disable"), nil, 0, 3, "note")
+		
+		return false
+	else
+		return true
+	end
+end
+
+-- Запрет на использование предмета
+function before_use(item)
+	if not check_item_abble(item:section()) then
+		item:zero_effects()
+	
+		local item_cond = item:condition()
+		local new_sobj = alife():create( 
+							item:section(), 
+							db.actor:position(), 
+							db.actor:level_vertex_id(), 
+							db.actor:game_vertex_id(), 
+							db.actor:id() 
+						 )
+		
+		level.client_spawn_manager():add( new_sobj.id, -1, function(id, obj)
+			obj:set_condition( item_cond )
+		end )
+	end
+end

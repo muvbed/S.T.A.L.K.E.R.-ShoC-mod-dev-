@@ -1,0 +1,52 @@
+--------
+--
+--------
+function unload1()
+    local sim = alife()
+    local actor = db.actor
+    local lvid = actor:level_vertex_id()
+    local gvid = actor:game_vertex_id()
+    local pos = actor:position()
+    pos.x = pos.x + 10
+    pos.y = pos.y + 10
+    pos.z = pos.z + 10
+    local slot2_id = 0
+    local cnt = 0
+    local ids = {}
+
+    local obj = actor:item_in_slot(2)
+    if obj then
+        slot2_id = obj:id()
+    end
+
+    local box = level_object_by_sid(574)
+    local i, cid, section, launcher
+    local n = actor:object_count()
+    for i = 0, n - 1 do
+        obj = actor:object(i)
+        cid = obj:clsid()
+        if cid == clsid.wpn_ak74_s or cid == clsid.wpn_groza_s then
+            section = obj:section()
+            launcher = getIniValueU32Simple(section, "grenade_launcher_status")
+            if launcher ~= 0 then
+                local id = obj:id()
+                local se_obj = sim:object(id)
+
+                if (launcher == 1) or (launcher == 2 and bit_and(se_obj.addon_flags, 2) == 2) then
+                    if se_obj.gl_mode then
+                        if se_obj.ammo_elapsed > 0 then
+                            obj:unload_magazine()
+                        end
+                    else
+                        if box then
+                            actor:transfer_item(obj, box)
+                        else
+                            actor:drop_item(obj)
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return true
+end

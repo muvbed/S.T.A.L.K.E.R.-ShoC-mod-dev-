@@ -1,0 +1,553 @@
+--[[------------------------------------------------------------------------------------------------------------------
+автор: Диденко Руслан (Stohe)
+
+порядок вызова методов биндера:
+reload
+reinit
+load
+net_spawn
+--------------------------------------------------------------------------------------------------------------------]]
+
+class "motivator_binder" (object_binder)
+
+function motivator_binder:__init (obj) 
+	super(obj)
+	self.loaded = false
+    self.first_update = false
+	
+	self.am = ogse_signals.get_mgr()
+	self.am:call( "on_npc_init", obj, self )
+end
+
+function motivator_binder:__finalize()
+end
+
+function motivator_binder:extrapolate_callback(cur_pt)	
+	if self.st.active_section then
+		xr_logic.issue_event(self.object, self.st[self.st.active_scheme], "extrapolate_callback")
+		self.st.move_mgr:extrapolate_callback(self.object)
+	end
+
+	if patrol(self.object:patrol()):flags(cur_pt):get() == 0 then
+		return true
+	end
+	return false
+end
+
+function motivator_binder:reinit()	
+    object_binder.reinit(self)
+
+	local id = self.object:id()
+    db.storage[id] = {  followers = {} }
+    self.st = db.storage[id]
+
+	if self.object:alive() then
+		self.st.state_mgr = state_mgr.bind_manager(self.object) -- Создание менеджера контроля положений тела
+	
+		self.st.move_mgr = move_mgr.move_mgr(self.object)
+		self.st.move_mgr:initialize()
+	end
+end
+
+function motivator_binder:net_spawn(sobject)
+	if not object_binder.net_spawn(self, sobject) then return false end
+		
+	db.add_obj(self.object)
+
+	if not self.loaded then --Загрузка историй для лагеря и не только. Там же выдаются инфопорции из кастомдаты. Делается походу при первом спавне каждого НПС. Нужно это делать для всех, и мертвых, и живых.
+		local char_ini = self.object:spawn_ini() or dsh.cached_ini_file("scripts\\dummy.ltx")
+		xr_info.loadInfo(self.object, char_ini)
+	end
+
+	self.object:set_callback(callback.use_object, self.use_callback, self)
+	
+	self:subscribe_updaters()
+
+	if not self.object:alive() then
+		if rx_ai then rx_ai.corpse_net_spawn(self.object,self.loaded) end
+
+		local s_obj = alife():object(self.object:id())
+		if s_obj.offline_dead == 0 then
+			if s_obj.treasure_processed then --Вечные трупы будут удаляться только после того как их обыщет актор
+				s_obj.offline_dead = game.time()+(1*24*60*60*1000)
+			end
+		elseif s_obj.offline_dead == 1 then
+			self.object:iterate_inventory(death_manager.keep_item)
+			s_obj.offline_dead = game.time()+(1*24*60*60*1000)
+		elseif s_obj.offline_dead > 1 and s_obj.offline_dead <= game.time() then
+			if
+				not death_manager.offline_dead_quest_check(self.object)
+				and self.object:position():distance_to( db.actor:position() ) > ( alife():switch_distance() / 2 ) -- Удаляем только вдалеке от актора
+			then
+				log3("--[%s] Released trup: [%s]", script_name(), s_obj:name())
+				alife():release(s_obj, true)
+			end
+		end
+
+		return true
+	end
+
+	self.object:set_patrol_extrapolate_callback(self.extrapolate_callback, self)
+	self.object:set_callback(callback.hit, self.hit_callback, self)
+	self.object:set_callback(callback.death, self.death_callback, self)
+	self.object:set_callback(callback.entity_alive_before_hit, self.before_hit_callback, self)
+	self.object:set_callback(callback.on_item_drop, self.on_item_drop, self)
+	self.object:set_callback(callback.on_item_take, self.on_item_take, self)
+	--if not ogse.is_quest_npc(self.object) then
+    --	self.object:set_callback(callback.sound, self.hear_callback, self)
+    --end
+	self.object:set_enemy_callback( self.enemy_callback, self )
+	--
+	
+	local manager = self.object:motivation_action_manager()
+
+	manager:remove_evaluator( stalker_ids.property_anomaly )
+	manager:add_evaluator(stalker_ids.property_anomaly, property_evaluator_const(false))
+	--
+    -- отключить движковую схему подбирания оружия
+	manager:remove_evaluator( stalker_ids.property_items )
+	manager:add_evaluator(
+		stalker_ids.property_items, property_evaluator_const(false)
+	)
+  --
+
+	if ogsm_hideout then
+	    manager:add_evaluator(ogsm_hideout.property_blowout, property_evaluator_const(false))
+	    manager:add_evaluator(ogsm_hideout.property_hideout_lost, property_evaluator_const(false))
+	    manager:add_evaluator(ogsm_hideout.property_inhide, property_evaluator_const(false))
+	end
+  	--
+	if not self.loaded then -- Нужно для того, чтоб логика сохранялась/загружалась при перебросе непися в оффлайн/онлайн. В этом случае метод load() не вызывается. В том числе юзается при телепортации неписей с локи на локу. Они ведь в этом случае просто выйдут в онлайн, без load()
+		self.loaded = xr_logic.load_logic_online(self.object)
+		local st = self.st
+		st.loaded_ini_filename = st.ini_filename
+		st.loaded_section_logic = st.section_logic
+		st.loaded_active_section = st.active_section
+		st.loaded_gulag_name = st.gulag_name
+	end
+	--
+    self.am:call( "on_npc_before_spawn", self.object, self ) -- тут происходит загрузка озвучки
+
+	xr_gulag.setup_gulag_and_logic_on_spawn( self.object, self.st, sobject, modules.stype_stalker, self.loaded )
+
+	if rx_ai then rx_ai.npc_net_spawn(self.object) end
+
+	self.am:call( "on_npc_spawn", self.object, self )
+
+	return true
+end
+
+function motivator_binder:subscribe_updaters()
+  local s_name = "on_npc_update." .. self.object:id()
+  if self.object:alive() then
+    self.updaters = {
+      {
+        [ "signal" ] = s_name,
+        [ "self"   ] = self,
+        [ "fun"    ] = self.update_tip_text,
+        [ "queued" ] = true,
+      },
+    }
+  else
+    self.updaters = {}
+  end
+  for _, s in ipairs( self.updaters ) do
+    self.am:subscribe( s )
+  end
+end
+
+function motivator_binder:unsubscribe_updaters()
+  if not self.updaters then return end
+
+  for k, s in pairs( self.updaters ) do
+    self.am:unsubscribe( s )
+	self.updaters[k] = nil
+  end
+  self.updaters = nil
+end
+
+function motivator_binder:net_destroy()
+	if rx_ai then rx_ai.npc_net_destroy(self.object) end
+
+	xr_logic.save_logic_online(self.object)
+
+	local st = db.storage[self.object:id()]
+	if st.active_scheme then
+		xr_logic.issue_event(self.object, st[st.active_scheme], "net_destroy", self.object)
+	end
+
+	db.del_obj(self.object)
+
+	db.storage[self.object:id()] = nil
+
+	self:clear_callbacks()
+	self.object:set_callback(callback.use_object, nil)
+
+	self.am:call( "on_npc_net_destroy", self.object, self )
+	self:unsubscribe_updaters()
+	self.am:cleanup_signal_subs( "on_npc_update." .. self.object:id() )
+
+	object_binder.net_destroy(self)
+	
+	local id   = self.object:id()
+	local sobj = alife():object( id )
+	if sobj then
+		alife():remove_in_restrictions( sobj )
+	end
+end
+
+function motivator_binder:clear_callbacks()
+	self.object:set_patrol_extrapolate_callback(nil)
+	self.object:set_callback(callback.hit, nil)
+	self.object:set_callback(callback.death, nil)
+	self.object:set_callback(callback.on_item_drop, nil)
+	self.object:set_callback(callback.on_item_take, nil)
+	self.object:set_callback(callback.entity_alive_before_hit, nil)
+	--self.object:set_callback(callback.sound, nil)
+	self.object:set_enemy_callback()
+end
+
+function motivator_binder:before_hit_callback(hit_data)
+	if hit_data.who_id then
+		local obj = hit_data.who
+		if obj then -- если есть виновник хита
+			if -- Проверяем условия игнорирования урона от дружественного огня
+				obj:is_stalker()
+				and ( hit_data.who_id ~= self.object:id() or hit_data.hit_type == hit.explosion ) -- Попробую обработать ситуацию, когда тупой НПС себе гранату под ноги швырнул.
+				and (
+					( not self.object:is_relation_enemy( obj ) and not obj:is_relation_enemy( self.object ) )
+				)
+			then
+				hit_data.ignore_hit = true
+				return -- хит проигнорировали - дальше делать нечего.
+			end
+			--
+			if hit_data.weapon_id then
+				local wpn = level.object_by_id(hit_data.weapon_id)
+				if hit_data.hit_type == hit.fire_wound and wpn and wpn:is_weapon_magazined() then
+					-- Увеличим урон от оружия при стрельбе по нпс
+					local koef = get_float(wpn:section(), "multiply_hit_from_actor", 1)
+					hit_data.power = hit_data.power * koef
+				end
+			end
+		end
+	end
+	--
+	if not self.last_hit_data then
+		self.last_hit_data = {}
+	end
+	dsh.copy_hit_data( hit_data, self.last_hit_data )
+end
+
+function motivator_binder:hit_callback(obj, amount, local_direction, who, bone_index)
+	local chk_dist = self.object:position():distance_to(who:position())
+	local range = self.object:range()
+	if chk_dist > range then
+		self.object:set_range(chk_dist*1.1)
+	end
+	self.object:make_object_visible_somewhen(who)
+	if amount == 0 or bone_index == 0 then return end --Далее не учитываем выстрелы в воздух. Причина:
+--[=[
+	https://github.com/dsh2dsh/op2ogse/commit/cca8d619581116be44e48a54dfab8039b39a96db
+	Я делал все это в предположении, что перед любым hit_callback
+	вызывается before_hit_callback, а если был вызван hit_callback, значит
+	100% перед ним был вызван before_hit. Всегда. Но это не так. Если было
+	указано игнорирование хита, как в случае дружественного огня, то
+	hit_callback вызван не будет. Если движок нанесет хит для привлечения
+	внимания, с power == 0, то before_hit не будет вызван.
+--]=]
+
+	-- FIXME: коллбеки неплохо было бы регистрировать в общем storage, а не посхемно...
+	-- просто всегда ставить их при включении схемы и снимать при отключении.
+	if self.st.active_section then
+		xr_logic.issue_event(self.object, self.st[self.st.active_scheme], "hit_callback", self.object, amount, local_direction, who, bone_index)
+	end
+
+	if self.st.combat_ignore then
+		xr_logic.issue_event(self.object, self.st.combat_ignore, "hit_callback", self.object, amount, local_direction, who, bone_index)
+	end
+
+	if self.st.combat then
+		xr_logic.issue_event(self.object, self.st.combat, "hit_callback", self.object, amount, local_direction, who, bone_index)
+	end
+
+	if self.st.hit then
+		xr_logic.issue_event(self.object, self.st.hit, "hit_callback", self.object, amount, local_direction, who, bone_index)
+	end
+
+	sr_territory.issue_event(self.object, "hit_callback", self.object, amount, local_direction, who, bone_index)
+
+	xr_wounded.hit_callback(self.object:id())
+	
+	if rx_ai then rx_ai.npc_hit(obj,amount,local_direction,who,bone_index,self.object) end
+	if mon_ai then mon_ai.npc_hit(obj,amount,local_direction,who,bone_index,self.object) end
+	
+	self.am:call( "on_npc_hit", self.object, amount, local_direction, who, bone_index )
+end
+
+function motivator_binder:death_callback(victim, who)
+	self:unsubscribe_updaters()
+
+	self.object:set_tip_text_default()
+
+	if rx_ai then rx_ai.npc_death(self.object,who) end
+
+	if who:is_actor() then
+		if self.object:character_community() == "freedom"
+		  and string.find(who:character_community(), "freedom") then
+			db.actor:set_character_community("actor", 0, 0)
+			relation_registry.set_community_goodwill("freedom", db.actor:id(), 0)
+			relation_registry.set_community_goodwill("prefreedom", db.actor:id(), 0)
+		end
+		if self.object:character_community() == "dolg"
+		  and string.find(who:character_community(), "dolg") then
+			db.actor:set_character_community("actor", 0, 0)
+			relation_registry.set_community_goodwill("dolg", db.actor:id(), 0)
+			relation_registry.set_community_goodwill("predolg", db.actor:id(), 0)
+		end
+		
+		escape_tasks.check_murder(victim)
+		mil_tasks.check_murder(victim)
+	end
+	
+	if self.st.death then
+		xr_logic.issue_event(self.object, self.st.death, "death_callback", self.object, who)
+	end
+
+	if self.st.active_section then
+		xr_logic.issue_event(self.object, self.st[self.st.active_scheme], "death_callback", self.object, who)
+	end
+
+	sr_territory.issue_event(self.object, "death_callback", self.object, who)
+
+	smart_terrain.on_death( self.object:id() )
+
+	self:clear_callbacks()
+	
+	xr_statistic.addKillCount(who, self.object) -- Добавление опыта за убийство
+	
+	self.st.move_mgr = nil
+	
+	self.am:call("on_npc_death", self.object, who)
+end
+
+function motivator_binder:use_callback(obj, who)
+	if self.object == nil then return end
+
+	if self.object:alive() then
+		xr_use.notify_on_use(self.object, who)
+
+		if self.st.active_section then
+			xr_logic.issue_event(self.object, self.st[self.st.active_scheme], "use_callback", self.object, who)
+		end
+		-- инициализация торговли
+        if who:is_actor() and obj:is_talk_enabled() and obj:is_trade_enabled() then
+            trade_manager.trade_prepare(obj)
+        end
+	elseif self.object:get_nonscript_usable() then
+		self.am:call("on_use_box", self.object, who)
+	end
+	
+	self.am:call("on_npc_use", self.object, who)
+end
+
+function motivator_binder:update(delta)
+	object_binder.update(self, delta)
+
+    if not self.first_update then   
+        self.first_update = true
+		self.am:call( "on_npc_first_update", self.object, delta )
+    end
+
+	if self.object:alive() then
+		if rx_ai then rx_ai.npc_update(self.object,self.st) end
+	end
+	
+	self.am:call( "on_npc_update." .. self.object:id(), self.object, delta )
+end
+
+function motivator_binder:update_tip_text()
+	if self.object:is_talk_enabled() then
+		self.object:set_tip_text("character_use")
+	else
+		self.object:set_tip_text("")
+	end
+end
+
+function motivator_binder:reload(section)
+	object_binder.reload(self, section)
+end
+
+function motivator_binder:net_save_relevant()
+	return true
+end
+
+function motivator_binder:save(packet)
+	xr_logic.pstor_store(self.object, "is_invulnerable", self.object:invulnerable())
+
+	object_binder.save(self, packet)
+
+	xr_logic.save_obj(self.object, packet)
+
+	dialog_manager.save(self.object, packet)
+    trade_manager.save(self.object, packet)
+end
+
+function motivator_binder:load(reader)
+	self.loaded = true
+	object_binder.load(self, reader)
+	if reader:r_eof() then
+		if self.object:alive() then
+			abort("SAVE FILE IS CORRUPT - XR_MOTIV, OBJ: "..tostring(self.object:name()).." ID "..self.object:id().." PRO: "..self.object:profile_name())
+		else
+			log1("ERROR: CORRUPTED QUEST BODY FOUND! "..tostring(self.object:name()).." ID "..self.object:id().." PRO: "..self.object:profile_name())
+			return true
+		end
+	end
+
+	xr_logic.load_obj(self.object, reader)
+
+	self.npc_script_version = alife():object(self.object:id()).script_version
+	dialog_manager.load(self.object, reader, self.npc_script_version)
+
+	local is_invulnerable = xr_logic.pstor_retrieve(self.object, "is_invulnerable", false)
+	self.object:invulnerable(is_invulnerable)
+	
+	trade_manager.load(self.object, reader)
+end
+
+class "timer_drop_weapon" (ogse_qt.quick_timer)
+function timer_drop_weapon:__init(item, parent) super()
+	self.item_id = item:id()
+	self.parent_id = parent:id()
+end
+function timer_drop_weapon:condition()
+	local item = level.object_by_id(self.item_id)
+	local sobj = alife():object( self.item_id )
+	if not item or not sobj then
+		self:stop()
+	elseif not item:parent() or sobj.parent_id == 65535 then
+		return true
+	elseif item:parent():id() ~= self.parent_id or sobj.parent_id ~= self.parent_id then
+		self:stop()
+	end
+	return false
+end
+function timer_drop_weapon:action()
+	local parent = level.object_by_id(self.parent_id)
+	local item = level.object_by_id(self.item_id)
+	if item then
+		death_manager.set_weapon_drop_condition(item, parent)
+	end
+end
+
+function motivator_binder:on_item_drop(obj)
+	if not obj then return end
+	local sobj = alife():object(obj:id())
+	-- if not sobj then return end -- XRKRODIN: Это важно, чтобы правильно обновлять оружейный менежжер при удалении оружия из инвентаря нпс, не раскомментировать!
+
+	if obj:is_weapon() then
+		timer_drop_weapon(obj, obj:parent()):start()
+	end
+
+	if rx_ai then
+		rx_ai.npc_item_drop(self.object,obj)
+	end
+end
+
+function motivator_binder:on_item_take(obj)
+	if not obj then return end
+	local sobj = alife():object(obj:id())
+	if not sobj then return end
+	
+	local sect = obj:section()
+
+    if grenade_ctrl and string.sub(sect, 1, 5) == "fake_" then
+    	local grenade_sect = string.sub(sect, 6, -1)
+
+    	ogse.remove_item_from_inventory(obj, self.object)
+    	ogse.spawn_item_in_inv(grenade_sect, self.object)
+    end
+
+	if obj:is_torch() then
+		local t_obj = get_torch_obj(obj)
+		if t_obj.on then
+			t_obj:enable( false )
+		end
+	end
+
+	if rx_ai then
+		rx_ai.npc_item_take(self.object,obj)
+	end
+
+	self.am:call( "on_npc_item_take", self.object, obj, sobj )
+end
+
+--Функция проверяет, может ли объект вступать в бой с предполагаемым противником (enemy_st).
+--Если вернёт false - объект не будет вступать в бой.
+--Вызывается:
+--Одноименным калбеком из движка (для движковой боёвки)
+--Из xr_danger
+--Из xr_camper.action_patrol:process_danger()
+--Из функции check_sound в мотиваторе
+local enemy_callback_freq = 1000
+function motivator_binder:enemy_callback( obj, enemy_st )
+  local valid, enemy = validate_enemy_object( enemy_st )
+  if not valid then return false end
+
+  local res, ttl, t
+  local cached = self[ "xr_motivator.cached" ]
+  if cached then
+    t = cached[ enemy:id() ]
+	if t then
+      res, ttl = unpack( t )
+    end
+  end
+  if res == nil or ttl < time_global() then
+    --log3("~~[%s] Called add_cache_rec for [%s], [%s]", script_name(), self.object:name(), enemy:name())
+    local result = {}
+    self.am:call( "on_npc_enemy_callback", self.object, enemy, result )
+    res = result[1] ~= false
+    if cached then
+	--
+      if t then
+        t[ 1 ] = res
+        t[ 2 ] = time_global() + enemy_callback_freq
+      else
+        cached[ enemy:id() ] = { res, time_global() + enemy_callback_freq }
+      end
+    else
+      self[ script_name() .. ".cached" ] = {
+        [ enemy:id() ] = { res, time_global() + enemy_callback_freq }
+      }
+    end
+  end
+  return res
+end
+
+function AddToMotivator(npc)
+	if alife() then
+		npc:bind_object(this.motivator_binder(npc))
+	end
+end
+
+-- Эвалюаторы, которые имеют высший приоритет, и, соответственно, перебивают остальные скрипты собой
+function addCommonPrecondition(action)
+	action:add_precondition (world_property(xr_evaluators_id.stohe_meet_base + 1,false))
+	action:add_precondition (world_property(xr_evaluators_id.sidor_wounded_base + 0,  false))
+	action:add_precondition (world_property(xr_evaluators_id.chugai_heli_hunter_base, false))
+	action:add_precondition (world_property(xr_evaluators_id.abuse_base, false))
+
+	if ogsm_hideout then
+		action:add_precondition(world_property(ogsm_hideout.property_blowout, false))
+		action:add_precondition(world_property(ogsm_hideout.property_hideout_lost, false))
+		action:add_precondition(world_property(ogsm_hideout.property_inhide, false))
+	end
+	
+	if rx_ai then rx_ai.addCommonPrecondition(action) end
+	if mon_ai then mon_ai.addCommonPrecondition(action) end
+	
+	if anomaly_evader then
+		action:add_precondition (world_property(1099, false))
+	end
+end

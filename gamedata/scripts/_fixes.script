@@ -1,0 +1,45 @@
+--' Сообщение от группы Долга
+function mildolg_send() 
+	if has_alife_info("mil_dolg_final_task") and not has_alife_info("mil_dolg_dead") then   
+		news_manager.send_tip(db.actor, "mil_mission_complete", nil, "dolg", 4000) 
+		local snd_obj = xr_sound.get_safe_sound_object([[characters_voice\scenario\military\dolg_attack\base\mil_mission_complete]])
+		snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 1.0)
+	end
+end
+
+--' SOS от раненого в ТД
+function dv_msg()  
+	news_manager.send_tip(db.actor, "val_sos_pda", nil, "stalker", 6000) 
+	local snd_obj = xr_sound.get_safe_sound_object([[device\pda\inv_tip]])
+	snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 1.0)
+end
+
+--' Проверка наличия сенсора ПСИ
+function have_skan(first_speaker, second_speaker)
+	return first_speaker:object("kruglov_flash") ~= nil
+end
+
+--' Отдаём сенсор для замеров ПСИ
+function give_skan(first_speaker, second_speaker)
+	dialogs.relocate_item_section(second_speaker, "kruglov_flash", "out")
+end
+
+--' Какая-то награда
+function nagrada(first_speaker, second_speaker)
+	dialogs.relocate_money(second_speaker, 1000, "in")
+end
+
+--' Предупреждение Долга при переходе на Бар
+function dolg_send_msg()
+	news_manager.send_tip(db.actor, "bar_dolg_msg", nil, "dolg", 14000) 
+	local snd_obj = xr_sound.get_safe_sound_object([[characters_voice\scenario\duty\duty_warning2]])
+	snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 1.0)
+end
+ 
+function bar_dolg_msg()
+	local iTimer = time_global() + 3000
+	local function check_timer()
+		return time_global() > iTimer
+	end
+	level.add_call(check_timer, dolg_send_msg)
+end

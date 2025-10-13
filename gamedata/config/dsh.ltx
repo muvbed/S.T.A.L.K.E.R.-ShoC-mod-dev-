@@ -1,0 +1,224 @@
+
+
+#include "dsh\weather.ltx"
+
+; Игнорировать цели из этого списка или принадлежащих смартам из этого
+; списка. В качестве ключей можно использовать community или "monster".
+[dsh.enemy.ignore]
+;Шустрый и бандиты на АТП
+esc_shustryi = esc_fabrika_bandit
+; наемникам на ДТ нужен живой Круглов
+bar_freedom_attack = bar_ecolog_professor
+
+[dsh.enemy.ignore.l04_darkvalley]
+bandit = val_sos_wounded
+; Чтоб не руинилась сцена
+val_escort_nap1 = val_lager_bandits, val_sacrifice, val_watchtower1, val_watchtower2, val_watchtower3, val_watchtower5, val_x18_exit_base
+val_escort_captive = val_lager_bandits, val_sacrifice, val_watchtower1, val_watchtower2, val_watchtower3, val_watchtower5, val_x18_exit_base
+
+[dsh.enemy.ignore.l07_military]
+mil_stalker0012 = mil_freedom
+
+
+; Разрешить/запретить постоянные нападения одних гулагов на другие.
+[dsh.gulag.raid]
+gar_smart_graveyard = false ;Сталкеры на кладбище техники не атакуют обитателей лагеря gar_smart_stalkers_1
+gar_smart_stalkers_1 = false ;Обитатели лагеря за кладбищем техники не нападают на бандитов у перехода на агропром
+val_smart_monster_lair_6 = false ;Монстры не атакуют лагерь сталкеров, это сталкеры должны на них охотиться
+
+; Замена логики уже заспауненых объектов
+[dsh.xr_logic.get_customdata_or_ini_file]
+esc_shustryi = dsh\logic\esc_shustryi.ltx ;Теперь до освобождения Шустрый будет под этой логикой.
+;
+; Рестрикторы шума вентиляторов в X-10
+bun_space_restrictor_sound1 = dsh\logic\l10u_bunker\bun_space_restrictor_sound1.ltx
+bun_space_restrictor_sound1_0000 = dsh\logic\l10u_bunker\bun_space_restrictor_sound1.ltx
+bun_space_restrictor_sound1_0001 = dsh\logic\l10u_bunker\bun_space_restrictor_sound1.ltx
+bun_space_restrictor_sound1_0002 = dsh\logic\l10u_bunker\bun_space_restrictor_sound1.ltx
+bun_space_restrictor_sound1_0003 = dsh\logic\l10u_bunker\bun_space_restrictor_sound1.ltx
+bun_space_restrictor_sound1_0004 = dsh\logic\l10u_bunker\bun_space_restrictor_sound1.ltx
+;
+;*************************************[Кордон]*************************************
+;================================================================
+;================================================================
+; ДН
+[dsh.gulag.override.esc_lager]
+dsh_walking = true
+;================================================================
+[dsh.gulag.override.esc2_st_fabric]
+communities = bandit, stalker, dolg, ecolog
+capacity = 10
+switch_0 = {=is_day}, {=gulag_empty(esc2_most)}, {!gulag_community_pop(esc2_st_fabric:bandit:6)}
+switch_1 = {=gulag_community_pop(esc2_st_fabric:bandit:6) !gulag_empty(esc2_most) !is_day}
+dsh_walking = true
+;================================================================
+[dsh.gulag.override.esc2_most]
+communities = stalker
+capacity = 5
+switch_0 = {!is_day}, {!gulag_population_comed_ge(esc2_most:5)}, {!gulag_community_pop(esc2_st_fabric:bandit:1)}
+switch_1 = {=is_day =gulag_population_comed_ge(esc2_most:5) =gulag_community_pop(esc2_st_fabric:bandit:1)}
+dsh_walking = true
+cond = {+esc_kill_bandits_quest_kill}, {+esc_kill_bandits_quest_done}
+;================================================================
+[dsh.gulag.override.esc_assault]
+cond = {-esc_kill_bandits_quest_kill} ;Смарт Петрухи с компанией закроется после их ухода
+;================================================================
+[dsh.gulag.override.esc_dogs_to_fox]
+cond = {-escape_stalker_dog_die} ;Смарт собак, атакующих Лиса, закроется после их уничтожения
+;================================================================
+; Наемники, атакующие ДН по заданию Фаната
+[dsh.gulag.override.esc_killers]
+cond = {-escape_lager_killers_die}
+;================================================================
+;**********************************************************************************
+;
+;*************************************[Свалка]*************************************
+;================================================================
+[dsh.gulag.override.gar_dram] ;бандиты и Юрик на Свалке
+cond = {-gar_dm_novice_change_st}
+;
+;================================================================
+[dsh.gulag.override.gar_smart_graveyard] ;Сталкеры на кладбище техники, в т.ч. Бес.
+capacity = 10 ;7
+communities = stalker
+cond = {+gar_hellcar_dialog_end}, {+gar_hellcar_death} ;Не будем этот смарт закрывать.
+dsh_walking = true
+;================================================================
+[dsh.se_stalker.gar_hellcar.smart_terrains] ;Бес теперь может уходить в любой свободный смарт
+gar_hellcar_group = {-gar_hellcar_dialog_end -gar_hellcar_death}
+any = {+gar_hellcar_dialog_end}
+;================================================================
+[dsh.se_stalker.gar_hellcar_group_1.smart_terrains] ;Команда Беса теперь может уходить в любой свободный смарт
+gar_hellcar_group = {-gar_hellcar_dialog_end -gar_hellcar_death}
+any = {+gar_hellcar_dialog_end}, {+gar_hellcar_death}
+;================================================================
+[dsh.se_stalker.gar_hellcar_group_2.smart_terrains] ;Команда Беса теперь может уходить в любой свободный смарт
+gar_hellcar_group = {-gar_hellcar_dialog_end -gar_hellcar_death}
+any = {+gar_hellcar_dialog_end}, {+gar_hellcar_death}
+;================================================================
+;
+[dsh.gulag.override.gar_smart_garage] ;Сталкеры в ангаре. На них периодически нападают бандиты.
+capacity = 12; 6
+communities = stalker, dolg, ecolog
+dsh_walking = true
+;================================================================
+[dsh.se_stalker.gar_seryi.smart_terrains] ;Серый теперь может уходить в любой свободный смарт
+gar_angar = {-agroprom_military_case_done}
+any = {+agroprom_military_case_done}
+;================================================================
+[dsh.se_stalker.gar_seryi_drug2.smart_terrains] ;Команда Серого теперь может уходить в любой свободный смарт
+gar_angar = {-agroprom_military_case_done}
+any = {+agroprom_military_case_done}
+;================================================================
+[dsh.se_stalker.gar_seryi_drug3.smart_terrains] ;Команда Серого теперь может уходить в любой свободный смарт
+gar_angar = {-agroprom_military_case_done}
+any = {+agroprom_military_case_done}
+;================================================================
+;
+[dsh.gulag.override.gar_smart_stalkers_1] ;Лагерь за кладбищем техники
+communities = killer, bandit, stalker
+dsh_walking = true
+;================================================================
+[dsh.gulag.override.gar_smart_bandit_large_lager] ;бандиты, периодически нападающие на ангар
+capacity = 11; 8
+dsh_walking = true
+;================================================================
+; костер на посту Долга
+[dsh.xr_kamp.gar_dolg_blokpost_kamp_point]
+allow_sector = 30, 270
+;================================================================
+;**********************************************************************************
+;
+;*************************************[Бар]*************************************
+;================================================================
+; костер в первом ангаре (от бара)
+[dsh.xr_kamp.bar_visitors_kamp_1]
+allow_sector = 10, 190
+;================================================================
+;**********************************************************************************
+;
+;**[Экологи из сцены с Кругловым на ДТ теперь не исчезают в оффлайне, а остаются]**
+;================================================================
+[dsh.gulag.override.bar_ecolog_crush] ;Гулаг 4 ученых + Круглов
+on_cleanup = dsh.cleanup_bar_ecologs
+
+[dsh.gulag.override.ros_smart_stalker_bandits1] ;Гулаг сталкеров на ДТ перед стройкой если идти со стороны янтаря
+capacity = 10
+communities = stalker, dolg, ecolog
+cond = {+bar_rescue_research_chasing_start}, {+bar_rescue_research_fail}
+dsh_walking = true
+
+; Экологи из команды Круглова
+[dsh.se_stalker.bar_ecolog_crush_1.spawner]
+cond = {+bar_heli_scene_stay_online}, {+bar_rescue_research_chasing_start}, {+bar_rescue_research_fail}
+[dsh.se_stalker.bar_ecolog_crush_1.smart_terrains]
+bar_ecolog_crush = {-bar_rescue_research_chasing_start -bar_rescue_research_fail}
+yan_st_stalker3 = {+bar_rescue_research_chasing_start}, {+bar_rescue_research_fail}
+
+[dsh.se_stalker.bar_ecolog_crush_2.spawner]
+cond = {+bar_heli_scene_stay_online}, {+bar_rescue_research_chasing_start}, {+bar_rescue_research_fail}
+[dsh.se_stalker.bar_ecolog_crush_2.smart_terrains]
+bar_ecolog_crush = {-bar_rescue_research_chasing_start -bar_rescue_research_fail}
+yan_st_stalker3 = {+bar_rescue_research_chasing_start}, {+bar_rescue_research_fail}
+
+[dsh.se_stalker.bar_ecolog_crush_3.spawner]
+cond = {+bar_heli_scene_stay_online}, {+bar_rescue_research_chasing_start}, {+bar_rescue_research_fail}
+[dsh.se_stalker.bar_ecolog_crush_3.smart_terrains]
+bar_ecolog_crush = {-bar_rescue_research_chasing_start -bar_rescue_research_fail}
+yan_st_stalker3 = {+bar_rescue_research_chasing_start}, {+bar_rescue_research_fail}
+
+[dsh.se_stalker.bar_ecolog_crush_4.spawner]
+cond = {+bar_heli_scene_stay_online}, {+bar_rescue_research_chasing_start}, {+bar_rescue_research_fail}
+[dsh.se_stalker.bar_ecolog_crush_4.smart_terrains]
+bar_ecolog_crush = {-bar_rescue_research_chasing_start -bar_rescue_research_fail}
+yan_st_stalker3 = {+bar_rescue_research_chasing_start}, {+bar_rescue_research_fail}
+;================================================================
+;**********************************************************************************
+;
+;*************************************[ТД]*************************************
+;================================================================
+; Раненый сталкер возле базы бандитов. В смарт кидал ему зачем идти, пусть в любой свободный идёт.
+[dsh.se_stalker.val_sos_wounded.smart_terrains]
+val_sos = {-val_sos_scene_end}
+any     = {+val_sos_scene_end}
+;================================================================
+; Кидалы в ТД, на ферме
+[dsh.gulag.override.val_rob]
+cond       = {-val_rob_disable} ;Закроем после того, как они стали враждебными
+on_cleanup = ogse_fixes.cleanup_val_rob_restrictors ;При закрытии смарта, удалим ненужные сюжетные рестрикторы для сценки с кидалами
+;================================================================
+; Сталкеры в ТД, на ферме, смарт откроется после того как кидалы стали врагами.
+[dsh.gulag.override.val_smart_bandit_1]
+communities = stalker, dolg, ecolog
+capacity    = 13
+cond        = {+val_rob_disable}
+switch_0    = {!is_day}, {=is_weather_rain}, {=gulag_empty(val_smart_monster_lair_6)}
+switch_1    = {=is_day !is_weather_rain =gulag_population_ge(val_smart_bandit_1:8) !gulag_empty(val_smart_monster_lair_6)}
+dsh_walking = true
+;================================================================
+; Мутанты, на которых охотятся сталкеры из лагеря выше.
+[dsh.gulag.override.val_smart_monster_lair_6]
+capacity = 10 ;5
+;================================================================
+; Мутанты возле моста
+[dsh.gulag.override.val_smart_monster_lair_1]
+communities = boar,flesh
+capacity = 10 ;2
+;================================================================
+; Собаки недалеко от фермы
+[dsh.gulag.override.val_smart_monster_lair_2]
+capacity = 6 ;2
+;================================================================
+;**********************************************************************************
+;
+;****************************************[АС]****************************************
+;================================================================
+; Фиксим бредовое условие нахождения Кэпа в онлайне
+[dsh.se_stalker.mil_blockpost_freedomstalker001.spawner]
+cond = true
+;================================================================
+; Фикс странного вылета, когда у типа слетел гулаг, и получается что он оказался как бы под персональной логикой, а там формат имён путей другой, префикс с именем гулага не добавляется.
+[dsh.xr_kamp.camp_center1]
+center_point = mil_freedom_camp_center1
+;************************************************************************************
+;

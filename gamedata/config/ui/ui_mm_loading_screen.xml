@@ -1,0 +1,31 @@
+<w>
+	<!-- Фон экрана загрузки, может состоять из множества элементов-->
+	<background width="1024" height="768">
+        <auto_static width="1024" height="768" stretch="1">
+            <texture x="0" y="0" width="2048" height="1536">ui\ui_load</texture>
+        </auto_static>
+	</background>
+
+	<!-- Картинка загружаемого уровня -->
+    <loading_logo x="255" y="366" width="512" height="256" stretch="1"/>
+
+
+	<!-- Прогрессбар загрузки -->
+	<!-- Новые режимы: mode="from_center" - от центра к краям, mode="horz" - слева направо, mode="back" - справа налево -->
+	<!-- Так же есть и вертикальные режимы. Для лоадскрина они конечно не пригодятся, но для информации напишу здесь, есть mode="vert", mode="down", mode="vert_from_center" -->
+	<!-- По умолчанию ЗП-стайл прогрессбар рисуется ПОД фоном (background). Чтобы рисовать прогрессбар НАД background - надо сделать under_background="0" -->
+    <loading_progress x="378" y="729" width="506" height="34" min="0" max="100" pos="0" inertion="5.0" mode="horz" under_background="0">
+		<!--Непосредственно текстура прогрессбара-->
+        <progress>
+        	<auto_static width="268" height="34" stretch="1">
+	            <texture x="0" y="1540" width="536" height="68">ui\ui_load</texture>
+	        </auto_static>
+        </progress>
+    </loading_progress>
+
+
+	<!-- Стадия загрузки текстом-->
+    <loading_stage x="260" y="695" width="506" height="20" light_anim="ui_slow_blinking" la_cyclic="1" la_texture="0" la_text="1" la_alpha="1">
+        <text align="c" color="yellow" font="graffiti22"/>
+    </loading_stage>
+</w>

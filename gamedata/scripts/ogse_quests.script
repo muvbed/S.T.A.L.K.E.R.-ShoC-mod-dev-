@@ -1,0 +1,33 @@
+
+
+------------------------- Copyright 2008-2010 OGSE Team -----------------------
+
+function deadly_blowout()
+	if not actor_was_hit and not is_indoor and not ogse_hideouts.npc_inside_safe_zone(db.actor) then
+		-- Hit by explosion
+		local blow = hit()
+		blow.direction = vector():set(0,0,0)
+		blow.impulse = 0
+		blow.draftsman = db.actor
+		blow.power = 0.09*ogse.armor_class(db.actor)
+		blow.type = hit.explosion
+		db.actor:hit(blow)
+		
+		level.add_cam_effector("camera_effects\\fusker.anm",959,false,"")
+		
+		local active_item = db.actor:active_item()
+		if active_item and active_item:section()~= "bolt" and not active_item:is_knife() then
+			db.actor:drop_item(active_item)
+		end		
+		
+		local protection = db.actor:item_in_slot(6)
+		if protection then
+			local current_cond = protection:condition()
+			local damage = 0.2*ogse.armor_class(db.actor)
+			local new_cond = current_cond - damage
+			if new_cond > 0 then
+				protection:set_condition(new_cond)
+			else protection:set_condition(0.1) end
+		end		
+	end
+end

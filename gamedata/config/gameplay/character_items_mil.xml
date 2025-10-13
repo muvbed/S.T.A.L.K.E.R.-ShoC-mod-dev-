@@ -1,0 +1,12 @@
+harmonica_a 		= 1, prob = 0.25 \n
+guitar_a 			= 1, prob = 0.25 \n
+device_torch 		= 1, prob = 1.00 \n
+device_pda 			= 1, prob = 1.00 \n
+sigaret	   			= 1, prob = 0.75 \n
+matches				= 1, prob = 0.25 \n
+
+medkit_army			= 1, prob = 0.20 \n
+bandage 			= 3, prob = 0.25 \n
+antirad				= 1, prob = 0.05 \n
+
+conserva			= 1, prob = 0.25 \n

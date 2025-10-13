@@ -1,0 +1,32 @@
+harmonica_a 		= 1, prob = 0.25 \n
+guitar_a 			= 1, prob = 0.25 \n
+device_torch 		= 1, prob = 0.60 \n
+device_pda 			= 1, prob = 1.00 \n
+sigaret	   			= 1, prob = 0.50 \n
+inv_ruck			= 1, prob = 0.05 \n
+detector_simple 	= 1, prob = 0.10 \n
+matches				= 1, prob = 0.20 \n
+
+medkit 				= 1, prob = 0.25 \n
+medkit_army			= 1, prob = 0.05 \n
+bandage 			= 2, prob = 0.30 \n
+antirad				= 1, prob = 0.10 \n
+
+bread 				= 1, prob = 0.30 \n
+bread_a				= 1, prob = 0.30 \n
+bread_fake			= 1, prob = 0.15 \n
+kolbasa 			= 1, prob = 0.20 \n
+kolbasa_a			= 1, prob = 0.20 \n
+kolbasa_fake		= 1, prob = 0.10 \n
+conserva			= 1, prob = 0.15 \n
+vodka 				= 1, prob = 0.10 \n
+vodka_a 			= 1, prob = 0.10 \n
+energy_drink 		= 1, prob = 0.15 \n
+
+af_medusa			= 1, prob = 0.03 \n
+af_vyvert			= 1, prob = 0.03 \n
+af_blood			= 1, prob = 0.03 \n
+af_electra_sparkler	= 1, prob = 0.03 \n
+af_ameba_slime		= 1, prob = 0.03 \n
+af_drops			= 1, prob = 0.03 \n
+af_rusty_thorn		= 1, prob = 0.03 \n

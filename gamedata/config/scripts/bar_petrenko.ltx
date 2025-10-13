@@ -1,0 +1,27 @@
+[logic]
+active = walker
+trade = misc\trade_dolg.ltx
+on_death = death
+inv_max_weight = 10000
+
+[death]
+on_info = %+sar2_death_42%
+
+[walker]
+path_walk = bar_dolg_petrenko_walk_new
+path_look = bar_dolg_petrenko_look_new
+meet = meet
+danger = danger_condition
+
+[meet]
+meet_talk_enabled = true
+meet_state = 5|ward@bar_dolg_petrenko_hello|2|ward
+meet_state_wpn = 5|ward@bar_dolg_petrenko_hello|2|ward
+victim = 5|actor
+victim_wpn = 5|actor
+use = true
+use_wpn = true
+
+[danger_condition]
+ignore_distance = 0
+ignore_distance_corpse = 0

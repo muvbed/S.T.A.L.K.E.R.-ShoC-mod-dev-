@@ -1,0 +1,131 @@
+-- Основано на скрипте из аддона от naxac
+
+function attach(sm)
+    sm:subscribe({ signal = "on_monster_death", fun = this.on_death })
+    sm:subscribe({ signal = "on_monster_before_hit", fun = this.on_hit })
+    sm:subscribe({ signal = "on_save", fun = this.on_save })
+    sm:subscribe({ signal = "on_spawn", fun = this.on_spawn })
+end
+
+local xvars = get_stored_vars()
+local tbl_hit = {}
+-- порядок в массиве имеет значение
+local monsters = {
+    { sect = "sucker",             bones = { 14 },                                                                             	part = "mutant_krovosos_jaw" },
+    { sect = "boar",               bones = { 16, 18, 34, 36, 3, 5, 8, 10 },                                                    	part = "mutant_boar_leg" },
+    { sect = "flesh",              bones = { 14 },                                                                             	part = "mutant_flesh_eye" },
+    { sect = "burer",              bones = { 18, 19, 31, 32 },                                                         			part = "mutant_burer_hand" },
+    { sect = "controller",         bones = { 24, 25, 40, 41 },                                                                 	part = "mutant_hand_kontroler" },
+    { sect = "pseudodog",          bones = { 32 },                                                                             	part = "mutant_psevdodog_tail" },
+    { sect = "psy_dog",            bones = { 32 },                                                                             	part = "mutant_psevdodog_tail" },
+    { sect = "dog",                bones = { 30, 31 },                                                                         	part = "mutant_dog_tail" },
+    { sect = "fracture",           bones = { 24, 23 },                                                                         	part = "mutant_fracture_hand" },
+    { sect = "gigant",             bones = { 9, 36 },                                                                         	part = "mutant_psevdogigant_hand" },
+    { sect = "himera",             bones = { 4, 9, 14, 19 },                                                                   	part = "mutant_chimera_talon" },
+    { sect = "snork",              bones = { 51, 52, 53, 55, 56, 57 },                                                          part = "mutant_snork_leg" },
+    { sect = "tushkan",            bones = { 25 },                                                                             	part = "mutant_face_tushkano" },
+    { sect = "zombi",              bones = { 18, 19, 20, 30, 31, 32 },                                                         	part = "mutant_zombie_hand" },
+    { sect = "polter",             bones = { 4 },                                                                              	part = "mutant_poltergeist_glas" },
+    { sect = "cat",                bones = { 28, 29 },                                                                       	part = "mutant_tail_cat" }
+}
+
+local del_corpse = {
+    m_poltergeist_normal_flame = true,
+    m_poltergeist_strong_flame = true
+}
+
+function on_hit(obj, hit_data)
+    local sect = obj:section()
+    if del_corpse[sect] then return false end
+
+    local id = obj:id()
+    if not id then return end
+    local th = tbl_hit[id]
+    local changed = false
+
+    if th == nil then
+        for i, v in ipairs(monsters) do
+            if string.find(sect, v.sect) then
+                for ii, vv in ipairs(v.bones) do
+                    if vv == hit_data.bone_id then
+                    	log3(tostring_all(hit_data.bone_id).." hit_data.bone_id")
+                        th = {}
+                        th.hits = 1
+                        th.part = v.part
+                        changed = true
+                        break
+                    end
+                end
+                break
+            end
+        end
+    elseif th == false then
+        return false
+    else
+        for i, v in ipairs(monsters) do
+            if string.find(sect, v.sect) then
+                for ii, vv in ipairs(v.bones) do
+                    if vv == hit_data.bone_id then
+                        th.hits = th.hits + 1
+                        changed = true
+                        break
+                    end
+                end
+            end
+        end
+    end
+    if changed then
+        if not (obj:alive()) then
+            calculate_rate(obj, th.hits, th.part)
+        else
+            tbl_hit[id] = th
+        end
+    end
+end
+
+function on_death(obj)
+    local id = obj:id()
+
+    if id and del_corpse[obj:section()] then -- удаляем тушку
+        alife():release(alife():object(id), true)
+        tbl_hit[id] = nil
+        return
+    end
+    local th = tbl_hit[id]
+    if not th then return end
+    if not th.hits then return end
+
+    calculate_rate(obj, th.hits, th.part)
+
+    tbl_hit[id] = nil
+end
+
+function on_save()
+    xvars.tbl_hit = tbl_hit
+end
+
+function on_spawn()
+    if xvars.tbl_hit == nil then return end
+    tbl_hit = xvars.tbl_hit(true)
+end
+
+function calculate_rate(obj, hits, part)
+    if not (obj and part) then return end
+
+    if hits > 0 then
+        remove_from_inv(obj, part)
+    end
+end
+
+function remove_from_inv(obj, sect)
+    obj:iterate_inventory(
+        function(obj, item)
+            if item:section() == sect then
+                local sobj = alife():object(item:id())
+                if sobj then
+                    alife():release(sobj)
+                end
+            end
+        end,
+	obj)
+end

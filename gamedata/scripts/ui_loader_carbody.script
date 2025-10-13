@@ -1,0 +1,104 @@
+--[[-----------------------------------------------------------------------------------------------
+ File			: ui_loader_carbody.script
+ Description	: Функции для окна обыска
+ Copyright		: Shadows Addon
+ Authors		: Shadows and Charsi
+ Date			: 02.08.2011-13.08.2011
+ UPD by Muvbed	: 2024
+--]]-----------------------------------------------------------------------------------------------
+
+local rec_wnd = nil
+local initial = false
+local reg_callbacks = {
+	cell_item_clicked = "on_item_select",
+	item_drop = "on_item_drop",
+	item_take = "on_item_take",
+	drag_drop = "on_drag_drop",
+	update = "on_update"
+}
+
+class "BodyWindow" (CUIScriptWnd)
+function BodyWindow:__init(owner) super()
+	self.owner = owner
+	self:Init(0,0,1024,768)
+	self:InitControls()
+end
+
+function BodyWindow:__finalize() end
+function BodyWindow:InitControls()
+	self.stat = CUIStatic()
+	self.stat:Init(0,0,1024,768)
+	self.owner:AttachChild(self.stat)
+	local xml = CScriptXmlInit()
+	xml:ParseFile("carbody_new.xml")
+	
+	-- [CARBODY] init --------------------------------------------------
+	
+	-- Характеристики ГГ
+	icon_s = xml:InitStatic("actor_chars:icon_static", self.stat)
+	icon_s:InitTexture("ui_npc_u_actor")
+	l_npc = xml:InitStatic("actor_chars:layer_npc", self.stat)
+	l_char = xml:InitStatic("actor_chars:layer_actor", self.stat)
+	l_npc:InitTexture("ui_icon_layer")
+	l_char:InitTexture("ui_icon_layer")
+	
+	-- Кнопка "Выход"
+	ctrl = xml:Init3tButton("exit_button",self.stat)
+	self:Register(ctrl,"exit_button")
+	self:AddCallback("exit_button",ui_events.BUTTON_CLICKED,self.BodyClose,self)
+	
+	-- Кнопка "Подобрать"
+	if ogse.load_var("ruck_used", 0) == 1 then
+		ctrl = xml:Init3tButton("take_all_btn",self.stat)
+		self:Register(ctrl,"take_all_btn")
+		ctrl:SetText(game.translate_string("take_ruck"))
+		self:AddCallback("take_all_btn",ui_events.BUTTON_CLICKED,smart_ruck.take_ruck,self)
+	end
+	
+	-- Кол-во денег
+	money = xml:InitStatic("money_static",self.stat)
+	money:SetText(db.actor:money().." RU")
+	
+	-- Всплывающее окно описания
+	self.DescrWnd = ui_item_hint.CUIDescriptionWnd(self.stat)
+	
+	initial = true
+end
+
+function BodyWindow:ShowWnd()
+	if initial and rec_wnd.stat~= nil then rec_wnd.stat:Show(true) end
+end
+function BodyWindow:HideWnd()
+	if initial and rec_wnd.stat~= nil then rec_wnd.stat:Show(false) end
+end
+function BodyWindow:DetachWnd()
+	self.DescrWnd:Remove() 
+	self.DescrWnd = nil 
+	self.owner:DetachChild(self.stat) 
+	initial = false
+end
+function BodyWindow:BodyClose()
+	if body_window and body_window:IsShown() then level.start_stop_menu(body_window,true) end
+end
+
+function on_info(info_id)
+	if info_id=="ui_car_body" then
+	    body_window = level.main_input_receiver()
+		if not initial then	rec_wnd = BodyWindow(level.main_input_receiver()) end
+		if not rec_wnd.stat:IsShown() then rec_wnd:ShowWnd() end
+		
+		bind_stalker.hide_weapon()
+	elseif info_id=="ui_car_body_hide" then
+		if rec_wnd then rec_wnd:DetachWnd() end
+
+		dsh.timeout(500, function() 
+			bind_stalker.restore_weapon()
+		end)
+	end
+end
+
+function update()
+	if db.actor:has_info("ui_car_body") then
+	-- <YOUR CODE>
+	end
+end

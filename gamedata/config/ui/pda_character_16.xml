@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<!-- СПИСОК КОНТАКТОВ В КПК -->
+<window>
+	<name_static x="16" y="4" width="260" height="18">
+		<text font="letterica18" color="white_2"/>
+	</name_static>
+
+	<!-- ICON -->
+	<icon_static x="607" y="10" width="76" height="64" stretch="1"/>
+
+	<!-- COMMUNITY -->
+	<community_caption x="0" y="29" width="240" height="15">
+		<text font="letterica16" color="grey_1">ui_st_community</text>
+	</community_caption>
+	<community_static x="85" y="29" width="240" height="15">
+		<text font="letterica16" color="grey_2"/>
+	</community_static>
+	
+	<!-- RELATION -->
+	<relation_caption x="0" y="43" width="240" height="15">
+		<text font="letterica16" color="grey_1">ui_st_relation</text>
+	</relation_caption>
+	<relation_static x="85" y="43" width="240" height="15">
+		<text font="letterica16" color="grey_2"/>
+	</relation_static>
+
+	<!-- RANK -->
+	<rank_caption x="0" y="57" width="240" height="15">
+		<text font="letterica16" color="grey_1">ui_st_rank</text>
+	</rank_caption>
+	<rank_static x="85" y="57" width="240" height="16">
+		<text font="letterica16" color="grey_2"/>
+	</rank_static>
+
+	<pda_char_auto_statics>
+		<auto_static x="5" y="9" width="7" height="10" stretch="1">
+			<texture color="yellow">ui\ui_pda_contacts_online</texture>
+		</auto_static>
+
+		<auto_static x="0" y="84" width="682" height="3" stretch="1">
+			<texture>ui\ui_pda_horizontal_line</texture>
+		</auto_static>
+
+	</pda_char_auto_statics>
+</window>

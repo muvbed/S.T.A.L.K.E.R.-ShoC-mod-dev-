@@ -1,0 +1,254 @@
+------------- Спавн вырезанных монстров и укрытий для OGSM 2.4 ----------------
+------------------------- Copyright 2007-2018 DEXXX ---------------------------
+--------------------------- Изменён для OGSE 0.6.x ----------------------------
+----------------------- Copyright 2008-2009 OGSE Team -------------------------
+
+--KRodin: Респавн выключен. Теперь скрипт просто спавнит монстров после выброса и при первом запуске игры.
+
+function attach(sm)
+	sm:subscribe({signal = "on_after_blowout", fun = this.level_spawn}) -- Спавним монстров на текущей локации.
+end
+
+local list_mob_ids = {}
+
+-- Получение списка всех монстров на текущей локации
+function get_level_mobs()
+	for i = 1, 65535 do
+		local obj = alife():object(i)
+		if obj then
+			if string.find(get_monster_portion(obj.id), level.name()) then
+				list_mob_ids[obj.id] = obj.id
+			end
+		end
+	end
+end
+
+-- Удаление трупов монстров
+function remove_corpse(p_id)
+    local dist_to_mob = 15
+    local dist_current = dist_to_mob
+    local obj = alife():object(p_id)
+    local sobj = level.object_by_id(p_id)
+    if sobj then
+        local posobj = sobj:position()
+        local actorpos = db.actor:position()
+        dist_current = posobj:distance_to(actorpos)
+    end
+    if obj then
+        if (dist_current >= dist_to_mob) then
+            local result = pcall(prot_release_or, obj)
+            if result == true then
+                list_mob_ids[p_id] = nil
+            end
+        end
+    end
+end
+
+function prot_release_or(obj)
+    alife():release(obj, true)
+end
+
+-- Парсинг и генерирование custom_data (c) xStream
+function parse_custom_data(str)
+    local t = {}
+    if str then
+        for section, section_data in string.gfind(str, "%s*%[([^%]]*)%]%s*([^%[%z]*)%s*") do
+            section = trim(section)
+            t[section] = {}
+            for line in string.gfind(trim(section_data), "([^\n]*)\n*") do
+                if string.find(line, "=") ~= nil then
+                    for k, v in string.gfind(line, "([^=]-)%s*=%s*(.*)") do
+                        k = trim(k)
+                        if k ~= nil and k ~= "" and v ~= nil then
+                            t[section][k] = trim(v)
+                        end
+                    end
+                else
+                    for k, v in string.gfind(line, "(.*)") do
+                        k = trim(k)
+                        if k ~= nil and k ~= "" then
+                            t[section][k] = "<<no_value>>"
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return t
+end
+function gen_custom_data(tbl)
+    local str = ""
+    for key, value in pairs(tbl) do
+        str = str .. "[" .. key .. "]\n"
+        for k, v in pairs(value) do
+            if v ~= "<<no_value>>" then
+                str = str .. k .. " = " .. v .. "\n"
+            else
+                str = str .. k .. "\n"
+            end
+        end
+    end
+    return str
+end
+function trim(s)
+    return (string.gsub(s, "^%s*(.-)%s*$", "%1"))
+end
+
+-- Обобщенная процедура спавна
+function proceed_spawn(p_name, p_vector, p_lv, p_gv, p_count, p_port, p_fake)
+    local ind
+    local cnt = 0
+	local resp_index = 2
+
+	if string.find(p_name, "chimera") or string.find(p_name, "burer") or string.find(p_name, "gigant") then resp_index = 1 end
+
+    for k, v in pairs(list_mob_ids) do
+        local obj = alife():object(k)
+        local portion = get_monster_portion(k)
+
+        if obj and portion == p_port then
+            if obj:alive() then
+                cnt = cnt + 1
+            else
+                remove_corpse(k)
+            end
+        end
+    end
+
+    local qnt
+
+    if cnt == 0 then
+        qnt = p_count
+    else
+        qnt = resp_index * p_count - cnt
+    end
+
+    if qnt >= 1 then
+        for ind = 1, qnt do
+            local sp_ob = dsh.create_free_mob(p_name, p_vector, p_lv, p_gv)
+            mob_flags(sp_ob, p_port, p_fake)
+            local m_id = sp_ob.id
+            list_mob_ids[m_id] = m_id
+        end
+    end
+end
+
+-- Получение custom_data из нэт-пакета о размещении монстра
+function get_monster_portion(p_obj_id)
+    local obj = alife():object(p_obj_id)
+
+    if not obj then
+        return "none"
+    end
+
+    local packet = net_packet()
+    obj:STATE_Write(packet)
+
+    local game_vertex_id = packet:r_u16()
+    local cse_alife_object__unk1_f32 = packet:r_float()
+    local cse_alife_object__unk2_u32 = packet:r_s32()
+    local level_vertex_id = packet:r_s32()
+    local object_flags = packet:r_s32()
+    local custom_data = packet:r_stringZ()
+
+    local cd = parse_custom_data(custom_data)
+    if not cd.creature_portion then
+        return "none"
+    end
+    if not cd.creature_portion.portion then
+        return "none"
+    end
+    return cd.creature_portion.portion
+end
+
+-- Запись новых свойств монстров через нет-пакет
+function mob_flags(p_obj, p_port, p_fake)
+    local packet = net_packet()
+
+    p_obj:STATE_Write(packet)
+
+    -- свойства cse_alife_object
+    local game_vertex_id = packet:r_u16()
+    local cse_alife_object__unk1_f32 = packet:r_float()
+    local cse_alife_object__unk2_u32 = packet:r_s32()
+    local level_vertex_id = packet:r_s32()
+    local object_flags = packet:r_s32()
+    local custom_data = packet:r_stringZ()
+    local story_id = packet:r_s32()
+    local cse_alife_object__unk3_u32 = packet:r_s32()
+
+    -- свойства cse_visual
+    local model_visual = packet:r_stringZ()
+    local visual_flags = packet:r_u8()
+
+    -- свойства cse_alife_creature_abstract
+    local g_team = packet:r_u8()
+    local g_squad = packet:r_u8()
+    local g_group = packet:r_u8()
+    local health = packet:r_float()
+    local cse_alife_creature_abstract__unk1_u16v = packet:r_vec3()
+    local cse_alife_creature_abstract__unk2_u16v = packet:r_vec3()
+    local killer_id = packet:r_u16()
+    local game_death_time = packet:r_vec3()
+
+    -- свойства cse_alife_object
+    packet:w_u16(game_vertex_id)
+    packet:w_float(cse_alife_object__unk1_f32)
+    packet:w_s32(cse_alife_object__unk2_u32)
+    packet:w_s32(level_vertex_id)
+    packet:w_s32(object_flags)
+
+    if p_fake ~= nil and math.random() > 0.5 then
+        custom_data = "[logic] \nactive = mob_fake_death \n[mob_fake_death] \non_actor_dist_le = 10 | nil\n"
+    end
+
+    local cd = parse_custom_data(custom_data)
+    if not cd then
+        cd = {}
+    end
+    if not cd.creature_portion then
+        cd.creature_portion = {}
+    end
+    cd.creature_portion.portion = p_port
+    custom_data = gen_custom_data(cd)
+
+    packet:w_stringZ(custom_data)
+    packet:w_s32(story_id)
+    packet:w_s32(cse_alife_object__unk3_u32)
+
+    -- свойства cse_visual
+    packet:w_stringZ(model_visual)
+    packet:w_u8(visual_flags)
+
+    -- свойства cse_alife_creature_abstract
+    packet:w_u8(g_team)
+    packet:w_u8(g_squad)
+    packet:w_u8(g_group)
+    packet:w_float(health)
+    packet:w_vec3(cse_alife_creature_abstract__unk1_u16v)
+    packet:w_vec3(cse_alife_creature_abstract__unk2_u16v)
+    packet:w_u16(killer_id)
+    packet:w_vec3(game_death_time)
+
+    p_obj:STATE_Read(packet, packet:w_tell() - packet:r_tell())
+end
+
+-- Спавн на всех локациях при первом запуске мода
+function first_run()
+end
+
+-- Спавн для каждого уровня
+function level_spawn()
+end
+
+-- Спавн тушканов в тайнике Стрелка
+function spawn_in_agr()
+	local ind
+	for ind = 1, 8 do
+		dsh.create_free_mob("tushkano_weak", vector():set(-128.2, -2.8, -140.1), 12, 719)
+	end
+end
+
+------------- Спавн вырезанных монстров и укрытий для OGSM 2.4 ----------------
+
+------------------------- Copyright 2007-2018 DEXXX ---------------------------

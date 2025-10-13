@@ -1,0 +1,9 @@
+	<string id="rad_antenna_location">
+		<text>Антенны</text>
+	</string>
+	<string id="code_door_txt">
+		<text>Кодовая дверь</text>
+	</string>
+    <string id="entrance_to_bunker">
+		<text>Вход в бункер управления</text>
+	</string>

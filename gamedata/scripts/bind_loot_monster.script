@@ -1,0 +1,120 @@
+-- UPD by Muvbed : 2023
+
+function attach(sm)
+	sm:subscribe({ signal = "on_monster_spawn",  fun = this.on_spawn })
+	sm:subscribe({ signal = "on_monster_use", fun = this.on_use })
+	sm:subscribe({ signal = "on_take", fun = this.damage_knife_on_take })
+end
+
+function on_spawn( obj, binder )
+  if not binder[ script_name() .. ".subscribed" ] then
+    local s_name = "on_monster_update." .. obj:id()
+    local s = {
+      [ "signal" ] = s_name,
+      [ "fun"    ] = this.on_update,
+    }
+    binder[ script_name() .. ".subscribed" ] = s
+    ogse_signals.get_mgr():subscribe( s )
+  end
+end
+
+function on_update(obj)
+	if 
+	  db.actor 
+	  and obj
+	  and not obj:alive() 
+	  and not ogse.load_var("xr_corpse_detection_"..obj:id(), false) 
+	then
+		local knife_it = db.actor:item_in_slot(0)
+		
+	    if db.actor:active_slot() == 0 then 
+			if knife_it:section() == "wpn_knife" then	
+				if knife_it:condition() >= 0.1 then	  
+					obj:set_tip_text_default()
+				else
+					obj:set_tip_text("knife_bad_condition")
+				end				 
+			else
+				obj:set_tip_text("knife_need")
+			end
+	    else
+        	obj:set_tip_text("knife_need")
+	    end
+	end
+end
+
+function on_use(obj)
+	if 
+	  db.actor 
+	  and obj
+	  and not obj:alive() 
+	  and not ogse.load_var("xr_corpse_detection_"..obj:id(), false) 
+	then
+		local knife_it = db.actor:item_in_slot(0)
+		
+		if db.actor:active_slot() == 0 then 
+			if knife_it:section() == "wpn_knife" then	
+				if knife_it:condition() >= 0.1 then	  
+					obj:set_nonscript_usable(true)
+				else
+					obj:set_nonscript_usable(false)	
+				end	 
+			else
+				obj:set_nonscript_usable(false)			
+			end
+		else
+			obj:set_nonscript_usable(false)
+		end	
+	end
+end
+
+local note = xr_sound.get_safe_sound_object([[interface\inv_cut]])
+
+function damage_knife_on_take(obj, section)
+	local knife = db.actor:item_in_slot(0)
+	local target = level.get_target_obj()
+	if not target then return end
+	local mob_id = get_clsid (target)
+	local pos = target:position()
+	local tn = target:name()
+	if string.find(obj:section(), "mutant_dog_tail") then
+        cut_action(knife, target, 0.015)	
+    elseif string.find(obj:section(), "mutant_flesh_eye") then
+        cut_action(knife, target, 0.01)	
+    elseif string.find(obj:section(), "mutant_boar_leg") then
+        cut_action(knife, target, 0.02)	
+    elseif string.find(obj:section(), "mutant_tail_cat") then
+        cut_action(knife, target, 0.015)
+    elseif string.find(obj:section(), "mutant_chimera_talon") then
+        cut_action(knife, target, 0.05)
+    elseif string.find(obj:section(), "mutant_psevdodog_tail") then
+        cut_action(knife, target, 0.015)
+    elseif string.find(obj:section(), "mutant_krovosos_jaw") then
+        cut_action(knife, target, 0.01)
+    elseif string.find(obj:section(), "mutant_burer_hand") then
+        cut_action(knife, target, 0.02)
+    elseif string.find(obj:section(), "mutant_zombie_hand") then
+        cut_action(knife, target, 0.015)
+    elseif string.find(obj:section(), "mutant_snork_leg") then
+        cut_action(knife, target, 0.03)
+    elseif string.find(obj:section(), "mutant_face_tushkano") then
+        cut_action(knife, target, 0.015)	
+    elseif string.find(obj:section(), "mutant_hand_kontroler") then
+        cut_action(knife, target, 0.02)			
+    elseif string.find(obj:section(), "mutant_poltergeist_glas") then
+        cut_action(knife, target, 0.01)	
+    elseif string.find(obj:section(), "mutant_psevdogigant_hand") then	
+        cut_action(knife, target, 0.05)	
+    end		
+end
+
+function cut_action(knife, target, cond)
+	if IsMonster(target) then
+		if knife then 	
+           if knife:section() == "wpn_knife" then	
+           		note:play(db.actor, 0, sound_object.s2d)	
+				knife:set_condition(knife:condition() - cond)	
+           end
+		end
+    end	
+end

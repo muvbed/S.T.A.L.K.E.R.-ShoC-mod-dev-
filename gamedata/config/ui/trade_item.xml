@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<w>
+	<static_cost x="448" y="341" width="125" height="20">
+		<text  align="c" font="graffiti22" color="yellow"/>
+	</static_cost>
+
+#include "ui\carbody_item.xml"
+</w>

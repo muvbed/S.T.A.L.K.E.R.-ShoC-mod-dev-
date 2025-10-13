@@ -1,0 +1,50 @@
+
+
+anoms = {}
+
+class "se_zone_anom" (cse_anomalous_zone)
+function se_zone_anom:__init (section) 
+	super (section)  
+end
+
+--' Сохранение
+function se_zone_anom:STATE_Write(packet)
+    cse_anomalous_zone.STATE_Write(self, packet)
+end
+
+--' Восстановление
+function se_zone_anom:STATE_Read(packet, size)
+    cse_anomalous_zone.STATE_Read(self, packet, size)
+	local rad = packet:r_float()
+	packet:r_seek(p2)
+    
+    if self.id ~= 65535 then
+		anomaly_holder.add_anomaly(self.id, self:clsid(), self:section_name(), rad)
+	end
+end
+
+--' Регистрация объекта
+function se_zone_anom:on_register()
+    cse_anomalous_zone.on_register(self)
+    anoms[self.id] = self
+end
+
+function se_zone_anom:on_unregister()
+	anomaly_holder.remove_anomaly(self.id)
+    cse_anomalous_zone.on_unregister(self)
+    anoms[self.id] = nil
+end
+
+class "se_zone_visual" (cse_zone_visual)
+function se_zone_visual:__init (section) 
+	super (section)
+end
+
+--Рестрикторы
+class "se_restrictor" (cse_alife_space_restrictor)
+function se_restrictor:__init (section) 
+	super (section)
+end
+function se_restrictor:keep_saved_data_anyway()
+	return true
+end

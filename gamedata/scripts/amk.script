@@ -1,0 +1,438 @@
+-- Idler: файл из мода 'Народная солянка 2.0'.
+
+local StartTime
+
+-- Записываем переменную
+function save_variable(variable_name, value)
+	--записываю переменную
+    ogse.save_or_delete_var(variable_name, value)
+end
+
+function load_variable(variable_name, value_if_not_found)
+	--загружаю переменную
+    local r = ogse.load_var_safe(variable_name)
+    if not r then
+        r = xr_logic.pstor_retrieve(db.actor, variable_name, value_if_not_found) -- для совместимости сохранок
+        if r ~= value_if_not_found then
+            log1("~ converted amk var from pstor to xvars: " .. variable_name)
+            ogse.save_or_delete_var(variable_name, r)
+            xr_logic.pstor_delete(db.actor, variable_name) -- для совместимости сохранок
+        end
+    end
+    if not r then
+        r = value_if_not_found
+    end
+    return r
+end
+
+function del_variable(variable_name)
+	--удаляю переменную
+    ogse.delete_var(variable_name)
+
+    xr_logic.pstor_delete(db.actor, variable_name) -- для совместимости сохранок
+end
+
+function load_table(name)
+    local var = load_variable(name)
+    if type(var) == "table" then
+        return var
+    elseif var then
+        return unpack_array_from_string(var)
+    end
+    return {}
+end
+
+function save_table(name, tbl)
+    save_variable(name, tbl)
+end
+
+--переменные для типсов
+pda_news = xr_sound.get_safe_sound_object([[device\pda\pda_news]])
+pda_tips = xr_sound.get_safe_sound_object([[device\pda\pda_tip]])
+pda_task = xr_sound.get_safe_sound_object([[device\pda\pda_objective]])
+
+tips_icons = {
+	default  		= { 82, 282 },
+	trader   		= { 332, 893 },
+	dolg     		= { 0, 658 },
+	freedom  		= { 0, 658 },
+	ecolog   		= { 498, 0},
+	arena    		= { 332, 141 },
+	stalker  		= { 0, 658 },
+	krot     		= { 332, 47 },
+	barman   		= { 332, 235 },
+	wolf	   		= { 332, 940 },
+	o_soznanie 		= { 498, 893 },
+	monolith 		= { 0, 658 },
+	saharov  		= { 332, 470 },
+	prizrak  		= { 0, 658 },
+	killer   		= { 0, 658 },
+	death    		= { 0, 752 },
+	common_channel 	= { 498, 47 },
+    gen_info       	= { 82, 282 },
+    trade          	= { 0, 0 },
+    uniq           	= { 498, 47 }
+}
+
+
+local delay_of_sms
+
+function delay_of_sms_f()
+    local gtime = game.get_game_time()
+    local y, m, d, h, min, sec, ms = gtime:get()
+	if not delay_of_sms then delay_of_sms = sec end
+	if delay_of_sms == sec then return true end
+	delay_of_sms = sec
+end
+
+--показываем типс
+function send_tip(news_text, header, timeout, showtime, sender, sound)
+	if timeout == nil then timeout = 0 end
+	if delay_of_sms_f() then timeout = timeout + math.random(5 + 15) end
+	if not db.actor then return end
+	if ogse_sleep_mgr.is_sleep_active() then showtime = 1 end
+	if news_text == nil then return end
+	if header == nil or header == "nil" then 
+		return
+	end
+	if showtime == nil then showtime = 5 end
+	
+	local player
+    if sound == "news" then
+        player = pda_news
+    elseif sound == "task" then
+        player = pda_task
+    else
+        player = pda_tips
+    end	
+	
+	--' Играем дефолтный звук
+	player:play(db.actor, timeout, sound_object.s2d)
+	
+	if not sender or not tips_icons[sender] then
+		sender = "default"
+	end
+	
+	local x = tips_icons[sender][1]
+	local y = tips_icons[sender][2]
+	
+	local news_text = "%c[255,160,160,160]"..header.."\\n".."%c[default]"..news_text
+	db.actor:give_game_news(news_text, "ui\\ui_iconsTotal", Frect():set(x,y,83,47), timeout*1000, showtime*1000)
+	return true
+end
+
+local timers_id_name = amk_timers_data.timers_id_name
+local timers_name_id = amk_timers_data.timers_name_id
+local func_by_string = amk_timers_data.func_by_string
+
+local timers = nil
+
+-- функция сравнения для сортировки таймеров
+-- в конце таблицы таймеры с самым маленьким временем
+function timersSort(t1, t2)
+    return t1[2] > t2[2]
+end
+
+--старт таймера в реальном времени
+function start_timer(name, delay, parameters)
+    if not delay then return false end
+    if not parameters then parameters = "" end
+    if not timers then timers = load_table("timers") end
+    table_insert(timers, 
+    	{ 
+    		timers_name_id[name], 
+    		math_floor(game_milliseconds() + delay * 1000 * getIniValueFloatSimple("alife", "time_factor", 5)), 
+    		parameters 
+    	})
+
+    -- сортируем для оптимизации дальнейшего поиска по таймерам
+    -- таймеры с меньшим временем будут в конце таблицы
+    table_sort(timers, timersSort)
+    save_table("timers", timers)
+    return true
+end
+
+--старт таймера в игровом времени
+function g_start_timer(name, delay_d, delay_h, delay_m, parameters)
+    if delay_d == nil or delay_h == nil or delay_m == nil then return false end
+    if not parameters then parameters = "" end
+	if not timers then timers = load_table("timers") end
+    table_insert(timers,
+        {
+            timers_name_id[name],
+            math_floor(game_milliseconds() + (delay_d * 60 * 24 + delay_h * 60 + delay_m) * 60 * 1000),
+            parameters
+        })
+
+    -- сортируем для оптимизации дальнейшего поиска по таймерам
+    -- таймеры с меньшим временем будут в конце таблицы
+    table_sort(timers, timersSort)
+    save_table("timers", timers)
+    return true
+end
+
+function has_timer(name)
+    if not timers then timers = load_table("timers") end
+
+    for i = 1, #timers do
+        if timers[i][1] == timers_name_id[name] then 
+        	return true, timers[i][2], timers[i][3] 
+        end
+    end
+    return false, ""
+end
+
+function remove_timer(name)
+    if not timers then timers = load_table("timers") end
+
+    for i = #timers, 1, -1 do
+        if timers[i][1] == timers_name_id[name] then table_remove(timers, i) end
+    end
+
+    -- сортируем для оптимизации дальнейшего поиска по таймерам
+    -- таймеры с меньшим временем будут в конце таблицы
+    table_sort(timers, timersSort)
+    save_table("timers", timers)
+end
+
+has_g_timer = has_timer
+
+function convert_timers()
+end
+
+--проверка таймеров
+function check_timers(milliseconds)
+    if not timers then timers = load_table("timers") end
+
+    local delay              -- задержка в игровых миллисекундах
+    local parameters         -- параметры действия
+
+    local timersToStart = {} -- список таймеров на запуск, которые запустятся после очистки таблицы, так как таблица может одновременно чистится и заполнятся в процессе запуска действий
+
+    for i = #timers, 1, -1 do -- идём с хвоста по таймерам с наименьшим временем срабатывания
+        local id         = timers[i][1]
+        local name       = timers_id_name[id]
+
+        local delay      = timers[i][2]
+        local parameters = timers[i][3]
+
+        if delay <= milliseconds then
+            table_insert(timersToStart, { name, parameters })
+            table_remove(timers) -- сначала чистим таблицу, а то ещё в __do_timer_action() она может быть дополнена
+        else                     
+            break -- таймеров с временем меньшим за текущее уже нет, так как таблица была отсортирована
+        end
+    end
+
+    if #timersToStart > 0 then -- какие-то таймеры сработали и были удалены из таблицы
+        -- перезаписываем таблицу
+        save_table("timers", timers)
+
+        -- запуск действий на выполнение
+        for i = 1, #timersToStart do
+            local name       = timersToStart[i][1]
+            local parameters = timersToStart[i][2]
+
+            if func_by_string[name] then
+		        func_by_string[name](parameters)
+		    end
+        end
+    end
+end
+
+
+local pack_type_num = 1
+local pack_type_string = 2
+local pack_type_bool = 3
+local pack_type_table = 4
+local pack_val_endtable = 5
+
+function parse_new(str, idx)
+    local ret = {}
+    local idx = idx or 1
+    local strlen = string_len(str)
+    local key, value, vtype, idx1 --, v
+    while idx <= strlen do
+        vtype, idx = string_byte(string_sub(str, idx, idx)), idx + 1
+        if vtype == pack_type_num then
+            idx1 = idx
+            while idx1 <= strlen do
+                if string_byte(string_sub(str, idx1, idx1)) < 32 then break end
+                idx1 = idx1 + 1
+            end
+            key, idx = string_sub(str, idx, idx1 - 1) + 0, idx1
+        elseif vtype == pack_type_string then
+            idx1 = idx
+            while idx1 <= strlen do
+                if string_byte(string_sub(str, idx1, idx1)) < 32 then break end
+                idx1 = idx1 + 1
+            end
+            key, idx = string_sub(str, idx, idx1 - 1), idx1
+        elseif vtype == pack_val_endtable then
+            return ret, idx
+        end
+
+        vtype, idx = string_byte(string_sub(str, idx, idx)), idx + 1
+        if vtype == pack_type_num then
+            idx1 = idx
+            while idx1 <= strlen do
+                if string_byte(string_sub(str, idx1, idx1)) < 32 then break end
+                idx1 = idx1 + 1
+            end
+            value, idx = string_sub(str, idx, idx1 - 1) + 0, idx1
+        elseif vtype == pack_type_string then
+            idx1 = idx
+            while idx1 <= strlen do
+                if string_byte(string_sub(str, idx1, idx1)) < 32 then break end
+                idx1 = idx1 + 1
+            end
+            value, idx = string_sub(str, idx, idx1 - 1), idx1
+        elseif vtype == pack_type_bool then
+            value = string_sub(str, idx, idx) == "1"
+            idx = idx + 1
+        elseif vtype == pack_type_table then
+            value, idx = parse_new(str, idx)
+        end
+        ret[key] = value
+    end
+    return ret, idx
+end
+
+function unpack_array_from_string(str)
+    if str ~= "" then
+        return parse_new(string_sub(str, 2, -1)) -- новый формат упаковки тэгирован символом c кодом 1.    end
+    end
+    return {}
+end
+
+---------------------------------------------
+--callback section
+---------------------------------------------
+
+--колбэк на потерю предмета из инвентаря ГГ
+function on_item_drop(obj)
+end
+
+local timer_trigger = nil
+
+--колбэк на апдейт ГГ (удобно для проверки условий, так как вызывается постоянно, нельзя перегружать, а то будут лаги)
+function on_actor_update()
+	local milliseconds = game_milliseconds()
+
+    --не удалять! библиотечная конструкция
+    if not timer_trigger then 
+    	timer_trigger = milliseconds 
+    end
+
+    if timer_trigger <= milliseconds then
+        timer_trigger = milliseconds + 250
+
+        check_timers(milliseconds)
+        
+        -- Багфикс радара
+		ogsm_debug.check_radar_off()
+	
+		-- Проверка, ранен ли актор
+		ogsm_quests.wounded_pp()
+		
+		-- Проверка на блок автосейва
+		hotkeys.disable_save()
+    end
+end
+
+
+--загружаем все переменные, которые нужно; вызывается при загрузке игры автоматически
+function on_game_load()
+	if db.storage[db.actor:id()].pstor == nil then
+		db.storage[db.actor:id()].pstor = {}
+	end
+
+	-- Первый запуск мода
+	if db.actor:dont_has_info("new_game_start") then
+		level.add_cam_effector("camera_effects\\hit_back.anm", 6666, false, "swm_legs.show_legs")
+		swm_legs.hidden_legs()
+		
+		amk.g_start_timer("show_news", 0, 0, 10)
+		
+		db.actor:give_info_portion("new_game_start")
+	end
+	
+	convert_timers() -- переносим старые и новые таймеры в таблицу
+	
+	amk_offline_alife.init()
+    news_main.init()
+    
+    amk_offline_alife.update_npc_tables()    
+	
+	-- Получаем список всех монстров и укрытий
+	ogsm_respawn.get_level_mobs()
+
+	-- Отмечаем на карте новые точки перехода
+	ogsm_freeplay.mark_lc()
+
+	-- Убираем с карты метки выполненных заданий
+	ogsm_debug.del_marks_onload()     
+end
+
+-- Эта функция вызывается самой первой. Онлайновые объекты недоступны! db.actor недоступен!
+function on_game_start()
+end
+
+function getStartTime()
+	if StartTime == nil then
+	    local t = Parse_StrToTbl(getIniValueStringSimple("alife", "start_time"), ":")
+	    local d = Parse_StrToTbl(getIniValueStringSimple("alife", "start_date"), ".")
+	    StartTime = game.CTime()
+	    StartTime:set(d[3], d[2], 1, 0, 0, 0, 0)
+	    local temp = game.CTime()
+	    temp:setHMS(24, 0, 0)
+	    StartTime = StartTime - temp
+    end
+end
+
+function parse_ini_section_to_array(ini, section)
+    local tmp = {}
+    if ini:section_exist(section) then
+        local result, id, value = nil, nil, nil
+        for a = 0, ini:line_count(section) - 1 do
+            result, id, value = ini:r_line(section, a, "", "")
+            if id ~= nil and trim(id) ~= "" and trim(id) ~= nil then
+                tmp[trim(id)] = trim(value)
+            end
+        end
+    end
+    return tmp
+end
+
+-- Туториал на пси-воздействие
+function on_my_psy()
+	if db.actor and not has_alife_info("encyclopedy_tutorial_psy") then
+		game.start_tutorial("part_7_psy")
+		db.actor:give_info_portion("encyclopedy_tutorial_psy")
+	end
+end
+
+getStartTime()
+
+function game_milliseconds()
+    local gtime = game.get_game_time()
+    local seconds = gtime:diffSec(StartTime)
+    local y, m, d, h, min, sec, ms = gtime:get()
+    return (seconds * 1000 + ms)
+end
+
+function game_seconds()
+    return game.get_game_time():diffSec(StartTime)
+end
+
+function game_minutes()
+    return math_floor(game_seconds() / 60)
+end
+
+function game_hours()
+    return math_floor(game_seconds() / 3600)
+end
+
+function game_days()
+    return math_floor(game_seconds() / 86400)
+end

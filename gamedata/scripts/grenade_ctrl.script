@@ -1,0 +1,108 @@
+--[[-----------------------------------------------------------------------------------------------
+ File         : grenade_ctrl.script
+ Description  : гранатометание с пояса (grenades on belt)
+ Copyright    : Charsi
+ Last update  : 06.01.2025 by Muvbed
+--]] -----------------------------------------------------------------------------------------------
+
+-- новые добавляем сюда по аналогии
+grenades = {
+    ["grenade_f1"] = true,
+    ["grenade_rgd5"] = true
+}
+
+local grenades_on_belt = {} -- фейки на поясе,гранаты в инвентаре [id_гранаты]=id_фейка
+local f = false
+local grenades_1 = {}
+for k, v in pairs(grenades) do
+    grenades_1[k .. "_1"] = true
+end
+local fake_grenades = {}
+for k, v in pairs(grenades) do
+    fake_grenades["fake_" .. k] = true
+end
+
+function on_item_take(obj)
+	local sec = obj:section()
+    if grenades[sec] then
+        del_item(obj:id())
+        spawn_in_inv("fake_" .. sec)
+    elseif grenades_1[sec] and not grenades_on_belt[obj:id()] then
+        del_item(obj:id())
+        ogse_signals.get_mgr():call( "on_inventory_reset", "grenade_separator" )
+        f = true
+    end
+end
+
+function on_item_drop(obj)
+    local id = grenades_on_belt[obj:id()]
+
+    if 
+    	id 
+    	and has_alife_info("ui_inventory_hide") 
+    	and not has_alife_info("ui_car_body") 
+    	and not db.actor:is_talking()
+    then
+        grenades_on_belt[obj:id()] = nil -- бросили гранату, удаляем её клон с пояса
+        del_item(id)
+    end
+end
+
+function on_info(info_id)
+    if 
+    	info_id == "ui_inventory" 
+    	or info_id == "ui_car_body" 
+    	or info_id == "ui_talk" 
+    	or info_id == "ui_trade"
+    then
+        db.actor:iterate_inventory(
+            function(dummy, item)
+                if item and grenades_1[item:section()] then
+                    del_item(item:id())
+                end
+            end,
+            nil
+        )
+        grenades_on_belt = {}
+    elseif 
+    	info_id == "ui_inventory_hide" 
+    	or info_id == "ui_car_body_hide" 
+    	or (info_id == "ui_talk_hide" and not db.actor:is_talking())
+    	or (info_id == "ui_trade_hide" and not db.actor:is_talking())
+    then
+    	dsh.timeout(1, function() 
+        	ogse_signals.get_mgr():call( "on_inventory_reset", "grenade_separator" )
+        	f = true
+        end)
+    end
+end
+
+function update_tbl()
+    if f then
+        local sect = ""
+        for id, v in pairs(inventory.belt_id) do
+            sect = level.object_by_id(id):section()
+            if string.sub(sect, 1, 5) == "fake_" then
+                for fake_sect, _ in pairs(fake_grenades) do
+                    if sect == fake_sect then
+                        grenades_on_belt[spawn_in_inv(string.sub(sect, 6, -1) .. "_1")] = id
+                        break
+                    end
+                end
+            end
+        end
+        f = false
+    end
+end
+
+function spawn_in_inv(sec)
+    local obj = alife():create(sec, db.actor:position(), db.actor:level_vertex_id(), db.actor:game_vertex_id(), 0)
+    return obj.id
+end
+
+function del_item(id)
+    local sobj = alife():object(id)
+    if sobj then
+        alife():release(sobj, true)
+    end
+end

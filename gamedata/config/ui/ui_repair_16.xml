@@ -1,0 +1,105 @@
+ <?xml version="1.0" encoding="windows-1251" ?>
+ 
+<main>
+	<main_window x="0" y="0" width="316" height="510" stretch="1">
+		<texture x="0" y="0" width="422" height="510">ui\ui_its_repair_list</texture>
+	</main_window>
+	<repair_title_1 x="34" y="0" width="158" height="35">
+		<text font="graffiti22" color="grey_4" align="l">ui_repair_title_1</text>
+	</repair_title_1>
+
+	<money_static x="39" y="441" width="42" height="35">
+		<text x="0" y="0" font="graffiti19" color="grey_4" a="255" align="l">ui_repair_money</text>
+	</money_static>
+	<money_count_static x="247" y="441" width="42" height="35">
+		<text x="0" y="0" font="graffiti19" color="white_2" a="255" align="r"/>
+	</money_count_static>
+
+	<cond_1_100 x="247" y="96" width="42" height="35">
+		<text x="0" y="0" font="arial_14" color="green" a="200" align="r"/>
+	</cond_1_100>
+	<cond_1_90 x="247" y="96" width="42" height="35">
+		<text x="0" y="0" font="arial_14" color="yellow" a="200" align="r"/>
+	</cond_1_90>
+	<cond_1_0 x="247" y="96" width="42" height="35">
+		<text x="0" y="0" font="arial_14" color="red" a="200" align="r"/>
+	</cond_1_0>
+
+	<cond_2_100 x="247" y="190" width="42" height="35">
+		<text x="0" y="0" font="arial_14" color="green" a="200" align="r"/>
+	</cond_2_100>
+	<cond_2_90 x="247" y="190" width="42" height="35">
+		<text x="0" y="0" font="arial_14" color="yellow" a="200" align="r"/>
+	</cond_2_90>
+	<cond_2_0 x="247" y="190" width="42" height="35">
+		<text x="0" y="0" font="arial_14" color="red" a="200" align="r"/>
+	</cond_2_0>
+	
+	<cond_4_100 x="247" y="289" width="42" height="35">
+		<text x="0" y="0" font="arial_14" color="green" a="200" align="r"/>
+	</cond_4_100>
+	<cond_4_90 x="247" y="289" width="42" height="35">
+		<text x="0" y="0" font="arial_14" color="yellow" a="200" align="r"/>
+	</cond_4_90>
+	<cond_4_0 x="247" y="289" width="42" height="35">
+		<text x="0" y="0" font="arial_14" color="red" a="200" align="r"/>
+	</cond_4_0>
+
+	<cond_6_100 x="115" y="359" width="42" height="35">
+		<text x="0" y="0" font="arial_14" color="green" a="200" align="r"/>
+	</cond_6_100>
+	<cond_6_90 x="115" y="359" width="42" height="35">
+		<text x="0" y="0" font="arial_14" color="yellow" a="200" align="r"/>
+	</cond_6_90>
+	<cond_6_0 x="115" y="359" width="42" height="35">
+		<text x="0" y="0" font="arial_14" color="red" a="200" align="r"/>
+	</cond_6_0>
+
+	<repair_cost x="39" y="411" width="42" height="35">
+		<text x="0" y="0" font="graffiti19" color="grey_4" a="255" align="l">ui_repair_cost</text>
+	</repair_cost>
+	<repair_cost_count x="247" y="411" width="42" height="35">
+		<text x="0" y="0" font="graffiti19" color="white_2" a="255" align="r"/>
+	</repair_cost_count>
+	<repair_cost_count_red x="247" y="411" width="42" height="35">
+		<text x="0" y="0" font="graffiti19" color="red" a="255" align="r"/>
+	</repair_cost_count_red>
+
+	<h_weapon_1 x="37" y="32" width="255" height="96" stretch="1">
+		<texture_h>ui_repair_bf_s2_h_16</texture_h>
+	</h_weapon_1>
+	<h_weapon_2 x="37" y="130" width="255" height="96" stretch="1">
+		<texture_h>ui_repair_bf_s2_h_16</texture_h>
+	</h_weapon_2>
+	<h_weapon_4 x="168" y="232" width="125" height="85" stretch="1">
+		<texture_h>ui_repair_bf_s1_h_16</texture_h>
+	</h_weapon_4>
+	<h_outfit x="37" y="232" width="122" height="146" stretch="1">
+		<texture_h>ui_repair_bf_s6_h_16</texture_h>
+	</h_outfit>
+
+	<s_weapon_1 x="37" y="32" width="255" height="96" stretch="1">
+		<texture>ui_repair_bf_s2_s_16</texture>
+	</s_weapon_1>	
+	<s_weapon_2 x="37" y="130" width="255" height="96" stretch="1">
+		<texture>ui_repair_bf_s2_s_16</texture>
+	</s_weapon_2>
+	<s_weapon_4 x="168" y="232" width="125" height="85" stretch="1">
+		<texture>ui_repair_bf_s1_s_16</texture>
+	</s_weapon_4>
+	<s_outfit x="37" y="232" width="122" height="146" stretch="1">
+		<texture>ui_repair_bf_s6_s_16</texture>
+	</s_outfit>
+
+	<btn_repair x="217" y="326" width="42" height="57" accel="kT">
+		<texture_e>ui_repair_b_e_16</texture_e>
+		<texture_t>ui_repair_b_t_16</texture_t>
+		<texture_h>ui_repair_b_h_16</texture_h>
+		<texture_d>ui_repair_b_d_16</texture_d>
+	</btn_repair>
+
+    <btn_quit x="102" y="470" width="121" height="29">
+		<texture>ui_button_ordinary</texture>
+		<text align="c" font="letterica16" color="white_1">ui_inv_exit</text>
+    </btn_quit>
+</main>

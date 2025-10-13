@@ -1,0 +1,135 @@
+-- Replace sounds by Muvbed
+
+function attach( sm )
+  sm:subscribe({ signal = "on_take",      	fun = this.on_use         			})
+  sm:subscribe({ signal = "on_drop",        fun = this.on_drop                  })
+end
+
+function on_drop(obj)
+	if has_alife_info("ui_car_body") then
+		on_use(obj)
+	end
+end
+
+function on_use(obj)
+	local actor = db.actor
+
+	if string.find(obj:section(), "separator") or not (actor and actor:alive()) then
+		return
+	end
+	
+	if 	   obj:clsid() == clsid.wpn_ammo 				or
+		   obj:clsid() == clsid.wpn_ammo_s 				then
+		
+		xr_sound.get_safe_sound_object("replace_snd\\ammo", sound_object.s2d):play_at_pos(actor, actor:position())
+
+	elseif obj:clsid() == clsid.wpn_ammo_og7b 			or
+		   obj:clsid() == clsid.wpn_ammo_og7b_s 		then
+		
+		xr_sound.get_safe_sound_object("replace_snd\\rocket", sound_object.s2d):play_at_pos(actor, actor:position())
+
+	elseif obj:clsid() == clsid.wpn_grenade_launcher 	or
+		   obj:clsid() == clsid.wpn_grenade_launcher_s 	or
+		   obj:clsid() == clsid.wpn_scope 				or
+		   obj:clsid() == clsid.wpn_scope_s 			or
+		   obj:clsid() == clsid.wpn_silencer 			or
+		   obj:clsid() == clsid.wpn_silencer_s 			then
+		
+		xr_sound.get_safe_sound_object("replace_snd\\addon", sound_object.s2d):play_at_pos(actor, actor:position())
+		
+	elseif obj:clsid() == clsid.wpn_knife				or
+		   obj:clsid() == clsid.wpn_knife_s 			then
+
+		xr_sound.get_safe_sound_object("replace_snd\\knife", sound_object.s2d):play_at_pos(actor, actor:position())
+		
+	elseif obj:clsid() == clsid.wpn_binocular			or
+		   obj:clsid() == clsid.wpn_binocular_s 		then
+		
+		xr_sound.get_safe_sound_object("replace_snd\\binoc", sound_object.s2d):play_at_pos(actor, actor:position())
+
+	elseif obj:clsid() == clsid.wpn_pm					or
+		   obj:clsid() == clsid.wpn_pm_s 				or
+		   obj:clsid() == clsid.wpn_fort 				or
+		   obj:clsid() == clsid.wpn_hpsa 				or
+		   obj:clsid() == clsid.wpn_hpsa_s 				or
+		   obj:clsid() == clsid.wpn_walther 			or
+		   obj:clsid() == clsid.wpn_walther_s 			or
+		   obj:clsid() == clsid.wpn_usp45 				or
+		   obj:clsid() == clsid.wpn_usp45_s 			then
+		
+		xr_sound.get_safe_sound_object("replace_snd\\pistol", sound_object.s2d):play_at_pos(actor, actor:position())
+
+	elseif obj:clsid() == clsid.wpn_ak74 				or
+		   obj:clsid() == clsid.wpn_ak74_s 				or
+		   obj:clsid() == clsid.wpn_lr300 				or
+		   obj:clsid() == clsid.wpn_lr300_s 			or
+		   obj:clsid() == clsid.wpn_groza 				or
+		   obj:clsid() == clsid.wpn_groza_s 			or
+		   obj:clsid() == clsid.wpn_svd 				or
+		   obj:clsid() == clsid.wpn_svd_s 				or
+		   obj:clsid() == clsid.wpn_svu 				or
+		   obj:clsid() == clsid.wpn_svu_s 				or
+		   obj:clsid() == clsid.wpn_val 				or
+		   obj:clsid() == clsid.wpn_val_s 				or
+		   obj:clsid() == clsid.wpn_vintorez 			or
+		   obj:clsid() == clsid.wpn_vintorez_s 			then
+		
+		xr_sound.get_safe_sound_object("replace_snd\\rifle", sound_object.s2d):play_at_pos(actor, actor:position())
+		
+	elseif obj:clsid() == clsid.wpn_bm16 				or
+		   obj:clsid() == clsid.wpn_bm16_s 				or
+		   obj:clsid() == clsid.wpn_shotgun 			or
+		   obj:clsid() == clsid.wpn_shotgun_s 			or
+		   obj:clsid() == clsid.wpn_rg6 				or
+		   obj:clsid() == clsid.wpn_rg6_s 				then
+		
+		xr_sound.get_safe_sound_object("replace_snd\\shotgun", sound_object.s2d):play_at_pos(actor, actor:position())
+
+	elseif obj:clsid() == clsid.wpn_rpg7				or
+		   obj:clsid() == clsid.wpn_rpg7_s 				then
+		
+		xr_sound.get_safe_sound_object("replace_snd\\heavy", sound_object.s2d):play_at_pos(actor, actor:position())
+		
+	elseif obj:clsid() == clsid.equ_military 			or	
+		   obj:clsid() == clsid.equ_scientific 			or
+		   obj:clsid() == clsid.equ_exo 				or
+		   obj:clsid() == clsid.equ_stalker 			or
+		   obj:clsid() == clsid.equ_stalker_s 			then
+		
+		xr_sound.get_safe_sound_object("replace_snd\\outfit", sound_object.s2d):play_at_pos(actor, actor:position())
+		
+	elseif obj:clsid() == clsid.device_torch			or
+		   obj:clsid() == clsid.device_torch_s 			then
+		
+		xr_sound.get_safe_sound_object("replace_snd\\torch", sound_object.s2d):play_at_pos(actor, actor:position())
+		
+	elseif obj:clsid() == clsid.obj_document 			then
+		
+		xr_sound.get_safe_sound_object("replace_snd\\document", sound_object.s2d):play_at_pos(actor, actor:position())
+
+	elseif obj:clsid() == clsid.artefact				or
+		   obj:clsid() == clsid.artefact_s 				then
+
+		xr_sound.get_safe_sound_object("replace_snd\\artefact", sound_object.s2d):play_at_pos(actor, actor:position())
+
+	elseif get_string(obj:section(), "class", 1) == "D_SIMDET"	then
+		
+		xr_sound.get_safe_sound_object("replace_snd\\detector", sound_object.s2d):play_at_pos(actor, actor:position())
+		
+	elseif obj:clsid() == clsid.obj_bottle 				then
+		
+		xr_sound.get_safe_sound_object("replace_snd\\drink", sound_object.s2d):play_at_pos(actor, actor:position())
+
+	elseif obj:clsid() == clsid.obj_medkit 				then
+		
+		xr_sound.get_safe_sound_object("replace_snd\\medkit", sound_object.s2d):play_at_pos(actor, actor:position())
+
+	elseif obj:clsid() == clsid.obj_bandage				then
+		
+		xr_sound.get_safe_sound_object("replace_snd\\bandage", sound_object.s2d):play_at_pos(actor, actor:position())
+
+	else
+		xr_sound.get_safe_sound_object("replace_snd\\other", sound_object.s2d):play_at_pos(actor, actor:position())
+
+	end
+end

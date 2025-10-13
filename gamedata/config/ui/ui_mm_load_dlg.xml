@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<window>
+	<back_video x="0" y="0" width="1024" height="430">
+		<texture></texture>
+	</back_video>
+
+	<_back_video x="0" y="0" width="1024" height="512" stretch="1">
+		<texture></texture>
+	</_back_video>
+
+	<background x="0" y="0" width="1024" height="768">
+		<auto_static x="0" y="0" width="1024" height="768" stretch="1">
+			<texture>ui_menu_background</texture>
+		</auto_static>
+	</background>
+
+	<newspaper_video x="137" y="512" width="256" height="256">
+		<texture></texture>
+	</newspaper_video>
+
+	<form x="415" y="228" width="560" height="460">
+		<_texture>ui\ui_options_menu_static</_texture>
+		<_texture_offset x="-29" y="-19"/>
+		<texture>ui_menu_options_dlg</texture>
+
+		<caption x="75" y="10" width="500" height="25" complex_mode="0">
+			<text font="graffiti22" color="white_2">ui_mm_load_game</text>
+		</caption>
+
+		<picture x="105" y="71" width="128" height="128" clipper="1" stretch="1">
+			<texture>ui\ui_noise</texture>
+		</picture>
+
+		<file_info x="47" y="55" width="497" height="171">
+			<texture x="0" y="768" width="497" height="171">ui\ui_static_mm_back_04</texture>
+		</file_info>
+
+		<file_caption x="299" y="109" width="512" height="20" complex_mode="1">
+			<text font="graffiti22" color="yellow"/>
+		</file_caption>
+
+		<file_data x="299" y="135" width="512" height="50" complex_mode="1">
+			<text font="ui_font_utf" color="grey_5"/>
+		</file_data>
+
+		<list_frame x="65" y="221" width="449" height="200">
+			<texture>ui_tablist_textbox</texture>
+		</list_frame>
+
+		<list x="75" y="231" width="429" height="180" item_height="18">
+			<font font="letterica16" color="white_1" />
+		</list>
+
+		<btn_load x="60" y="427" width="157" height="48">
+			<text font="graffiti19" align="c">ui_mm_load_game</text>
+			<texture>ui_button_main02</texture>
+			<text_color>
+				<e color="grey_5"/>				
+				<t color="black"/>				
+				<d color="grey_4"/>
+				<h color="black"/>
+			</text_color>
+	    </btn_load>
+		
+		<btn_delete x="217" y="427" width="157" height="48">			
+			<text font="graffiti19" align="c">ui_mm_delete</text>
+			<texture>ui_button_main02</texture>
+			<text_color>
+				<e color="grey_5"/>				
+				<t color="black"/>				
+				<d color="grey_4"/>
+				<h color="black"/>
+			</text_color>
+	    </btn_delete>
+		
+		<btn_cancel x="374" y="427" width="157" height="48">			
+			<text font="graffiti19" align="c">ui_mm_cancel</text>
+			<texture>ui_button_main02</texture>
+			<text_color>
+				<e color="grey_5"/>				
+				<t color="black"/>				
+				<d color="grey_4"/>
+				<h color="black"/>
+			</text_color>
+	    </btn_cancel>
+	</form>
+</window>

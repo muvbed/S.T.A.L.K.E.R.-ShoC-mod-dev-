@@ -1,0 +1,79 @@
+---------------------------------------------------------------------
+-- Звуки открытия / закрытия тайников, соответственно их визуалу
+-- База: NLC 7 (Сяк и ко)
+-- Апдейт: Muvbed 26.01.2024
+---------------------------------------------------------------------
+
+function attach( sm )
+  sm:subscribe({ signal = "on_use_box",		fun = this.on_use_obj })
+  sm:subscribe({ signal = "on_info",        fun = this.on_info    })
+end
+
+local trs_vis_sound = {
+	["equipment_box_01_case"] 				= "2",
+	["equipment_box_02_case"] 				= "3",
+	["equipment_rucksack_01_case"] 			= "1",
+	["equipment_rucksack_02_case"] 			= "1",
+	["equipment_cross_1_case"] 				= "9",
+	["equipment_cross_2_case"] 				= "9",
+	["equipment_cross_3_case"] 				= "9",
+	["equipment_electric_box_01_case"] 		= "7",
+	["equipment_electric_box_02_case"] 		= "7",
+	["equipment_hatch_01_case"] 			= "8",
+	["equipment_hatch_02_case"] 			= "8",
+	["equipment_instrument_case_01_case"] 	= "5",
+	["equipment_pipe_01_case"] 				= "10",
+	["equipment_pipe_02_case"] 				= "10",
+	["equipment_pipe_valve_01_case"] 		= "10",
+	["equipment_seif_01_case"] 				= "4",
+	["equipment_seif_02_case"] 				= "4",
+	["equipment_seif_03_case"] 				= "4",
+	["equipment_trees_stump_01_case"] 		= "6",
+	["equipment_trees_log_01_case"] 		= "6",
+	["equipment_zaz968_case"] 				= "1"
+}
+
+local trs_sound_flag, trs_sound_vis = false, nil
+
+function on_use_obj(obj, who)
+	if 
+	  obj 
+	  and who 
+	  and who:is_actor() 
+	then
+	    local visual = table.remove( string.explode( "\\", obj:get_visual_name() ) )
+		local sound = nil
+	
+		if trs_vis_sound[visual] then
+			local rnd_snd = trs_vis_sound[visual]
+	
+			trs_sound_vis = visual
+	    	sound = xr_sound.get_safe_sound_object("treasure_sounds\\treasure_" .. rnd_snd .. "_open", sound_object.s2d)
+		else
+			sound = xr_sound.get_safe_sound_object("treasure_sounds\\treasure_1_open", sound_object.s2d)
+			
+			trs_sound_vis = nil
+		end
+	    
+	    sound:play_at_pos(who, who:position())
+	    trs_sound_flag = true
+	end
+end
+
+function on_info(npc, info_id)
+    if info_id == "ui_car_body_hide" and trs_sound_flag then
+        local act = db.actor
+        local sound = nil
+
+        if trs_vis_sound[trs_sound_vis] then
+	        local rnd_snd = trs_vis_sound[trs_sound_vis]
+
+	        sound = xr_sound.get_safe_sound_object("treasure_sounds\\treasure_" .. rnd_snd .. "_close", sound_object.s2d)
+        else
+        	sound = xr_sound.get_safe_sound_object("treasure_sounds\\treasure_1_close", sound_object.s2d)
+        end
+
+        sound:play_at_pos(act, act:position())
+        trs_sound_flag = false
+    end
+end

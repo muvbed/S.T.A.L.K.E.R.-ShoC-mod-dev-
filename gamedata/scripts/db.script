@@ -1,0 +1,89 @@
+
+
+--[[------------------------------------------------------------------------------------------------
+База данных живых онлайновых объектов, зон и рестрикторов, актёра
+Чугай Александр
+--------------------------------------------------------------------------------------------------]]
+
+zone_by_name        = {}
+storage             = {}
+sound               = {}
+actor               = nil
+actor_proxy         = actor_proxy.actor_proxy()
+heli                = {}
+camp_storage        = {}
+story_by_id	        = {}
+trader				= nil
+creature			= {}	-- true - человек, false - животное (исключая торговца)
+artefacts			= {} --TODO: вынести в bind_artefact.
+inv_items			= {}
+
+
+function add_obj( obj )
+	if ( obj:is_stalker() or obj:is_actor() ) then
+		creature[obj:id()] = true
+	elseif obj:is_monster() then
+		creature[obj:id()] = false
+	end
+end
+
+function del_obj( obj )
+	storage[obj:id()] = nil
+	creature[obj:id()] = nil
+	for id,npc in pairs(storage) do
+		if npc.enemy and npc.enemy:id() == obj:id() then npc.enemy = nil end
+	end	
+end
+
+
+function add_zone( zone )
+	zone_by_name[zone:name()] = zone
+end
+
+function del_zone( zone )
+	zone_by_name[zone:name()] = nil
+end
+
+
+function add_actor( obj )
+	actor = obj
+	actor_proxy:net_spawn( obj )
+	add_obj( obj )
+end
+
+function del_actor()
+	del_obj( actor )
+	actor_proxy:net_destroy()
+	actor = nil
+end
+
+
+function add_heli(obj)	
+	heli[obj:id()] = obj
+end	
+function del_heli(obj)
+	heli[obj:id()] = nil
+end	
+
+function add_inv_item(obj)
+	local sect = obj:section()
+
+	if 	
+		not (
+		  sys_ini:line_exist(sect, "quest_item") 
+		  and sys_ini:r_bool(sect, "quest_item")
+		) 
+		and not death_manager.remove_this_shit_immediately[sect] 
+	then
+		inv_items[obj:id()] = true
+	end
+end	
+
+function del_inv_item(obj)
+	for key, val in pairs(inv_items) do
+		if key == obj:id() then
+			inv_items[key] = nil
+			return
+		end
+	end
+end	

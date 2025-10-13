@@ -1,0 +1,843 @@
+-- UPD by Muvbed: 11.04.2024 (добавил новых способностей + проверки в старых)
+
+function attach( sm )
+  sm:subscribe({ signal = "on_monster_spawn",  fun = this.on_monster_spawn })
+  sm:subscribe({ signal = "on_monster_death",  fun = this.on_death })
+end
+
+function on_monster_spawn( obj, binder )
+  local s_name = "on_monster_update." .. obj:id()
+  local subscribed = {}
+  
+  if obj:clsid() == clsid.zombie_s then
+  	table.insert( subscribed, {
+	  [ "signal" ] = s_name,
+	  [ "fun"    ] = this.zombie_radiation,
+	  [ "queued" ] = true,
+	})
+  end
+  
+  if obj:alive() then
+	if
+	  (
+	    isIndoor(level.name()) 
+	    or xr_conditions.is_day()
+	  ) 
+	  and obj:is_monster() 
+	  and obj.health > 0.05 
+	  and not string.find(obj:section(), "rat_", 1, true)
+	then
+	    obj:set_custom_panic_threshold(0)
+	
+	    -- Снижение пси-здоровья в поле зрения
+	    local target = db.actor
+	
+	    if 
+	      target 
+	      and target:alive() 
+	      and obj:relation(target) == game_object.enemy
+	      and target:see_right_now(obj) 
+	      and obj:see_right_now(target) 
+	      and obj:clsid() ~= clsid.tushkano_s 
+	    then
+	        target.psy_health = -0.002
+	    end
+	end
+
+    if obj:clsid() == clsid.chimera_s then
+      table.insert( subscribed, {
+        [ "signal" ] = s_name,
+        [ "fun"    ] = this.chimera_attack,
+        [ "queued" ] = true,
+        [ "__unsubscribe_on_death" ] = true,
+      })
+      if get_string(obj:section(), "bones_particles") then
+        table.insert( subscribed, {
+          [ "signal" ] = s_name,
+          [ "fun"    ] = this.electro_chimera_attack,
+          [ "queued" ] = true,
+          [ "__unsubscribe_on_death" ] = true,
+        })
+      end
+    elseif obj:clsid() == clsid.controller_s then
+	  table.insert( subscribed, {
+        [ "signal" ] = s_name,
+        [ "fun"    ] = this.controller_attack,
+        [ "queued" ] = true,
+        [ "__unsubscribe_on_death" ] = true,
+      })
+      table.insert( subscribed, {
+        [ "signal" ] = s_name,
+        [ "fun"    ] = this.controller_psy_attack,
+        [ "queued" ] = true,
+        [ "__unsubscribe_on_death" ] = true,
+      })
+    elseif obj:clsid() == clsid.dog_s then
+	  if obj:section() == "dog_v_strong" then
+        table.insert( subscribed, {
+          [ "signal" ] = s_name,
+          [ "fun"    ] = this.dog_attack,
+          [ "queued" ] = true,
+          [ "__unsubscribe_on_death" ] = true,
+        })
+        table.insert( subscribed, {
+          [ "signal" ] = s_name,
+          [ "fun"    ] = this.dog_attack_phantom,
+          [ "queued" ] = true,
+          [ "__unsubscribe_on_death" ] = true,
+        })
+	  end
+	elseif obj:clsid() == clsid.pseudodog_s then
+      table.insert( subscribed, {
+        [ "signal" ] = s_name,
+        [ "fun"    ] = this.pseudodog_attack,
+        [ "queued" ] = true,
+        [ "__unsubscribe_on_death" ] = true,
+      })
+    elseif obj:clsid() == clsid.cat_s then
+      table.insert( subscribed, {
+        [ "signal" ] = s_name,
+        [ "fun"    ] = this.cat_attack,
+        [ "queued" ] = true,
+        [ "__unsubscribe_on_death" ] = true,
+      })
+    elseif obj:clsid() == clsid.bloodsucker_s then
+      table.insert( subscribed, {
+        [ "signal" ] = s_name,
+        [ "fun"    ] = this.bloodsucker_attack,
+        [ "queued" ] = true,
+        [ "__unsubscribe_on_death" ] = true,
+      })
+    elseif obj:clsid() == clsid.zombie_s then
+      if obj:section() == "zombie_plague" then
+        table.insert( subscribed, {
+          [ "signal" ] = s_name,
+          [ "fun"    ] = this.zombie_plague_attack,
+          [ "queued" ] = true,
+          [ "__unsubscribe_on_death" ] = true,
+        })
+      elseif string.find(obj:section(), "zombie_rusty") then
+        table.insert( subscribed, {
+          [ "signal" ] = s_name,
+          [ "fun"    ] = this.blow_zombie_rusty,
+          [ "queued" ] = true,
+          [ "__unsubscribe_on_death" ] = true,
+        })
+      end
+    elseif obj:clsid() == clsid.burer_s then
+      table.insert( subscribed, {
+		[ "signal" ] = s_name,
+		[ "fun"    ] = this.burer_attack,
+		[ "queued" ] = true,
+		[ "__unsubscribe_on_death" ] = true,
+	  })
+      if obj:section() == "burer_strong" then
+		table.insert( subscribed, {
+		  [ "signal" ] = s_name,
+		  [ "fun"    ] = this.psy_burer,
+		  [ "queued" ] = true,
+		  [ "__unsubscribe_on_death" ] = true,
+	    })
+	  end
+	elseif obj:clsid() == clsid.fracture_s then
+      table.insert( subscribed, {
+        [ "signal" ] = s_name,
+        [ "fun"    ] = this.fracture_attack,
+        [ "queued" ] = true,
+        [ "__unsubscribe_on_death" ] = true,
+      })
+    end
+  end
+  if table.getn( subscribed ) > 0 then
+    local sm = ogse_signals.get_mgr()
+	for _, s in ipairs( subscribed ) do
+	  sm:subscribe( s )
+	end
+	binder[ script_name() .. ".subscribed" ] = subscribed
+  end
+end
+
+function on_death( obj, who )
+  local binder     = obj:binded_object()
+  local subscribed = binder[ script_name() .. ".subscribed" ]
+  if subscribed then
+    local left = {}
+    local sm   = ogse_signals.get_mgr()
+    for _, s in ipairs( subscribed ) do
+      if s[ "__unsubscribe_on_death" ] then
+        sm:unsubscribe( s )
+      else
+        table.insert( left, s )
+      end
+    end
+    if table.getn( left ) > 0 then
+      binder[ script_name() .. ".subscribed" ] = left
+    else
+      binder[ script_name() .. ".subscribed" ] = nil
+    end
+  end
+
+  quest_functions_on_death( obj, who )
+end
+
+-- Сбитие прицела и замедление движений от химеры
+function chimera_attack(obj)
+    ogse_signals.get_mgr():reschedule(4500)
+
+    local npc = obj:get_enemy()
+    local DamagedThreshold = utils.cfg_get_number(sys_ini, obj:section(), "DamagedThreshold", false, false, false, "")
+
+    if npc and npc:alive() and npc:is_actor() and npc:see_right_now(obj) and obj:see_right_now(npc) and obj.health > DamagedThreshold then
+        local dist = obj:position():distance_to(npc:position())
+        
+        if dist <= 20 then
+            level.add_pp_effector("blur.ppe", 7161, false)
+            level.add_pp_effector("duality_circle.ppe", 7162, false)
+            level.add_cam_effector("camera_effects\\mutant_hit.anm", 7163, false, "")
+            xr_sound.get_safe_sound_object("affects\\zvon", sound_object.s2d):play_at_pos(npc, npc:position())
+            ogse_actor_conditions_mgr.walk_accel_factor = 0.7
+
+            dsh.timeout(
+                4000,
+                function()
+                    ogse_actor_conditions_mgr.walk_accel_factor = 1
+                end
+            )
+        end
+    end
+end
+
+
+-- Атака электрохимеры
+local chimera_particle = particles_object("anomaly2\\electra2_blast_00")
+local chimera_sound = xr_sound.get_safe_sound_object([[anomaly\electra_blast]])
+
+function electro_chimera_attack(obj)
+    local posit = obj:position()
+    local enemy = obj:best_enemy()
+
+    if 
+      enemy 
+      and enemy:alive()
+      and posit:distance_to(enemy:position()) < (enemy:is_actor() and 13 or 5) 
+      and obj:see_right_now(enemy) 
+    then
+        if not chimera_sound:playing() and not chimera_particle:playing() then
+            chimera_particle:play_at_pos(posit)
+            chimera_sound:play_at_pos(obj, posit, 0)
+
+            local zh = hit()
+            zh.draftsman = obj
+            zh.type = hit.shock
+            zh.direction = posit:sub(enemy:position())
+            zh:bone(get_string(enemy:section(), "bone_torso", "bip01_spine")) -- чтобы учитывалась броня
+            zh.power = 0.15
+            zh.impulse = 0.1
+            enemy:hit(zh)
+        end
+    end
+end
+
+local function start_fire()
+    local wpn = db.actor:active_item()
+    if not (wpn and wpn:is_weapon_magazined()) then
+        return
+    end
+    local slots = {
+        [1] = true,
+        [2] = true,
+        [4] = true
+    }
+    if not slots[db.actor:active_slot()] then
+        return
+    end
+    wpn:get_weapon():start_fire()
+    dsh.timeout(
+        math.random(1000, 3000),
+        function(id, name)
+            local wpn = db.actor:active_item()
+            if wpn and wpn:id() == id and wpn:name() == name then
+                wpn:get_weapon():stop_fire()
+            end
+        end,
+        wpn:id(),
+        wpn:name()
+    )
+end
+
+-- Контроллёр сбивает прицел/прячет оружие и триггерит произвольную стрельбу
+function controller_attack(obj)
+    local attack_dist = 80
+    local dist = obj:position():distance_to(db.actor:position())
+    ogse_signals.get_mgr():reschedule(
+    	(dist < attack_dist and 1000) 
+    	or (dist < attack_dist * 2 and 2000) 
+    	or 5000
+    )
+    if dist > attack_dist then
+        return
+    end
+
+    local enemy = obj:best_enemy()
+    if 
+      not (enemy and enemy:alive() and enemy:is_actor() and obj:see_right_now(enemy)) 
+      or obj:controller_psy_hit_active() 
+    then
+        return
+    end
+
+    if math.random() < 0.5 then
+        local dir = device().cam_dir
+        local x = dir.x - (1.5 - 3 * math.random())
+        local y = dir.y
+        local z = dir.z - (1.5 - 3 * math.random())
+        dir = vector():set(x, y, z)
+        local h = -dir:getH()
+        local p = -dir:getP()
+        local cam = actor_camera(0)
+        if cam then
+            cam.yaw = h
+            cam.pitch = p
+        end
+        start_fire()
+        level.add_pp_effector("psi_attack1.ppe", 7172, false, "")
+    end
+
+    if math.random() < 0.25 then
+        bind_stalker.hide_weapon()
+        bind_stalker.restore_weapon()
+        level.add_pp_effector("psi_attack2.ppe", 7173, false, "")
+    end
+end
+
+-- Контролёр запускает фантомов и зомбирует сталкеров
+function controller_psy_attack(obj)
+    local npc = obj:get_enemy()
+    if npc and npc:alive() then
+        if
+            npc:is_stalker() and obj:see_right_now(npc) and not string.find(npc:character_community(), "zombied") and
+            obj:position():distance_to(npc:position()) < math.random(30, 60) and 
+            not ogse.is_quest_npc(npc)
+         then
+            local sobj = alife():object(npc:id())
+            local gl = xr_gulag.get_npc_gulag(npc)
+            if not gl or (gl.name ~= "mil_fblockpost" and gl.name ~= "mil_fneutral") then
+                if sobj and sobj.online then
+                    npc:set_character_community("zombied", 0, 0)
+                end
+            end
+        end
+
+        if
+            npc:is_actor() and obj:see_right_now(npc) and obj:position():distance_to(npc:position()) < math.random(10, 100) and
+            phantom_manager.phantom_count() < 5
+         then
+            local yaw = math.pi * 2.0 * math.random()
+            local radius = 30 * (math.random() / 2.0 + 0.5)
+            local height = 2.5 * math.random()
+            local a_pos = npc:position()
+            local pos =
+                vector():set(math.sin(yaw) * radius + a_pos.x, a_pos.y + height, math.cos(yaw) * radius + a_pos.z)
+
+            phantom_manager.spawn_phantom(pos)
+
+            local snd_obj = xr_sound.get_safe_sound_object("soundtrack\\controller\\" .. math.random(13))
+
+            if snd_obj then
+                snd_obj:play_at_pos(npc, vector():set(0, 0, 0), 0, sound_object.s2d)
+            end
+        end
+    end
+end
+
+-- Пси-атака некоторых собак
+function dog_attack(obj)
+    local enemy = obj:best_enemy()
+
+    if not (
+      enemy and enemy:alive() and enemy:is_actor() and obj:see_right_now(enemy)
+    ) then
+        return
+    end
+
+    local dist = obj:position():distance_to(enemy:position())
+    local attack_dist = 8
+
+    ogse_signals.get_mgr():reschedule(
+      (dist < attack_dist and 1000) 
+      or 5000
+    )
+
+    if dist > attack_dist or math.random() > 0.8 then
+        return
+    end
+
+    level.add_pp_effector("radiation.ppe", 2012, false)
+    local h = hit()
+    h.type = hit.telepatic
+    h.power = 0.01 + 0.02 * math.random(0.11, 1.11)
+    h.impulse = 0.0
+    h:bone(get_string(enemy:section(), "bone_torso", "bip01_spine")) -- чтобы учитывалась броня
+    h.draftsman = obj
+    h.direction = obj:direction()
+    enemy:hit(h)
+
+    local active_item = enemy:active_item()
+
+    if 
+      active_item and math.random() < 0.3
+      and (enemy:active_slot() == 1 or enemy:active_slot() == 2 or enemy:active_slot() == 4) 
+    then
+        enemy:drop_item(active_item)
+    end
+end
+
+-- Некоторые собачки запускают фантомов
+function dog_attack_phantom(obj)
+    ogse_signals.get_mgr():reschedule(5000)
+    
+    local enemy = obj:best_enemy()
+
+    if not (
+      enemy and enemy:alive() and enemy:is_actor() and obj:see_right_now(enemy)
+    ) then
+        return
+    end
+
+	local binder = obj:binded_object()
+    local dist = obj:position():distance_to(enemy:position())
+
+    if dist < 4 then
+        return
+    end
+
+    if not (binder.phantom_spawned_id and level.object_by_id(binder.phantom_spawned_id)) then
+        binder.phantom_spawned_id = nil
+        if math.random() < 0.3 then
+            local sobj =
+                alife():create(
+                "m_phantom",
+                obj:position(),
+                enemy:level_vertex_id(),
+                enemy:game_vertex_id()
+            )
+            binder.phantom_spawned_id = sobj.id
+        end
+    end
+end
+
+-- Пси-атака псевдособак
+function pseudodog_attack(obj)
+    ogse_signals.get_mgr():reschedule(2500)
+
+    local npc = obj:get_enemy()
+    local DamagedThreshold = utils.cfg_get_number(sys_ini, obj:section(), "DamagedThreshold", false, false, false, "")
+
+    if
+        npc and npc:alive() and npc:is_actor() and npc:see_right_now(obj) and obj:see_right_now(npc) 
+        and obj.health > DamagedThreshold and math.random() < 0.6
+     then
+        local h = hit()
+        h.type = hit.telepatic
+        h.power = 0.05
+        h.impulse = 0
+        h:bone(get_string(npc:section(), "bone_torso", "bip01_spine"))
+        h.draftsman = obj
+        h.direction = obj:direction()
+        npc:hit(h)
+
+        level.add_pp_effector("deimos1.ppe", 7121, false)
+        xr_sound.get_safe_sound_object("monsters\\pseudodog\\psy_affect_0", sound_object.s2d):play_at_pos(
+            npc,
+            npc:position()
+        )
+    end
+end
+
+-- Сонливость ГГ от котов
+function cat_attack(obj)
+    ogse_signals.get_mgr():reschedule(2500)
+
+    local npc = obj:get_enemy()
+    local DamagedThreshold = utils.cfg_get_number(sys_ini, obj:section(), "DamagedThreshold", false, false, false, "")
+
+    if
+        npc and npc:alive() and npc:is_actor() and npc:see_right_now(obj) and obj:see_right_now(npc) 
+        and obj.health > DamagedThreshold and math.random() < 0.5
+     then
+        local dist = obj:position():distance_to(npc:position())
+        if dist <= 20 then
+        	npc.power = -0.05
+        	ogse_sleep_mgr.add_need_for_sleep(5)
+        	
+            level.add_pp_effector("gape.ppe", 7151, false)
+            xr_sound.get_safe_sound_object("monsters\\cat\\psy", sound_object.s2d):play_at_pos(npc, npc:position())
+        end
+    end
+end
+
+-- Дист. удар от кровососов
+function bloodsucker_attack(obj)
+	ogse_signals.get_mgr():reschedule(10000)
+
+    local npc = obj:get_enemy()
+    local DamagedThreshold = utils.cfg_get_number(sys_ini, obj:section(), "DamagedThreshold", false, false, false, "")
+
+    if npc and npc:alive() and npc:is_actor() and obj:see_right_now(npc) and obj.health > DamagedThreshold then
+        local dist = obj:position():distance_to(npc:position())
+        local partial_visibility_radius =
+            utils.cfg_get_number(sys_ini, obj:section(), "partial_visibility_radius", false, false, false, "")
+
+        if dist < partial_visibility_radius then
+            level.add_pp_effector("bloody.ppe", 7131, false)
+            level.add_pp_effector("blur.ppe", 7132, false)
+            level.add_cam_effector("camera_effects\\mutant_hit.anm", 7133, false, "")
+            xr_sound.get_safe_sound_object("monsters\\bloodsucker\\bloodsucker_attack", sound_object.s2d):play_at_pos(
+                npc,
+                npc:position()
+            )
+
+            local h = hit()
+            h.type = hit.wound
+            h.power = 0.1
+            h.impulse = 0
+            h:bone(get_string(npc:section(), "bone_torso", "bip01_spine"))
+            h.draftsman = obj
+            h.direction = obj:direction()
+            npc:hit(h)
+        end
+    end
+end
+
+-- Радиационный фон зомби
+function zombie_radiation( obj )
+	local actor = db.actor
+	
+	if actor then
+		local dist = actor:position():distance_to(obj:position())
+
+	    if dist <= 2.5 and actor:item_in_slot(8) then
+	        xr_sound.set_actor_sound("level_border_detector")
+	        xr_sound.set_actor_sound_factor(0.01)
+	    else
+	        xr_sound.set_actor_sound("")
+	    end
+	
+	    if dist <= 1.5 and actor:alive() then
+	        actor.radiation = 0.004
+	    end
+	end
+end
+
+-- Атака насекомых при приближении к чумному зомби
+local insect_particle = particles_object("ogsm\\ogsm_flies_00")
+local insect_sound = xr_sound.get_safe_sound_object([[anomaly\flies]])
+
+function zombie_plague_attack(obj)
+	local enemy = obj:best_enemy()
+
+	if not (enemy and enemy:alive()) then return end
+	
+	local enemy_pos = enemy:position()
+	
+    local dist = obj:position():distance_to(enemy_pos)
+    local attack_dist = 8
+    
+    ogse_signals.get_mgr():reschedule(
+    	(dist < attack_dist and 500) 
+    	or (dist < attack_dist * 2 and 2500) 
+    	or 5000
+    )
+    
+    if dist < attack_dist then
+        if not insect_particle:playing() then
+            insect_particle:play_at_pos(
+            	vector():set(enemy_pos.x, enemy_pos.y + 1.7, enemy_pos.z)
+            )
+        else
+            insect_particle:move_to(
+                vector():set(enemy_pos.x, enemy_pos.y + 1.7, enemy_pos.z),
+                vector():set(enemy_pos.x, enemy_pos.y + 1.7, enemy_pos.z)
+            )
+        end
+        if not insect_sound:playing() then
+            insect_sound:play_at_pos(enemy, enemy_pos)
+
+            local zh = hit()
+            zh.draftsman = obj
+            zh.type = hit.chemical_burn
+            zh.direction = obj:position():sub(enemy_pos)
+            zh.power = 0.5
+            zh.impulse = 0
+            zh:bone(get_string(enemy:section(), "bone_torso", "bip01_spine")) -- чтобы учитывалась броня
+            enemy:hit(zh)
+        else
+            insect_sound:set_position(enemy_pos)
+        end
+    else
+        insect_particle:stop()
+    end
+end
+
+-- Взрывающийся зомби
+function blow_zombie_rusty(obj)
+	if obj then
+		local best_enemy = obj:best_enemy()
+
+	    if
+	      best_enemy 
+	      and best_enemy:alive()
+	      and obj:position():distance_to(best_enemy:position()) < 5
+	      and obj:see_right_now(best_enemy)
+		then
+	        blow_zombie(obj)
+	        ogse_signals.get_mgr():reschedule(5000) -- Чтобы взрыв не повторялся, пока зомби не успел удалиться.
+	    end
+	end
+end
+
+-- Взрыв зомби-камикадзе
+local zombie_particle = particles_object("ogsm\\ogsm_zombieblow")
+local zombie_sound1 = xr_sound.get_safe_sound_object([[anomaly\anomaly_body_tear_1]])
+local zombie_sound2 = xr_sound.get_safe_sound_object([[weapons\f1_explode_]])
+
+function blow_zombie(p_obj)
+	zombie_particle:play_at_pos(p_obj:position())
+
+    if zombie_sound1 then
+        zombie_sound1:play_at_pos(p_obj, p_obj:position(), 0)
+    end
+    if zombie_sound2 then
+        zombie_sound2:play_at_pos(p_obj, p_obj:position(), 0)
+    end
+
+	local enemy = p_obj:best_enemy()
+
+    if enemy and p_obj:position():distance_to(enemy:position()) < 5 then
+   	    local zh = hit()
+
+	    zh.type = hit.explosion
+	    zh:bone(get_string(enemy:section(), "bone_torso", "bip01_spine")) -- чтобы учитывалась броня
+	    zh.power = 1.5
+	    zh.impulse = 5
+	    zh.draftsman = p_obj
+	    zh.direction = p_obj:position():sub(enemy:position())
+	    enemy:hit(zh) 
+    end
+
+    local id = p_obj:id()
+    dsh.timeout(
+        150,
+        function()
+            local sobj = alife():object(id)
+
+            if sobj then
+                alife():release(sobj, true)
+            end
+        end
+    )
+end
+
+-- Пси-удар и выбивание оружия от изломов
+function fracture_attack(obj)
+    ogse_signals.get_mgr():reschedule(2500)
+
+    local npc = obj:get_enemy()
+    local DamagedThreshold = utils.cfg_get_number(sys_ini, obj:section(), "DamagedThreshold", false, false, false, "")
+
+    if
+      npc and npc:alive() and npc:is_actor() and npc:see_right_now(obj) and obj:see_right_now(npc) 
+      and obj.health > DamagedThreshold and math.random() < 0.8
+	then
+        local h = hit()
+
+        h.type = hit.telepatic
+        h.power = 0.08
+        h.impulse = 0
+        h:bone(get_string(npc:section(), "bone_torso", "bip01_spine"))
+        h.draftsman = obj
+        h.direction = obj:direction()
+        npc:hit(h)
+
+        level.add_pp_effector("blur.ppe", 7181, false)
+        xr_sound.get_safe_sound_object("monsters\\izlom\\fracture_scan", sound_object.s2d):play_at_pos(
+            npc,
+            npc:position()
+        )
+
+        local aitem = npc:active_item()
+
+        if
+            aitem and math.random() < 0.25 and
+            (npc:active_slot() == 1 or npc:active_slot() == 2 or npc:active_slot() == 4)
+         then
+            level.add_pp_effector("wink.ppe", 7182, false)
+            level.add_cam_effector("camera_effects\\mutant_hit.anm", 7183, false, "")
+            npc:drop_item(aitem)
+        end
+    end
+end
+
+-- Скан и выбивание оружия от бюреров
+function burer_attack(obj)
+    ogse_signals.get_mgr():reschedule(2500)
+
+    local npc = obj:get_enemy()
+    local DamagedThreshold = utils.cfg_get_number(sys_ini, obj:section(), "DamagedThreshold", false, false, false, "")
+
+    if
+        npc and npc:alive() and npc:is_actor() and npc:see_right_now(obj) and obj:see_right_now(npc)
+        and obj.health > DamagedThreshold and math.random() < 0.8
+     then
+        level.add_pp_effector("blur.ppe", 7141, false)
+        xr_sound.get_safe_sound_object("monsters\\burer\\burer_scan_affect_0", sound_object.s2d):play_at_pos(
+            npc,
+            npc:position()
+        )
+
+        local aitem = npc:active_item()
+
+        if
+            aitem and math.random() < 0.25 and
+            (npc:active_slot() == 1 or npc:active_slot() == 2 or npc:active_slot() == 4)
+         then
+            level.add_pp_effector("wink.ppe", 7142, false)
+            level.add_cam_effector("camera_effects\\mutant_hit.anm", 7143, false, "")
+            npc:drop_item(aitem)
+        end
+    end
+end
+
+-- Аура пси-бюрера
+function psy_burer(p_obj)
+	local actor = db.actor
+	
+	if actor and actor:alive() then
+		local dist = p_obj:position():distance_to(actor:position())
+	    local attack_dist = 20
+	
+	    ogse_signals.get_mgr():reschedule((dist < attack_dist and 3000) or (dist < attack_dist * 2 and 6000) or 9000)
+	
+	    if dist < attack_dist then
+	        local sound_obj_right = xr_sound.get_safe_sound_object([[ambient\random\rnd_moan1]])
+	        local sound_obj_left = xr_sound.get_safe_sound_object([[ambient\random\rnd_moan2]])
+	
+	        sound_obj_right.volume = 0.5
+	        sound_obj_left.volume = 0.5
+	
+	        local zh = hit()
+	
+	        zh.draftsman = actor
+	        zh.type = hit.telepatic
+	        zh.direction = p_obj:position():sub(actor:position())
+	        zh:bone(get_string(actor:section(), "bone_torso", "bip01_spine"))
+	        zh.power = 0.1
+	        actor:hit(zh)
+	
+	        if not sound_obj_left:playing() then
+	            local i = math.random(1, 4)
+	
+	            if i == 1 then
+	                sound_obj_left = xr_sound.get_safe_sound_object([[ambient\random\rnd_moan1]])
+	            elseif i == 2 then
+	                sound_obj_left = xr_sound.get_safe_sound_object([[ambient\random\rnd_moan2]])
+	            elseif i == 3 then
+	                sound_obj_left = xr_sound.get_safe_sound_object([[ambient\random\rnd_moan4]])
+	            elseif i == 4 then
+	                sound_obj_left = xr_sound.get_safe_sound_object([[ambient\random\rnd_moan5]])
+	            end
+	            if sound_obj_left then
+	                sound_obj_left:play_at_pos(actor, vector():set(1, 0, 1), 0, sound_object.s2d)
+	            end
+	        end
+	
+	        if not sound_obj_right:playing() then
+	            local j = math.random(1, 4)
+	
+	            if j == 1 then
+	                sound_obj_right = xr_sound.get_safe_sound_object([[ambient\random\rnd_moan1]])
+	            elseif j == 2 then
+	                sound_obj_right = xr_sound.get_safe_sound_object([[ambient\random\rnd_moan2]])
+	            elseif j == 3 then
+	                sound_obj_right = xr_sound.get_safe_sound_object([[ambient\random\rnd_moan4]])
+	            elseif j == 4 then
+	                sound_obj_right = xr_sound.get_safe_sound_object([[ambient\random\rnd_moan5]])
+	            end
+	            if sound_obj_right then
+	                sound_obj_right:play_at_pos(actor, vector():set(-1, 0, 1), 0, sound_object.s2d)
+	            end
+	        end
+	        
+	        level.add_pp_effector("dead_zone.ppe", 7111, true)
+	        
+	      	dsh.timeout(
+	      		4000,
+	      		function()
+	      			level.remove_pp_effector(7111)
+	      		end
+	      	)
+	    end
+	end
+end
+
+
+-- Квестовые функции (перенесено из ogsm_mutants.script)
+local monster_infoportion = {
+	-- если необходимо, чтобы при смерти разных видов существ выдавался один и тот же инфопоршень, то нужно сделать так:
+	-- [имя_инфопоршня] = {имя1, имя2...}
+	["single"] = {
+		["zombie_plague_dead"] 	= "zombie_plague",
+		["zombie_rusty_dead"]	= "zombie_rusty",
+		["psy_burer_dead"] 		= "burer_strong",
+		["electrochimera_dead"] = "electro_chimera",
+		["psy_dog_dead"]		= "psy_dog",
+		["dog_dead"]			= {"dog_weak", "dog_normal", "dog_strong"},
+		["zombie_dead"]			= {"zombie_weak", "zombie_normal", "zombie_old", "zombie_immortal"},
+		["chimera_dead"]		= "chimera_weak",
+		["burer_dead"]			= "burer_weak",
+		["rat_weak_dead"]		= {"rat_weak", "rat_normal"}
+	},
+	["multiple"] = {
+		"pseudodog", "flesh", "boar", "snork", "bloodsucker", "controller", "gigant", "poltergeist", "cat", "fracture", "tushkano"
+	}
+}
+
+function quest_functions_on_death( obj, who )
+	local section_name = obj:section()
+	local who_hit_name = who:name()
+
+	if string.find(section_name, "zombie_plague") then -- Тут отключаются эффекты чумного зомби при его смерти
+		insect_particle:stop()
+	elseif string.find(section_name, "zombie_rusty") then -- Уничтожение зомби-камикадзе
+		blow_zombie(obj)
+	end
+
+	-- Выдача статей энциклопедии при убийстве монстров
+	if who:is_actor() and db.actor then
+		for k,v in pairs(monster_infoportion.multiple) do
+			if string.find(obj:section(), v) then
+				if not has_alife_info(v.."_dead") then
+					db.actor:give_info_portion(v.."_dead")
+					break
+				end
+			end
+		end
+		for k,v in pairs(monster_infoportion.single) do
+			local accept = false
+			if type(v) == "string" then
+				if section_name == v then accept = true end
+			else
+				for k1,v1 in pairs(v) do
+					if section_name == v1 then
+						accept = true
+						break
+					end
+				end
+			end
+			if accept and not has_alife_info(k) then
+				db.actor:give_info_portion(k)
+				break
+			end
+		end
+	end
+end

@@ -1,0 +1,205 @@
+-----------------------------------------------------------------------
+--- xr_statistic.script
+--- Скрипт зарабатывания опыта
+--- поправки внесены KamikaZze, OGS Evolution Team 2010
+--- NPC теперь тоже зарабатывают опыт, опыт копится с разной скоростью
+--- и зависит от монстра
+-----------------------------------------------------------------------
+
+-- множитель опыта для регулировки скорости его накопления
+local multiplier_actor 	= 1
+local multiplier_npc 	= 5
+
+local killCountProps = {
+	neutral_novice 		= 1, 	neutral_experienced 	= 5, 	neutral_veteran 		= 10, 	neutral_master 	= 15,
+	monolith_novice 	= 3, 	monolith_experienced 	= 7, 	monolith_veteran 		= 12, 	monolith_master = 17,
+	military_novice 	= 1, 	military_experienced 	= 5, 	military_veteran 		= 10, 	military_master = 15,
+	killer_novice 		= 3, 	killer_experienced 		= 7, 	killer_veteran 			= 12, 	killer_master 	= 17,
+	ecolog_novice 		= 1, 	ecolog_experienced 		= 5, 	ecolog_veteran 			= 10, 	ecolog_master 	= 15,
+	dolg_novice 		= 2, 	dolg_experienced 		= 6, 	dolg_veteran 			= 11, 	dolg_master 	= 16,
+	freedom_novice 		= 2, 	freedom_experienced 	= 6, 	freedom_veteran 		= 11, 	freedom_master 	= 16,
+	bandit_novice 		= 1, 	bandit_experienced 		= 5, 	bandit_veteran 			= 10, 	bandit_master 	= 15,
+	zombied_novice 		= 1, 	zombied_experienced 	= 5, 	zombied_veteran 		= 10, 	zombied_master 	= 15,
+	stranger_novice 	= 1, 	stranger_experienced 	= 5, 	stranger_veteran 		= 10, 	stranger_master = 15,
+
+	rat_weak 			= 1,	tushkano_weak 			= 2,	
+	dog_weak 			= 4, 	dog_normal 				= 4, 	dog_strong 				= 5,
+	flesh_weak 			= 4, 	flesh_normal 			= 4, 	flesh_strong 			= 5,
+	boar_weak 			= 5, 	boar_normal 			= 5, 	boar_strong 			= 6,
+	cat_weak 			= 5,
+	pseudodog_weak 		= 7, 	pseudodog_normal 		= 7, 	pseudodog_strong 		= 8,    psy_dog 		= 10,
+	zombie_weak 		= 4, 	zombie_strong 			= 5,	zombie_rusty 			= 7, 	zombie_plague 	= 7,
+	snork_weak 			= 5, 	snork_normal 			= 5, 	snork_strong 			= 6,
+	fracture_weak 		= 8, 
+	burer_weak 			= 11, 	burer_strong 			= 13,
+	bloodsucker_weak 	= 12, 	bloodsucker_normal 		= 12, 	bloodsucker_strong 		= 13,
+	chimera_weak 		= 13, 	chimera_strong 			= 14,
+	pseudo_gigant_weak 	= 15,
+	poltergeist_weak 	= 16,
+	controller_weak 	= 20
+}
+
+local sect_alias = {
+	tushkano_normal 		= "tushkano_weak", 
+	tushkano_strong 		= "tushkano_weak",
+	cat_normal 				= "cat_weak",
+	cat_strong 				= "cat_weak",
+	burer_normal 			= "burer_weak", 
+	fracture_normal 		= "fracture_weak",
+	fracture_strong 		= "fracture_weak",
+	zombie_immortal 		= "zombie_weak",
+	zombie_old 				= "zombie_weak",
+	zombie_normal 			= "zombie_weak",
+	chimera_normal 			= "chimera_weak",
+	poltergeist_normal 		= "poltergeist_weak",
+	poltergeist_strong 		= "poltergeist_weak",
+	pseudo_gigant_normal 	= "pseudo_gigant_weak",
+	pseudo_gigant_strong 	= "pseudo_gigant_weak",
+	controller_normal 		= "controller_weak",
+	controller_strong 		= "controller_weak",
+	psy_dog_radar 			= "psy_dog"
+}
+
+monster_classes = {
+	[clsid.tushkano_s    ] = "tushkano",
+	[clsid.flesh_s       ] = "flesh",
+	[clsid.boar_s        ] = "boar",
+	[clsid.cat_s         ] = "cat",
+	[clsid.zombie_s      ] = "zombie",
+	[clsid.burer_s       ] = "burer",
+	[clsid.fracture_s    ] = "fracture",
+	[clsid.chimera_s     ] = "chimera",
+	[clsid.dog_s         ] = "dog",
+	[clsid.pseudodog_s   ] = "pseudodog",
+	[clsid.psy_dog_s     ] = "psy_dog",
+	[clsid.psy_dog_phantom_s] = "NIL",
+	[clsid.snork_s       ] = "snork",
+	[clsid.poltergeist_s ] = "poltergeist",
+	[clsid.gigant_s      ] = "pseudo_gigant",
+	[clsid.controller_s  ] = "controller",
+	[clsid.bloodsucker_s ] = "bloodsucker"
+}	
+
+local artefacts = {
+	af_medusa 				= 1, af_cristall_flower 	= 5, af_night_star 				= 10, 
+	af_vyvert 				= 1, af_gravi 				= 5, af_gold_fish 				= 10, af_dummy_spring 		= 15,
+	af_drops 				= 2, af_fireball 			= 6, af_cristall 				= 11, af_dummy_dummy 		= 15,
+	af_blood 				= 1, af_mincer_meat 		= 5, af_soul 					= 10, af_dummy_glassbeads 	= 15,
+	af_electra_sparkler 	= 2, af_electra_flash 		= 6, af_electra_moonlight 		= 11, af_dummy_battery 		= 15,
+	af_ameba_slime 			= 1, af_ameba_slug 			= 5, af_ameba_mica 				= 10, af_dummy_pellicle 	= 15,
+	af_rusty_thorn 			= 2, af_rusty_kristall 		= 6, ["af_rusty_sea-urchin"] 	= 11, af_fuzz_kolobok 		= 15,	
+}
+local stat_arts_ids = {}
+
+function addKillCount(killer, npc)
+	if not npc or not killer then return end
+	
+	if not (killer:is_stalker() or killer:is_actor()) then
+		return
+	end
+
+	local props, sect = getNpcType(npc)
+	if props == nil or sect == nil then
+		return
+	end
+
+	local sect_name
+	if sect_alias[sect] ~= nil then
+		sect_name = sect_alias[sect]
+	else
+		sect_name = sect
+	end
+
+	if sect_name then
+		if killCountProps[sect_name] == nil then
+			return
+		end
+		if killer:is_actor() then
+			actor_stats.add_points(props, sect_name, 1, killCountProps[sect_name])
+			killer:set_character_rank(killer:character_rank() + (killCountProps[sect_name]*multiplier_actor))
+		else	
+			killer:set_character_rank(killer:character_rank() + (killCountProps[sect_name]*multiplier_npc))
+		end
+	else return end
+end
+
+function addArtefact(art)
+	local art_cls = art:clsid()
+
+	if art_cls == clsid.artefact or art_cls == clsid.artefact_s then
+		if stat_arts_ids[art:id()] == true then
+			return
+		end
+
+		local sect = art:section()
+		local name = game.translate_string(news_manager.get_inv_name(sect))
+
+		if artefacts[sect] then
+			actor_stats.add_points("artefacts", name, 1, artefacts[sect])
+			db.actor:set_character_rank(db.actor:character_rank() + artefacts[sect])
+			stat_arts_ids[art:id()] = true
+		end
+	end
+end
+
+function getNpcType(npc)
+	if not npc then return nil,nil end
+
+	if npc:is_stalker() or npc:is_actor() then
+		local community = "neutral"
+		local npc_community = npc:character_community()
+
+		if npc_community == "monolith" 					then community = "monolith"
+		elseif npc_community == "military" 				then community = "military"
+		elseif npc_community == "killer"   				then community = "killer"
+		elseif npc_community == "ecolog"   				then community = "ecolog"
+		elseif string.find(npc_community, "dolg")		then community = "dolg"
+		elseif string.find(npc_community, "freedom")	then community = "freedom"
+		elseif string.find(npc_community, "bandit")		then community = "bandit"
+		elseif string.find(npc_community, "zombied")	then community = "zombied"
+		elseif npc_community == "stranger" 				then community = "stranger"
+		end
+
+		local rank = ranks.get_obj_rank_name(npc)
+		if rank then
+			return "stalkerkills", community.."_"..tostring(rank)
+		else	
+			return "stalkerkills", community.."_novice"
+		end
+	else
+		local _clsid = get_clsid(npc) or ""
+		local community = monster_classes[_clsid]
+		local m_section = npc:section()
+		
+		if community == nil or community == "NIL" then
+			return nil,nil
+		end
+		
+		if community == "zombie" then
+			return "monsterkills", m_section
+		end		
+
+		local rank = ranks.get_obj_rank_name(npc)
+
+		return "monsterkills", community.."_"..rank
+	end	
+end
+function save(packet)
+	local a = 0
+	for k,v in pairs(stat_arts_ids) do
+		a = a + 1
+	end
+	packet:w_u32(a)
+	for k,v in pairs(stat_arts_ids) do
+		packet:w_u32(k)
+	end
+end
+
+function load(reader)
+	local cnt = reader:r_u32()
+	if cnt == 0 then return end
+	for i = 1,cnt do
+		local id = reader:r_u32()
+		stat_arts_ids[id] = true
+	end
+end

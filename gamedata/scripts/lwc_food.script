@@ -1,0 +1,126 @@
+--[[
+	—хема порчи еды со временем.
+	јвтор: Real Wolf
+	UPD: Muvbed
+]]
+
+function init(oItem)
+	local oNewBinder = CFoodBinder(oItem)
+	oItem:bind_object(oNewBinder)
+end
+
+class "CFoodBinder" (object_binder)
+function CFoodBinder:__init(obj) super(obj)
+	self.bLoaded = false
+	self.iCond = 1
+	self.iNextUpdate = 0
+	self.iPortions = 1
+end 
+
+function CFoodBinder:reload(section)
+	object_binder.reload(self, section)
+end
+
+function CFoodBinder:reinit()
+	object_binder.reinit(self)
+end
+
+function CFoodBinder:net_save_relevant()
+	return true
+end
+
+function CFoodBinder:save(packet)
+	object_binder.save(self, packet)
+	packet:w_u8( math.floor(self.object:condition() * 100) )
+	packet:w_u8(self.iPortions)
+end
+
+function CFoodBinder:load(reader)
+	object_binder.load(self, reader)
+	self.bLoaded = true
+	if not reader:r_eof() then
+		self.iCond = math.floor( reader:r_u8() ) / 100
+		self.iPortions = reader:r_u8()
+	end
+end
+
+function CFoodBinder:net_spawn(data)
+	if not object_binder.net_spawn(self, data) then
+		return false
+	end
+
+	return true
+end
+
+function CFoodBinder:net_destroy()
+	object_binder.net_destroy(self)
+end
+
+function CFoodBinder:update(delta)
+	object_binder.update(self, delta)
+	if not db.actor or not db.actor:alive() then 
+		return 
+	end
+
+	if self.bLoaded then
+		self.bLoaded = false
+		self.object:set_condition(self.iCond)
+	end
+
+	if Exist(sys_ini, "Line", self.object:section(), "cor_time") then
+		if self.iNextUpdate <= time_global() then
+			self.iNextUpdate = time_global() + 8*1000
+
+			local oParent = self.object:parent()
+	
+			if 
+			  oParent 
+			  and oParent:is_monster() 
+			  and oParent:alive() 
+			then 
+				return 
+			end
+
+			self.object:set_condition(self.object:condition() - self:GetDamage())
+			if oParent then
+				if 
+				  oParent:is_stalker() 
+				  and oParent:alive() 
+				  and self.object:condition() < 0.3 
+				  and math.random(1,100) > 75
+				then
+					self.object:set_condition(1)		
+				end
+				if self.object:condition() < 0.1 then
+					local sFakeSect = self.object:section().."_fake"
+					if Exist(sys_ini, "Section", sFakeSect) then
+						AddObjInv(sFakeSect, 1, oParent)
+					end
+					if self.object:is_knife() and oParent:is_actor() then
+						ogse.send_tip(game.translate_string("knife_is_broken"), nil, 0, 3, "note")
+					end
+					DelObj(self.object)
+				end
+			else
+				if self.object:condition() < 0.1 then
+					local sFakeSect = self.object:section().."_fake"
+					if Exist(sys_ini, "Section", sFakeSect) then
+						local vPos = self.object:position()
+						local iLVid = self.object:level_vertex_id()
+						local iGVid = self.object:game_vertex_id()
+						AddObj(sFakeSect, 1, vPos, iLVid, iGVid)
+					end
+					DelObj(self.object)
+				end
+			end
+		end
+	end		
+end
+
+function CFoodBinder:GetDamage()
+	local iDay = ReadLine(sys_ini, "Number", self.object:section(), "cor_time", -1)
+	if iDay < 0 then
+		return 0
+	end
+	return 100/iDay/24/100/60
+end

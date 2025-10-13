@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<string_table>
+    <string id="matches">
+        <text>Коробок спичек</text>
+    </string>
+    <string id="matches_desc">
+        <text>Спички — вещь необходимейшая в Зоне. Нужно беречь от влаги.</text>
+    </string>
+    
+    <string id="tre_ruck">
+        <text>Пустой рюкзак</text>
+    </string>
+    <string id="tre_ruck_s">
+        <text>Пустой рюкзак</text>
+    </string>
+    <string id="enc_tre_ruck">
+        <text>Небольшой походный рюкзак. Сделан из прорезиненной ткани, поэтому не промокает. В таком можно хранить ценные вещи где-то в укромном месте — тайник получится отличный.</text>
+    </string>
+
+    <string id="amk_matras">
+        <text>Спальный мешок</text>
+    </string>
+    <string id="amk_matras_s">
+        <text>Спальный мешок</text>
+    </string>
+    <string id="enc_amk_matras">
+        <text>Походный спальный мешок. Пожалуй, самый удобный способ переночевать в Зоне. От радиации не спасёт, но от дождя защитит.</text>
+    </string>
+    
+    <string id="detect">
+        <text>Дозиметр</text>
+    </string>
+    <string id="st_detector_descr1">
+        <text>Дозиметр — устройство, измеряющее дозу или мощность ионизирующего излучения. Для работы необходимо активировать, разместив прибор на поясе.</text>
+    </string>
+    
+    <string id="st_detector">
+        <text>Детектор аномальных полей</text>
+    </string>
+    <string id="st_detector_descr2">
+        <text>Устройство, определяющее наличие аномальных полей и возмущений и сообщающее о них звуковым сигналом. Для работы необходимо активировать, разместив прибор на поясе.</text>
+    </string>
+    
+    <string id="binocular">
+		<text>Бинокль</text>
+	</string>
+    <string id="enc_equipment_devic_binocul1">
+        <text>Армейский портативный бинокль.</text>
+    </string>
+    
+    <string id="device-PDA">
+        <text>КПК</text>
+    </string>
+    <string id="enc_equipment_devic_device-PDA1">
+        <text>Карманный персональный компьютер — незаменимое устройство в Зоне.</text>
+    </string>
+    
+    <string id="device-torch">
+        <text>Фонарик</text>
+    </string>
+    <string id="enc_equipment_devic_device-torch1">
+        <text>Фонарик с довольно мощной лампой. Весьма полезная вещь в условиях недостаточной освещённости. Имеет два режима работы — ближний и дальний.</text>
+    </string>
+    
+    <string id="Bread">
+        <text>Хлеб</text>
+    </string>
+    <string id="enc_equipment_food_bread1">
+        <text>Неизвестно, кто умудряется печь батоны на территории Зоны, однако этот хлеб не заражён и вполне съедобен. Во всяком случае, никто из сталкеров пока не жаловался.</text>
+    </string>
+    
+    <string id="Bread_bad">
+        <text>Хлеб (испорченный)</text>
+    </string>
+    <string id="enc_equipment_food_bread1_bad">
+        <text>Испорченный или просроченный хлеб. В употребление не годится.</text>
+    </string>
+
+    <string id="Kolbasa">
+        <text>Колбаса "Практическая"</text>
+    </string>
+    <string id="enc_equipment_food_kolbasa1">
+        <text>Часто за неимением лучшего эта колбаса — смесь курятины и соевого заменителя — завтрак, обед и ужин сталкера.</text>
+    </string>
+    
+    <string id="Kolbasa_bad">
+        <text>Колбаса "Практическая" (испорченная)</text>
+    </string>
+    <string id="enc_equipment_food_kolbasa1_bad">
+        <text>Испорченная или просроченная колбаса. В употребление не годится.</text>
+    </string>
+    
+    <string id="Conserva">
+        <text>Консервы "Радость туриста"</text>
+    </string>
+    <string id="enc_equipment_food_conserva1">
+        <text>Консервы с растащенного сталкерами армейского продовольственного склада. Срок годности вроде бы не истёк.</text>
+    </string>
+    
+    <string id="mineral_water_name">
+        <text>Минеральная вода</text>
+    </string>
+    <string id="mineral_water_short_name">
+        <text>Вода</text>
+    </string>
+    <string id="enc_equipment_mineral_water">
+        <text>Литровая бутылка чистой негазированной минеральной воды. Хорошо утоляет жажду.</text>
+    </string>
+    
+    <string id="energy_drink_name">
+        <text>Энергетический напиток "Non Stop"</text>
+    </string>
+    <string id="energy_drink_short_name">
+        <text>Энергетический напиток</text>
+    </string>
+    <string id="enc_equipment_energydrink">
+        <text>Отличный энергетический напиток "Non Stop". Содержит кофеин, таурин и мощный витаминный комплекс, снимающие усталость и прибавляющие силы. Не в состоянии сделать даже шаг? Тогда это именно то, что нужно.</text>
+    </string>
+    
+    <string id="Vodka">
+        <text>Водка "Казаки"</text>
+    </string>
+    <string id="enc_equipment_food_vodka1">
+        <text>Водка производства компании "GSC". Хорошо пьётся, заметно снижает воздействие радиации и пси-излучения, однако злоупотреблять ею не следует.</text>
+    </string>
+    
+    <string id="Antirad">
+        <text>Антирадиационные препараты</text>
+    </string>
+    <string id="enc_equipment_medi_antirad1">
+        <text>Набор таблеток с активными веществами, способствующими выведению радионуклидов из организма. Не способны защитить организм от наведённой радиации, но снижают уже полученную человеком дозу.</text>
+    </string>
+    
+    <string id="bandage">
+        <text>Бинт</text>
+    </string>
+    <string id="enc_equipment_medi_bandage1">
+        <text>Перевязочный материал. Помогает остановить кровотечение.</text>
+    </string>
+
+    <string id="Medkit">
+        <text>Аптечка</text>
+    </string>
+    <string id="enc_equipment_medi_medkit1">
+        <text>Универсальный медицинский набор. Позволяет справляться с травмами различного вида и степени сложности — ранениями, ожогами, отравлениями и прочим.</text>
+    </string>
+    
+    <string id="Medkit_army">
+        <text>Армейская аптечка</text>
+    </string>
+    <string id="enc_equipment_medi_medkit2">
+        <text>Специализированный медицинский набор для борьбы с физическими повреждениями и кровотечением. В него входят компоненты для ускорения свёртывания крови, обезболивающие, антибиотики и иммунные стимуляторы.</text>
+    </string>
+    
+    <string id="Medkit_scientific">
+        <text>Научная аптечка</text>
+    </string>
+    <string id="enc_equipment_medi_medkit3">
+        <text>Медицинский набор, разработанный специально для работы в условиях Зоны. Состав набора подобран как для борьбы с ранениями, так и для вывода радионуклидов из организма. Препятствует развитию лучевой болезни, а также снижает дозу накопленной радиации.</text>
+    </string>
+</string_table>

@@ -1,0 +1,620 @@
+--[=[
+Developed by AMK-Team 
+File:  amkII_equip.script
+Copyright:  ©  AMK-Team 2009
+Author: Refresh
+Opimized for OGSE 0.6.9.3 by KamikaZze
+UPD by Muvbed 18.03.2025
+--]=]
+
+function attach( sm )
+	sm:subscribe({ signal = "on_npc_spawn", fun = this.on_npc_spawn })
+	sm:subscribe({ signal = "on_npc_death", fun = this.on_death     })
+end
+
+local excluded_npcs = {
+	["aem_arny"] = true,
+	["bar_barman"] = true,
+	["bar_arena_manager"] = true,
+	["bar_dolg_leader"] = true,
+	["bar_dolg_petrenko"] = true,
+	["bar_freedom_attacker_commander"] = true,
+	["escape_trader"] = true,
+	["mil_freedom_member0012"] = true,
+	["mil_freedom_member0021"] = true,
+	["esc_wolf"] = true,
+	["esc_fanat"] = true,
+	["esc_fox"] = true,
+	["esc_provodnik"] = true,
+	["gar_seriy"] = true,
+	["gar_hellcar"] = true,
+	["agr_krot"] = true,
+	["bar_dolg_guard_commander"] = true,
+	["mil_Svoboda_leader"] = true,
+	["val_bandit_borov"] = true,
+	["pri_trader"] = true,
+	["pri_trader_profile"] = true,
+	["yantar_ecolog_general"] = true,
+	["mil_Svoboda_zombi_stalker"] = true,
+}
+
+function can_refit( oNpc )
+  if
+    not oNpc
+	or not oNpc:alive()
+    or excluded_npcs[ oNpc:name() ]
+    or excluded_npcs[ oNpc:section() ]
+    or excluded_npcs[ oNpc:profile_name() ]
+    or ( ogse.is_quest_npc( oNpc ) )
+  then
+    return false
+  end
+  return true
+end
+
+
+function on_npc_spawn( obj, binder )
+  if not can_refit( obj ) then return end
+  local s = {
+    [ "signal" ] = "on_npc_update." .. obj:id(),
+    [ "fun"    ] = this.on_update,
+    [ "queued" ] = true,
+  }
+  binder[ script_name() .. ".subscribed" ] = s
+  ogse_signals.get_mgr():subscribe( s )
+end
+
+
+function on_death( obj )
+  local binder     = obj:binded_object()
+  local subscribed = binder[ script_name() .. ".subscribed" ]
+  if subscribed then
+    ogse_signals.get_mgr():unsubscribe( subscribed )
+    binder[ script_name() .. ".subscribed" ] = nil
+  end
+end
+
+
+function on_update( obj )
+  ogse_signals.get_mgr():reschedule( math.random( 10000, 30000 ) )
+  PeriodicalUpdate( obj )
+end
+
+
+local aOutfitsList = { --[Секция костюма] = Ключ для таблицы aVisualList, в которой находятся группы визуалов
+	-- novice
+	["novice_outfit"] 						= "novice",
+	["outfit_novice_m1"] 					= "novice",
+
+	-- bandit
+	["bandit_outfit"] 						= "bandit",
+	["outfit_bandit_m1"] 					= "bandit",
+	["bandit_veteran_outfit"] 				= "bandit_pl",
+	["bandit_master_outfit"] 				= "bandit_pl",
+
+	-- stalker
+	["stalker_outfit"] 						= "stalker",
+	["outfit_stalker_m1"] 					= "stalker",
+	["outfit_stalker_m2"] 					= "stalker",
+	["scientific_outfit"] 					= "stalker",
+	["exo_outfit"]							= "stalker",
+	["outfit_exo_m1"]						= "stalker",
+
+	-- dolg
+	["dolg_outfit"] 						= "dolg",
+	["outfit_dolg_m1"] 						= "dolg",
+	["dolg_scientific_outfit"]				= "dolg",
+	["dolg_black_exoskeleton"]				= "dolg",
+
+	-- freedom
+	["svoboda_light_outfit"] 				= "svoboda",
+	["outfit_svoboda_m1"] 					= "svoboda",
+	["svoboda_heavy_outfit"] 				= "svoboda",
+	["freedom_scientific_outfit"] 			= "svoboda",
+	["svoboda_exoskeleton"] 				= "svoboda",
+
+	-- killer
+	["killer_outfit"] 						= "killer",
+	["outfit_killer_m1"] 					= "killer",
+	["merc_scientific_outfit"]				= "killer",
+	["killer_blue_exoskeleton"]				= "killer",
+
+	-- military
+	["soldier_outfit"] 						= "soldier",
+	["specops_outfit"] 						= "specops",
+	["outfit_specnaz_m1"] 					= "specops",
+	["military_outfit"] 					= "military",
+
+	-- monolith
+	["monolit_outfit"] 						= "monolit",
+	["monolit_scientific_outfit"] 			= "monolit",
+	["monolit_exoskeleton"] 				= "monolit",
+
+	-- ecolog
+	["ecolog_outfit"] 						= "ecolog",
+	["protection_outfit"] 					= "ecolog"
+}
+
+local aVisualList = { --Список визуалов.
+	["novice"] = {
+		[[actors\novice\green_stalker_2]],
+		[[actors\novice\green_stalker_3]],
+		[[actors\novice\green_stalker_4]],
+		[[actors\novice\green_stalker_5]],
+		[[actors\novice\green_stalker_6]],
+		[[actors\novice\green_stalker_10]],
+		[[actors\novice\green_stalker_antigas]]
+	},
+	["bandit"] = {
+		[[actors\bandit\stalker_bandit_3]],
+		[[actors\bandit\stalker_bandit_4]],
+		[[actors\bandit\stalker_bandit_5]],
+		[[actors\bandit\stalker_bandit_8]]
+	},
+	["bandit_pl"] = {
+		[[actors\bandit\stalker_bandit_master]],
+		[[actors\bandit\stalker_bandit_veteran]]	
+	},
+	["killer"] = {
+		[[actors\killer\stalker_ki_antigas]],
+		[[actors\killer\stalker_ki_mask]],
+		[[actors\killer\stalker_ki_head_1]],
+		[[actors\killer\stalker_ki_nauchniy]],
+		[[actors\killer\stalker_ki_exoskeleton]]
+	},
+	["monolit"] = {
+		[[actors\monolit\stalker_mo_head_1]],
+		[[actors\monolit\stalker_mo_hood_9]],
+		[[actors\monolit\stalker_mo_mask]],
+		[[actors\monolit\stalker_mo_nauchniy]],
+		[[actors\monolit\stalker_mo_exo]]
+	},
+	["soldier"] = {
+		[[actors\soldier\soldier_bandana]],
+		[[actors\soldier\soldier_bandana_1]],
+		[[actors\soldier\soldier_bandana_2]],
+		[[actors\soldier\soldier_bandana_3]],
+		[[actors\soldier\soldier_bandana_4]],
+		[[actors\soldier\soldier_bandana_5]],
+		[[actors\soldier\soldier_bandana_6]],
+		[[actors\soldier\soldier_obichniy]]
+	},
+	["specops"] = {
+		[[actors\soldier\soldier_antigas]],
+		[[actors\soldier\soldier_spetsnaz]],			
+		[[actors\soldier\soldier_mask]]
+	},
+	["military"] = {
+		[[actors\militari\stalker_militari_1]],
+		[[actors\militari\stalker_militari_2]],
+		[[actors\militari\stalker_militari_antigas_1]],
+		[[actors\militari\stalker_militari_antigas_2]]
+	},
+	["stalker"] = {
+		[[actors\neytral\stalker_neytral_hood_uzor]],
+		[[actors\neytral\stalker_neytral_balon_8]],
+		[[actors\neytral\stalker_neytral_hood_2]],
+		[[actors\neytral\stalker_neytral_hood_8]],
+		[[actors\neytral\stalker_neytral_hood_9]],
+		[[actors\neytral\stalker_neytral_rukzak_2]],
+		[[actors\neytral\stalker_neytral_nauchniy]],
+		[[actors\neytral\stalker_neytral_exoskeleton]]
+	},
+	["svoboda"] = {
+		[[actors\svoboda\stalker_sv_hood_91]],
+		[[actors\svoboda\stalker_sv_rukzak_1_1]],
+		[[actors\svoboda\stalker_sv_rukzak_3]],
+		[[actors\svoboda\stalker_sv_hood_9]],
+		[[actors\svoboda\stalker_sv_rukzak_2]],
+		[[actors\svoboda\stalker_sv_rukzak_3_1]],
+		[[actors\svoboda\stalker_sv_nauchniy]],
+		[[actors\svoboda\stalker_sv_exoskeleton]]
+	},
+	["dolg"] = {
+		[[actors\dolg\stalker_do_antigas]],
+		[[actors\dolg\stalker_do_balon_8]],
+		[[actors\dolg\stalker_do_mask_1]],
+		[[actors\dolg\stalker_do_nauchniy]],
+		[[actors\dolg\stalker_do_exoskeleton]]
+	},
+	["ecolog"] = {
+		[[actors\ecolog\stalker_ecolog]],
+		[[actors\ecolog\stalker_ecolog_military]]
+	}
+}
+
+local aVisualGroups = { --Список допустимых визуалов, для текущей группы визуала.
+	["novice"] = {
+		["green_stalker"] = {
+			["bandit"] = true, 
+			["bandit_pl"] = true, 
+			["killer"] = true, 
+			["monolit"] = true, 
+			["soldier"] = true, 
+			["specops"] = true, 
+			["military"] = true, 
+			["stalker"] = true, 
+			["svoboda"] = true, 
+			["dolg"] = true, 
+			["ecolog"] = true
+		}
+	},
+	["neytral"] = {
+		["stalker_neytral_exoskeleton"] = {},
+		["stalker_neytral_nauchniy"] = { 
+			["military"] = true 
+		},
+		["stalker_neytral"] = { 
+			["killer"] = true, 
+			["monolit"] = true, 
+			["specops"] = true, 
+			["military"] = true, 
+			["svoboda"] = true, 
+			["dolg"] = true, 
+			["ecolog"] = true
+		}
+	},
+	["bandit"] = {
+		["stalker_bandit_veteran"] = { 
+			["killer"] = true, 
+			["monolit"] = true, 
+			["specops"] = true, 
+			["military"] = true, 
+			["stalker"] = true,
+			["svoboda"] = true, 
+			["dolg"] = true, 
+			["ecolog"] = true
+		},
+		["stalker_bandit_master"] = { 
+			["killer"] = true, 
+			["monolit"] = true, 
+			["specops"] = true, 
+			["military"] = true, 
+			["stalker"] = true,
+			["svoboda"] = true, 
+			["dolg"] = true, 
+			["ecolog"] = true
+		},
+		["stalker_bandit"] = { 
+			["bandit_pl"] = true, 
+			["killer"] = true, 
+			["monolit"] = true, 
+			["soldier"] = true, 
+			["specops"] = true, 
+			["military"] = true, 
+			["stalker"] = true, 
+			["svoboda"] = true, 
+			["dolg"] = true, 
+			["ecolog"] = true
+		}
+	},
+	["killer"] = {
+		["stalker_ki_exoskeleton"] = {},
+		["stalker_ki_nauchniy"] = { 
+			["military"] = true 
+		},
+		["stalker_ki"] = { 
+			["monolit"] = true, 
+			["specops"] = true, 
+			["military"] = true, 
+			["stalker"] = true, 
+			["svoboda"] = true, 
+			["dolg"] = true, 
+			["ecolog"] = true
+		}
+	},
+	["monolit"] = {
+		["stalker_mo_exo"] = {},
+		["stalker_mo_nauchniy"] = {},
+		["stalker_mo"] = {}
+	},
+	["soldier"] = {
+		["soldier_bandana"] = {},
+		["soldier_obichniy"] = {}
+	},
+	["specops"] = {
+		["soldier_mask"] = {},
+		["soldier_spetsnaz"] = {},
+		["soldier_antigas"] = {}
+	},
+	["militari"] = {
+		["stalker_militari"] = {}
+	},
+	["svoboda"] = {
+		["stalker_sv_exoskeleton"] = {},
+		["stalker_sv_nauchniy"] = { 
+			["military"] = true 
+		},
+		["stalker_sv_rukzak"] =	{ 
+			["killer"] = true, 
+			["monolit"] = true, 
+			["military"] = true, 
+			["stalker"] = true, 
+			["ecolog"] = true 
+		},
+		["stalker_sv_hood"] = { 
+			["killer"] = true, 
+			["monolit"] = true, 
+			["military"] = true,
+			["stalker"] = true,  
+			["ecolog"] = true 
+		}	
+	},
+	["dolg"] = {
+		["stalker_do_exoskeleton"] = {},	
+		["stalker_do_nauchniy"] = {},			
+		["stalker_do_balon"] = {},
+		["stalker_do_mask"] = {},	
+		["stalker_do_antigas"] = {}
+	},	
+	["ecolog"] = {
+		["stalker_ecolog_military"] = {},			
+		["stalker_ecolog"] = {}
+	}
+}
+
+local aExactEquip = { -- Жестко забитые переодевания (балаклавы)
+	["novice"] = {
+		["novice_outfit"] = [[actors\novice\green_stalker_2]],
+		["outfit_novice_m1"] = [[actors\novice\green_stalker_2]]
+	},
+	["stalker"] = {
+		["stalker_outfit"] = [[actors\neytral\stalker_neytral_balon_8]],
+		["outfit_stalker_m1"] = [[actors\neytral\stalker_neytral_balon_8]],
+		["outfit_stalker_m2"] = [[actors\neytral\stalker_neytral_balon_8]]
+	},
+	["bandit"] = {
+		["bandit_outfit"] = [[actors\bandit\stalker_bandit_3]],
+		["outfit_bandit_m1"] = [[actors\bandit\stalker_bandit_3]]
+	},
+	["bandit_pl"] = {
+		["bandit_master_outfit"] = [[actors\bandit\stalker_bandit_master]],
+		["bandit_veteran_outfit"] = [[actors\bandit\stalker_bandit_veteran]]
+	},
+	["svoboda"] = {
+		["svoboda_light_outfit"] = [[actors\svoboda\stalker_sv_rukzak_1_1]],
+		["outfit_svoboda_m1"] = [[actors\svoboda\stalker_sv_rukzak_1_1]],
+		["svoboda_heavy_outfit"] = [[actors\svoboda\stalker_sv_rukzak_2]]
+	},
+	["dolg"] = {
+		["dolg_outfit"] = [[actors\dolg\stalker_do_balon_8]],
+		["outfit_dolg_m1"] = [[actors\dolg\stalker_do_balon_8]]
+	},
+	["killer"] = {
+		["killer_outfit"] = [[actors\killer\stalker_ki_mask]],
+		["outfit_killer_m1"] = [[actors\killer\stalker_ki_mask]]
+	},
+	["monolit"] = {
+		["monolit_outfit"] = [[actors\monolit\stalker_mo_mask]]
+	},
+	["specops"] = {
+		["specops_outfit"] = [[actors\soldier\soldier_spetsnaz]],
+		["outfit_specnaz_m1"] = [[actors\soldier\soldier_spetsnaz]]
+	},
+}
+
+local aExactEquipGas = { -- Жестко забитые переодевания (противогазы)
+	["novice"] = {
+		["novice_outfit"] = [[actors\novice\green_stalker_antigas]],
+		["outfit_novice_m1"] = [[actors\novice\green_stalker_antigas]]
+	},
+	["stalker"] = {
+		["stalker_outfit"] = [[actors\neytral\stalker_neytral_hood_9]],
+		["outfit_stalker_m1"] = [[actors\neytral\stalker_neytral_hood_9]],
+		["outfit_stalker_m2"] = [[actors\neytral\stalker_neytral_hood_9]],
+		["scientific_outfit"] = [[actors\neytral\stalker_neytral_nauchniy]],
+		["exo_outfit"] = [[actors\neytral\stalker_neytral_exoskeleton]],
+		["outfit_exo_m1"] = [[actors\neytral\stalker_neytral_exoskeleton]]
+	},
+	["bandit"] = {
+		["bandit_outfit"] = [[actors\bandit\stalker_bandit_8]],
+		["outfit_bandit_m1"] = [[actors\bandit\stalker_bandit_8]]
+	},
+	["svoboda"] = {
+		["svoboda_light_outfit"] = [[actors\svoboda\stalker_sv_hood_91]],
+		["outfit_svoboda_m1"] = [[actors\svoboda\stalker_sv_hood_91]],
+		["svoboda_heavy_outfit"] = [[actors\svoboda\stalker_sv_hood_9]],
+		["freedom_scientific_outfit"] = [[actors\svoboda\stalker_sv_nauchniy]],
+		["svoboda_exoskeleton"] = [[actors\svoboda\stalker_sv_exoskeleton]]
+	},
+	["dolg"] = {
+		["dolg_outfit"] = [[actors\dolg\stalker_do_antigas]],
+		["outfit_dolg_m1"] = [[actors\dolg\stalker_do_antigas]],
+		["dolg_scientific_outfit"] = [[actors\dolg\stalker_do_nauchniy]],
+		["dolg_black_exoskeleton"] = [[actors\dolg\stalker_do_exoskeleton]]
+	},
+	["killer"] = {
+		["killer_outfit"] = [[actors\killer\stalker_ki_antigas]],
+		["outfit_killer_m1"] = [[actors\killer\stalker_ki_antigas]],
+		["merc_scientific_outfit"] = [[actors\killer\stalker_ki_nauchniy]],
+		["killer_blue_exoskeleton"] = [[actors\killer\stalker_ki_exoskeleton]]
+	},
+	["monolit"] = {
+		["monolit_outfit"] = [[actors\monolit\stalker_mo_hood_9]],
+		["monolit_scientific_outfit"] = [[actors\monolit\stalker_mo_nauchniy]],
+		["monolit_exoskeleton"] = [[actors\monolit\stalker_mo_exo]]
+	},
+	["specops"] = {
+		["specops_outfit"] = [[actors\soldier\soldier_antigas]],
+		["outfit_specnaz_m1"] = [[actors\soldier\soldier_antigas]]
+	},
+	["military"] = {
+		["military_outfit"] = [[actors\militari\stalker_militari_1]]
+	},
+	["ecolog"] = {
+		["ecolog_outfit"] = [[actors\ecolog\stalker_ecolog]],
+		["protection_outfit"] = [[actors\ecolog\stalker_ecolog_military]]
+	},
+}
+
+local needs_refit = {}
+
+--	Апдейтим сталкера на предмет крутого костюма в инвентаре.
+--	И если костюм есть и его визуал круче чем текущий, то переодеваем нпс.
+function Update(oNpc, oItem)
+	local aVisual = string.explode( "\\", oNpc:get_visual_name() ) --не должно быть расширения и разделителей
+	--log3("~~[%s] Visual afther parsing: for [%s]: %s", script_name(), oNpc:name(), aVisual)
+
+	if not aVisualGroups[aVisual[2]] then  --вторая строка в таблице, т.е. типа группировка
+		--log3( "!![%s] Can't find visual groups for [%s]", script_name(), aVisual[2] )
+		return 
+	end
+
+	--	Получаем группу визуалов в которые можно переодеть нпс.
+	local aAvailableVis
+	for k, v in pairs(aVisualGroups[aVisual[2]]) do --Вторую строку визуала ищем в таблице
+		if string.find(aVisual[3], k) then --Если нашли вхождения третьей строки визуала в ключ таблицы выше
+			--log3("~~[%s] Finded visual [%s] in aVisualGroups table. Key: [%s]", script_name(), aVisual[3], k) 
+			aAvailableVis = v --табличка с группой визуалов в которые можно переодеть нпс
+			break
+		end
+	end
+	
+	if not aAvailableVis then --Вот это типа {"killer","monolit","military","stalker","exo","svoboda","dolg","ecolog"}
+		--log3("!![%s] Can't find aAvailableVis for [%s]", script_name(), oNpc:name())
+		return
+	end
+
+------------------------------Вот тут обработку текущего визуала непися закончили, начали обрабатывать костюм, в который собираемся нпса переодевать
+	local sSect = oItem:section()	
+	local sVis = aOutfitsList[sSect] --Тип непися, ну там novice, bandit, exo и тд.
+	local aVisList = aVisualList[sVis] --Список визуалов.
+
+	if not sVis then
+		--log3("!![%s] Can't find sect [%s] in table [aOutfitsList]", script_name(), sSect)
+		return
+	elseif not aVisList then
+		--log3("!![%s] Can't find VisualList for [%s]", script_name(), sVis)
+		return
+	end
+
+	--log3("~~[%s] Table with suitable visuals: %s", script_name(), aAvailableVis)
+
+	local sVisual
+	if aAvailableVis[sVis] then
+		local isGas =  string.find(aVisual[3], "antigas") 
+		  			or string.find(aVisual[3], "nauchniy") 
+		  			or string.find(aVisual[3], "exo") 
+		  			or string.find(aVisual[3], "ecolog") 
+		  			or string.find(aVisual[3], "hood_9") 
+		  			or string.find(aVisual[3], "bandit_8") 
+		
+		if isGas then
+			sVisual = aExactEquipGas[sVis] and aExactEquipGas[sVis][sSect]
+		else
+			sVisual = aExactEquip[sVis] and aExactEquip[sVis][sSect]
+		end
+
+		--log3("--[%s] Selected visual for [%s], exo: [%s]", script_name(), sVisual, sVis == "exo") 
+	end
+
+	local pk = get_netpk(oNpc, 1)
+	ASSERT( pk:isOk(), "can't read netpacket of %s", oNpc:name() )
+	local data = pk:get()
+
+	if sVisual then --Если доступен новый визуал, то переодеваем перса.
+
+		--Типа продажа текущего костюма
+		local current_outfit_sect = ogse_real_armor.vis_to_armor(oNpc)
+		if current_outfit_sect then
+			--log3("--[%s] Finded outfit: [%s]", script_name(), current_outfit_sect)
+			local iCost = sys_ini:r_float(current_outfit_sect, "cost")
+			local iMoney = math.floor(iCost/20)	
+			data.money = data.money + iMoney
+		end
+
+		data.visual_name = sVisual
+		needs_refit[oNpc:id()] = true
+		--log3("--[%s] planned refit npc [%s], visual: [%s]", script_name(), oNpc:name(), sVisual)
+	else --Если визуал недоступен, продаём костюм.
+		local iCost = sys_ini:r_float(sSect, "cost")
+		local iMoney = math.floor(iCost/20)	
+		--log3("!![%s] Can't find new visual for npc [%s], outfit: [%s]", script_name(), oNpc:name(), oItem:section())
+		data.money = data.money + iMoney
+	end
+
+	pk:set(data)
+
+	local item = alife():object(oItem:id())
+	if item then
+		alife():release(item, true)
+	end
+end
+
+------------------------------
+-- переодевание
+------------------------------
+function refit_npc(npc, npc_id)
+   local s_npc = alife():object(npc_id)
+   s_npc.force_offline = true
+   go_offline_watch_timer(npc_id):start()
+end
+
+-- служебный таймер, ждущий ухода в оффлайн
+class "go_offline_watch_timer" (ogse_qt.quick_timer)
+function go_offline_watch_timer:__init(npc_id) super()
+   self.npc_id = npc_id -- запоминаем в таймере id непися
+end
+function go_offline_watch_timer:condition()
+   return not level.object_by_id(self.npc_id) -- ждём исчезновения клиентского объекта
+end
+function go_offline_watch_timer:action()
+   local s_npc = alife():object(self.npc_id)
+   if s_npc then
+      s_npc.force_offline = nil -- отправляем обратно в онлайн
+   end
+end
+
+
+-- Возвращает угол между проекциями векторов vec1 и vec2 на
+-- горизонтальную плоскость.
+-- положительный угол - доворот vec1 до vec2 по часовой.
+function horz_angle( vec1, vec2 )
+  local x =  vec2.x * vec1.x + vec2.z * vec1.z
+  -- повернули систему координат
+  local y = -vec2.z * vec1.x + vec2.x * vec1.z
+  return math.atan2( y, x )     -- угол доворота от -pi до pi
+end
+
+local visibility_treshold_value = 0.45 -- трешхолд видимости
+
+local function actor_see( npc )
+  -- арктангенс 45 град /npc:position():distance_to(db.actor:position())
+  local dangerang = 1
+  local ang = horz_angle(
+    device().cam_dir, npc:position():sub( device().cam_pos )
+  )
+  local visibility_value = level.cover_in_direction(
+    db.actor:level_vertex_id(), npc:position():sub( db.actor:position() )
+  )
+  local tgt = ang > -dangerang and ang < dangerang
+    and visibility_value > visibility_treshold_value
+  if tgt then
+    return true
+  end
+  return false
+end
+
+
+------------------------------
+-- периодическая перепроверка
+------------------------------
+function PeriodicalUpdate(oNpc)
+	if oNpc:wounded() then return end
+
+	if needs_refit[oNpc:id()] then
+		if not actor_see(oNpc) and not oNpc:is_talking() then
+			oNpc:clear_animations()
+			needs_refit[oNpc:id()] = nil
+			refit_npc(oNpc ,oNpc:id())
+			return
+		end
+	end
+	oNpc:iterate_inventory(function(npc, item)
+		if item:is_outfit() then
+			if aOutfitsList[item:section()] then
+				Update(oNpc, item)
+			end
+		end
+	end)
+end

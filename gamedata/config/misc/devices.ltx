@@ -1,0 +1,348 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Devices
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[device_atifact_merger]:identity_immunities
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "devices\artifact merger"
+;$prefetch 			= 32
+class				= II_ATTCH
+cform				= skeleton
+visual				= equipments\item_merger.ogf
+radius				= 1
+
+inv_name			= ArtefactMerger
+inv_name_short		= AfMerger
+inv_weight			= 3
+
+inv_grid_width		= 2
+inv_grid_height		= 1
+inv_grid_x			= 6
+inv_grid_y			= 13
+cost				= 5000
+
+[inventory_box]:identity_immunities
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "devices\inventory box"
+class				= O_INVBOX
+cform				= skeleton
+inv_name			= ArtefactMerger
+inv_name_short		= AfMerger
+inv_weight			= 3
+visual				= physics\box\expl_dinamit.ogf
+script_binding      = bind_physic_object.init
+
+[inv_ruck]:identity_immunities 
+GroupControlSection = spawn_group 
+discovery_dependency = 
+
+$spawn = "food and drugs\inv_ruck" 
+$prefetch = 32 
+
+class = II_ANTIR 
+cform = skeleton 
+
+visual = equipments\item_rukzak 
+
+inv_name = tre_ruck 
+inv_name_short = tre_ruck_s
+description = enc_tre_ruck
+
+inv_weight = 0.9 
+inv_grid_width = 2 
+inv_grid_height = 3 
+inv_grid_x = 14
+inv_grid_y = 35
+
+cost = 2500
+
+eat_health = 0 
+eat_satiety = 0 
+eat_power = 0 
+eat_radiation = 0 
+eat_alcohol = 0 
+wounds_heal_perc = 0 
+eat_portions_num = 1
+
+animation_slot = 4
+
+hud = wpn_vodka_hud
+
+[active_ruck]:inventory_box 
+visual = equipments\item_rukzak 
+custom_data = scripts\treasure_inventory_box.ltx 
+radius = 1
+
+[device_torch]:identity_immunities
+GroupControlSection	= spawn_group
+discovery_dependency =
+$spawn				= "devices\torch"
+$prefetch 			= 32
+class				= TORCH_S
+cform				= skeleton
+visual				= equipments\light_night.ogf
+description			= enc_equipment_devic_device-torch1
+cost				= 100
+inv_name			= device-torch
+inv_name_short		= device-torch
+inv_weight			= 0
+inv_grid_width		= 2
+inv_grid_height		= 1
+inv_grid_x			= 16
+inv_grid_y			= 12
+
+;вещью нельзя торговать
+can_trade					= true
+
+position					= 0.35,0.25,0.0
+light_trace_bone			= cone_bone
+attach_angle_offset			= 0, -3.14, 1.6
+attach_position_offset		= 0.14, 0.00, 0.09
+attach_bone_name			= bip01_head
+auto_attach					= false
+
+night_vision				= on
+night_vision_texture		= wpn\wpn_night
+night_vision_effector		= postprocess_night
+
+snd_night_vision_on			= weapons\nv_start
+snd_night_vision_off		= weapons\nv_off
+snd_night_vision_idle		= weapons\nv_loop
+snd_night_vision_broken		= weapons\nv_off
+
+night_vision_recharge_time			= 6		;(c) время зарядки аккамулятора
+night_vision_recharge_time_min		= 2		;(c) мин. время зарядки аккамулятора, после которого уст-во уже может работать
+night_vision_discharge_time			= 20	;(c) время разрядки (работы) устройства после полной зарядки
+slot								= 9
+disabled_maps						= ai_test,ai_test2, andy_test_
+
+[detector_simple]:identity_immunities
+GroupControlSection		= spawn_group
+discovery_dependency 	=
+$spawn 					= "devices\detector_simple"
+$prefetch 				= 32
+class					= D_SIMDET
+cform					= skeleton
+visual					= equipments\item_datchik1.ogf
+description				= st_detector_descr1
+radius					= 5	;15
+buzzer_radius			= 1.5
+noise					= zone_mosquito_bald       ;detectors\geiger_noise_loop
+buzzer					= zone_mosquito_bald       ;detectors\DA-2_alarm_loop
+slot					= 8
+ef_detector_type		= 1
+
+inv_name				= detect
+inv_name_short			= detect
+inv_weight				= 0.4
+
+inv_grid_width			= 1
+inv_grid_height			= 1
+inv_grid_x				= 9
+inv_grid_y				= 14
+cost					= 500
+
+
+;описание распознаваемых детектором зон
+zone_class_1			= zone_mosquito_bald
+zone_sound_1_			= $no_sound
+zone_min_freq_1			= 1
+zone_max_freq_1			= 10
+
+zone_class_2			= zone_mincer
+zone_sound_2_			= $no_sound
+zone_min_freq_2			= 1
+zone_max_freq_2			= 10
+
+zone_class_3			= zone_radioactive
+;zone_sound_3_			= detectors\DA-2_beep1
+zone_sound_3_			= detectors\geiger_1
+zone_sound_3_1			= detectors\geiger_2
+zone_sound_3_2			= detectors\geiger_3
+zone_sound_3_3			= detectors\geiger_4
+zone_sound_3_4			= detectors\geiger_5
+zone_sound_3_5			= detectors\geiger_6
+zone_sound_3_6			= detectors\geiger_1
+zone_sound_3_7			= detectors\geiger_1
+zone_sound_3_8			= detectors\geiger_1
+zone_min_freq_3			= 1
+zone_max_freq_3			= 10
+
+zone_class_4			= zone_gravi_zone
+zone_sound_4_			= $no_sound
+zone_min_freq_4			= 1
+zone_max_freq_4			= 10
+
+zone_class_5			= zone_zharka_static
+zone_sound_5_			= $no_sound
+zone_min_freq_5			= 1
+zone_max_freq_5			= 10
+
+zone_class_6			= zone_buzz
+zone_sound_6_			= $no_sound
+zone_min_freq_6			= 1
+zone_max_freq_6			= 10
+
+zone_class_7			= zone_burning_fuzz1
+zone_sound_7_			= $no_sound
+zone_min_freq_7			= 1
+zone_max_freq_7			= 10
+
+[detector_advances]:identity_immunities
+GroupControlSection		= spawn_group
+discovery_dependency 	=
+$spawn 					= "devices\detector_advanced"
+$prefetch 				= 32
+class					= D_SIMDET
+cform					= skeleton
+visual					= equipments\item_datchik2.ogf
+description				= st_detector_descr2
+radius					= 5	;15
+buzzer_radius			= 1.5
+noise					= zone_mosquito_bald       ;detectors\geiger_noise_loop
+buzzer					= zone_mosquito_bald       ;detectors\DA-2_alarm_loop
+
+ef_detector_type		= 1
+
+;описание распознаваемых детектором зон
+zone_class_1			= zone_mosquito_bald
+zone_sound_1_			= detectors\DA-2_beep1
+zone_min_freq_1			= 1
+zone_max_freq_1			= 10
+
+zone_class_2			= zone_mincer
+zone_sound_2_			= detectors\DA-2_beep1
+zone_min_freq_2			= 1
+zone_max_freq_2			= 10
+
+zone_class_3			= zone_radioactive
+zone_sound_3_			= detectors\geiger_1
+zone_sound_3_1			= detectors\geiger_2
+zone_sound_3_2			= detectors\geiger_3
+zone_sound_3_3			= detectors\geiger_4
+zone_sound_3_4			= detectors\geiger_5
+zone_sound_3_5			= detectors\geiger_6
+zone_sound_3_6			= detectors\geiger_1
+zone_sound_3_7			= detectors\geiger_1
+zone_sound_3_8			= detectors\geiger_1
+zone_min_freq_3			= 1
+zone_max_freq_3			= 10
+
+zone_class_4			= zone_gravi_zone
+zone_sound_4_			= detectors\DA-2_beep1
+zone_min_freq_4			= 1
+zone_max_freq_4			= 10
+
+zone_class_5			= zone_zharka_static
+zone_sound_5_			= detectors\DA-2_beep1
+zone_min_freq_5			= 1
+zone_max_freq_5			= 10
+
+zone_class_6			= zone_buzz
+zone_sound_6_			= detectors\DA-2_beep1
+zone_min_freq_6			= 1
+zone_max_freq_6			= 10
+
+zone_class_7			= zone_burning_fuzz1
+zone_sound_7_			= detectors\DA-2_beep1
+zone_min_freq_7			= 1
+zone_max_freq_7			= 10
+
+zone_class_8			= zone_witches_galantine
+zone_sound_8_			= detectors\DA-2_beep1
+zone_min_freq_8			= 1
+zone_max_freq_8			= 10
+
+zone_class_9			= zone_emi
+zone_sound_9_			= detectors\DA-2_beep1
+zone_min_freq_9			= 1
+zone_max_freq_9			= 10
+
+inv_name				= st_detector
+inv_name_short			= st_detector
+inv_weight				= 0.6
+
+inv_grid_width			= 1
+inv_grid_height			= 1
+inv_grid_x				= 15
+inv_grid_y				= 7
+cost					= 5000
+slot					= 8
+
+[device_pda]:identity_immunities
+GroupControlSection	= spawn_group
+discovery_dependency=
+$spawn 				= "devices\pda"
+$prefetch 			= 16
+class				= D_PDA
+cform				= skeleton
+visual              = dynamics\devices\dev_pda\dev_pda.ogf
+description			= enc_equipment_devic_device-pda1
+radius				= 50
+slot				= 7
+
+default_to_slot 		= true
+sprint_allowed			= true
+
+inv_name			= PDA
+inv_name_short		= PDA
+inv_weight			= 0.3	;0.2
+
+inv_grid_width		= 2
+inv_grid_height		= 1
+inv_grid_x			= 6
+inv_grid_y			= 13
+cost				= 20
+
+attach_angle_offset     = 1.5, 0.0, 1.5 ;устанавливается в радианах Angle*PI/180
+attach_position_offset  = 0.12000, -0.02, 0.000000
+attach_bone_name        = bip01_l_hand
+auto_attach             = false
+
+auto_attach				= false
+
+
+[binocular_a]:identity_immunities
+GroupControlSection		= spawn_group
+discovery_dependency	=
+$spawn					= "devices\binocular_a"
+cform                   = skeleton
+class					= II_ATTCH
+visual                  = weapons\binoculars\wpn_binoculars.ogf
+cost					= 0
+description				= enc_equipment_devic_binocul1	
+inv_name				= "binocular"
+inv_name_short			= "binocular"
+inv_weight				= .5
+inv_grid_width			= 2
+inv_grid_height			= 1
+inv_grid_x				= 16
+inv_grid_y				= 12
+attach_angle_offset		= 3.080506,-1.493053,-1.202040   ;устанавливается в радианах Angle*PI/180
+attach_position_offset	= 0.080000,0.021273,0.100000
+attach_bone_name		= bip01_r_hand
+auto_attach				= false
+
+
+[hand_radio]:identity_immunities
+GroupControlSection		= spawn_group
+discovery_dependency	= 
+$spawn					= "equipment\hand_radio"
+cform                   = skeleton
+class					= II_ATTCH
+visual                  = equipments\item_fmradio.ogf
+description                     = enc_equipment_devic_hand_radio1
+cost					= 100
+inv_name				= hand_radio1
+inv_name_short			= hand_radio1
+inv_weight				= 0.2
+inv_grid_width			= 1
+inv_grid_height			= 2
+inv_grid_x				= 13
+inv_grid_y				= 27
+attach_angle_offset		= -1.5708,0.1919,3.1416    ;устанавливается в радианах Angle*PI/180
+attach_position_offset	= 0.075, 0.066, 0.023
+attach_bone_name		= bip01_l_hand
+auto_attach				= false

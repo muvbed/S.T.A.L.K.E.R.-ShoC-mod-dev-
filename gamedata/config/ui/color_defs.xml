@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<!-- ПАЛИТРА ЦВЕТОВ -->
+<colors>
+	<!-- For applying specified color insert "%cColorName" into the text -->
+	<!-- Use "%cDEFAULT" color when need to switch to default color of UI element -->
+	<color name="UI_orange" 			r="244" 	g="244" 	b="244"/>
+	<color name="yellow"				r="176" 	g="147" 	b="114"/>
+	<color name="dark_yellow"			r="139" 	g="117" 	b="91"/>
+	<color name="brown"					r="41" 		g="35" 		b="27"/>
+	<color name="orange"				r="160" 	g="110" 	b="0" />
+	<color name="red"					r="200" 	g="42" 		b="46" 	a="186"/>
+	<color name="green"					r="123" 	g="176" 	b="115" />
+	<color name="dark_green"			r="0" 		g="161" 	b="5" />
+	<color name="blue"					r="11"  	g="178" 	b="248" />
+	<color name="dark_blue"				r="0"  		g="80" 		b="160" />
+	<color name="purple"				r="137"  	g="120" 	b="208" />
+	<color name="gray_purple"			r="192"  	g="194" 	b="225" />
+	<color name="black"					r="0" 		g="0" 		b="0"/>
+	<color name="light_black"			r="16" 		g="16" 		b="16"/>
+	<color name="white_1"				r="204" 	g="204" 	b="204"/>
+	<color name="white_2"				r="224" 	g="224" 	b="224"/>
+	<color name="white_3"				r="244" 	g="244" 	b="244"/>
+	<color name="white_4"				r="255" 	g="255" 	b="255"/>
+	<color name="grey_1"				r="96" 		g="96" 		b="96"/>
+	<color name="grey_2"				r="128" 	g="128" 	b="128"/>
+	<color name="grey_3"				r="144" 	g="144" 	b="144"/>
+	<color name="grey_4"				r="170" 	g="170" 	b="170"/>
+	<color name="grey_5"				r="192" 	g="192" 	b="192"/>
+	<color name="transparent" 			r="224" 	g="224" 	b="224" a="0"/>
+	<color name="rank_1"  				r="200" 	g="180" 	b="180"/>
+	<color name="rank_2"  				r="255" 	g="180" 	b="180"/>
+
+	<color name="inv_condition_min"		r="96" 		g="96" 		b="96" 	a="186"/>	<!-- инвентарь: шкала минимального состояния предмета -->
+	<color name="inv_condition_mid"		r="144" 	g="144" 	b="144" a="186"/>	<!-- инвентарь: шкала среднего состояния предмета -->
+	<color name="inv_condition_max"		r="102" 	g="192" 	b="102" a="186"/>	<!-- инвентарь: шкала максимального состояния предмета -->
+	<color name="inv_condition_base"	r="144" 	g="144" 	b="144" a="80"/>	<!-- инвентарь: фон состояния предмета -->
+
+
+	<color name="hud_timer_flash"		r="96" 		g="0" 		b="0"/>				<!-- худ: мигающий индикатор таймера -->
+	<color name="hud_layer_wound"		r="0" 		g="0" 		b="0" 	a="214"/>	<!-- худ: эффект значка кровотечения -->
+	<color name="hud_layer_rad"			r="0" 		g="0" 		b="0" 	a="186"/>	<!-- худ: эффект значка радиации -->
+	<color name="hud_layer_psyhealth"	r="0" 		g="0" 		b="0" 	a="214"/>	<!-- худ: эффект значка пси-здоровья -->
+	<color name="hud_layer_satiety"		r="0" 		g="0" 		b="0" 	a="214"/>	<!-- худ: эффект значка сытости -->
+	<color name="hud_layer_godmode"		r="0" 		g="0" 		b="0" 	a="214"/>	<!-- худ: эффект значка бессмертия -->
+	<color name="hud_layer_artefact"	r="0" 		g="0" 		b="0" 	a="214"/>	<!-- худ: эффект значка артефакта (мп) -->
+	<color name="hud_layer_sleep"		r="0" 		g="0" 		b="0" 	a="214"/>	<!-- худ: эффект значка сна -->
+	<color name="hud_layer_weight"		r="0" 		g="0" 		b="0" 	a="214"/>	<!-- худ: эффект значка переносимого веса -->
+	<color name="hud_layer_thirst"		r="0" 		g="0" 		b="0" 	a="214"/>	<!-- худ: эффект значка жажды (OGSR опция) -->
+</colors>

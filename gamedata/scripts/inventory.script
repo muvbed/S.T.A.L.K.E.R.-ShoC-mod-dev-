@@ -1,0 +1,182 @@
+-- UPD by Muvbed: сброс всех предметов с пояса при смене костюма, эффекты при смене костюма.
+
+function attach(sm)
+	sm:subscribe({signal = "on_info", fun = this.on_inventory_info})
+	sm:subscribe({signal = "on_take", fun = this.on_item_take})
+	sm:subscribe({signal = "on_drop", fun = this.on_item_drop})
+	sm:subscribe({signal = "on_update", fun = this.on_update})
+	sm:subscribe({signal = "on_inventory_reset", fun = this.on_reset})
+	sm:subscribe({signal = "on_item_to_belt", fun = this.on_reset})
+	sm:subscribe({signal = "on_item_to_ruck", fun = this.on_reset})
+	sm:subscribe({signal = "on_item_to_slot", fun = this.on_reset})
+end
+
+belt = {}
+belt_id = {}
+belt_status = false
+
+local need_update = true
+local inventory_open = false
+local separator_spawned = false
+local separator = "zip_separator"
+
+local flag
+
+function on_update()
+	----------------------------------------------------------------------
+	local current_outfit = db.actor:get_current_outfit()
+	
+	if current_outfit then
+		if current_outfit:section() ~= amk.load_variable("base_outfit", "nil") then
+			outfit_change(current_outfit:section())
+		end
+	elseif amk.load_variable("base_outfit", "nil") ~= "nil" then
+		outfit_change("nil")
+	end
+	----------------------------------------------------------------------
+
+	if (need_update == false) then return end
+
+	-- Спавним разделяющий елемент
+	if separator_spawned == false then
+		alife():create(separator,
+			db.actor:position(),
+			db.actor:level_vertex_id(),
+			db.actor:game_vertex_id(),
+			db.actor:id())
+		
+		separator_spawned = true
+
+		return
+	end
+
+	belt = {}
+	belt_id = {}
+	flag = 0
+	
+	if grenade_ctrl then
+		db.actor:inventory_for_each(scan_inv)
+		grenade_ctrl.update_tbl()
+	end
+
+	need_update = false
+	db.actor:inventory_for_each(del_separator)	
+	separator_spawned = false
+end
+
+-- Смена костюма
+function outfit_change(var)
+	amk.save_variable("base_outfit", var)
+	
+	bind_stalker.hide_weapon()
+	
+	dsh.timeout(3500, function() 
+		bind_stalker.restore_weapon()
+	end)
+	
+	level.add_pp_effector ("black_unfade.ppe", 7031, false)
+	level.add_cam_effector("camera_effects\\item_use_slow.anm", 7032, false, "")
+	xr_sound.get_safe_sound_object("interface\\inv_outfit", sound_object.s2d):play_at_pos(db.actor, db.actor:position())
+		
+	for i = 0, db.actor:belt_count() - 1 do
+		db.actor:transfer_item(db.actor:item_on_belt(i), db.actor)
+	end
+end
+
+-- Перебор предметов инвентаря
+function scan_inv(item)
+	local section = item:section()
+
+	if string.find(section, "separator") then
+		flag = 1
+		return
+	end
+
+	if flag == 1 then
+		if db.actor:is_in_slot(item) then
+			flag = 2
+		else
+			insert_to_table(belt, section)
+			belt_id[item:id()] = true
+		end
+	end
+end
+
+-- Добавление в таблицу
+function insert_to_table(tbl, section)
+	if tbl[section] == nil then
+		tbl[section] = 1
+	else
+		tbl[section] = tbl[section] + 1
+	end
+end
+
+-- Удаление разделяющего предмета
+function del_separator(item)
+	if string.find(item:section(), "separator") then
+		alife():release(alife():object(item:id()), true)
+	end
+end
+
+-- Поднятие предмета
+function on_item_take(item)
+	if string.find(item:section(), "separator") then return end
+
+	if (inventory_open == false) then
+		if (separator_spawned == true) then
+			db.actor:inventory_for_each(del_separator)
+			separator_spawned = false
+		end
+
+		on_reset()
+	end
+	
+	if grenade_ctrl then grenade_ctrl.on_item_take(item) end
+end
+
+-- Выброс предмета
+function on_item_drop(item)
+	if string.find(item:section(), "separator") then return end
+
+	if (inventory_open == false) then
+		if (separator_spawned == true) then
+			db.actor:inventory_for_each(del_separator)
+			separator_spawned = false
+		end
+
+		on_reset()
+	end
+	
+	if grenade_ctrl then grenade_ctrl.on_item_drop(item) end
+end
+
+-- Открытие/закрытие инвентаря
+function on_inventory_info(npc, info_id)
+	if 
+      info_id == "ui_inventory" 
+      or info_id == "ui_car_body" 
+      or info_id == "ui_talk"
+      or info_id == "ui_trade"
+	then
+		inventory_open = true
+	elseif 
+      info_id == "ui_inventory_hide" 
+      or info_id == "ui_car_body_hide" 
+      or info_id == "ui_talk_hide"
+      or info_id == "ui_trade_hide"
+	then
+		dsh.timeout(1, function()
+			if not db.actor:is_talking() then
+				inventory_open = false
+				on_reset()
+			end
+		end)
+	end
+	
+	if grenade_ctrl then grenade_ctrl.on_info(info_id) end
+end
+
+function on_reset(separator_type)
+	separator = string.find(tostring_all(separator_type), "separator") and separator_type or "zip_separator"
+	need_update = true
+end

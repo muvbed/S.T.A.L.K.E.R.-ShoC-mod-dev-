@@ -1,0 +1,204 @@
+
+
+function proceed()
+	if level.name() ~= "l01_escape" then return end
+
+    local actor = db.actor
+
+	if	(has_alife_info("tutorial_end") or
+		has_alife_info("esc_kill_bandits_quest_done")) and
+		not has_alife_info("esc_path_to_lager") 
+	then		
+		actor:give_info_portion("esc_path_to_lager")
+	end 
+
+	if has_alife_info("garbage_meetstalker_die") and
+		has_alife_info("escape_stalker_give") and
+		not has_alife_info("agr_krot_band_start")
+	then
+		actor:give_info_portion("agr_krot_band_start")
+		news_manager.send_tip(db.actor, "gar_seryi_info")
+	end
+
+	if not has_alife_info("tutorial_wounded_give_info") and
+	   actor:object("esc_wounded_flash") ~= nil
+	then
+		actor:give_info_portion("tutorial_wounded_give_info")
+		actor:disable_info_portion("esc_trader_direct")
+	end     	
+
+
+	if has_alife_info("escape_blockpost_case") and
+	   not has_alife_info("escape_blockpost_case_have") and 
+	   actor:object("quest_case_01") ~= nil
+	then
+		actor:give_info_portion("escape_blockpost_case_have")
+	end       	
+	
+	if has_alife_info("esc_kill_bandits_quest_done") and
+	   not has_alife_info("esc_petruha_great")
+	then
+		actor:give_info_portion("esc_petruha_great")
+	end
+end
+
+function task_lager_complete()
+	if has_alife_info("escape_lager_help") and
+		has_alife_info("escape_lager_killers_die") and
+	   (has_alife_info("esc_fanat_die") or
+	   has_alife_info("escape_lager_complete"))
+	then
+		return true
+	else
+		return false
+	end
+end	
+
+function task_fox_complete()
+	if has_alife_info("garbage_meetstalker_start") or
+	   has_alife_info("escape_stalker_done")
+	then
+		return true
+	else
+		return false
+	end
+end	
+
+function task_fox_fail()
+	if has_alife_info("esc_dogs_return") or
+	   xr_effects.is_actor_enemy(5)
+	then
+		return true
+	else
+		return false
+	end
+end	
+
+function task_volk_fail()
+	if has_alife_info("esc_wolf_dead") or 
+		(has_alife_info("esc_kill_bandits_quest_kill") and not has_alife_info("esc_kill_bandits_quest_have")) or
+		xr_effects.is_actor_enemy(6)
+	then
+		return true
+	else
+		return false
+	end
+end	
+
+function task_petruha_fail()
+	if has_alife_info("esc_petruha_die") or 
+		(has_alife_info("esc_kill_bandits_quest_kill") and not has_alife_info("escape_factory_assault_say_hello")) or
+		(has_alife_info("esc_wolf_dead") and not has_alife_info("esc_kill_bandits_quest_have")) or
+		xr_effects.is_actor_enemy(6) or
+		xr_effects.is_actor_enemy(9)
+	then
+		return true
+	else
+		return false
+	end
+end	
+
+function petruha_talk()
+	if has_alife_info("escape_factory_assault_say_hello") or
+		has_alife_info("esc_petruha_great")
+	then
+		return true
+	else
+		return false
+	end
+end
+
+function is_actor_enemy_lager ()
+    return has_alife_info("esc_fanat_die") or xr_gulag.isGulagEnemy( "esc_lager", db.actor )
+end
+
+function check_murder(victim)
+	local victim_smart = dsh_enemies.get_smart_terrain(victim)
+    
+    if victim_smart then
+    	if victim_smart:name() == "esc_killers" then
+			if not this.is_actor_enemy_lager() 
+			  and not has_alife_info("escape_lager_help") then
+				db.actor:give_info_portion("escape_lager_help")
+			end
+		end
+	end
+end
+
+--Проверка факта того, что Толик спасся и жив
+function tolik_saved()
+	if has_alife_info("esc_wounded_arrive") and not has_alife_info("esc_fanat_spawn") then
+		local tolik = level_object_by_sid(story_ids.esc_vagon_wounded)
+		if tolik and tolik:alive() then
+			return true
+		else
+			return false
+		end
+	end
+	return false
+end	
+
+--Награда Волка за спасение новичка, возле вагончика	
+function tolik_nagrada(first_speaker, second_speaker)
+	dialogs.relocate_item_section(first_speaker, "medkit", "in")
+	dialogs.relocate_item_section(first_speaker, "bandage", "in")
+	dialogs.relocate_item_section(first_speaker, "bandage", "in")
+	dialogs.relocate_item_section(first_speaker, "conserva", "in")
+	dialogs.relocate_item_section(first_speaker, "energy_drink", "in")
+end	
+
+--Методы для квеста на пистолет Кузнецова
+function tm_find_item_1_npc_has_item(first_speaker, second_speaker)
+	return first_speaker:object("wpn_fort_m1") ~= nil
+end
+
+function tm_find_item_1_not_npc_has_item(first_speaker, second_speaker)
+	return not tm_find_item_1_npc_has_item(first_speaker, second_speaker)
+end
+
+function tm_find_item_1_actor_has_money(first_speaker, second_speaker)
+	return first_speaker:money() >= 1500
+end
+
+function tm_find_item_1_give_money(first_speaker, second_speaker)
+	dialogs.relocate_money(second_speaker, 1500, "out")
+end
+
+function tm_find_item_1_take_item(first_speaker, second_speaker)
+	dialogs.relocate_item_section(first_speaker, "wpn_fort_m1", "in")
+end
+--
+
+function process_info_portion(info_id)
+	if info_id == "esc_tutorial_secret_place" and not has_alife_info("esc_tutorial_secret_place_found") then
+		level_tasks.add_location_by_sid(story_ids.esc_tutorial_secret_place, "tutorial_secret_place_location", "tutorial_secret_place1")
+
+	elseif info_id == "esc_tutorial_secret_place_found" then
+		level_tasks.remove_location_by_sid(story_ids.esc_tutorial_secret_place, "tutorial_secret_place_location")
+	
+	elseif info_id == "esc_kolyan_lost" and not has_alife_info("esc_kolyan_found") then
+		level_tasks.add_location_by_sid(story_ids.esc_mill, "esc_mill_location", "esc_mill")	
+
+	elseif info_id == "esc_kolyan_found" then
+		level_tasks.remove_location_by_sid(story_ids.esc_mill, "esc_mill_location")
+
+	elseif info_id == "esc_bridge_soldiers" then
+		level_tasks.add_location_by_sid(story_ids.soldiers_bridge, "crlc_big", "soldiers_bridge")
+		level_tasks.add_location_by_sid(story_ids.esc_matugalnik, "crlc_big", "soldiers_base")
+
+	elseif info_id == "esc_tutorial_secret" and not has_alife_info("esc_tutorial_secret_find") then
+		level_tasks.add_location_by_sid(story_ids.esc_pm_broken, "tutorial_secret_location", "tutorial_secret")
+
+	elseif info_id == "esc_tutorial_secret_find" then
+		level_tasks.remove_location_by_sid(story_ids.esc_pm_broken, "tutorial_secret_location")
+
+	elseif info_id == "esc_shustryi_secret" and not has_alife_info("esc_shustryi_secret_find") then
+		level_tasks.add_location_by_sid(story_ids.esc_toz_broken, "shustryi_secret_location", "tutorial_secret_shustryi")
+
+	elseif info_id == "esc_shustryi_secret_find" then
+		level_tasks.remove_location_by_sid(story_ids.esc_toz_broken, "shustryi_secret_location")
+
+	end
+	
+	return false
+end

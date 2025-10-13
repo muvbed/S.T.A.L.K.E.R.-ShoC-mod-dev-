@@ -1,0 +1,260 @@
+
+function attach( sm )
+  sm:subscribe({ signal = "on_key_down", fun = this.on_key_down })
+end
+
+--------------------------------------------------------------
+-- Trigger
+--------------------------------------------------------------
+local mc_anm_sec = "anim_mask_clean"
+local snd_gasmask = xr_sound.get_safe_sound_object('weapons\\gasmask_swipe')
+local snd_torch = xr_sound.get_safe_sound_object('weapons\\headflash_on')
+local hide_hand_speed = 1.5
+
+local lowered_anm_kinds = {
+	["w_sniper"] 	= true,
+	["w_rifle"] 	= true,
+	["w_smg"]	    = true,
+	["w_shotgun"] 	= true,
+}
+
+local lowered_anm_classes = {
+	["WP_VAL"] 		= true,
+	["WP_AK74"] 	= true,
+	["WP_LR300"] 	= true,
+	["WP_BM16"] 	= true,
+	["WP_SVD"] 		= true,
+	["WP_SVU"]		= true,
+	["WP_GROZA"] 	= true,
+	["WP_SHOTG"] 	= true,
+	["WP_RG6"] 		= true,
+	["WP_RPG7"] 	= true,
+	["D_PDA"]		= true,
+}
+
+function allow_animation()
+	local active_item = db.actor:active_item()
+	return game.hud_motion_allowed() and not level.only_allow_movekeys()
+		and ( not active_item or active_item:get_hud_item_state() == 0 )
+		and not db.actor.inventory:is_active_slot_blocked()
+end
+
+function on_key_down(key, bind)
+    if level.main_input_receiver()
+    or not db.actor:alive()
+    or not allow_animation() then return end
+
+	local torch = db.actor:item_in_slot( 9 )
+	if bind == key_bindings.kSWIPE_MASK then
+		if get_actor_obj():IsDetectorActive() or get_con_string("r2_rain_drops_control") == "off" then return end
+    	swipe_mask()
+	elseif torch and bind == key_bindings.kTORCH and not db.actor:active_item() then
+    	torch_switcher()
+	end
+end
+
+-- EMULATION SWIPE RAIN DROPS
+function swipe_mask()
+	local anm_name = "script\\gasmask.anm"
+	local anm_additional_length = 0.45
+	local itm = db.actor:active_item()
+				
+	if itm then
+		local kind = get_string(itm:section(),"kind")
+		local class = get_string(itm:section(),"class")
+		if ((kind and lowered_anm_kinds[kind]) or (class and lowered_anm_classes[class])) then
+			anm_name = "script\\lower.anm"
+			anm_additional_length = 0.4
+		end
+	end
+
+	local mc_anm_time_1 = game.get_motion_length(mc_anm_sec, "anm_hide_hand", hide_hand_speed)
+	local mc_anm_time_2 = game.get_motion_length(mc_anm_sec, "anm_wipe", 1)
+	if db.actor:active_item() or get_actor_obj():IsDetectorActive() then
+		game.play_hud_motion(1, mc_anm_sec, "anm_hide_hand", true, hide_hand_speed)
+	end
+	game.play_hud_anm(anm_name, 0, 1, 1, false)
+	local new_speed = game.set_hud_anm_time(anm_name, ((mc_anm_time_1 + mc_anm_time_2) / 1000) + anm_additional_length)
+	animation_on()
+
+	dsh.timeout( mc_anm_time_1, function()
+		game.play_hud_motion(db.actor:active_item() and 1 or 2, mc_anm_sec, "anm_wipe", false, 1)
+		snd_gasmask:play(db.actor, 0, sound_object.s2d)
+		level.add_cam_effector("camera_effects\\weapon\\gasmask_swipe1.anm", 7538, false, "", 0, false)
+		dsh.timeout( mc_anm_time_2 - 400, function()
+			if new_speed then
+				game.play_hud_anm(anm_name, 0, new_speed, 1, false, true)
+			end
+			rain_drops_restart()
+			dsh.timeout( mc_anm_time_2, animation_off )
+		end )
+	end )
+end
+
+-- EMULATION TORCH SWITCH
+function torch_switcher()
+	local detector = db.actor:item_in_slot( 8 )
+	local torch_anm_sec = "anim_headlamp"
+	local anim = "anm_headflash"
+	if detector and get_actor_obj():IsDetectorActive() then
+		torch_anm_sec = "anim_headlamp_detector"
+		anim = "anm_" .. detector:section()
+	end
+	local torch_anm_time_1 = game.get_motion_length(torch_anm_sec, anim, 1)
+	animation_on()
+	torch_switch()
+	game.play_hud_motion(db.actor:active_item() and 1 or 2, torch_anm_sec, anim, false, 1)
+	snd_torch:play(db.actor, 0, sound_object.s2d)
+	level.add_cam_effector("camera_effects\\weapon\\headflash.anm", 7538, false, "", 0, false)
+	dsh.timeout( torch_anm_time_1 - 800, function()
+		torch_switch()
+		dsh.timeout( torch_anm_time_1, animation_off )
+	end )
+end
+
+function nv_switcher(functor_on_switch)
+	local detector = db.actor:item_in_slot( 8 )
+	local torch_anm_sec = "anim_headlamp"
+	local anim = "anm_headflash"
+	if detector and get_actor_obj():IsDetectorActive() then
+		torch_anm_sec = "anim_headlamp_detector"
+		anim = "anm_" .. detector:section()
+	end
+	local torch_anm_time_1 = game.get_motion_length(torch_anm_sec, anim, 1)
+	animation_on()
+	game.play_hud_motion(db.actor:active_item() and 1 or 2, torch_anm_sec, anim, false, 1)
+	snd_torch:play(db.actor, 0, sound_object.s2d)
+	level.add_cam_effector("camera_effects\\weapon\\headflash.anm", 7538, false, "", 0, false)
+	dsh.timeout( torch_anm_time_1 - 800, function()
+		functor_on_switch()
+		dsh.timeout( torch_anm_time_1, animation_off )
+	end )
+end
+
+function torch_switch()
+  if db.actor:alive() then
+    local torch = db.actor:item_in_slot( 9 )
+    if torch and torch:is_torch() then
+      torch = get_torch_obj( torch )
+      torch:switch( true )
+    end
+  end
+end
+
+function animation_on()
+	level.only_allow_movekeys(true)
+	level.set_actor_allow_ladder(false)
+end
+
+function animation_off()
+	level.only_allow_movekeys(false)
+	level.set_actor_allow_ladder(true)
+end
+
+-- RAIN DROPS RESTART
+function rain_drops_restart()
+	level.only_allow_movekeys(false)
+	cmd("r2_rain_drops_control off")
+	dsh.timeout( 10, function() cmd("r2_rain_drops_control on") end )
+end
+
+
+
+-------------------------------[Код для анимации подбора]------------------------------------
+local pickup_anm_sect = "anim_pickup"
+local pickup_anm_name = "anm_take"
+local blend_anm_name = "camera_effects\\weapon\\two_handed_weapon_effect.anm"
+local snd_pickup = xr_sound.get_safe_sound_object('weapons\\pickup')
+
+local pickup_anim_plays = false
+local force_crouch_subscribed = false
+
+local transfered = false --костыль чтоб при поднятии по нескольку раз подряд не срабатывали take/drop каллбеки предмета из-за нескольких вызовов transfer_item подряд для одного и того же предмета.
+local function multipickup(dist, radius)
+	local pos = device().cam_pos
+	local dir = device().cam_dir
+	pos = pos:add(dir:mul(dist))
+	level.iterate_nearest(pos, dist, function(obj)
+		if not transfered[obj:id()] and obj:get_inventory_item() and obj:actor_can_take() and pos:distance_to(obj:position()) <= radius then
+			db.actor:transfer_item(obj, db.actor)
+			transfered[obj:id()] = true
+		end
+	end)
+end
+
+local function take_delay(obj_id)
+	transfered = {}
+	local obj = level.object_by_id(obj_id)
+	if obj then
+		db.actor:transfer_item(obj, db.actor)
+		transfered[obj_id] = true
+	end
+	multipickup(1.5, 0.75)
+	multipickup(1, 0.5)
+	multipickup(0.5, 0.25)
+	transfered = false
+
+	snd_pickup:play(db.actor, 0, sound_object.s2d)
+	animation_off()
+	pickup_anim_plays = false
+end
+
+local function toggle_force_crouch()
+    if force_crouch_subscribed then
+        ogse_signals.get_mgr():unsubscribe( force_crouch_subscribed )
+        force_crouch_subscribed = false
+        get_actor_obj():release_action(key_bindings.kCROUCH)
+    else
+        get_actor_obj():press_action(key_bindings.kCROUCH)
+        force_crouch_subscribed = {
+            signal = "on_update", fun = function() get_actor_obj():hold_action(key_bindings.kCROUCH) end
+        }
+        ogse_signals.get_mgr():subscribe( force_crouch_subscribed )
+    end
+end
+
+-- каллбек биндится в конфигах в секции [engine_callbacks]
+function on_item_before_pickup(obj)
+	if not pickup_anim_plays and allow_animation() then
+		--Костыль для ситуации когда в руках есть детектор и какой-то предмет в правой руке, анимации в правой руке колбасит. Поэтому детектор будем прятать. Решение так себе, но пока пусть так будет, потому что причина такого поведения не ясна.
+		local bugfix_detector = false
+		local det = db.actor:item_in_slot(8)
+		local act_it = db.actor:active_item()
+		local long_weapon = false
+		if act_it and get_actor_obj():IsDetectorActive() then
+			if det then
+				local act_it_slot = get_u32(act_it:section(), "slot", 0)
+				long_weapon = act_it_slot ~= 0 and act_it_slot ~= 1 and act_it_slot ~= 5
+				db.actor:move_to_ruck(det)
+				bugfix_detector = true
+			end
+		end
+
+		animation_on()
+		local pickup_anm_time = game.play_hud_motion(1, pickup_anm_sect, pickup_anm_name, true, 1.4)
+		game.play_hud_anm(blend_anm_name, 0, 1.4, 1, false)
+
+		local cam_pos = device().cam_pos
+		local cam_pos_y = cam_pos.y - 0.7
+		local obj_pos = obj:position()
+		if obj_pos.y <= cam_pos_y then
+			toggle_force_crouch()
+			dsh.timeout( pickup_anm_time - 100, toggle_force_crouch )
+		end
+
+		dsh.timeout( pickup_anm_time - 300, take_delay, obj:id() )
+
+		if bugfix_detector then --возвращаем детектор обратно
+			dsh.timeout(pickup_anm_time + 500, function()
+				db.actor:move_to_slot(det)
+				if not long_weapon then --если в руках большое оружие, не надо возвращать детектор, т.к. в этом случае оружие уберется. Детектор вообще запрещено с таким оружием юзать, но есть способ обойти этот запрет, поэтому такую ситуацию надо тут учитывать.
+					get_actor_obj():press_action(key_bindings.kWPN_8)
+				end
+			end)
+		end
+		pickup_anim_plays = true
+	end
+
+	return false
+end
+----------------------------------------------------------------------------------------------

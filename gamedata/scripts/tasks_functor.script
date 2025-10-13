@@ -1,0 +1,72 @@
+
+
+--[[ ---------------------------------------------------------------------------------------------------
+ File        : tasks_functor.script
+ Description : functions for new tasks
+ Copyright   : 2012 © OGSE Mod Team
+ Author      : Stalk15, Mixser, _призрак_, RvP, Phoenix
+ Last update : 16.07.2012
+--]]----------------------------------------------------------------------------------------------------
+--local actor = db.actor -- <<== не надо так делать!!!
+
+function attach(sm) -- для менеджера сигналов
+	sm:subscribe({signal = "on_info", fun = this.on_info})
+end
+
+function on_info(npc, info_id)
+	check_freedom_attack_end()
+end
+
+function check_freedom_attack_end()
+	if not db.actor:has_info("mil_freedom_attack") then
+		return
+	end
+
+	local check = false
+
+	if db.actor:has_info("mil_freedom_departed_1") or
+	  db.actor:has_info("mil_freedom_departed_2") or
+	  db.actor:has_info("mil_freedom_departed_3") or
+	  db.actor:has_info("mil_freedom_departed_4") or
+	  db.actor:has_info("mil_freedom_departed_5") or
+	  db.actor:has_info("mil_freedom_departed_6") or
+	  db.actor:has_info("mil_freedom_departed_7") or
+	  db.actor:has_info("mil_freedom_departed_8") or
+	  db.actor:has_info("mil_freedom_departed_9") then
+		check = true
+	end
+	
+	if check == true then
+		if (db.actor:has_info("mil_freedom_returned_1") and db.actor:has_info("mil_freedom_departed_1")) or
+		  (db.actor:has_info("mil_freedom_returned_2") and db.actor:has_info("mil_freedom_departed_2")) or
+		  (db.actor:has_info("mil_freedom_returned_3") and db.actor:has_info("mil_freedom_departed_3")) or
+		  (db.actor:has_info("mil_freedom_returned_4") and db.actor:has_info("mil_freedom_departed_4")) or
+		  (db.actor:has_info("mil_freedom_returned_5") and db.actor:has_info("mil_freedom_departed_5")) or
+		  (db.actor:has_info("mil_freedom_returned_6") and db.actor:has_info("mil_freedom_departed_6")) or
+		  (db.actor:has_info("mil_freedom_returned_7") and db.actor:has_info("mil_freedom_departed_7")) or
+		  (db.actor:has_info("mil_freedom_returned_8") and db.actor:has_info("mil_freedom_departed_8")) or
+		  (db.actor:has_info("mil_freedom_returned_9") and db.actor:has_info("mil_freedom_departed_9")) then
+			db.actor:disable_info_portion("mil_freedom_attack")
+		
+			db.actor:disable_info_portion("mil_freedom_departed_1")
+			db.actor:disable_info_portion("mil_freedom_departed_2")
+			db.actor:disable_info_portion("mil_freedom_departed_3")
+			db.actor:disable_info_portion("mil_freedom_departed_4")
+			db.actor:disable_info_portion("mil_freedom_departed_5")
+			db.actor:disable_info_portion("mil_freedom_departed_6")
+			db.actor:disable_info_portion("mil_freedom_departed_7")
+			db.actor:disable_info_portion("mil_freedom_departed_8")
+			db.actor:disable_info_portion("mil_freedom_departed_9")
+			
+			db.actor:disable_info_portion("mil_freedom_returned_1")
+			db.actor:disable_info_portion("mil_freedom_returned_2")
+			db.actor:disable_info_portion("mil_freedom_returned_3")
+			db.actor:disable_info_portion("mil_freedom_returned_4")
+			db.actor:disable_info_portion("mil_freedom_returned_5")
+			db.actor:disable_info_portion("mil_freedom_returned_6")
+			db.actor:disable_info_portion("mil_freedom_returned_7")
+			db.actor:disable_info_portion("mil_freedom_returned_8")
+			db.actor:disable_info_portion("mil_freedom_returned_9")
+		end
+	end
+end

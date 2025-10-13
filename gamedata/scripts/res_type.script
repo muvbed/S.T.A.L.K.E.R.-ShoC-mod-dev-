@@ -1,0 +1,29 @@
+-------------------------------------------
+-- Author: Mechanic             		 --
+-- Description: ќпределение aspect ratio --
+-------------------------------------------
+
+ -- ‘ункци€ возвращает 1, если соотношение сторон примерно 4:3, 2 Ч 16:9, 3 Ч 21:9 или шире (последнее отключено за ненадобностью)
+function get_AR()
+	local res = get_console():get_string("vid_mode") -- записываем в res текущее разрешение экрана
+	if res then
+		for i = 2, string.len(res) do
+			if string.sub(res,i,i)=="x" then
+				local resX = string.sub(res,1,i-1)
+				local resY = string.sub(res,i+1,string.len(res))
+				if resX/resY < 1.5 then -- разрешение примерно 4:3
+					--get_console():execute("~4:3")
+					return 1
+				elseif resX/resY > 1/5 and resX/resY < 2 then -- разрешение примерно 16:9
+					--get_console():execute("~16:9")
+					return 2
+				--elseif resX/resY > 2 then -- разрешение примерно 21:9 или шире
+					--get_console():execute("~21:9")
+					--return 3
+				end
+			end
+		end
+	else
+		return 1
+	end
+end

@@ -1,0 +1,243 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<!-- ПОЛЬЗОВАТЕЛЬСКИЙ ХУД -->
+<header>
+	<ogse_weather  x="0" y="0" width="1024" height="768" complex_mode="1">
+	</ogse_weather>	
+	<!-- Таймер -->
+  	<hud_timer  x="354" y="3" width="316" height="60">
+        <text x="-1" y="27" font="graffiti32" color="grey_5" align="c"/>
+        <texture>ui_hud_frame_clock</texture>
+		<auto_static x="111" y="28" width="94" height="27" light_anim="ui_slow_blinking_alpha" la_cyclic="1" la_texture="1" la_text="0" la_alpha="1">
+			<texture color="hud_timer_flash">ui_hud_frame_flash</texture>
+		</auto_static>
+    </hud_timer>
+	<hud_timer_text x="335" y="5" width="350" height="18">
+		<text font="letterica16" color="grey_3" align="c"/>
+	</hud_timer_text>
+
+	<!-- Главное задание -->
+	<main_task x="310" y="80" width="600" height="52" complex_mode="1" light_anim="buy_menu_info" la_cyclic="0" la_texture="1" la_text="1" la_alpha="1">
+		<text x="-97" font="graffiti22" color="yellow" align="c" vert_align="c"/>
+	</main_task>
+
+	<!-- Активация функций -->
+	<func_task x="310" y="80" width="600" height="52" light_anim="buy_menu_info" la_cyclic="0" la_texture="1" la_text="1" la_alpha="1" ttl="5">
+		<text x="-97" font="graffiti22" color="yellow" align="c" vert_align="c"/>
+	</func_task>
+
+	<!-- Игра сохранена -->
+	<game_saved  x="123" y="738" width="800" height="30">
+		<text font="arial_14" color="yellow" align="c"/>
+	</game_saved>
+	
+	<!-- Запрет на сохранение -->
+	<game_save_disabled  x="123" y="738" width="800" height="30">
+		<text font="arial_14" color="yellow" align="c">st_autosave_disable</text>
+	</game_save_disabled>
+
+	<!-- Разжечь костер -->
+	<campfire_lit  x="123" y="718" width="800" height="30" light_anim="ui_btn_hint" la_cyclic="0" la_text="1" la_alpha="1">
+		<text font="arial_14" color="yellow" align="c">tip_campfire_use</text>
+	</campfire_lit>
+
+	<!-- Автосохранение... -->
+	<autosave  x="123" y="738" width="800" height="30">
+		<text font="arial_14" color="yellow" align="c">st_autosave</text>
+	</autosave>
+
+	<!-- Недостаточно денег -->
+	<not_enough_money_mine  x="516" y="-10" width="504" height="768">
+		<auto_static x="0" y="0" width="498" height="746" stretch="1" light_anim="ui_btn_hint" la_cyclic="0" la_texture="1" la_alpha="1">
+			<texture>ui_shadow_box</texture>
+		</auto_static>
+		<auto_static a="180" x="213" y="334">
+			<texture>ui_iconsTotal_found_money</texture>
+		</auto_static>
+		<texture/>
+		<text x="0" y="392" font="letterica18" color="white_2" align="c" light_anim="ui_btn_hint" la_cyclic="0" la_text="1" la_alpha="1">st_not_enough_money</text>
+	</not_enough_money_mine>
+
+	<!-- У НПС недостаточно денег -->
+	<not_enough_money_other  x="9" y="-10" width="504" height="768">
+		<auto_static x="0" y="0" width="498" height="746" stretch="1" light_anim="ui_btn_hint" la_cyclic="0" la_texture="1" la_alpha="1">
+			<texture>ui_shadow_box</texture>
+		</auto_static>
+		<auto_static a="180" x="210" y="334">
+			<texture>ui_iconsTotal_found_money</texture>
+		</auto_static>
+		<texture/>
+		<text x="0" y="392" font="letterica18" color="white_2" align="c" light_anim="ui_btn_hint" la_cyclic="0" la_text="1" la_alpha="1">st_not_enough_money_npc</text>
+	</not_enough_money_other>
+	
+	<!-- Сон -->	
+	<hud_sleep_static x="980" y="580" width="35" height="35">
+		<auto_static x="-8" y="-8" width="48.5" height="50" stretch="1">
+			<texture color="hud_layer_satiety">ui\seq\ui_underlayer_hole</texture>
+		</auto_static>
+		<texture>ui_hud_icon_sleep</texture>
+	</hud_sleep_static>
+
+	<!-- Оружие заклинило. Нужно перезарядить -->
+	<gun_jammed x="102" y="204" width="76" height="76" ttl="3">
+		<text font="arial_14" color="transparent">gun_jammed</text>
+	</gun_jammed>
+
+	<!-- Вы слишком истощены, чтобы двигаться -->
+	<cant_walk x="51" y="204" width="76" height="76" ttl="3">
+		<text font="arial_14" color="transparent">cant_walk</text>
+	</cant_walk>
+
+	<!-- Вы слишком перегружены, чтобы двигаться -->
+	<cant_walk_weight x="123" y="530" width="800" height="30" ttl="3">
+		<text font="arial_14" color="yellow" align="c">cant_walk_weight</text>
+	</cant_walk_weight>
+
+	<!-- Пси-излучение -->
+	<cs_psy_danger x="123" y="80" width="800" height="30">
+		<text font="arial_14" color="yellow" align="c"/>
+	</cs_psy_danger>
+
+	<!-- Высокая радиация -->
+	<cs_radiation_danger x="123" y="110" width="800" height="30">
+		<text font="arial_14" color="yellow" align="c"/>
+	</cs_radiation_danger>
+
+	<!-- Отладочная информация -->
+	<cs_debug x="16" y="234" width="600" height="100" complex_mode="1">
+		<text font="letterica16" color="yellow" align="l"/>
+	</cs_debug>
+
+	<!-- Work in progress -->
+	<cs_demo_play x="140" y="685" width="600" height="50" complex_mode="1">
+		<text font="arial_14" color="yellow" align="l"/>
+	</cs_demo_play>
+
+	<!-- Удары контролера -->
+	<controller_fx x="0" y="0" width="1024" height="768" stretch="1">
+		<texture>act\act_controller_hit</texture>
+	</controller_fx>
+
+	<controller_fx2 x="0" y="0" width="1024" height="768" stretch="1">
+		<texture>act\act_controller_hit1</texture>
+	</controller_fx2>
+
+	<!-- Повреждение от монстров -->
+	<monster_claws x="512" y="150" width="512" height="512" alignment="c" stretch="1" heading="1" light_anim="monster_claws" la_alpha="1" la_cyclic="0">
+		<texture>controller\controller_blood_02</texture>
+	</monster_claws>
+
+	<!-- Интро -->
+	<sleep_001 x="20" y="20" width="984" height="728">
+		<texture x="0" y="0" width="984" height="728">car\trabantnoise</texture>
+	</sleep_001>
+
+	<!-- Пинг в мультиплеере -->
+	<max_ping_warn_1 x="512" y="300" width="360" height="64" alignment="c" ttl="8">
+		<texture x="0" y="0" width="360" height="64" a="30">ui\ui_cm_connection_error</texture>
+		<text x="80" y="50" font="graffiti32" color="white_2"/>
+	</max_ping_warn_1>
+	<max_ping_warn_2 x="512" y="300" width="360" height="64" alignment="c" ttl="8">
+		<texture x="0" y="0" width="360" height="64" a="64">ui\ui_cm_connection_error</texture>
+		<text x="80" y="50" font="graffiti32" color="white_2"/>
+	</max_ping_warn_2>
+	<max_ping_warn_3 x="512" y="300" width="360" height="64" alignment="c" ttl="8">
+		<texture x="0" y="0" width="360" height="64" a="160">ui\ui_cm_connection_error</texture>
+		<text x="80" y="50" font="graffiti32" color="white_2"/>
+	</max_ping_warn_3>
+	<max_ping_warn_4 x="512" y="300" width="360" height="64" alignment="c" ttl="8">
+		<texture x="0" y="0" width="360" height="64" a="255">ui\ui_cm_connection_error</texture>
+		<text x="80" y="50" font="graffiti32" color="white_2"/>
+	</max_ping_warn_4>
+	
+	<!-- Зона сохранения -->
+	<game_save_indicator x="260" y="20" width="40" height="40" light_anim="ui_slow_blinking_alpha" la_cyclic="1" la_texture="1" la_alpha="1">
+		<texture color="green">ui_hud_icon_save</texture>
+	</game_save_indicator>
+	
+	<!-- Зона укрытия -->
+	<hud_shelter x="215" y="20" width="40" height="40" light_anim="ui_slow_blinking_alpha" la_cyclic="1" la_texture="1" la_alpha="1">
+		<texture color="green">ui_hud_icon_shelter</texture>
+	</hud_shelter>
+
+	<!-- Вес -->
+	<inv_weight_static_green x="800" y="12" width="40" height="40">
+		<texture color="green">ui_hud_hazard_cant_walk_weight</texture>
+	</inv_weight_static_green>
+	<inv_weight_static_yellow x="800" y="12" width="40" height="40">
+		<texture color="yellow">ui_hud_hazard_cant_walk_weight</texture>
+	</inv_weight_static_yellow>
+	<inv_weight_static_red x="800" y="12" width="40" height="40">
+		<texture color="red">ui_hud_hazard_cant_walk_weight</texture>
+	</inv_weight_static_red>
+	
+	<!-- Яд -->
+	<inv_poison_static_green x="755" y="12" width="40" height="40">
+		<texture color="green">ui_hud_hazard_chemical_area</texture>
+	</inv_poison_static_green>
+	<inv_poison_static_yellow x="755" y="12" width="40" height="40">
+		<texture color="yellow">ui_hud_hazard_chemical_area</texture>
+	</inv_poison_static_yellow>
+	<inv_poison_static_red x="755" y="12" width="40" height="40">
+		<texture color="red">ui_hud_hazard_chemical_area</texture>
+	</inv_poison_static_red>
+
+
+	<!-- Использование предметов -->
+	<none_static><texture/></none_static>
+	<medkit_static x="148" y="690" width="76" height="76" light_anim="ui_slow_blinking_alpha" la_alpha="1">
+		<texture color="red">ui\seq\ui_underlayer_smoke</texture>
+		<auto_static x="21" y="20" width="36" height="36" light_anim="ui_slow_blinking_alpha">
+			<texture>ui_hud_use_medkit</texture>
+		</auto_static>
+    </medkit_static>
+	<drink_static x="98" y="690" width="76" height="76" light_anim="ui_slow_blinking_alpha" la_alpha="1">
+		<texture color="blue">ui\seq\ui_underlayer_smoke</texture>
+		<auto_static x="21" y="20" width="36" height="36" light_anim="ui_slow_blinking_alpha">
+			<texture>ui_hud_use_drink</texture>
+		</auto_static>
+    </drink_static>
+	<antirad_static x="48" y="690" width="76" height="76" light_anim="ui_slow_blinking_alpha" la_alpha="1">
+		<texture color="yellow">ui\seq\ui_underlayer_smoke</texture>
+		<auto_static x="21" y="20" width="36" height="36" light_anim="ui_slow_blinking_alpha">
+			<texture>ui_hud_use_antirad</texture>
+		</auto_static>
+    </antirad_static>
+	<energy_static x="-2" y="690" width="76" height="76">
+		<texture color="green">ui\seq\ui_underlayer_tornado</texture>
+		<auto_static x="21" y="20" width="36" height="36">
+			<texture>ui_hud_use_power</texture>
+		</auto_static>
+    </energy_static>
+	
+	<quick_slot_key_1 x="708" y="735" width="17" height="17" light_anim="ui_btn_hint" la_alpha="1" la_cyclic="0">
+        <text font="letterica18" r="240" g="217" b="182" a="255" align="c"/>
+	</quick_slot_key_1>
+
+	<quick_slot_key_2 x="744" y="735" width="17" height="17" light_anim="ui_btn_hint" la_alpha="1" la_cyclic="0">
+        <text font="letterica18" r="240" g="217" b="182" a="255" align="c"/>
+	</quick_slot_key_2>
+
+	<quick_slot_key_3 x="780" y="735" width="17" height="17" light_anim="ui_btn_hint" la_alpha="1" la_cyclic="0">
+        <text font="letterica18" r="240" g="217" b="182" a="255" align="c"/>
+	</quick_slot_key_3>
+
+	<quick_slot_key_4 x="816" y="735" width="17" height="17" light_anim="ui_btn_hint" la_alpha="1" la_cyclic="0">
+        <text font="letterica18" r="240" g="217" b="182" a="255" align="c"/>
+	</quick_slot_key_4>
+
+	<quick_slot_1 x="700" y="718" width="30" height="30" light_anim="ui_btn_hint" la_alpha="1" la_cyclic="0" stretch="1">
+		<texture>ui\ui_icon_equipment</texture>
+	</quick_slot_1>
+
+	<quick_slot_2 x="736" y="718" width="30" height="30" light_anim="ui_btn_hint" la_alpha="1" la_cyclic="0" stretch="1">
+		<texture>ui\ui_icon_equipment</texture>
+	</quick_slot_2>
+
+	<quick_slot_3 x="772" y="718" width="30" height="30" light_anim="ui_btn_hint" la_alpha="1" la_cyclic="0" stretch="1">
+		<texture>ui\ui_icon_equipment</texture>
+	</quick_slot_3>
+
+	<quick_slot_4 x="808" y="718" width="30" height="30" light_anim="ui_btn_hint" la_alpha="1" la_cyclic="0" stretch="1">
+		<texture>ui\ui_icon_equipment</texture>
+	</quick_slot_4>
+</header>

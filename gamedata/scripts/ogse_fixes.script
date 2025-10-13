@@ -1,0 +1,305 @@
+
+
+function attach(sm)
+	sm:subscribe({ signal = "on_spawn", fun = this.on_spawn })
+	sm:subscribe({ signal = "on_first_update", fun = this.on_first_update })
+	sm:subscribe({ signal = "on_npc_first_update", fun = this.on_npc_first_update })
+end
+
+function on_spawn()
+	del_buggy_objects()
+	del_buggy_mapspots()
+
+	lc_question_add()
+	fix_gar_boars_territory2_logic()
+	--
+	fix_rostok_zone_zharka_static_average()
+	--
+	fix_zone_flame_small2()
+	--
+	fix_gar_sniper_in_restrictor()
+	--
+	fix_agr_nii_sr_building()
+	--
+	fix_svoboda_snipers()
+	--
+	fox_can_hide()
+	fix_ecologs_flags()
+	--
+end
+
+function on_first_update()
+	fix_monsters_spawn()
+end
+
+function fix_monsters_spawn()
+  if ogse.var_exists("fix_monsters_spawn") then return end
+  --
+  ogsm_respawn.first_run()
+  --
+  ogse.save_var("fix_monsters_spawn", true)
+end
+
+
+function fix_gar_boars_territory2_logic() -- Исправление кривой логики рестриктора на свалке. Ему вообще не нужна логика.
+	if ogse.var_exists("gar_boars_territory2_fix") then return end
+	local sobj = alife():object("gar_boars_territory2")
+	if sobj then
+		sobj.custom_data = ""
+		log3( "--[%s]: Fixed logic in restrictor [%s]!", script_name(), sobj:name() )
+	end
+	ogse.save_var("gar_boars_territory2_fix", true)
+end
+
+
+function lc_question_add() -- Переход "Припять - ЧАЭС" задаёт вопрос о смене уровня.
+	local sobj = alife():object("exit_to_stancia_01")
+	if sobj then
+		local lc = sobj:get_level_changer()
+		if lc.silent_mode ~= 0 then
+			lc.silent_mode = 0
+			log3( "~~[%s]: fixed ['exit_to_stancia_01']...", script_name() )
+		end
+	end
+end
+
+-- Фиксим странные флаги экологов, из за них они не могут ходить между смартами в оффлайне
+function fix_ecologs_flags()
+	if ogse.var_exists("fix_ecologs_flags") then return end
+	for i = 1, 4 do
+		local sobj = alife():object("bar_ecolog_crush_"..i)
+		if sobj then
+			local pk = get_netpk( sobj, 1 )
+			ASSERT( ( pk and pk:isOk() ), "can't read netpacket of %s", sobj:name() )
+			local data = pk:get()
+			data.object_flags = bit_and( data.object_flags, bit_not( object_flags.OfflineNoMove ) ) -- снять флаг OfflineNoMove
+			data.object_flags = bit_or( data.object_flags, object_flags.Interactive ) -- установить флаг Interactive
+			pk:set( data )
+			log3( "--[%s]: Fixed object_flags for [%s]!", script_name(), sobj:name() )
+		end
+	end
+	ogse.save_var("fix_ecologs_flags", true)
+end
+
+
+function del_buggy_objects() -- Удаление из игры глючных объектов
+	local names = {
+---- Рестрикторы постоянных звуков стрельбы в Припяти----
+		"pri_ambient_battle_sound_zone_0000",
+		"pri_ambient_battle_sound_zone_0001",
+		"pri_ambient_battle_sound_zone_0002",
+		"pri_ambient_battle_sound_zone_0003",
+--------------------------------------------------------
+----- Рестрикторы постоянных звуков стрельбы на ЧАЭС -----
+		"aes_space_restrictor_sound_battle_0000",
+		"aes_space_restrictor_sound_battle_0001",
+--------------------------------------------------------
+		"sar_enter_zone", -- Рестриктор, воспроизводящий "зов Монолита" в Саркофаге
+		"mil_physic_object_0127		", -- глючно заспавненная модель автомата на АС
+--------------------------------------------------------
+---------- Рестрикторы удалённой схемы sr_sleep ----------
+		"rad_sleep_room",
+		"mil_sr_sleep_1",
+--------------------------------------------------------
+		"val_sacrifice_danger_zone", -- Рестриктор удалённой схемы sr_danger
+		"rosros_cutscene", -- Рестриктор, запускающий облет камеры на ДТ
+		"pri_zone_no_gravity", -- Аномалия выполнена очень криво, ибо можно подняться и пройти сверху, только с замедлением, как по воде. Такое ощущение, что стоит что-то невидимое, и на него можно залезть и прогуляться. Лучше убрать, выглядит как баг.
+	}
+	local sim = alife()
+	if sim then
+		for _, n in ipairs( names ) do
+			local sobj = sim:object( n )
+			if sobj and object_level_name(sobj) ~= level.name() then
+				log3( "~~[%s]: found [%s], removing...", script_name(), sobj:name() )
+				sim:release(sobj, true)
+			end
+		end
+	end
+end
+
+function del_buggy_mapspots() -- Удаление глючных меток с карты.
+	if has_alife_info("gar_free_pass")
+	and level_tasks.is_map_spot_present(115, "green_location") then
+		level_tasks.remove_location_by_sid(115, "green_location") -- Вечная метка на Прапора на свалке
+	end
+	if has_alife_info("labx16_find")
+	and level_tasks.is_map_spot_present(story_ids.yan_mapspot_from_vasilyev, "green_location") then
+		level_tasks.remove_location_by_sid(story_ids.yan_mapspot_from_vasilyev, "green_location") -- Вечная метка "Проникнуть в лабораторию X-16" на янтаре
+	end
+	if has_alife_info("mil_dolg_dead")
+	and level_tasks.is_map_spot_present(story_ids.Mil_Dolg_Zoneguard, "crlc_mdl") then
+		level_tasks.remove_location_by_sid(story_ids.Mil_Dolg_Zoneguard, "crlc_mdl") -- Вечная метка "Уничтожить отряд Долга" на АС
+	end
+	if has_alife_info("mil_max_job_complete")
+	and level_tasks.is_map_spot_present(story_ids.Mil_Master_Max, "blue_location") then
+		level_tasks.remove_location_by_sid(story_ids.Mil_Master_Max, "blue_location") -- Вечная метка "Отдать флэшку Максу" на АС
+	end
+	if has_alife_info("pri_stadium_reached")
+	and level_tasks.is_map_spot_present(story_ids.pri_stadium_entrance, "green_location") then
+		level_tasks.remove_location_by_sid(story_ids.pri_stadium_entrance, "green_location") -- Вечная метка "Найти выход на ЧАЭС"
+	end
+	if has_alife_info("aes_found_sarcofag")
+	and level_tasks.is_map_spot_present(story_ids.aes_sarcofag, "green_location") then
+		level_tasks.remove_location_by_sid(story_ids.aes_sarcofag, "green_location") -- Вечная метка "Вход в Саркофаг"
+	end
+	if has_alife_info("sar_enter_command_center")
+	and level_tasks.is_map_spot_present(story_ids.sar_monolith, "green_location") then
+		level_tasks.remove_location_by_sid(story_ids.sar_monolith, "green_location") -- Вечная метка "Исполнитель желаний"
+	end
+	if has_alife_info("sar_finish_decoding")
+	and level_tasks.is_map_spot_present(story_ids.sar_secret_door, "green_location") then
+		level_tasks.remove_location_by_sid(story_ids.sar_secret_door, "green_location") -- Вечная метка на кодовую дверь в саркофаге
+	end
+end
+
+function cleanup_val_rob_restrictors() --Вызывается из конфигов при закрытии смарта кидал в ТД
+	for _, name in ipairs({"val_rob_zone", "val_rob_warn_zone", "val_rob_kill_zone", "val_farm_zone"}) do
+		local sobj = alife():object( name )
+		if sobj then
+			log3( "~~[%s.cleanup_val_rob_restrictors]: found [%s], removing...", script_name(), sobj:name() )
+			alife():release( sobj )
+		end
+	end
+end
+
+-- Чтобы НПС обходили жарки в тоннеле на ДТ (некоторые жарки всё равно не будут обходить, т.к. у них border().empty() и это мне не удалось починить)
+function fix_rostok_zone_zharka_static_average()
+  for _, n in ipairs({
+    "",
+    "_0000", "_0001", "_0002", "_0003", "_0004", "_0005", "_0006", "_0007", "_0008", "_0009", "_0010", "_0011",
+    "_0012", "_0013", "_0014", "_0015", "_0016", "_0017", "_0018", "_0019", "_0020", "_0021", "_0022",
+  }) do
+    local sobj = alife():object( "rostok_zone_zharka_static_average" .. n )
+    if sobj then
+      local sr = sobj:get_space_restrictor()
+      if sr.restrictor_type ~= global_flags.eDefaultRestrictorTypeNone then
+        log3( "~~[%s]: fix %s.m_restrictor_type: [%s] -> [%s]", script_name(), sobj:name(), sr.restrictor_type, global_flags.eDefaultRestrictorTypeNone )
+        sr.restrictor_type = global_flags.eDefaultRestrictorTypeNone
+      end
+    end
+  end
+end
+
+-- Чтобы НПС не обходили костры, мины, аномалии-телепорты, и прочие объекты на классах аномалий, не являющиеся аномалиями по факту
+function fix_zone_flame_small2()
+  if ogse.var_exists("fix_zone_flame_small2") then return end
+  --
+  for id, sobj in alife():objects() do
+    if IsAnomaly(sobj) and ogse_anomaly.is_not_anomaly(sobj) then
+      local sr = sobj:get_space_restrictor()
+      if sr.restrictor_type == global_flags.eDefaultRestrictorTypeNone then
+        log3( "~~[%s]: fix %s.m_restrictor_type: [%s] -> [%s]", script_name(), sobj:name(), sr.restrictor_type, global_flags.eRestrictorTypeNone )
+        sr.restrictor_type = global_flags.eRestrictorTypeNone
+      end
+    end
+  end
+  --
+  ogse.save_var("fix_zone_flame_small2", true)
+end
+
+-- Dsh: этот рестриктор был указан в out_rest у другана притворяшки и при этом имел тип, который автоматически добавляется в in рестрикторы.
+function fix_gar_sniper_in_restrictor()
+  local sobj = alife():object( "gar_sniper_in_restrictor" )
+  local sr   = sobj:get_space_restrictor()
+  if sr.restrictor_type ~= global_flags.eRestrictorTypeNone then
+    log3( "~~[%s]: fix %s.m_space_restrictor_type: [%s] -> [%s]", script_name(), sobj:name(), sr.restrictor_type, global_flags.eRestrictorTypeNone )
+    sr.restrictor_type = global_flags.eRestrictorTypeNone
+  end
+end
+
+
+function fix_agr_nii_sr_building()
+	local sobj = alife():object("agr_nii_sr_building")
+	if not sobj then
+		log3("~~[%s] agr_nii_sr_building not found, fixing...", script_name())
+		sobj = alife():create(alife():spawn_id("agr_nii_sr_building"))
+		sobj = alife():object(sobj.id)
+	end
+
+	local sr = sobj:get_space_restrictor()
+	if sr.restrictor_type ~= global_flags.eRestrictorTypeNone then
+		log3("--[%s.fix_agr_nii_sr_building]: fix [%s.m_space_restrictor_type]: [%s] -> [%s]", script_name(), sobj:name(), sr.restrictor_type, global_flags.eRestrictorTypeNone)
+		sr.restrictor_type = global_flags.eRestrictorTypeNone
+	end
+end
+
+--Попробуем поменять тимы снайперам свободы, чтобы когда они видят долговцев, вся база не начинала их видеть тоже.
+local snipers_names = {
+	["mil_freedom_stalker0004"] = true,
+	["mil_freedom_stalker0010"] = true,
+	["mil_freedom_member0024"] = true,
+	["mil_freedom_member0025"] = true,
+	["mil_freedom_member0026"] = true
+}
+
+function fix_svoboda_snipers()
+	for name, _ in pairs(snipers_names) do
+		local sobj = alife():object(name)
+		if sobj then
+			local teamn = level.get_character_community_team( "prefreedom" )
+			local obj = level.object_by_id(sobj.id)
+			if obj then
+				if obj:team() ~= teamn then
+					log3( "~~[%s]: [1] change team for [%s]: [%s] -> [%s]", script_name(), obj:name(), obj:team(), teamn )
+					obj:change_team( teamn, obj:squad(), obj:group() )
+				end
+			else
+				if sobj.team ~= teamn then
+					log3( "~~[%s]: [2] change team for [%s]: [%s] -> [%s]", script_name(), sobj:name(), sobj.team, teamn )
+					sobj.team = teamn
+				end
+			end
+		end
+	end
+end
+
+function on_npc_first_update(obj)
+	if snipers_names[obj:name()] then
+		local teamn = level.get_character_community_team( "prefreedom" )
+		if obj:team() ~= teamn then
+			log3( "~~[%s]: [3] change team for [%s]: [%s] -> [%s]", script_name(), obj:name(), obj:team(), teamn )
+			obj:change_team( teamn, obj:squad(), obj:group() )
+		end
+	end
+end
+
+-- Чтобы Лис мог прятаться от выброса, уберем ему ограничения на выход из рестриктора.
+function fox_can_hide()
+  if ogse.var_exists("fox_can_hide") then return end
+
+  local sobj = alife():object( "esc_fox" )
+  if sobj then
+    local pk = get_netpk( sobj )
+    ASSERT( ( pk and pk:isOk() ), "can't read netpacket of %s", sobj:name() )
+    local data = pk:get()
+    if data.base_out_restrictors ~= "" then
+      data.base_out_restrictors = ""
+      pk:set( data )
+      log3( "~~[%s] Fox_can_hide!", script_name() )
+      ogse.save_var("fox_can_hide", true)
+	end
+  end
+end
+
+--' Огонь у сбитого вертолёта на Ростке (из SFU 15f)
+function clear_rost()
+	local tbl_remove = {
+		"ros_flame_1", 
+		"ros_flame_2", 
+		"ros_flame_3", 
+		"ros_flame_4", 
+		"ros_flame_5", 
+		"ros_flame_6", 
+		"ros_flame_7", 
+		"ros_flame_8"
+	}
+	local sim = alife()
+	if sim then
+		for _, n in ipairs( tbl_remove ) do
+			local sobj = sim:object( n )
+			if sobj then
+				sim:release(sobj, true)
+			end
+		end
+	end
+end

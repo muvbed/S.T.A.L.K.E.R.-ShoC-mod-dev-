@@ -1,0 +1,883 @@
+
+
+--/ news_main_new.script /--
+--/ OGS Evolution - team /--
+--/ ver. 2.1 /--
+--/ Использовались некоторые наработки АМК (тексты,некоторые функции) /--
+
+--/ функции выдачи сообщений /--
+
+
+local random_news = 1
+local news_showtime = 13000 -- стандартное время показа сообщения
+
+local post_message_prob = 1 -- простые сообщения, сообщения о выбросе.
+local post_message_PDA_error = 1 -- Сообщения ПДА о глюках сети и сообщения с ошибками
+local post_message_vibros_news = 1 -- Сообщения о помощи при начале Выброса
+local post_message_fake_vibros_news = 1 -- Ложные сообщения о Выбросе
+
+local vubros_msg_fake_prob = 0.03 -- вероятность появления ложного сообщения о Выбросе
+
+
+-- Выброс! (тексты)
+local blu_when = {
+    "минуты через две.",
+    "очень скоро.",
+    "через несколько минут.",
+    "через пару минут.",
+    "с минуты на минуту."
+}
+
+local blu_message = {
+    "Ищите укрытие понадёжней - Выброс ",
+    "Сахаров говорит, что у него аппаратура даёт приблизительную оценку, что Выброс ",
+    "Когда был у Сахарова, он говорил о Выбросе. Будет ",
+    "Все в норы! Выброс будет ",
+    "Внимание! Яйцеголовые сообщают – Выброс ",
+    "Истинно говорю вам: Выброс "
+}
+
+local blu_query = {
+    ", информация достоверная?",
+    ", всё точно? Не ошибся?",
+    ", это точно? Не соврал?",
+    ", да как же так! Недавно же был!",
+    "! Ах ты сукин сын! Врёшь поди!",
+    "! Чтоб тебя... Уверен?",
+    "! Мать твою! Раньше не мог сказать?! Соврал - убью!",
+    ", данные проверены?"
+}
+
+local blu_anser_yes = {
+    "Всё точно! Всем задраиться!",
+    "Информация проверена!",
+    "Источник надёжный, все прячемся!",
+    "Данные подтвердились! Все в норы!",
+    "Мой источник не ошибается! Всё точно!",
+    "Да, всё верно! Никаких сомнений!",
+    "Не веришь - гуляй. Тебе что на могилку поставить?",
+    "За упокой неверующих я потом выпью."
+}
+
+local blu_anser_no = {
+    "Повторные замеры показали, что предупреждение было преждевременным...",
+    "Данные не подтвердились.",
+    "Информация не подтверждена.",
+    "Приборы ошиблись. Извиняйте.",
+    "Аппаратура не дала подтверждения... Извиняйте, мужики."
+}
+
+local blu_reaction = {
+    "Блин! Трепло!",
+    "Ну, ты, мля, трепло! Я чуть в штаны не наделал.",
+    "Ёмть! Я чуть ёжика не родил, пока до укрытия добежал.",
+    "А что ж ты тогда людям мозги паришь?",
+    "Урод, мля! Что ж ты творишь, гад!?",
+    "Козлина, млин! Урою, как увижу!",
+    "Ах ты зараза! Закопаю при первой же встрече!",
+    "Да чтоб тебя зомби разорвали! Ты что над людьми издеваешься, урод?!",
+    "С-с-сука!"
+}
+
+
+-- Выброс!
+function vubros_msg()
+    if random_news == 1 then
+        if post_message_prob == 1 and not isIndoor(level.name()) then
+            local from1 = gen_names_strings()
+            local from2 = gen_names_strings()
+            local from3 = gen_names_strings()
+            local bluw_msg_when = blu_when[math.random(table.getn(blu_when))]
+            local bluw_msg = blu_message[math.random(table.getn(blu_message))]
+
+            if bluw_msg ~= nil and bluw_msg_when ~= nil then
+                local news_text = "%c[255,160,160,160]" .. from1 .. ":\\n%c[default]" .. bluw_msg .. bluw_msg_when
+                db.actor:give_game_news(news_text, "ui\\ui_iconsTotal", Frect():set(498, 282, 83, 47), 0, news_showtime)
+            end
+
+            local blu_query_text = blu_query[math.random(table.getn(blu_query))]
+            if blu_query_text ~= nil and from1 ~= nil and from2 ~= nil then
+                local news_text = "%c[255,160,160,160]" .. from2 .. ":\\n%c[default]" .. from1 .. blu_query_text
+                db.actor:give_game_news(
+                    news_text,
+                    "ui\\ui_iconsTotal",
+                    Frect():set(498, 47, 83, 47),
+                    math.random(2000, 4000),
+                    news_showtime
+                )
+            end
+
+            if has_alife_info("pre_blowout") then
+                local blu_anser_yes_text = blu_anser_yes[math.random(table.getn(blu_anser_yes))]
+                if blu_anser_yes_text ~= nil and from1 ~= nil then
+                    local news_text = "%c[255,160,160,160]" .. from1 .. ":\\n%c[default]" .. blu_anser_yes_text
+                    db.actor:give_game_news(
+                        news_text,
+                        "ui\\ui_iconsTotal",
+                        Frect():set(498, 47, 83, 47),
+                        math.random(5000, 7000),
+                        news_showtime
+                    )
+                end
+            else
+                local blu_anser_no_text = blu_anser_no[math.random(table.getn(blu_anser_no))]
+                if blu_anser_no_text ~= nil and from1 ~= nil then
+                    local news_text = "%c[255,160,160,160]" .. from1 .. ":\\n%c[default]" .. blu_anser_no_text
+                    db.actor:give_game_news(
+                        news_text,
+                        "ui\\ui_iconsTotal",
+                        Frect():set(498, 47, 83, 47),
+                        math.random(5000, 7000),
+                        news_showtime
+                    )
+                end
+                local blu_reaction_text = blu_reaction[math.random(table.getn(blu_reaction))]
+                if blu_reaction_text ~= nil and from1 ~= nil then
+                    local news_text = "%c[255,160,160,160]" .. from3 .. ":\\n%c[default]" .. blu_reaction_text
+                    db.actor:give_game_news(
+                        news_text,
+                        "ui\\ui_iconsTotal",
+                        Frect():set(498, 47, 83, 47),
+                        math.random(8000, 10000),
+                        news_showtime
+                    )
+                end
+            end
+        end
+    end
+end
+
+-- Выброс кончился (тексты)
+local blu_out_text = {
+    "Ну, вроде живой. Народ, а вы как?",
+    "Обошлось....",
+    "Чуть кони не двинул... Пронесло...",
+    "Мать вашу! Я жив!.",
+    "С ума сойти... Кончилось...",
+    "Вроде успокоилось...",
+    "Думал уж, что крышка мне... Ан нет! Живой я! Ещё повоюем!"
+}
+local anser_blu_out_text = {
+    ", Зону благодари, что пощадила. ",
+    ". Да-а-а... По краешку прошло...",
+    "! Жив, курилка! Молоток!",
+    ", блин... А меня зацепило... Без аптечки долго не протяну...",
+    ", и когда следующиЙ? Не в курсе?",
+    ", скажи 'спасибо' Зоне, что живым оставила.",
+    ", теперь понял, каково это? То-то же!"
+}
+
+-- Выброс кончился
+function vubros_out_msg()
+    if math.random() < 0.7 then
+        if post_message_prob == 1 and not isIndoor(level.name()) then
+            local from1 = gen_names_strings()
+            local from2 = gen_names_strings()
+            local msg_type = "%c[255,160,160,160]" .. from1 .. ":\\n%c[default]"
+            local blu_out_message = blu_out_text[math.random(table.getn(blu_out_text))]
+            if blu_out_message ~= nil and from1 ~= nil and from2 ~= nil and msg_type ~= nil then
+                local news_text = msg_type .. blu_out_message
+                db.actor:give_game_news(
+                    news_text,
+                    "ui\\ui_iconsTotal",
+                    Frect():set(498, 47, 83, 47),
+                    math.random(2000, 5000),
+                    news_showtime
+                )
+            end
+            if math.random() < 0.8 then
+                local anser_blu_out_message = anser_blu_out_text[math.random(table.getn(anser_blu_out_text))]
+                if anser_blu_out_message ~= nil and from1 ~= nil and from2 ~= nil then
+                    local news_text = "%c[255,160,160,160]" .. from2 .. ":\\n%c[default]" .. from1 .. anser_blu_out_message
+                    db.actor:give_game_news(
+                        news_text,
+                        "ui\\ui_iconsTotal",
+                        Frect():set(498, 47, 83, 47),
+                        math.random(6000, 9000),
+                        news_showtime
+                    )
+                end
+            end
+        end
+    end
+end
+
+-- Ложные сообщения о Выбросе
+function vubros_msg_fake()
+    if post_message_fake_vibros_news == 1 and math.random() < vubros_msg_fake_prob then
+        vubros_msg()
+    end
+end
+
+-- Убеждаемся, что персонажи живы
+function npc_alive_check(sid1, sid2)
+    local npc1, npc2
+    local flag1 = false
+    local flag2 = false
+    if sid1 ~= nil then
+        npc1 = level_object_by_sid(sid1)
+        if npc1 ~= nil and npc1:alive() == true then
+            flag1 = true
+        else
+            flag1 = false
+        end
+    else
+        flag1 = false
+    end
+    if sid2 ~= nil then
+        npc2 = level_object_by_sid(sid2)
+        if npc2 ~= nil and npc2:alive() == true then
+            flag2 = true
+        else
+            flag2 = false
+        end
+    else
+        flag2 = true
+    end
+    if flag1 == true and flag2 == true then
+        return true
+    else
+        return false
+    end
+end
+
+
+local fnames = {
+    "Руслан",
+    "Саша",
+    "Сергей",
+    "Слава",
+    "Толик",
+    "Юра",
+    "Богдан",
+    "Вениамин",
+    "Виталий",
+    "Вова",
+    "Дима",
+    "Иван",
+    "Костя",
+    "Леша",
+    "Андрей",
+    "Санёк",
+    "Шурик",
+    "Вадя",
+    "Васян",
+    "Васек",
+    "Витюха",
+    "Веталь",
+    "Вован",
+    "Жорка",
+    "Гришка",
+    "Гришко",
+    "Димон",
+    "Леха",
+    "Димуха",
+    "Жека",
+    "Фимка",
+    "Илюха",
+    "Костян",
+    "Митька",
+    "Михаил",
+    "Миха",
+    "Михась",
+    "Колян",
+    "Толян",
+    "Павлуха",
+    "Петруха",
+    "Степка",
+    "Степуха",
+    "Тимоха",
+    "Юрась",
+    "Яшка",
+    "Андрюха",
+    "Тоха",
+    "Аркаша",
+    "Тёмка",
+    "Борян",
+    "Бодя",
+    "Андрей",
+    "Антон",
+    "Олег",
+    "Роман",
+    "Александр",
+    "Сергей",
+    "Анатолий",
+    "Юрий",
+    "Богдан",
+    "Вениамин",
+    "Виталий",
+    "Владимир",
+    "Дмитрий",
+    "Иван",
+    "Константин",
+    "Алексей",
+    "Саня",
+    "Санек",
+    "Артур",
+    "Яшка",
+    "Ярик",
+    "Яра",
+    "Слава",
+    "Боря",
+    "Борька",
+    "Богдан",
+    "Славик",
+    "Вадим",
+    "Вадя",
+    "Вадик",
+    "Валик",
+    "Валера",
+    "Шурик",
+    "Вася",
+    "Васька",
+    "Васько",
+    "Веня",
+    "Витя",
+    "Витька",
+    "Виталик",
+    "Влад",
+    "Вова",
+    "Вовка",
+    "Лёня",
+    "Сева",
+    "Севка",
+    "Гена",
+    "Генка",
+    "Георг",
+    "Гоша",
+    "Жора",
+    "Герман",
+    "Глеб",
+    "Гриша",
+    "Алекс",
+    "Гришка",
+    "Гришко",
+    "Даня",
+    "Данила",
+    "Данько",
+    "Денис",
+    "Дима",
+    "Димка",
+    "Дмитро",
+    "Женя",
+    "Лёшка",
+    "Женька",
+    "Егор",
+    "Егорка",
+    "Фима",
+    "Ваня",
+    "Ванька",
+    "Игорек",
+    "Илья",
+    "Костя",
+    "Костик",
+    "Толик",
+    "Лева",
+    "Леня",
+    "Ленька",
+    "Макс",
+    "Матвей",
+    "Митя",
+    "Миша",
+    "Мишка",
+    "Никита",
+    "Ник",
+    "Антон",
+    "Коля",
+    "Олег",
+    "Паша",
+    "Пашка",
+    "Петро",
+    "Петя",
+    "Петька",
+    "Рома",
+    "Ромка",
+    "Ростик",
+    "Тошка",
+    "Рус",
+    "Сава",
+    "Семен",
+    "Сема",
+    "Серега",
+    "Сеня",
+    "Степан",
+    "Степа",
+    "Тима",
+    "Тимка",
+    "Артем",
+    "Федор",
+    "Федя",
+    "Федька",
+    "Филя",
+    "Филька",
+    "Эдик",
+    "Юрка",
+    "Юрик",
+    "Юрко",
+    "Яша"
+}
+
+local snames = {
+    "Хирург",
+    "Шпион",
+    "Бизон",
+    "Бобер",
+    "Бульдог",
+    "Бык",
+    "Воробей",
+    "Дятел",
+    "Зверь",
+    "Змей",
+    "Горбун",
+    "Кабан",
+    "Карась",
+    "Кенарь",
+    "Клоп",
+    "Легавый",
+    "Лось",
+    "Пацюк",
+    "Удав",
+    "Батон",
+    "Битый",
+    "Длинный",
+    "Беспредел",
+    "Болт",
+    "Бритва",
+    "Бубен",
+    "Валет",
+    "Винт",
+    "Динамит",
+    "Козырь",
+    "Кастет",
+    "Косяк",
+    "Дохлый",
+    "Крест",
+    "Крюк",
+    "Лапоть",
+    "Лом",
+    "Панадол",
+    "Перо",
+    "Пистон",
+    "Пятак",
+    "Решка",
+    "Смерть",
+    "Доходяга",
+    "Точило",
+    "Туз",
+    "Чекан",
+    "Чучело",
+    "Шило",
+    "Шпала",
+    "Штырь",
+    "Шухер",
+    "Кулак",
+    "Череп",
+    "Дохляк",
+    "Бармалей",
+    "Батый",
+    "Кащей",
+    "Рембо",
+    "Сусанин",
+    "Терминатор",
+    "Чапай",
+    "Чингиз",
+    "Банан",
+    "Батон",
+    "Дырявый",
+    "Батя",
+    "Баян",
+    "Братан",
+    "Гангрена",
+    "Глюк",
+    "Градус",
+    "Дух",
+    "Звездец",
+    "Изгой",
+    "Кастет",
+    "Жженый",
+    "Козырь",
+    "Косяк",
+    "Лапоть",
+    "Леший",
+    "Мавр",
+    "Ништяк",
+    "Облом",
+    "Пельмень",
+    "Перец",
+    "Рашпиль",
+    "Жирдяй",
+    "Сухарь",
+    "Упырь",
+    "Жлоб",
+    "Битый",
+    "Жмот",
+    "Жмур",
+    "Изверг",
+    "Калека",
+    "Колотун",
+    "Косой",
+    "Кривой",
+    "Ловкач",
+    "Лысый",
+    "Лютый",
+    "Блатной",
+    "Местный",
+    "Мутный",
+    "Мятый",
+    "Одноглазый",
+    "Падла",
+    "Паразит",
+    "Пижон",
+    "Подлец",
+    "Покойник",
+    "Псих",
+    "Болтун",
+    "Рваный",
+    "Рвач",
+    "Слепой",
+    "Сопля",
+    "Стиляга",
+    "Столичный",
+    "Трупак",
+    "Ухарь",
+    "Ушастый",
+    "Хохмач",
+    "Борзой",
+    "Гнилой",
+    "Ржавый",
+    "Бешеный"
+}
+
+local PDA_errors = {
+    "Низкий уровень сигнала.",
+    "Критическая ошибка протокола соединения. Переподключение к серверу...",
+    "Ошибка соединения. Требуется калибровка приёмо-передающего устройства.",
+    "Ошибка соединения. Поместите прибор в зону уверенного приёма и повторите попытку.",
+    "Входящее сообщение принято с ошибкой. Повторите попытку.",
+    "Удалённый сервер не ответил вовремя. Переподключение к серверу...",
+    "Unidentified error. Continuation of connection...",
+    "Critical error. Not enough of memory. System is now reboot...",
+    "Critical error. Reconnecting to the server..."
+}
+
+local message_errors = {
+    "<??????????????????/>",
+    "/ltrch/fcs0¶¬qВЪЧgлЪkЬ?DрЦјєй™ЕїьUb/insrsid14306805/charrsid6240970",
+    "hЉ§Љ§€Љз€Ћ(‰",
+    "Ц2K%ЖФZ=RЉ9G±eHХ”1ҐSRkиUUХ4MУ4ЃРђ",
+    "NЦЫGoV~e©ИКВ8?W”±Ќх©Rе",
+    "zt„К9ґe",
+    "F1Ћ•ыьЪъњеЪчwЖ–Пњй",
+    "mFђQА+иь1Ї‹A;gрйжяоqЧёКDёЫzЃя:СXЩфЯѓcеZL3Ят2'xН3•ЇзЦsFЇ†",
+    "ІЉЙ'ЦО/›с#‚ЕfаЙd<ЪЧgлЪkЬ?ПC‡ZЭЛr$mёТЁ",
+    "¤аVЬ иГўoПо›y_жbјn {¬‰н'S",
+    "<unknown codepage/>",
+    "_yФБў]кBbo3Ш[ЙіZї-ЙDрЦјєй™ЕїьUbNVхJ",
+    "",
+    ";D^mRДзЧ]ЩЦ]йЇLNп©°Гw2Јj]:»IГ­‹ис5ў0ј•ЯiЁъ"
+}
+
+-- Функции выдачи сообщений и мелкие вспомогательные
+
+-- Получаем имя персонажа
+function gen_names_strings()
+    local fname = fnames[math.random(table.getn(fnames))]
+    local sname = snames[math.random(table.getn(snames))]
+    local name_string = fname .. " " .. sname
+    return name_string
+end
+
+-- Сеть глючит
+function show_PDA_error()
+    if post_message_PDA_error == 1 then
+        local PDA_err = PDA_errors[math.random(table.getn(PDA_errors))]
+        if PDA_err ~= nil then
+            db.actor:give_game_news(
+                "%c[255,255,255,0]PDA\\n%c[default]" .. PDA_err,
+                "ui\\ui_iconsTotal",
+                Frect():set(498, 235, 83, 47),
+                0,
+                5000
+            )
+        end
+    end
+end
+
+-- Сообщения с ошибками
+function show_news_error()
+    if post_message_PDA_error == 1 then
+        local msg_err1 = message_errors[math.random(table.getn(message_errors))]
+        local msg_err2 = message_errors[math.random(table.getn(message_errors))]
+        if msg_err1 ~= nil and msg_err2 ~= nil then
+            local news_text = "%c[255,160,160,160]" .. msg_err1 .. ":\\n%c[default]" .. msg_err2
+            db.actor:give_game_news(news_text, "ui\\ui_iconsTotal", Frect():set(498, 47, 83, 47), 0, news_showtime)
+        end
+    end
+end
+
+-- Сообщения при начале Выброса
+-- Выброс - помогите! (тексты)
+local group_type = {
+    1, -- Одиночки
+    2, -- Долг
+    3 -- Свобода
+}
+
+local who_say_group_text = {
+    "Это",
+    "Говорит",
+    "Просим о помощи -"
+}
+
+local who_say_dolg_text = {
+    "1-й квад",
+    "2-й квад",
+    "3-й квад",
+    "4-й квад",
+    "5-й квад",
+    "6-й квад",
+    "7-й квад",
+    "8-й квад"
+}
+
+local who_say_freedom_text = {
+    "Рейд-группа",
+    "Экспедиционная группа",
+    "Блокгруппа",
+    "Группа прикрытия"
+}
+
+local lone_query_help_text = {
+    "Помогайте! Где здесь можно укрыться?",
+    "Мужики, подскажите, где ближайшее укрытие? Я здесь впервые.",
+    "Ну, всё... Хана мне...",
+    "Мать твою! Не успеваю! Где здесь сныкаться можно?",
+    "Да чтоб тебя! Что делать-то?"
+}
+
+local group_query_help_text = {
+    "Выделенный канал связи потерян. Нахождение в заданном районе невозможно. Требую срочной эвакуации.",
+    "Вытаскивайте нас отсюда! Срочно! Связь уже отказывает!",
+    "Прошу о немедленной эвакуации. Электроника отказывает.",
+    "Вытащите нас! Быстрее!",
+    "Самостоятельно укрыться не можем. Аппаратура выходит из строя. Просим срочной эвакуации!",
+    "В заданном районе укрытий нет! Вытаскивайте нас быстрее!",
+    "База! Мать вашу! Срочно вытаскивайте нас отсюда! Выделенка отвалилась уже!",
+    "Мэй Дэй! Мэй Дэй! Запрашиваем срочную эвакуацию! Провал задания!",
+    "Быстрее вытаскивайте нас! Мля! Срочно! Аппаратура выходит из строя! Мы сворачиваемся! Ждём транспорт!",
+    "Мы уходим с точки. Укрыться негде! Просим транспорт для эвакуации!",
+    "Мля! База! Какой урод придумал это всё затеять перед Выбросом?! Вытаскиваёте нас! Быстрее!",
+    "Укрытий поблизости не наблюдаем. Экипировка не позволяет переждать 'в поле'. Вытаскивайте нас! Срочно!"
+}
+
+local anser_query_help_text = {
+    ", не кипешись. Там недалеко от тебя есть место, где можно переждать. Лови координаты...",
+    "! Успокойся. Рядом с тобой есть укрытие. Вот координаты...",
+    ", без паники. Если хорошо бегаешь, то добежишь до укрытия. Вот координаты...",
+    ", слушай, ты скинь свои координаты, чтоб я знал, куда потом за хабаром идти. Ха-ха-ха.",
+    ", извини, но ничем помочь не могу. Удачи тебе."
+}
+
+local anser_yes_query_help_text = {
+    "без паники! Транспорт в пути. Ждите.",
+    "спокойно! Машина уже выехала. Выдвигайтесь навстречу.",
+    "помощь идёт. Выдвигайтесь к точке эвакуации.",
+    "борт прибудет на резервную точку эвакуации через минуту. Бегом туда.",
+    "бегом на точку эвакуации! Транспорт будет через 2 минуты."
+}
+
+local anser_no_query_help_text = {
+    "простите, но вытаскивать вас уже некому. Действуйте по своему усмотрению. Храни вас Зона...",
+    "извините, но эвакуации не будет. Транспорт уничтожен. Храни вас Господь...",
+    "эвакуации не будет. Экипаж погиб. Действуйте по обстановке. Удачи.",
+    "эвакуация отменена. Транспорт не может к вам пробиться. Действуйте сами.",
+    "борт к вам не прошёл - сильные аномальные поля. Помочь вам не можем."
+}
+
+local yes_query_help_text = {
+    "Давайте быстрее! Мы ждём!",
+    "Быстрее! Мы выдвигаемся навстречу.",
+    "Давайте в темпе! Мы ждём на точке.",
+    "Мать вашу! Быстрее! Мы на точке!",
+    "Быстрее! Быстрее! Вот-вот начнётся!"
+}
+
+local no_query_help_text = {
+    "Мать вашу! Что ж вы творите, уроды! Здесь негде укрыться!",
+    "Да чтоб вас Зона сожрала! Придумайте же что-нибудь! МЫ ГИБНЕМ!",
+    "Ну, может, ещё увидимся... Припомню тогда всё!",
+    "Вашу мать! Попробуем выбраться сами. Но шансов нет...",
+    "Чтоб вас зомби порвали! Что делать-то! Мы же не сдюжим!"
+}
+
+
+--Выброс - помогите! (общая)
+function show_news_vibros()
+    if post_message_vibros_news == 1 then
+        local msg_type = ""
+        local query_help_text = ""
+        local who = ""
+        local say = ""
+        local say = ""
+        local anser_type = 0
+        local anser_text = ""
+        local news_text = ""
+
+        local gr_type = group_type[math.random(table.getn(group_type))]
+        if gr_type ~= nil then
+            if gr_type == 1 then
+                lone_query_help_vibros()
+                return
+            elseif gr_type == 2 then
+                msg_type = '%c[255,255,0,0]"Долг":\\n%c[default]'
+                query_help_text = group_query_help_text[math.random(table.getn(group_query_help_text))]
+                who = who_say_group_text[math.random(table.getn(who_say_group_text))]
+                say = who_say_dolg_text[math.random(table.getn(who_say_dolg_text))]
+            elseif gr_type == 3 then
+                msg_type = '%c[255,0,255,0]"Свобода":\\n%c[default]'
+                query_help_text = group_query_help_text[math.random(table.getn(group_query_help_text))]
+                who = who_say_group_text[math.random(table.getn(who_say_group_text))]
+                say = who_say_freedom_text[math.random(table.getn(who_say_freedom_text))]
+            end
+        end
+
+        if query_help_text ~= nil and who ~= nil and say ~= nil and msg_type ~= nil then
+            news_text = msg_type .. who .. " " .. say .. ". " .. query_help_text
+
+            if gr_type == 2 then
+                db.actor:give_game_news(news_text, "ui\\ui_iconsTotal", Frect():set(498, 141, 83, 47), 0, news_showtime)
+            elseif gr_type == 3 then
+                db.actor:give_game_news(news_text, "ui\\ui_iconsTotal", Frect():set(498, 94, 83, 47), 0, news_showtime)
+            end
+
+            if math.random() < 0.5 then
+                anser_type = 1
+                anser_text = anser_yes_query_help_text[math.random(table.getn(anser_yes_query_help_text))]
+            else
+                anser_type = 0
+                anser_text = anser_no_query_help_text[math.random(table.getn(anser_no_query_help_text))]
+            end
+
+            if anser_text ~= nil then
+                news_text = msg_type .. say .. ", " .. anser_text
+                if gr_type == 2 then
+                    db.actor:give_game_news(
+                        news_text,
+                        "ui\\ui_iconsTotal",
+                        Frect():set(498, 141, 83, 47),
+                        math.random(2000, 4000),
+                        news_showtime
+                    )
+                elseif gr_type == 3 then
+                    db.actor:give_game_news(
+                        news_text,
+                        "ui\\ui_iconsTotal",
+                        Frect():set(498, 94, 83, 47),
+                        math.random(2000, 4000),
+                        news_showtime
+                    )
+                end
+            end
+
+            if anser_type ~= nil and anser_type == 1 then
+                query_help_text = yes_query_help_text[math.random(table.getn(yes_query_help_text))]
+            elseif anser_type ~= nil and anser_type == 0 then
+                query_help_text = no_query_help_text[math.random(table.getn(no_query_help_text))]
+            end
+
+            if query_help_text ~= nil then
+                news_text = msg_type .. query_help_text
+
+                if gr_type == 2 then
+                    db.actor:give_game_news(
+                        news_text,
+                        "ui\\ui_iconsTotal",
+                        Frect():set(498, 141, 83, 47),
+                        math.random(5000, 7000),
+                        news_showtime
+                    )
+                elseif gr_type == 3 then
+                    db.actor:give_game_news(
+                        news_text,
+                        "ui\\ui_iconsTotal",
+                        Frect():set(498, 94, 83, 47),
+                        math.random(5000, 7000),
+                        news_showtime
+                    )
+                end
+            end
+
+            if math.random() < 0.3 and anser_type == 1 then
+                anser_text = anser_no_query_help_text[math.random(table.getn(anser_no_query_help_text))]
+                if anser_text ~= nil then
+                    news_text = msg_type .. say .. ", " .. anser_text
+
+                    if gr_type == 2 then
+                        db.actor:give_game_news(
+                            news_text,
+                            "ui\\ui_iconsTotal",
+                            Frect():set(498, 141, 83, 47),
+                            math.random(8000, 10000),
+                            news_showtime
+                        )
+                    elseif gr_type == 3 then
+                        db.actor:give_game_news(
+                            news_text,
+                            "ui\\ui_iconsTotal",
+                            Frect():set(498, 94, 83, 47),
+                            math.random(8000, 10000),
+                            news_showtime
+                        )
+                    end
+                end
+                query_help_text = no_query_help_text[math.random(table.getn(no_query_help_text))]
+                if query_help_text ~= nil then
+                    news_text = msg_type .. query_help_text
+
+                    if gr_type == 2 then
+                        db.actor:give_game_news(
+                            news_text,
+                            "ui\\ui_iconsTotal",
+                            Frect():set(498, 141, 83, 47),
+                            math.random(11000, 12000),
+                            news_showtime
+                        )
+                    elseif gr_type == 3 then
+                        db.actor:give_game_news(
+                            news_text,
+                            "ui\\ui_iconsTotal",
+                            Frect():set(498, 94, 83, 47),
+                            math.random(11000, 12000),
+                            news_showtime
+                        )
+                    end
+                end
+            end
+        end
+    end
+end
+
+--Выброс - помогите! (одиночки)
+function lone_query_help_vibros()
+    local from1 = gen_names_strings()
+    local from2 = gen_names_strings()
+    local msg_type = "%c[255,160,160,160]" .. from1 .. ":\\n%c[default]"
+    local query_help_text = lone_query_help_text[math.random(table.getn(lone_query_help_text))]
+    if query_help_text ~= nil and from1 ~= nil and from2 ~= nil and msg_type ~= nil then
+        local news_text = msg_type .. query_help_text
+        db.actor:give_game_news(news_text, "ui\\ui_iconsTotal", Frect():set(498, 47, 83, 47), 0, news_showtime)
+    end
+    if math.random() < 0.8 then
+        local anser_help_text = anser_query_help_text[math.random(table.getn(anser_query_help_text))]
+        if anser_help_text ~= nil and from1 ~= nil and from2 ~= nil then
+            local news_text = "%c[255,160,160,160]" .. from2 .. ":\\n%c[default]" .. from1 .. anser_help_text
+            db.actor:give_game_news(
+                news_text,
+                "ui\\ui_iconsTotal",
+                Frect():set(498, 47, 83, 47),
+                math.random(2000, 4000),
+                news_showtime
+            )
+        end
+    end
+end

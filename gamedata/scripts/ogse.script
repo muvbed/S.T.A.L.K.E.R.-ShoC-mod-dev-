@@ -1,0 +1,399 @@
+
+-----------------------------------------------------------------------
+--- ogse.script
+--- Утилитарная база OGSE 0.6.9.3
+--- 2007-2008 (c) xStream, DEXXX
+--- 2009-2013 (c) OGS Evolution Team
+-----------------------------------------------------------------------
+
+function attach(sm)
+	sm:subscribe({signal = "on_spawn",          fun = this.on_spawn})
+end
+
+game_time_factor = get_float("alife", "time_factor")
+---------------------------------------------------------------
+-- Формат хранения:
+-- [id] = { time_died = time_when_killed, killer = who:id() }
+---------------------------------------------------------------
+
+-- Переменные для типсов
+tips_variable = {
+	["pda_news"] = ([[device\pda\pda_news]]),
+	["pda_tips"] = ([[device\pda\pda_tip]]),
+	["pda_task"] = ([[device\pda\pda_objective]]),
+	["pda_sos"] = ([[device\pda\pda_sos]]),
+}
+tips_icons = {
+	default  = { 82, 282},
+	trader   = { 332, 893},
+	dolg     = { 0, 658},
+	freedom  = { 0, 658},
+	ecolog   = { 498, 0},
+	arena    = { 332, 141},
+	stalker  = { 0, 658},
+	krot     = { 332, 47},
+	barman   = { 332, 235},
+	wolf	   = { 332, 940},
+	o_soznanie = { 498, 893},
+	monolith = { 0, 658},
+	saharov  = { 332, 470},
+	prizrak  = { 0, 658},
+	killer   = { 0, 658},
+	death    = { 0, 752},
+	note	 = { 498, 329}
+}
+
+--- Перезапуск логики NPC
+function reset_npc_logic(obj)
+	if obj then
+		local npc_id = obj:id()
+		db.storage[npc_id].overrides = nil
+		xr_logic.reset_generic_schemes_on_scheme_switch(obj, "nil", "nil")
+		db.storage[npc_id].active_section = nil
+		db.storage[npc_id].active_scheme = nil
+	end
+end
+
+local quest_profiles = {
+	["pri_trader_profile"]	 	= true,
+	["agr_ratcatcher"]			= true,
+	["mil_Svoboda_zombi_stalker"] = true,
+	["bar_arena_manager"]	= true,
+	["aem_arny"]	= true,
+	["aem_admin_1"]	= true,
+	["aem_admin_2"]	= true,
+	["aem_admin_3"]	= true,
+	["aem_admin_4"]	= true,
+	["aem_admin_5"]	= true,
+	["gar_hellcar_group_1"] = true,
+	["gar_hellcar_group_2"] = true,
+	["gar_seryi_drug2"] = true,
+	["gar_seryi_drug3"] = true,
+	["esc_blokpost_commander"] = true,
+	["sim_stalker_master_diador"] = true,
+	["agr_defector_stalker1"] = true,
+	["bar_ecolog_professor"] = true,
+	["gar_sniper_bandit"] = true,
+}
+
+--- Возвращает true если параметром передан квестовый непись
+function is_quest_npc(npc)
+	if not npc then return false end
+	--
+	local story
+	if npc.m_story_id then
+		story = npc.m_story_id
+	else
+		story = npc:story_id()
+	end
+	if story == 4294967295 then
+		if quest_profiles[npc:profile_name()] or quest_profiles[npc:name()] then
+			return true
+		end
+	end
+	--
+	return story ~= 4294967295
+end
+
+--- Возвращает класс защиты надетой на ГГ брони от выброса. В obj передавать db:actor
+--- С неписями НЕ работает! Пользуйте armor_type(npc)
+function armor_class(obj)
+	if not obj then return end
+
+	local armor = obj:get_current_outfit()
+	if not armor then return 5 end
+
+	local armorname = armor:section()
+	return (
+			   armorname:find("scientific_outfit")
+			or armorname:find("ecolog_outfit")
+			or armorname:find("protection_outfit")
+			or armorname:find("military_outfit")
+		) and 1
+		or (
+			   armorname:find("exo")
+			or armorname:find("monolit_exoskeleton")
+		) and 2
+		or (   armorname:find("outfit_specnaz_m1")
+			or armorname:find("specops_outfit")
+			or armorname:find("svoboda_heavy_outfit")
+		) and 3
+		or 4
+end
+
+--- Возвращает величину урона ударной волной в зависимости от локации
+function level_blow_damage()
+	local level_name = level.name()
+
+	return
+		   ( level_name == "l01_escape" ) and 0.02
+		or ( level_name == "l03_agroprom" or level_name == "l02_garbage" or level_name == "l04_darkvalley" ) and 0.04
+		or ( level_name == "l05_bar" or level_name == "l06_rostok" ) and 0.06
+		or ( level_name == "l07_military" or level_name == "l08_yantar" or level_name == "l11_pripyat" ) and 0.08
+		or 0.06
+end
+
+local armor_type_npc = { ["novice"] = 4, ["experienced"] = 3, ["veteran"] = 2, ["master"] = 1 }
+--- Возвращает класс защиты непися
+function armor_type(npc)
+	if not npc then return end
+
+	local npc_rank = ranks.get_obj_rank_name(npc)
+	if npc_rank then
+		return armor_type_npc[npc_rank] or 1
+	end
+end
+
+-- Показ типса
+function send_tip(news_text, header, timeout, showtime, sender, sound)
+	if not news_text then return end
+
+	local header = header or game.translate_string("st_tip")
+	local timeout = timeout or 0
+	local showtime = showtime or 5
+	local sender = sender or "default"
+	local x = tips_icons[sender][1]
+	local y = tips_icons[sender][2]
+	local player = xr_sound.get_safe_sound_object( tips_variable[sound] or tips_variable["pda_tips"] )
+
+	player:play(db.actor, timeout, sound_object.s2d) --Играем дефолтный звук
+
+	local news_text = "%c[255,160,160,160]"..header.."\\n".."%c[default]"..news_text
+	db.actor:give_game_news(news_text, "ui\\ui_iconsTotal", Frect():set(x,y,83,47), timeout*1000, showtime*1000)
+
+	return true
+end
+
+-- Спавним предметы в инвентарь актора, НПС, монстров, ящиков (поддерживаются и клиентские, и серверные объекты)
+-- ДЛЯ СПАВНА ПАТРОНОВ ИСПОЛЬЗОВАТЬ ОТДЕЛЬНУЮ ФУНКЦИЮ!!!
+function spawn_item_in_inv(section, npc, num)
+	local npc = npc or db.actor
+	local num = num or 1
+
+	local pos, lvi, gvi, pid, sobj
+	if type(npc.id) == "function" then
+		pos, lvi, gvi, pid = npc:position(), npc:level_vertex_id(), npc:game_vertex_id(), npc:id()
+	else
+		pos, lvi, gvi, pid = npc.position, npc.m_level_vertex_id, npc.m_game_vertex_id, npc.id
+	end
+
+	local is_actor = pid == db.actor:id()
+	local game_obj = level.object_by_id(pid)
+	for i = 1, num do
+		sobj = alife():create(section, pos, lvi, gvi, pid)
+		if not is_actor and game_obj then
+			level.client_spawn_manager():add(sobj.id, -1, fix_spawn_item_in_inv, game_obj) --Фикс пропадания доспавненного предмета при сейв/лоаде
+		end
+	end
+	if num == 1 then
+		return alife():object(sobj.id)
+	end
+end
+
+--Спавним патроны в инвентарь актора, НПС, монстров, ящиков (поддерживаются и клиентские, и серверные объекты)
+function spawn_ammo_in_inv(section, num, npc)
+	if num < 1 then return end
+
+	local npc = npc or db.actor
+
+	local pos, lvi, gvi, pid
+	if type(npc.id) == "function" then
+		pos, lvi, gvi, pid = npc:position(), npc:level_vertex_id(), npc:game_vertex_id(), npc:id()
+	else
+		pos, lvi, gvi, pid = npc.position, npc.m_level_vertex_id, npc.m_game_vertex_id, npc.id
+	end
+
+	local is_actor = pid == db.actor:id()
+	local game_obj = level.object_by_id(pid)
+	local num_in_box = get_u32(section, "box_size")
+	while num > num_in_box or num > 0 do
+		local sitem = alife():create_ammo(section, pos, lvi, gvi, pid, num < num_in_box and num or num_in_box)
+		if not is_actor and game_obj then
+			level.client_spawn_manager():add(sitem.id, -1, fix_spawn_item_in_inv, game_obj) --Фикс пропадания доспавненного предмета при сейв/лоаде
+		end
+		num = num - num_in_box
+	end
+end
+
+function fix_spawn_item_in_inv(obj, item_id, item_obj) --Фикс пропадания доспавненного предмета при сейв/лоаде
+    obj:transfer_item(item_obj, obj)
+end
+-----------------------------------------------------------------------------------------------------------
+-- Удаление итемов из инвентаря ГГ
+function remove_inv_items_by_section(sec, items_to_remove)
+	local items_removed = 0
+	for i = 0, db.actor:object_count() - 1 do
+		local item = db.actor:object(i)
+		if item and item:section() == sec then
+			if remove_item_from_inventory(item) then
+				items_removed = items_removed + 1
+			end
+			if items_removed == items_to_remove then 
+				return
+			end 
+		end
+	end 
+end
+
+-- Удаляем предмет из инвентаря
+function remove_item_from_inventory(remove_item, npc)
+	npc = npc or db.actor
+	if remove_item then
+	    npc:mark_item_dropped(remove_item)
+		local sobj = alife():object(remove_item:id())
+		if sobj then
+			alife():release(sobj, true)
+			return true
+		end
+	end
+	return false
+end
+
+-- Проверка, запущена ли игра
+function check_game()
+	return level.present() and db.actor and db.actor:alive() and device().precache_frame < 1
+end
+
+-----------------------------------------------------------
+
+function kill_crow()
+	local lname = level.name()
+	for id, sobj in alife():objects() do
+		local crow = level.object_by_id(id)
+		if crow and crow:section() == "m_crow" and object_level_name(crow) == lname then
+			local hit = hit()
+				hit.direction = crow:direction()
+				hit.impulse = 1000
+				hit.draftsman = crow
+				hit.power = 1000
+				hit.type = hit.strike
+			crow:hit(hit)
+
+			ogse_st_mgr.start_gtimer(nil, math.random(150, 300), "ogse.release_crow", id)
+		end
+	end
+end
+
+function release_crow(id)
+	local sobj = alife():object(id)
+	if sobj then
+		alife():release(sobj, true)
+	end
+end
+
+function spawn_crow()
+	local lv = db.actor:level_vertex_id()
+	local gv = db.actor:game_vertex_id()
+	local x_offset = 0
+	local z_offset = 0
+	local y_offset = 100
+	for k=1,20 do
+	x_offset = math.random(-100,100)
+	z_offset = math.random(-100,100)
+		local pos = db.actor:position()
+		pos.x = pos.x + x_offset
+		pos.y = pos.y + y_offset
+		pos.z = pos.z + z_offset
+		alife():create("m_crow", pos, lv, gv)
+	end
+end
+
+
+function transfer_items_to_box(box_sid, remove_quest_items, exclude_sections, exclude_clsids)
+	local box = level_object_by_sid(box_sid)
+	if not box then return end
+	local cnt = db.actor:object_count()
+	for i=0, cnt-1 do
+		local obj = db.actor:object(i)
+		-- есть ли объект
+		if obj then
+			local sect = obj:section()
+			-- фильтр по запрещенным class id
+			if not exclude_clsids or not exclude_clsids[obj:clsid()] then
+				-- фильтр по запрещенным секциям
+				if not exclude_sections or not exclude_sections[sect] then
+					-- фильтр по квестовым вещам
+					if remove_quest_items or not (sys_ini:line_exist(sect, "quest_item") and sys_ini:r_bool(sect, "quest_item")) then
+						-- передаем предмет
+						db.actor:transfer_item(obj, box)
+					end
+				end
+			end
+		end
+	end
+end
+
+function transfer_items_from_box(box_sid)
+	local box = level_object_by_sid(box_sid)
+	if not box then return end
+
+	local cnt = box:inv_box_count()
+	for i=0, cnt-1 do
+		local obj = box:object_from_inv_box(i)
+		-- есть ли объект
+		if obj then
+			local sect = obj:section()
+			-- передаем предмет
+			box:transfer_item(obj, db.actor)
+		end
+	end
+end
+
+function is_developer_mode()
+	return true
+end
+
+function on_spawn()
+    if not is_developer_mode() then
+        for _, k in ipairs(
+            {
+                "g_god",
+                "g_unlimitedammo",
+                "g_zones_dbg",
+                "g_vertex_dbg",
+                "g_crosshair_dbg"
+            }
+        ) do
+            cmd(k, "off")
+        end
+        --
+        local AR = res_type.get_AR()
+
+        if AR == 2 then
+			cmd("g_3d_pda", "on")
+		elseif AR == 1 then
+			cmd("g_3d_pda", "off")
+		end
+		
+        cmd("g_ammunition_on_belt", "on")
+        cmd("g_game_difficulty", "gd_master")
+        cmd("hud_info", "off")
+        --
+        for _, k in ipairs(
+            {
+            	"save",
+                "time_factor",
+                "ph_timefactor",
+                "hud_info",
+                "g_god",
+                "g_spawn_to_inventory",
+                "g_spawn",
+                "g_unlimitedammo",
+                "g_zones_dbg",
+                "g_vertex_dbg",
+                "g_crosshair_dbg",
+                "g_ammunition_on_belt",
+                "g_3d_pda",
+                "hud_adjust_mode",
+                "show_wnd_rect",
+                "show_wnd_rect_all",
+                "demo_record",
+                "jump_to_level",
+                "set_weather"
+            }
+        ) do
+            get_console():disable_command(k)
+        end
+    end
+end
+

@@ -1,0 +1,557 @@
+---------------------------------------------------------
+--Скрипт создания динамических ltx, списка торговли.
+--Автор: Singapur22
+--Дата: 21\08\09
+---------------------------------------------------------
+--[[
+
++ оружие покупается только если у нпс в наличии оружие хуже.
++ аддоны покупаются только если есть в наличии оружие для данного аддона и если у него его нет
+- Продаваться оружие должно только если у нпс их несколько, при этом наилучшее продаваться не должно.
++ артефакты покупаются все. продаются только те, которые дают меньше эффекта чем другие в наличии. Или если их больше одного.
++ медикаменты продаются только если их больше установленного количества. При этом продаются наихудшие. Покупаются все.
++ части монстров продаются и покупаются без ограничений.
++ патроны должны покупаться только если у нпс есть для них оружие.
++ если предмет продаётся, то он не должен покупаться. А так же и наоборот.
+
+]]
+-- from xrs_armor_data
+local armor_levels = {
+    ["novice_suit"]                	= 0,
+    ["bandit_suit"]                	= 0,
+    ["bandit_brown_suit"]          	= 1,
+    ["bandit_black_suit"]          	= 1,
+    ["soldier_suit"]               	= 1,
+    ["svoboda_light_suit"]         	= 1,
+    ["stalker_killer_suit"]        	= 1,
+    ["specnaz_suit"]               	= 2,
+    ["stalker_suit"]               	= 2,
+    ["svoboda_heavy_suit"]         	= 2,
+    ["dolg_suit"]                  	= 2,
+    ["monolit_suit"]               	= 2,
+    ["stalker_scient_suit"]        	= 3,
+    ["stalker_dolg_nauchniy_suit"] 	= 3,
+    ["scientific_freedom"] 		   	= 3,
+    ["scientific_killer"] 		   	= 3,
+    ["scientific_monolith"] 	   	= 3,
+    ["ecolog_suit"]                	= 3,
+    ["scientist_suit"]             	= 3,
+    ["stalker_military_suit"]      	= 3,
+    ["stalker_comander_suit"]      	= 3,
+    ["exoskelet"]                  	= 4,
+    ["exoskelet_monolith"]         	= 4,
+    ["exoskelet_freedom"]          	= 4,
+    ["exoskelet_killer"]           	= 4,
+    ["exoskelet_dolg"]			   	= 4
+}
+
+items_keep_count = {
+    ["arts"] 						= 0,
+    ["wpn"] 						= 1,
+    ["grenade"] 					= 2,
+    ["medkit"] 						= 0,
+    ["bandage"] 					= 0,
+    ["food"] 						= 0,
+    ["antirad"] 					= 0,
+    ["bottle"] 						= 0,
+    ["knife"] 						= 1,
+    ["outfit"] 						= 0,
+    ["torch"] 						= 1,
+	["pda"] 						= 0,
+    ["detector"] 					= 0,
+    ["binoc"] 						= 1,
+    ["mutant_part"] 				= 0,
+    ["explosive"] 					= 0,
+    ["ammo"] 						= -1,
+    ["scope"] 						= -1,
+    ["silencer"] 					= -1,
+    ["grenade_launcher"] 			= -1,
+    ["ruck"] 						= 0,
+    ["sleep"] 						= 0,
+    ["unknow"] 						= 0
+}
+
+local no_trade_types = {
+	["pda"] 						= true,
+    ["unknow"] 						= true
+}
+
+local always_buy_sections = {
+}
+
+local always_sell_sections = {
+}
+
+local no_trade_sections = {}
+
+for section, val in pairs(always_keep_item) do
+   no_trade_sections[section] = val
+end
+for section, val in pairs(death_manager.remove_this_shit_immediately) do
+   no_trade_sections[section] = val
+end
+
+function buy_range(obj_type)
+    local difficulty = level.get_game_difficulty()
+    local k_difficulty = (3 - difficulty) * 5                                                                                                                                                -- от 0 (мастер) до 15 (новичек)
+    return string.sub(tostring(math.random(k_difficulty + 11, k_difficulty + 20) / 100), 1, 4) 
+    	.. 
+    	", " .. 
+    	string.sub(tostring(math.random(k_difficulty + 5, k_difficulty + 10) / 100), 1, 4) -- 5-20 (мастер), 10-25, 15-30, 20-35 (новичек)
+end
+
+function sell_range(obj_type)
+    local difficulty = level.get_game_difficulty()
+    local k_difficulty = difficulty * 10                                                                                                                                                      -- от 30 (мастер) до 0 (новичек)
+    return string.sub(tostring(math.random(k_difficulty + 40, k_difficulty + 45) / 100), 1, 4) 
+    	.. 
+    	", " .. 
+    	string.sub(tostring(math.random(k_difficulty + 46, k_difficulty + 50) / 100), 1, 4) -- 70-80 (мастер), 60-70, 50-60, 40-50 (новичек)
+end
+
+function item_filter(item)
+    if not item then
+        return
+    end
+
+    local obj = alife():object(item:id())
+    if not obj then
+        return
+    end
+
+    local sect = item:section()
+    if no_trade_sections[sect] then
+        return
+    end
+
+    local obj_type = getObjectType(item)
+
+    if no_trade_types[obj_type] then
+        no_trade_sections[sect] = true
+        return
+    end
+
+    if protected_items.doNotTouchItemEquipment(obj) then
+        no_trade_sections[sect] = true
+        return
+    end
+
+    return obj_type, sect
+end
+
+-- что есть в инвентаре неписей
+local npc_objects = {}
+
+-- определение списка предметов в инвентаре npc
+-- и раскладываем по типам и приоритетам (sapsan)
+function npc_keep_item(npc, item)
+	local obj_type, sect = item_filter(item)
+    if not obj_type then
+        return
+    end
+
+    local t = npc_objects[obj_type]
+    if t then
+        local tt = t[sect]
+        if tt then
+            tt.count = tt.count + 1
+            local p = object_priority_function(npc, item)
+            if tt.priority < p then
+                tt.priority = p
+            end
+            return
+        end
+    else
+        t = {}
+        npc_objects[obj_type] = t
+    end
+
+    local tt = { ["count"] = 1, ["priority"] = object_priority_function(npc, item) }
+    t[sect] = tt
+
+    if obj_type == "wpn" then
+        -- какие боеприпасы используются ?
+        local ammos = repair_check.getAmmoForWeapon(sect)
+        tt.ammos = {}
+        for i = 1, #ammos do
+            tt.ammos[ammos[i]] = true
+        end
+        -- используется ли обвес ?
+        local scopeCan = getIniValueU32Simple(sect, "scope_status", 0) == 2
+        local silencerCan = getIniValueU32Simple(sect, "silencer_status", 0) == 2
+        local grenade_launcher_status = getIniValueU32Simple(sect, "grenade_launcher_status", 0)
+
+        tt.addons = {
+            ["scope"] = {},
+            ["silencer"] = silencerCan and getIniValueStringSimple(sect, "silencer_name", false),
+            ["grenade_launcher"] = grenade_launcher_status == 2 and getIniValueStringSimple(sect, "grenade_launcher_name", false)
+                or grenade_launcher_status == 1 and "_integrated_"
+        }
+		
+		if scopeCan then
+            local scopes_str = sys_ini:line_exist(sect, "scope_names") and sys_ini:r_string(sect, "scope_names") or
+                sys_ini:r_string(sect, "scope_name")
+            for scope_sect in string.gfind(scopes_str, "[%w_%-%.]+") do
+                tt.addons.scope[scope_sect] = true
+            end
+        end
+
+        -- если подствольник интегрирован, тогда и для него нужно запомнить используемый боеприпас
+        local glSect = tt.addons.grenade_launcher
+        if glSect then
+            local ammosLine
+            if glSect == "_integrated_" then
+                glSect = sect
+                ammosLine = "grenade_class"
+            else
+                glSect = nil
+            end
+            local ammos = repair_check.getAmmoForWeapon(glSect, ammosLine)
+            for i = 1, #ammos do
+                tt.ammos[ammos[i]] = true -- продавать нельзя если есть подствольник
+            end
+        end
+    elseif obj_type == "grenade_launcher" then
+        local ammos = repair_check.getAmmoForWeapon(sect)
+        tt.ammos = {}
+        for i = 1, #ammos do
+            tt.ammos[ammos[i]] = true
+        end
+    end
+end
+
+-- что есть в инвентаре актора
+local actor_objects = {}
+
+-- определение списка предметов в инвентаре npc
+-- и раскладываем по типам и приоритетам (sapsan)
+function actor_keep_item(npc, item)
+    local obj_type, sect = item_filter(item)
+    if not obj_type then
+        return
+    end
+
+    local t = actor_objects[obj_type]
+    if t then
+        local tt = t[sect]
+        if tt then
+            tt.count = tt.count + 1
+            local p = object_priority_function(npc, item)
+            if tt.priority < p then
+                tt.priority = p
+            end
+            return
+        end
+    else
+        t = {}
+        actor_objects[obj_type] = t
+    end
+
+    local tt = { ["count"] = 1, ["priority"] = object_priority_function(npc, item) }
+    t[sect] = tt
+end
+
+--функция создания динамических ltx, списка торговли.
+function create_dinamic_ltx(npc)
+    local obj = alife():object(npc:id())
+    if not obj then return end
+    for i, v in ipairs(
+        { "device_torch", "bolt", "yad", "rx_attach_bandage" }
+    ) do
+        no_trade_sections[v] = true
+    end
+
+    npc_objects = { ["outfit"] = {} }
+
+    local npc_outfit_priority = npc:character_rank()
+    if npc_outfit_priority < 300 then
+        npc_outfit_priority = 1
+    elseif npc_outfit_priority < 600 then
+        npc_outfit_priority = 2
+    elseif npc_outfit_priority < 900 then
+        npc_outfit_priority = 3
+    else
+        npc_outfit_priority = 4
+    end
+
+    npc:iterate_inventory(npc_keep_item, npc)
+    
+    actor_objects = {}
+
+    db.actor:iterate_inventory(actor_keep_item, npc)
+
+    local items_to_sell = {}
+    local items_to_buy = {}
+
+    for obj_type, items in pairs(npc_objects) do
+        local npc_items, n = {}, 0
+        for sect, item_info in pairs(items) do
+            item_info.sect = sect
+            n = n + 1;
+            npc_items[n] = item_info
+        end
+
+        if n >= 2 then
+            table.sort(npc_items, function(v1, v2) return v1.priority > v2.priority end)
+        end
+
+        local keep = items_keep_count[obj_type]
+
+        local best = 1
+        if obj_type == "outfit" then
+            best = npc_outfit_priority
+        end
+
+        if n ~= 0 and best < npc_items[1].priority then
+            best = npc_items[1].priority
+        end
+
+        local n_items = 0 -- общее число айтемов этого типа
+
+        -- предметы у ГГ
+        local a_items = actor_objects[obj_type]
+
+        for i = 1, #npc_items do
+            local item_to_sell = npc_items[i]
+            local sect = item_to_sell.sect
+
+            if keep >= 0 then -- обычные предметы
+                -- излишек продаём и не покупаем
+                if n_items >= keep then
+                    items_to_sell[sect] = sect .. " = " .. sell_range(obj_type) .. "\n"
+                else -- маловато - не продаётся, но покупается только если приоритет выше, чем у имеющегося (сработает для оружия, брони)
+                    n_items = n_items + item_to_sell.count
+
+                    if a_items then
+                        local itemInfo = a_items[sect]
+                        if itemInfo and itemInfo.priority >= best * 1.2 then
+                            items_to_buy[sect] = sect .. " = " .. buy_range(obj_type) .. "\n"
+                        end
+                    end
+                end
+            else
+                -- зависят от других (патроны и обвесы от стволов)
+                -- упрощенная схема - не покупают к отсутствующим у них стволам, а всем остальным торгуют свободно
+                if obj_type == "ammo" or obj_type == "scope" or obj_type == "silencer" or obj_type == "grenade_launcher" then
+                    local presentWpn = false
+                    local ownerType
+
+                    if obj_type == "ammo" then
+                        for _, ammoOwner in pairs({ "wpn", "grenade_launcher" }) do
+                            if npc_objects[ammoOwner] then
+                                for sectWpn, infoWpn in pairs(npc_objects[ammoOwner]) do
+                                    if infoWpn.ammos[sect] then
+                                        presentWpn = sectWpn
+                                        ownerType = ammoOwner
+                                        break
+                                    end
+                                end
+                            end
+                        end
+                        if presentWpn then
+                            -- теперь торгуем свободно
+                            -- покупаем и не продаем
+                            -- продажа будет после продажи оружия использующего эти боеприпасы
+                            -- не продаём например боеприпасы к подстволу
+                            items_to_buy[sect] = sect .. " = " .. buy_range(obj_type) .. "\n"
+                        else
+                            -- если не найден зависящий ствол - продаём, но не покупаем
+                            -- покупка будет после покупки оружия использующего эти боеприпасы
+                            items_to_sell[sect] = sect .. " = " .. sell_range(obj_type) .. "\n"
+                        end
+                    elseif obj_type == "scope" or obj_type == "silencer" or obj_type == "grenade_launcher" then
+                        if npc_objects["wpn"] then
+                            for sectWpn, infoWpn in pairs(npc_objects.wpn) do
+                                if infoWpn.addons[obj_type] == sect or (obj_type == "scope" and infoWpn.addons[obj_type][sect]) then
+                                    presentWpn = true
+                                end
+                            end
+                        end
+                        if presentWpn then
+                            -- теперь торгуем свободно
+                            -- покупаем и не продаем
+                            -- продажа будет после продажи оружия использующего эти боеприпасы
+                            items_to_buy[sect] = sect .. " = " .. buy_range(obj_type) .. "\n"
+                        else -- всё продаём и не покупаем
+                            items_to_sell[sect] = sect .. " = " .. sell_range(obj_type) .. "\n"
+                        end
+                    end
+                end
+            end
+        end
+
+        -- пройдемся по этому типу, но по тому, что есть у ГГ и нету у непися
+        if a_items then
+            for sect, item_info in pairs(a_items) do
+                if not items_to_buy[sect] and not items_to_sell[sect] then
+                    if no_trade_sections[sect] then -- тут надо проверять явно потому что у ГГ может быть куча лишнего
+                        -- skip
+                    elseif keep >= 0 then -- обычные предметы
+                        if (item_info.priority >= best * 1.2) or (n_items < keep) then
+                            -- лучше чем есть - покупаем и не продаем
+                            -- мало - покупаем и не продаем
+                            items_to_buy[sect] = sect .. " = " .. buy_range(obj_type) .. "\n"
+                        end
+                    else
+                        -- зависят от других (патроны и обвесы от стволов)
+                        -- боеприпасы и обвесы
+                        if obj_type == "ammo" or obj_type == "scope" or obj_type == "silencer" or obj_type == "grenade_launcher" then
+                            local presentWpn = false
+                            local ownerType
+
+                            if obj_type == "ammo" then
+                                for _, ammoOwner in pairs({ "wpn", "grenade_launcher" }) do
+                                    if npc_objects[ammoOwner] then
+                                        for sectWpn, infoWpn in pairs(npc_objects[ammoOwner]) do
+                                            if infoWpn.ammos[sect] then
+                                                presentWpn = sectWpn
+                                                ownerType = ammoOwner
+                                                break
+                                            end
+                                        end
+                                    end
+                                end
+                                if presentWpn then
+                                    -- теперь свободно торгуют
+                                    -- не продаём например боеприпасы к подстволу
+                                    items_to_buy[sect] = sect .. " = " .. buy_range(obj_type) .. "\n"
+                                end
+                            elseif obj_type == "scope" or obj_type == "silencer" or obj_type == "grenade_launcher" then
+                                if npc_objects["wpn"] then
+                                    for sectWpn, infoWpn in pairs(npc_objects.wpn) do
+                                        if infoWpn.addons[obj_type] == sect or (obj_type == "scope" and infoWpn.addons[obj_type][sect]) then
+                                            presentWpn = true
+                                        end
+                                    end
+                                end
+                                if presentWpn then
+                                    -- теперь свободно торгуют
+                                    -- покупаем и не продаем
+                                    -- продажа будет после продажи оружия использующего эти боеприпасы
+                                    items_to_buy[sect] = sect .. " = " .. buy_range(obj_type) .. "\n"
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    -- обрабатываем предметы ГГ не пересекшиеся с неписем по типу - торгуем свободно
+	-- тут может быть только покупка от ГГ
+    for obj_type, a_items in pairs(actor_objects) do
+        if not npc_objects[obj_type] then -- нет у НПЦ
+            for sect, item_info in pairs(a_items) do
+                if not items_to_buy[sect] and not items_to_sell[sect] then
+                    if no_trade_types[obj_type] or no_trade_sections[sect] then
+                        -- skip
+                elseif items_keep_count[obj_type] >= 0 then
+                        -- больше 0 - обычные предметы
+                        items_to_buy[sect] = sect .. " = " .. buy_range(obj_type) .. "\n"
+                    else
+                        -- зависят от других (патроны и обвесы от стволов)
+                    if obj_type == "ammo" or obj_type == "scope" or obj_type == "silencer" or obj_type == "grenade_launcher" then
+                        local presentWpn = false
+                        local ownerType
+
+                        if obj_type == "ammo" then
+                            for _, ammoOwner in pairs({ "wpn", "grenade_launcher" }) do
+                                if npc_objects[ammoOwner] then
+                                    for sectWpn, infoWpn in pairs(npc_objects[ammoOwner]) do
+                                            if infoWpn.ammos[sect] then
+                                            presentWpn = sectWpn
+                                            ownerType = ammoOwner
+                                            break
+                                        end
+                                    end
+                                end
+                            end
+                            if presentWpn then
+                                    -- не продаём боеприпасы к подстволу
+                                    items_to_buy[sect] = sect .. " = " .. buy_range(obj_type) .. "\n"
+                            end
+                        elseif obj_type == "scope" or obj_type == "silencer" or obj_type == "grenade_launcher" then
+                            if npc_objects["wpn"] then
+                                for sectWpn, infoWpn in pairs(npc_objects.wpn) do
+                                        if infoWpn.addons[obj_type] == sect or (obj_type == "scope" and infoWpn.addons[obj_type][sect]) then
+                                        presentWpn = true
+                                        break
+                                    end
+                                end
+                            end
+                            if presentWpn then
+                                -- теперь свободно торгуют
+                                -- покупаем и не продаем
+                                -- продажа будет после продажи оружия использующего эти боеприпасы
+                                    items_to_buy[sect] = sect .. " = " .. buy_range(obj_type) .. "\n"
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    end
+
+    local buy = "[buy]\n"
+    local sell = "[sell]\n"
+
+    for _, sect in ipairs(always_buy_sections) do
+        buy = buy .. sect .. " = " .. buy_range("unknow") .. "\n"
+    end
+
+    for _, sect in ipairs(always_sell_sections) do
+        sell = sell .. sect .. " = " .. sell_range("unknow") .. "\n"
+        end
+
+    -- add buy \ sell rules
+    for sect, rule in pairs(items_to_buy) do
+        buy = buy .. rule
+        end
+    for sect, rule in pairs(items_to_sell) do
+        sell = sell .. rule
+    end
+
+    -- add no buy \ sell for all rest
+    buy = buy .. "/.*/ \n"
+    sell = sell .. "/.*/ \n"
+
+    local ltx = "[trader]\nbuy_condition = buy\nsell_condition = sell\n"
+
+    local trade_cond = ltx .. buy .. sell
+
+    return trade_cond
+end
+
+function getObjectType(obj)
+    local sect = obj:section()
+    return object_type_i_sect[sect]
+        or object_type_i[obj:clsid()]
+        or "unknow"
+end
+
+function object_priority_function(npc, obj)
+    local sect = obj:section()
+    local obj_type = getObjectType(obj)
+    if obj_type == "wpn" then
+        local p
+        if rx_wmgr and rx_wmgr.wm_modes.enabled_ext and npc:alive() then
+            local wm = rx_wmgr.get_wm(npc)
+            if wm then
+                p = wm:get_weapon_prior(obj) or getIniValueFloatSimple(sect, "cost", 0)
+            else
+                p = getIniValueFloatSimple(sect, "cost", 0)
+            end
+        else
+            p = getIniValueFloatSimple(sect, "cost", 0)
+        end
+        return p * obj:condition()
+    elseif obj_type == "outfit" and sys_ini:section_exist(sect) then
+        local v = string.match((sys_ini:r_string(sect, "visual")), "[_.%-%w]*$")
+        return armor_levels[string.match(v, "[_%-%w]*")] or -1
+    else
+        return getIniValueFloatSimple(sect, "cost", 0)
+    end
+    return 0
+end

@@ -1,0 +1,71 @@
+-- Author: Muvbed
+
+function attach(sm)
+	sm:subscribe({signal = "on_drag_drop", fun = this.on_drag_drop})
+end
+
+function on_drag_drop(obj, drop_on_obj)
+	if 
+	  not (obj and object_type_i[obj:clsid()] == "ammo") 
+	  or not(drop_on_obj and object_type_i[drop_on_obj:clsid()] == "ammo") then
+		return
+	end
+	
+	if obj:section() ~= drop_on_obj:section() or obj:id() == drop_on_obj:id() then
+		return
+	end
+	
+	local section = obj:section()
+	local box_size = get_u32(drop_on_obj:section(), "box_size")
+	local obj_size = get_ammo_size(obj)
+	local drop_on_obj_size = get_ammo_size(drop_on_obj)
+	
+	if drop_on_obj_size >= box_size then
+		return
+	end
+	
+	local total_size = obj_size + drop_on_obj_size
+	local sim = alife()
+	local drop_on_obj_on_belt = db.actor:is_on_belt(drop_on_obj)
+	
+	local obj_to_remove = sim:object(obj:id())
+	if obj_to_remove then
+		sim:release(obj_to_remove, true)
+	end	
+
+	obj_to_remove = sim:object(drop_on_obj:id())
+	if obj_to_remove then
+		sim:release(obj_to_remove, true)
+	end	
+	
+	local mark_for_belt = {}
+
+	while total_size >= box_size or total_size > 0 do
+		local sammo = sim:create_ammo(
+		  section, 
+		  db.actor:position(), 
+		  db.actor:level_vertex_id(), 
+		  db.actor:game_vertex_id(), 
+		  db.actor:id(), 
+		  total_size < box_size and total_size or box_size
+		)
+		
+		total_size = total_size - box_size
+		
+		if drop_on_obj_on_belt then
+			table.insert(mark_for_belt, sammo.id)
+		end
+	end
+	
+	if table.getn(mark_for_belt) > 0 then
+		dsh.timeout(1, function()
+			for i = 1, table.getn(mark_for_belt) do
+				level.client_spawn_manager():add( mark_for_belt[i], -1, function(_, ammo)
+					db.actor:move_to_belt(ammo)
+				end )
+			end
+			
+			ogse_signals.get_mgr():call( "on_inventory_reset" )
+		end)
+	end
+end

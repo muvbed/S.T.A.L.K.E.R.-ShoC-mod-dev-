@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="knife_need">
+		<text>Нужен нож</text>
+	</string>
+	<string id="knife_bad_condition">
+		<text>Этот нож в слишком плохом состоянии</text>
+	</string>
+	<string id="cant_walk">
+		<text>Вы слишком истощены, чтобы двигаться</text>
+	</string>
+	<string id="cant_walk_weight">
+		<text>Вы слишком перегружены, чтобы двигаться</text>
+	</string>
+	<string id="dar_poltergeist_hold_the_door">
+		<text>Кто-то удерживает дверь</text>
+	</string>
+	<string id="Global Map">
+		<text>Глобальная карта</text>
+	</string>
+	<string id="gun_jammed">
+		<text>Оружие заклинило — нужно перезарядить</text>
+	</string>
+	<string id="inventory_box_use">
+		<text>Обыскать ящик ($$ACTION_USE$$)</text>
+	</string>
+	<string id="Local Map">
+		<text>Локальная карта</text>
+	</string>
+	<string id="st_game_saved">
+		<text>игра сохранена</text>
+	</string>
+	<string id="tip_car_locked">
+		<text>Заблокировано</text>
+	</string>
+	<string id="tip_campfire_use">
+		<text>Разжечь ($$ACTION_USE$$)</text>
+	</string>
+	<string id="tip_car_use">
+		<text>Открыть дверь ($$ACTION_USE$$)</text>
+	</string>
+	<string id="tip_door_close">
+		<text>Нажмите ($$ACTION_USE$$), чтобы закрыть дверь</text>
+	</string>
+	<string id="tip_door_coded">
+		<text>Дверь закодирована</text>
+	</string>
+	<string id="tip_door_decode">
+		<text>Нажмите ($$ACTION_USE$$), чтобы декодировать дверь</text>
+	</string>
+	<string id="tip_door_decoding">
+		<text>Идёт процесс декодирования</text>
+	</string>
+	<string id="tip_door_locked">
+		<text>Дверь заперта</text>
+	</string>
+	<string id="tip_door_open">
+		<text>Нажмите ($$ACTION_USE$$), чтобы открыть дверь</text>
+	</string>
+	<string id="tip_gate_close">
+		<text>Нажмите ($$ACTION_USE$$) для того, чтобы закрыть ворота</text>
+	</string>
+	<string id="tip_gate_locked">
+		<text>Ворота заблокированы</text>
+	</string>
+	<string id="tip_gate_open">
+		<text>Нажмите ($$ACTION_USE$$) для того, чтобы открыть ворота</text>
+	</string>
+	<string id="tip_monolith">
+		<text>Загадать желание ($$ACTION_USE$$)</text>
+	</string>
+	<string id="tip_sleep">
+		<text>Нажмите ($$ACTION_USE$$), чтобы лечь спать</text>
+	</string>
+	<string id="sleep_chose_time_string">
+		<text>Укажите количество часов для сна</text>
+	</string>
+	<string id="sleep_hour_string">
+		<text>ч.</text>
+	</string>
+	<string id="sleep_wake_string">
+		<text>Пробуждение...</text>
+	</string>
+	<string id="ui_autosave_day">
+		<text>День</text>
+	</string>
+	<string id="ui_autosave_trans">
+		<text>Переход</text>
+	</string>
+	<string id="tip_eat_disable">
+		<text>Необходимо снять шлем/маску для использования предмета</text>
+	</string>
+	<string id="warn_no_matches">
+		<text>Нет спичек в рюкзаке</text>
+	</string>
+</string_table>

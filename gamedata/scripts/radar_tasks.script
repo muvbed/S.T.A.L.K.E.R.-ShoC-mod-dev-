@@ -1,0 +1,14 @@
+function proceed()
+end
+
+function process_info_portion(info_id)
+	if info_id == "rad_code_door" and not has_alife_info("rad_code_door_unlocked") then
+		level_tasks.add_location_by_sid(story_ids.rad_code_door, "rad_code_door_location", "code_door_txt")
+
+	elseif info_id == "rad_code_door_unlocked" then
+		level_tasks.remove_location_by_sid(story_ids.rad_code_door, "rad_code_door_location")
+	
+	end
+	
+	return false
+end

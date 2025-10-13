@@ -1,0 +1,117 @@
+
+
+---------------------- Квестовые функции для OGSM 2.x -------------------------
+------------------------- Copyright 2007-2008 DEXXX ---------------------------
+
+function attach(sm)
+	sm:subscribe({ signal = "on_spawn", fun = this.kruglov_help_chek })
+end
+
+local sm = ogse_signals.get_mgr()
+
+local vdk_cnt = 0
+local blood = 0
+local bl_sound = xr_sound.get_safe_sound_object([[heart\2]])
+
+
+-- ГГ вступает в "Свободу"
+function set_freedom()
+	db.actor:set_character_community("actor_freedom",0,0)
+	db.actor:give_info_portion("mil_leader_attach_community")
+end
+
+
+-- ГГ вступает в "Долг"
+function set_dolg()
+	db.actor:set_character_community("actor_dolg",0,0)
+	db.actor:give_info_portion("bar_dolg_community_leader_done")
+end
+
+
+-- ГГ получает доступ в арсенал "Свободы"
+function allow_arsenal()
+	db.actor:give_info_portion("mil_leader_attach_community2")
+end
+
+-- Проверка помощи Круглову
+function kruglov_help_chek()
+	if has_alife_info("bar_rescue_research_start") and not has_alife_info("bar_kruglov_follow_actor") and not has_alife_info("bar_rescue_research_fail") then
+		if level.name() ~= "l06_rostok" then
+			db.actor:give_info_portion("bar_rescue_research_fail")
+--------------Убиваем круглова------------
+			local kruglov = alife():story_object(story_ids.bar_ecolog_professor)
+			ogse.kill_offline_npc(kruglov)
+------------------------------------------
+		end
+	end
+end
+
+
+-- Помощь раненому (UPD by Muvbed)
+function help_wounded(npc)
+	local npc_community = npc:character_community()
+	local npc_rank = npc:character_rank()
+
+	if npc:name() == "esc_vagon_wounded" 
+	  and (not has_alife_info("tutorial_wounded_heal") or not has_alife_info("tutorial_wounded_help")) 
+	then
+		db.actor:give_info_portion("tutorial_wounded_heal")
+		db.actor:give_info_portion("tutorial_wounded_help")
+		npc:set_relation(game_object.friend, db.actor)
+		return true
+	end
+
+	if npc:relation(db.actor) == game_object.enemy and math.random() < 0.5 then
+		if npc_rank < 300 and 
+		  (npc_community == "stalker" or
+		  npc_community == "bandit" or
+	   	  npc_community == "military") 
+	   	then
+   	   	   	npc:remove_memory_object( db.actor )
+			ogse.reset_npc_logic( npc )
+			xr_gulag.resetJob( npc )
+			npc:set_character_community("stalker", 0, 0)
+			npc:set_relation(game_object.neutral, db.actor)
+
+			local sobj = alife():object(npc:id())
+			
+			rx_sound.set_sound_play(npc:id(), "help_thanks")
+
+			if sobj then
+				sobj.custom_data = ""
+				smart_terrain.unregister_npc( sobj )
+				dsh.clear_smart_terrain_conditions( sobj )
+				sobj:brain():can_choose_alife_tasks( true )
+			end
+   		end
+	elseif npc:relation(db.actor) ~= game_object.enemy then
+		rx_sound.set_sound_play(npc:id(), "help_thanks")
+		npc:set_relation(game_object.friend, db.actor)
+	end
+end
+
+-- Эффект от критического ранения
+function wounded_pp()
+	if db.actor.health<0.2 and blood==0 then
+		level.add_pp_effector("escape.ppe", 1999, true)
+		level.set_pp_effector_factor(1999, 5.0)
+		if bl_sound and not bl_sound:playing() then 
+			bl_sound:play_at_pos(db.actor, db.actor:position(), 1, sound_object.looped)
+		end
+		blood = 1
+	elseif db.actor.health>0.2 then
+		level.remove_pp_effector(1999)
+		if bl_sound:playing() then 
+			bl_sound:stop() 
+		end
+		blood = 0
+	elseif db.actor.health<0.2 and blood==1 and bl_sound:playing() then
+		bl_sound:set_position(db.actor:position())
+	end
+end
+
+
+-- Функции квестов Темного дилера
+function remove_dealer_spot(fs,ss)
+	level_tasks.remove_location_by_id(fs:id(), "blue_location")
+end

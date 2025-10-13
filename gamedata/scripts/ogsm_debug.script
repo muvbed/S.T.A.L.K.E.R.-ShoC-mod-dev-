@@ -1,0 +1,125 @@
+------------------ Отладочные функции и фиксы для OGSM 2.4 --------------------
+
+------------------------- Copyright 2007-2018 DEXXX ---------------------------
+
+-- Создание "убийственной зоны" на радаре
+function check_radar_off()
+    if (level.name() == "l10_radar") then
+        if not has_alife_info("bar_deactivate_radar_done") then
+            local pos = db.actor:position()
+            if pos.z > 65 and pos.x > 350 and pos.x < 410 then
+                if amk.load_variable("rfx", 0) == 0 then
+                    level.add_pp_effector("fire_hit.ppe", 1523, true)
+                    level.set_pp_effector_factor(1523, 0.5)
+                    amk.save_variable("rfx", 1)
+                    amk.start_timer("rfx", 5)
+                end
+            end
+        end
+    end
+end
+
+function radar_fix()
+    level.remove_pp_effector(1523)
+    local pos = db.actor:position()
+    if pos.z > 65 and pos.x > 350 and pos.x < 410 then
+        db.actor:kill(db.actor)
+    end
+    amk.del_variable("rfx")
+end
+
+function on_take(obj)
+    if obj then
+        if obj:clsid() == clsid.artefact or obj:clsid() == clsid.artefact_s then
+            xr_statistic.addArtefact(obj)
+            local sect = obj:section()
+            if not has_alife_info(sect .. "_info") then
+                db.actor:give_info_portion(sect .. "_info")
+            end
+        end
+    end
+end
+
+-- Массив кривых story id
+local badsids = {
+    -- Кордон
+    escape_factory_assault_say_hello = 009,
+    esc_kill_bandits_quest_kill = 017,
+    tutorial_wounded_give_info = 004,
+    -- Свалка
+    gar_hellcar_dialog_end = 107,
+    -- Агропром
+    agr_find_gunslinger_cache_start = 302,
+    agr_find_gunslinger_cache_final = 307,
+    -- Темная долина
+    val_actor_on_bandits_base = 431,
+    val_actor_has_borov_key = 425,
+    val_actor_leave_bandits_base = 434,
+    val_x18_door_open = 426,
+    -- X-18
+    dar_password_info1 = 450,
+    dar_password_info2 = 451,
+    -- Янтарь
+    yan_find_scientist_done = 902,
+    yan_find_vasilyev_end = 903,
+    yantar_tunnel_finish = 921,
+    yan_kill_brain_done = 902,
+    labx16_find = 907,
+    -- X-16
+    yan_labx16_switcher_3_off = 910,
+    yan_labx16_switcher_2_off = 909,
+    yan_labx16_switcher_1_off = 908,
+    yan_labx16_switcher_primary_off = 911,
+    -- Военные склады
+    mil_miser_task_complete = 734,
+    mil_fblockpost_quest_reward = 724,
+    mil_sniper1_dead = 730,
+    mil_sniper2_dead = 731,
+    mil_sniper3_dead = 732,
+    mil_lukash_dead = 707,
+    mil_dolg_task_final = 774,
+    mil_dolg_dead = 708,
+    mil_courier_dead = 710,
+    mil_ara_dead = 719,
+    mil_freedom_cook_rg6_ask = 728,
+    mil_svoboda_rg6_gain = 706,
+    -- Радар
+    rad_antennas_reached = 1000,
+    rad_bun_found = 1005,
+    bar_deactivate_radar_done = 1006,
+    -- Припять
+    pri_aes_mapspot = 806,
+    pri_stadium_reached = 830,
+    -- ЧАЭС
+    aes_found_sarcofag = 1102,
+    -- Саркофаг
+    sar_monolith_destroy = 1300,
+    sar_finish_decoding = 1303
+}
+
+-- Удаление зависших меток заданий по ходу их выполнения
+function del_mark(info_id)
+    if badsids[info_id] ~= nil then
+        for i = 0, 100 do
+            level_tasks.remove_location_by_sid(badsids[info_id], "green_location")
+        end
+    end
+end
+
+-- Удаление зависших меток заданий один раз при загрузке
+function del_marks_onload()
+    if amk.load_variable("chm", 0) == 0 then
+        for k, v in pairs(badsids) do
+            if has_alife_info(k) then
+                for i = 0, 100 do
+                    level_tasks.remove_location_by_sid(v, "green_location")
+                end
+            end
+        end
+        amk.save_variable("chm", 1)
+    end
+end
+
+------------------ Отладочные функции и фиксы для OGSM 2.4 --------------------
+
+------------------------- Copyright 2007-2018 DEXXX ---------------------------

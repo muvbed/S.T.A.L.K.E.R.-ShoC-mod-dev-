@@ -1,0 +1,70 @@
+--[[-----------------------------------------------------------------------------------------------
+ File			: ui_loader_pda.script
+ Description	: Функции для КПК
+ Copyright		: Shadows Addon
+ Authors		: Shadows and Charsi
+ Date			: 02.08.2011-13.08.2011
+--]]-----------------------------------------------------------------------------------------------
+
+local rec_wnd = nil
+local initial = false
+local hide_stats = {}
+local pda_window
+OrganizerMenu = nil
+
+class "PdaWindow" (CUIScriptWnd)
+function PdaWindow:__init(owner) super()
+    self.owner = owner
+    self:Init(0,0,1024,768)
+    self:InitControls()
+end
+
+function PdaWindow:__finalize() end
+function PdaWindow:InitControls()
+    self.stat = CUIStatic()
+    self.stat:Init(0,0,1024,768)
+    self.owner:AttachChild(self.stat)
+
+	-- [PDA] init --------------------------------------------------
+	local xml = CScriptXmlInit()
+	xml:ParseFile("pda.xml")
+	-- Кнопка "Выход"
+	off_button = xml:Init3tButton("off_button",self.stat)
+	self:Register(off_button,"off_button")
+	self:AddCallback("off_button",ui_events.BUTTON_CLICKED,self.PdaClose,self)
+
+	-- [PDA-Statistics] init --------------------------------------------------
+	local xml = CScriptXmlInit()
+	xml:ParseFile("pda_dialog_character.xml")
+	initial = true
+end
+
+function PdaWindow:ShowWnd()
+    if initial and rec_wnd.stat~= nil then rec_wnd.stat:Show(true) end
+end
+function PdaWindow:HideWnd()
+    if initial and rec_wnd.stat~= nil then rec_wnd.stat:Show(false) end
+end
+function PdaWindow:DetachWnd()
+	self.owner:DetachChild(self.stat) initial = false
+end
+
+local pda_window
+function on_info(info_id)
+	if info_id=="ui_pda" then
+	    pda_window = level.main_input_receiver()
+        if not initial then	rec_wnd = PdaWindow(level.main_input_receiver()) end
+    	if not rec_wnd.stat:IsShown() then rec_wnd:ShowWnd() end
+	elseif info_id=="ui_pda_hide" then
+		if rec_wnd then rec_wnd:DetachWnd() end
+ 	end
+end
+
+function PdaWindow:PdaClose()
+    if pda_window and pda_window:IsShown() then level.start_stop_menu(pda_window,true) end
+end
+
+function update()
+	if db.actor:has_info("ui_pda") then
+	end
+end

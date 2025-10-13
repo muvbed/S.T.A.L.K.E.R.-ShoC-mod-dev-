@@ -1,0 +1,299 @@
+
+
+----------------------- Менеджер level_changer --------------------------
+------------------------- Copyright 20011-20011 OGSE, на основе концепции OGSM. ---------------------------
+function attach(sm)
+	sm:subscribe({signal = "on_storyline_start",	fun = this.on_storyline_start})
+	sm:subscribe({signal = "on_info",				fun = this.on_info})
+	sm:subscribe({signal = "on_save",				fun = this.on_save})
+	sm:subscribe({signal = "on_first_update",		fun = this.lc_restore_location})
+end
+
+-- Спавним левел-чейнджер
+-- Level Changer Spawn.
+
+local lcmode = {ask = 0, silent = 1,}
+
+function create_level_changer(sid, position, lvid, gvid, spot, hint, dest_position, dest_lvid, dest_gvid, dest_dir_v, mode, shapes)
+	--log1(debug.traceback())
+	local sobj = alife():create("level_changer", vector():set(unpack(position)), lvid, gvid)
+	--log1(debug.traceback())
+	ASSERT(sobj, "create_level_changer: failed to create level changer")
+	
+	if spot ~= nil and hint ~= nil then 
+		level_tasks.add_location_by_id(sobj.id, spot, hint)		
+	end
+	
+	local initial_packet = get_netpk(sobj, 1)
+	ASSERT( initial_packet:isOk(), "can't read netpacket of %s", sobj:name() )
+	local table_lc = initial_packet:get()
+	
+	table_lc.dest_position = vector():set(unpack(dest_position))
+	table_lc.dest_level_vertex_id = dest_lvid
+	table_lc.dest_game_vertex_id = dest_gvid
+	table_lc.dest_direction = vector():set(unpack(dest_dir_v))
+	table_lc.dest_level_name = level_system_name_by_gvid(gvid)
+	table_lc.silent_mode = mode
+	table_lc.story_id = sid 
+	table_lc.restrictor_type = 3 
+	
+	
+	if type(shapes) == "number" then
+		table_lc.shapes:addSphere(shapes)
+	elseif type(shapes) == "table" then
+		for i,shp in ipairs(shapes) do
+			if shp.shtype == 0 then --/ sphere
+				table_lc.shapes:addSphere(shp.radius, vector():set(unpack(shp.center)))
+			else --/ box
+				table_lc.shapes:addBox(
+					vector():set(unpack(shp.box[1])), 
+					vector():set(unpack(shp.box[2])), 
+					vector():set(unpack(shp.box[3])), 
+					vector():set(unpack(shp.offset))
+				)
+			end
+		end
+	else
+		abort("create_level_changer: unknown shape type")
+	end
+
+	initial_packet:set(table_lc)
+end
+ 
+function create_level_changer_ex(spawn_item)
+	create_level_changer(
+		spawn_item.sid,
+		spawn_item.from.pos, spawn_item.from.lvid, spawn_item.from.gvid,
+		spawn_item.spot, spawn_item.hint,
+		spawn_item.to.pos, spawn_item.to.lvid, spawn_item.to.gvid,
+		spawn_item.dir,
+		lcmode[spawn_item.mode],
+		spawn_item.shapes
+	)
+end
+
+function create_actor_teleporter(destination)
+	level.change_level(
+		destination.gvid,
+		destination.lvid,
+		vector():set(unpack(destination.pos)),
+		vector():set(unpack(destination.dir or {0,0,0}))
+	)
+end
+
+-- перенос актора на заданный уровень в первый доступный там вертекс
+function teleport_actor_to_level(level_name)
+	local lvid, gvid = utils2.get_top_graph_ids(level_name)
+	create_actor_teleporter({pos = {0,0,0}, ["lvid"] = lvid, ["gvid"] = gvid})
+end
+
+
+--== addon by O.G.S.E ==================================================
+local news_table = {
+	[081]		=	game.translate_string("lc_mngr_string2"),
+	[097]		=	game.translate_string("lc_mngr_string3"),
+	[381]		=	game.translate_string("lc_mngr_string4"),
+	[382]		=	game.translate_string("lc_mngr_string5"),
+	[440]		=	game.translate_string("lc_mngr_string6"),
+	[482]		=	game.translate_string("lc_mngr_string7"),
+	[772]		=	game.translate_string("lc_mngr_string8"),
+	[776]		=	game.translate_string("lc_mngr_string9"),
+	[926]		=	game.translate_string("lc_mngr_string10"),
+	[927]		=	game.translate_string("lc_mngr_string11"),
+	[942]		=	game.translate_string("lc_mngr_string12"),
+	[1010]		=	game.translate_string("lc_mngr_string13"),
+	[1012]		=	game.translate_string("lc_mngr_string14"),
+	[1131]		=	game.translate_string("lc_mngr_string15"),
+	[1133]		=	game.translate_string("lc_mngr_string16"),
+	[1134]		=	game.translate_string("lc_mngr_string17"),
+	[1212]		=	game.translate_string("lc_mngr_string18"),
+	[1213]		=	game.translate_string("lc_mngr_string19"),
+	[1214]		=	game.translate_string("lc_mngr_string20"),
+	[1801]		=	game.translate_string("lc_mngr_string21"),
+	[1802]		=	game.translate_string("lc_mngr_string22"),
+}
+
+function give_tip(sid)
+	local str = news_table[sid]
+	if str == nil then
+		return
+	end
+	news_manager.send_tip(db.actor, "%c[25,25,240,25]"..game.translate_string("lc_mngr_string1").." "..str, nil, nil, 7000)
+end
+
+function lc_create(sid, spot, hint)
+	local sim = alife()
+	if not sim:story_object(sid) then
+		local spawn_id = sim:spawn_id(sid)
+		local lc       = sim:create  (spawn_id)
+		if lc then
+			if not spot[2] then
+				level_tasks.add_location_by_sid(sid, spot[1], hint)
+			end
+			give_tip(sid)
+		end
+	end
+end
+
+function lc_remove(sid)
+	local sim = alife()
+	local lc  = sim:story_object(sid)
+	if lc then
+		sim:release(lc, true)
+	end
+end
+
+function lc_show(sid, spot, hint)
+	level_tasks.add_location_by_sid(sid, spot[1], hint)
+end
+
+function lc_hide(sid, spot)
+	level_tasks.remove_location_by_sid(sid, spot[1])
+end
+
+local lc_common_list = -- I preference to use array
+{   -- [1] - 'string'  - name level changer from 'story_ids'('spawn_story_ids')
+	-- [2] - 'table'   - {'string' - name spot, 'boolean' - hide spot at spawn}
+	-- [3] - 'string'  - hint id from string table
+	-- [4] - 'boolean' - hide on storyline start
+	{"lc_esc_to_gar_1", {"level_changer"	   }, 	"to_garbage"         	   }, --  091
+	{"lc_esc_to_ds"   , {"level_changer"       }, 	"to_darkvalley", 	  true }, --  097
+
+	{"lc_gar_to_agr", 	{"level_changer"	   }, 	"to_agroprom"              }, --  192
+	{"lc_gar_to_bar", 	{"level_changer"	   }, 	"to_bar"                   }, --  194
+	{"lc_gar_to_val", 	{"level_changer"	   }, 	"to_darkvalley"            }, --  196
+	{"lc_gar_to_esc", 	{"level_changer"	   }, 	"to_escape"                }, --  193
+
+	{"lc_agr_to_und_1", {"level_changer", true }, 	"to_agroprom_underground"  }, --  383
+	{"lc_agr_to_und_3", {"level_changer", true }, 	"to_agroprom_underground"  }, --  385
+	{"lc_agr_to_gar"  , {"level_changer"       }, 	"to_garbage"               }, --  392
+	{"lc_und_to_agr_1", {"level_changer", true }, 	"to_agroprom"              }, --  386
+	{"lc_und_to_agr_2", {"level_changer", true }, 	"to_agroprom"              }, --  387
+	{"lc_agr_to_yan", 	{"level_changer" 	   }, 	"to_yantar"                }, --  388
+
+	{"lc_val_to_ds"   , {"level_changer"       },   "to_escape"                }, --  417
+	{"lc_val_to_gar"  , {"level_changer"       },   "to_garbage"               }, --  416
+	{"lc_val_to_x18"  , {"level_changer", true },   "to_x18"                   }, --  439
+	{"lc_x18_to_val"  , {"level_changer", true },   "to_darkvalley"            }, --  481
+	
+	{"lc_bar_to_gar"  , {"level_changer"       }, 	"to_garbage"               }, --  593
+	{"lc_bar_to_mil"  , {"level_changer"       }, 	"to_military"              }, --  592
+	{"lc_bar_to_ros"  , {"level_changer"       }, 	"to_rostok"                }, --  594
+	{"lc_ros_to_bar"  , {"level_changer"       }, 	"to_bar"                   }, --  591
+	{"lc_ros_to_yan"  , {"level_changer"       }, 	"to_yantar"                }, --  608
+
+	{"lc_mil_to_bar"  , {"level_changer"       },   "to_bar"                   }, --  771
+	{"lc_mil_to_rad"  , {"level_changer"       },   "to_radar"                 }, --  773
+
+	{"lc_yan_to_x16"  , {"level_changer", true },   "to_labx16",		  true }, --  928
+	{"lc_yan_to_ros"  , {"level_changer"       },   "to_rostok"                }, --  925
+	{"lc_x16_to_yan_1", {"level_changer", true },   "to_yantar"                }, --  940
+	{"lc_x16_to_yan_2", {"level_changer", true },   "to_yantar"                }, --  941
+	
+	{"lc_rad_to_bun"  , {"level_changer", true }, 	"to_bunker"                }, -- 1009
+	{"lc_rad_to_mil"  , {"level_changer"       }, 	"to_military"              }, -- 1008
+	{"lc_rad_to_pri"  , {"level_changer"       }, 	"to_pripyat",   	  true }, -- 1007
+	{"lc_bun_to_rad"  , {"level_changer", true }, 	"to_radar"                 }, -- 1011
+
+	{"lc_pri_to_rad"  , {"level_changer"       },   "to_radar"                 }, --  833
+	{"lc_pri_to_aes"  , {"level_changer"       },   "to_aes"                   }, --  832
+
+	{"lc_aes_to_sar"  , {"level_changer"       }, 	"to_sarcofag"              }, -- 1129
+	{"lc_aes_to_pri"  , {"level_changer" 	   }, 	"to_pripyat",         true }, -- 1130
+	{"lc_aes_to_aes2" , {"level_changer"       }, 	"to_aes2",			  true }, -- 1131
+
+	{"lc_aes2_to_con" , {"level_changer", true }, 	"to_control_monolith"      }, -- 1132
+	{"lc_aes2_to_aes" , {"level_changer"       }, 	"to_aes",			  true }, -- 1134
+	
+	{"lc_con_to_sar"  , {"level_changer"       }, 	"to_sarcofag"              }, -- 1320
+	{"lc_con_to_aes2" , {"level_changer"       }, 	"to_aes2"                  }, -- 1321
+	{"lc_sar_to_con"  , {"level_changer"       }, 	"to_control_monolith"      }, -- 1322
+}
+
+for i = 1, #lc_common_list do
+	local sid  = lc_common_list[i][1]
+	local spot = lc_common_list[i][2]
+	local hint = lc_common_list[i][3]
+	local spawn_sid = spawn_story_ids[sid]
+	this[sid..'_create'] = function() lc_create(spawn_sid, spot, hint) end
+	this[sid..'_remove'] = function() lc_remove(spawn_sid)             end
+	this[sid..'_show']   = function() lc_show  (spawn_sid, spot, hint) end
+	this[sid..'_hide']   = function() lc_hide  (spawn_sid, spot)       end
+end
+
+function on_storyline_start()
+	local sim = alife()
+	for i = 1, #lc_common_list do 
+		local name_sid  = lc_common_list[i][1]
+		local spot_show = lc_common_list[i][2][2]
+		ogse.save_var(name_sid, not spot_show , "bool")
+		if sim:story_object(story_ids[name_sid]) then
+			if lc_common_list[i][4] then
+				this[name_sid..'_remove']()
+			end
+		end
+	end
+end
+
+function lc_restore_location()
+	local sim = alife()
+	for i = 1, #lc_common_list do 
+		local sid  = lc_common_list[i][1]
+		local spot = lc_common_list[i][2]
+		local show = ogse.load_var(sid, false, "bool")
+		if show then
+		    local hint = lc_common_list[i][3]
+		    lc_show(spawn_story_ids[sid], spot, hint)
+		else
+		    lc_hide(spawn_story_ids[sid], spot)
+		end
+	end
+end
+
+local story_infos = {
+	["esc_trader_speak"] = {
+		[1] = this.lc_esc_to_ds_create,
+	},
+	["freeplay"] = {
+		[1] = this.lc_aes_to_aes2_create,
+		[2] = this.lc_aes2_to_aes_create,	
+		[3] = this.lc_aes_to_pri_create,
+	},
+	["bar_deactivate_radar_done"] = {
+		[1] = this.lc_rad_to_pri_create,
+	},
+	["yan_find_vasilyev_start"] = {
+		[1] = this.lc_yan_to_x16_create,
+		[2] = this.lc_yan_to_x16_show,	
+	},
+}
+
+function on_info(npc, info_id)
+	if info_id then -- and not has_alife_info(info_id) then -- эту проверку нельзя делать, так как если инфо выдается вещью, то обработка стартует только после того, как будет закрыт инвентарь, и проверка покажет что инфо уже есть
+		local function_name = story_infos[info_id]
+		if function_name and type(function_name) == "function" then
+			function_name()
+		elseif function_name and type(function_name) == "table" then
+			local subtable = function_name
+			local subfuct = nil
+			for i = 1, #subtable do
+				subfuct = subtable[i]
+				if subfuct and type(subfuct) == "function" then
+					subfuct()
+				end			
+			end			
+		end	
+	end
+end
+
+
+function on_save()
+    for i = 1, #lc_common_list do
+	    local name_sid  = lc_common_list[i][1]
+		local spawn_sid = spawn_story_ids[name_sid]
+		local location  = lc_common_list[i][2][1]
+		local spot_show = level_tasks.is_map_spot_present(spawn_sid, location)
+		ogse.save_var(name_sid, spot_show , "bool")
+	end
+end
+

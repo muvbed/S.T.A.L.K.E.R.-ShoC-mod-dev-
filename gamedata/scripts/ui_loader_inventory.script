@@ -1,0 +1,81 @@
+--[[-----------------------------------------------------------------------------------------------
+ File			: ui_loader_inventory.script
+ Description	: Функции для инвентаря
+ Copyright		: Shadows Addon
+ Authors		: Shadows and Charsi
+ Date			: 02.08.2011-13.08.2011
+ UPD by Muvbed	: 2024
+--]]-----------------------------------------------------------------------------------------------
+
+local rec_wnd = nil
+local initial = false
+local reg_callbacks = {
+	cell_item_clicked = "on_item_select",
+	item_drop = "on_item_drop",
+	item_take = "on_item_take",
+	drag_drop = "on_drag_drop",
+	update = "on_update"
+}
+
+class "InventoryWindow" (CUIScriptWnd)
+function InventoryWindow:__init(owner) super()
+	self.owner = owner
+	self:Init(0,0,1024,768)
+	self:InitControls()
+end
+
+function InventoryWindow:__finalize() end
+function InventoryWindow:InitControls()
+	self.stat = CUIStatic()
+	self.stat:Init(0,0,1024,768)
+	self.owner:AttachChild(self.stat)
+	local xml = CScriptXmlInit()
+	xml:ParseFile("inventory_new.xml")
+
+	-- [INVENTORY] init --------------------------------------------------
+
+	-- Статик рюкзака
+	if ogse.load_var("ruck_dropped", 0) == 0 then
+		xml:InitStatic("static_ruck", self.stat)
+	end
+
+	-- Всплывающее окно описания
+	self.DescrWnd = ui_item_hint.CUIDescriptionWnd(self.stat)
+
+	initial = true
+end
+
+function InventoryWindow:ShowWnd()
+	if initial and rec_wnd.stat~= nil then rec_wnd.stat:Show(true) end
+end
+function InventoryWindow:HideWnd()
+	if initial and rec_wnd.stat~= nil then rec_wnd.stat:Show(false) end
+end
+function InventoryWindow:DetachWnd()
+	self.DescrWnd:Remove()
+	self.DescrWnd = nil
+	self.owner:DetachChild(self.stat)
+	initial = false
+end
+
+local inventory_window
+function on_info(info_id)
+	if info_id=="ui_inventory" then
+	    inventory_window = level.main_input_receiver()
+		if not initial then	rec_wnd = InventoryWindow(level.main_input_receiver()) end
+		if not rec_wnd.stat:IsShown() then rec_wnd:ShowWnd() end
+		
+		bind_stalker.hide_weapon()
+	elseif info_id=="ui_inventory_hide" then
+		if rec_wnd then rec_wnd:DetachWnd() end
+
+		dsh.timeout(500, function() 
+			bind_stalker.restore_weapon()
+		end)
+	end
+end
+
+function update()
+	if db.actor:has_info("ui_inventory") then
+	end
+end

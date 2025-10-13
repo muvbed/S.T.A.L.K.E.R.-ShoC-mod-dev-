@@ -1,0 +1,53 @@
+-- используется ниже
+-- НЕ ДОБАВЛЯТЬ В ЭТУ ТАБЛИЦУ НОВЫХ ЭЛЕМЕНТОВ НИ В КОЕМ СЛУЧАЕ! Юзайте норм таймеры, а не это говно. Т.к. содержимое этой таблицы тесно связано с timers_id_name, timers_name_id из-за дебильной реализации.
+
+-- Костыли для таблицы func_by_string. НИ В КОЕМ СЛУЧАЕ НЕ ДОБАВЛЯТЬ ЭЛЕМЕНТЫ В ТАБЛИЦЫ func_by_string, timers_id_name, timers_name_id. Это всё костыли для поддержки старой системы.
+-- В будущем используйте нормальные таймеры, а не это говно.
+timers_id_name = {
+    [1] = "rfx",
+    [2] = "otf",
+    [8] = "fpl",
+    [9] = "oso",
+    [10] = "pri",
+    [44] = "show_news",
+	[72] = "news_check",
+}
+
+timers_name_id = {
+}
+
+for i, v in pairs(timers_id_name) do
+    timers_name_id[v] = i
+end
+
+-- таблица функций для ускорения их вызовов
+func_by_string = {}
+
+func_by_string["rfx"] = function(params_string)
+    ogsm_debug.radar_fix()
+end
+func_by_string["otf"] = function(params_string)
+    a = level.object_by_id(tonumber(params_string))
+	if a ~= nil then a:set_condition((math.random(25)+40)/100) end
+end
+func_by_string["fpl"] = function(params_string)
+    level_tasks.set_task_state(task.completed, "sar_warlab", 0)
+	level_tasks.set_task_state(task.completed, "sar_warlab", 1)
+end
+func_by_string["oso"] = function(params_string)
+    level.add_pp_effector("deadcity_wake.ppe", 2008, false)
+	local point = patrol("mon_jump_aes2_walk")
+	local look = patrol("mon_jump_aes2_look")
+	db.actor:set_actor_position(point:point(0))
+	local dir = look:point(0):sub(point:point(0))
+	db.actor:set_actor_direction(-dir:getH())
+end
+func_by_string["pri"] = function(params_string)
+    send_tip("Здорово, Стрелок! Загляни ко мне, поболтаем... Даю координаты.", "Неизвестный отправитель", 0, 10, "stalker")
+end
+func_by_string["show_news"] = function(params_string)
+	if (news_main and news_main.on_news) then news_main.on_news() end
+end
+func_by_string["news_check"] = function(params_string)
+    if news_main and news_main.check_news then news_main.check_news() end
+end

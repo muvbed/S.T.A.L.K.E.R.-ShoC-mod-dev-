@@ -1,0 +1,528 @@
+-----------------------------------------------------------
+--' Author: femten             				  			'--
+--' Last change data: 2021/07/21						'--
+--' Description: Ремонт оружия в графическом оформлении	'--
+--' Добавил пару ф-ций: BotKILLer aka DiR.X             '--
+--' Обновил дизайн UI: Mechanic							'--
+-----------------------------------------------------------
+
+local new_cost = true				-- (Опционально) Другая формула подсчёта стоимости ремонта
+local coef_cost_wpn = 1.5			-- Коэффициенты на которые умножается конечная стоимость ремонта оружия
+local coef_cost_outfit = 1.5		-- и брони
+
+local w1_selected
+local w2_selected
+local w4_selected
+local o_selected
+
+local snd_slot = xr_sound.get_safe_sound_object("interface\\inv_slot")
+local snd_r_w = xr_sound.get_safe_sound_object("interface\\inv_repair_short")
+local snd_r_o = xr_sound.get_safe_sound_object("interface\\inv_repair_outfit_short")
+
+
+function main(npc,actor)
+	local hud = repair_ui(get_hud())
+	level.start_stop_menu(hud, true)
+	bind_stalker.hide_weapon()
+end
+
+
+class "repair_ui" (CUIScriptWnd)
+
+function repair_ui:__init(owner) super()
+	self.owner = owner
+	self:Init_Controls()
+	self:InitCallBacks()
+end
+ 
+
+function repair_ui:__finalize()
+end
+ 
+function repair_ui:Init_Controls()
+	local xml = CScriptXmlInit()
+
+	self:Init(350,130,774,642)
+	xml:ParseFile("ui_repair_16.xml")
+
+	xml:InitStatic("main_window", self)
+	self:Register(xml:Init3tButton("btn_quit", self),"btn_quit")
+
+	self:Register(xml:Init3tButton("repair_title_1", self),"repair_title_1")
+	
+	self:Register(xml:InitStatic("money_static", self), "money_static")
+	self:Register(xml:InitStatic("money_count_static", self), "money_count_static")
+	self:actor_money()
+
+	w1_selected = false
+	w2_selected = false
+	w4_selected = false
+	o_selected = false
+	
+	self:Register(xml:InitStatic("repair_cost", self), "repair_cost")
+	self:Register(xml:InitStatic("repair_cost_count", self), "repair_cost_count")
+	self:Register(xml:InitStatic("repair_cost_count_red", self), "repair_cost_count_red")
+	self:draw_cost()
+	
+	self:Register(xml:Init3tButton("btn_repair", self),"btn_repair")
+	self:GetButton("btn_repair"):Enable(false)
+
+	self:Register(xml:InitStatic("s_weapon_1", self), "s_weapon_1")
+	self:GetStatic("s_weapon_1"):Show(false)
+	self:Register(xml:InitStatic("s_weapon_2", self), "s_weapon_2")
+	self:GetStatic("s_weapon_2"):Show(false)
+	self:Register(xml:InitStatic("s_weapon_4", self), "s_weapon_4")
+	self:GetStatic("s_weapon_4"):Show(false)
+	self:Register(xml:InitStatic("s_outfit", self), "s_outfit")
+	self:GetStatic("s_outfit"):Show(false)
+
+	-- Вывод иконки Оружия слота 1
+	if db.actor:item_in_slot(1) ~= nil then
+		local weapon_1_name = db.actor:item_in_slot(1):section()
+          	local x, y, width, height, y_fix, x_fix, w_fix = icon_pos(weapon_1_name,1)
+          	local weapon_tex = CUIStatic()
+
+		self:Register(xml:Init3tButton("h_weapon_1", self),"h_weapon_1")
+		if db.actor:item_in_slot(1):condition() <= 0.99 and db.actor:item_in_slot(1):condition() >= 0.10 then
+			self:GetButton("h_weapon_1"):Enable(true)
+		else
+			self:GetButton("h_weapon_1"):Enable(false)
+		end
+
+      	weapon_tex:SetAutoDelete(true)
+      	self:AttachChild(weapon_tex)	
+      	weapon_tex:InitTexture("ui\\ui_icon_equipment")
+      	weapon_tex:SetStretchTexture(true)
+      	weapon_tex:SetOriginalRect(x, y, width, height)
+		weapon_tex:Init((12 + x_fix), (30 + y_fix), w_fix, height)
+	end
+
+	-- Вывод иконки Оружия слота 2
+	if db.actor:item_in_slot(2) ~= nil then
+		local weapon_2_name = db.actor:item_in_slot(2):section()
+		local x, y, width, height, y_fix, x_fix, w_fix = icon_pos(weapon_2_name,2)
+		local weapon_tex = CUIStatic()
+
+		self:Register(xml:Init3tButton("h_weapon_2", self),"h_weapon_2")
+		if db.actor:item_in_slot(2):condition() <= 0.99 and db.actor:item_in_slot(2):condition() >= 0.10 then
+			self:GetButton("h_weapon_2"):Enable(true)
+		else
+			self:GetButton("h_weapon_2"):Enable(false)
+		end
+
+		weapon_tex:SetAutoDelete(true)
+		self:AttachChild(weapon_tex)	
+		weapon_tex:InitTexture("ui\\ui_icon_equipment")
+		weapon_tex:SetStretchTexture(true)
+		weapon_tex:SetOriginalRect(x, y, width, height)
+		weapon_tex:Init((12 + x_fix), (128 + y_fix), w_fix, height)
+	end
+	
+	-- Вывод иконки Оружия слота 4
+	if db.actor:item_in_slot(4) ~= nil 
+		and db.actor:item_in_slot(4):section() ~= "racya_b" 
+		and db.actor:item_in_slot(4):section() ~= "wpn_binoc"
+	then
+		local weapon_4_name = db.actor:item_in_slot(4):section()
+		local x, y, width, height, y_fix, x_fix, w_fix = icon_pos(weapon_4_name,4)
+		local weapon_tex = CUIStatic()
+
+		self:Register(xml:Init3tButton("h_weapon_4", self),"h_weapon_4")
+		if db.actor:item_in_slot(4):condition() <= 0.99 and db.actor:item_in_slot(4):condition() >= 0.10 then
+			self:GetButton("h_weapon_4"):Enable(true)
+		else
+			self:GetButton("h_weapon_4"):Enable(false)
+		end
+
+		weapon_tex:SetAutoDelete(true)
+		self:AttachChild(weapon_tex)	
+		weapon_tex:InitTexture("ui\\ui_icon_equipment")
+		weapon_tex:SetStretchTexture(true)
+		weapon_tex:SetOriginalRect(x, y, width, height)
+		weapon_tex:Init((78 + x_fix), (222 + y_fix), w_fix, height)
+	end
+
+	-- Вывод иконки Брони
+	if db.actor:item_in_slot(6) ~= nil then
+		local outfit_name = db.actor:item_in_slot(6):section()
+		local x, y, width, height, y_fix, x_fix, w_fix, h_fix = icon_pos(outfit_name,6)
+		local weapon_tex = CUIStatic()
+
+		self:Register(xml:Init3tButton("h_outfit", self),"h_outfit")
+		if db.actor:item_in_slot(6):condition() <= 0.99 and db.actor:item_in_slot(6):condition() >= 0.10 then
+			self:GetButton("h_outfit"):Enable(true)
+		else
+			self:GetButton("h_outfit"):Enable(false)
+		end
+
+		weapon_tex:SetAutoDelete(true)
+		self:AttachChild(weapon_tex)	
+		weapon_tex:InitTexture("ui\\ui_icon_equipment")
+		weapon_tex:SetStretchTexture(true)
+		weapon_tex:SetOriginalRect(x, y, width, height)
+		weapon_tex:Init((30 + x_fix), (220 + y_fix), w_fix, h_fix)
+	end
+
+	self:Register(xml:InitStatic("cond_1_100", self), "cond_1_100")
+	self:Register(xml:InitStatic("cond_1_90", self), "cond_1_90")
+	self:Register(xml:InitStatic("cond_1_0", self), "cond_1_0")
+	self:Register(xml:InitStatic("cond_2_100", self), "cond_2_100")
+	self:Register(xml:InitStatic("cond_2_90", self), "cond_2_90")
+	self:Register(xml:InitStatic("cond_2_0", self), "cond_2_0")
+	self:Register(xml:InitStatic("cond_4_100", self), "cond_4_100")
+	self:Register(xml:InitStatic("cond_4_90", self), "cond_4_90")
+	self:Register(xml:InitStatic("cond_4_0", self), "cond_4_0")
+	self:Register(xml:InitStatic("cond_6_100", self), "cond_6_100")
+	self:Register(xml:InitStatic("cond_6_90", self), "cond_6_90")
+	self:Register(xml:InitStatic("cond_6_0", self), "cond_6_0")
+	self:cond_upd()
+end
+
+------------------ Callback на нажатие кнопок --------------------------------
+
+function repair_ui:InitCallBacks()
+	self:AddCallback("h_weapon_1", ui_events.BUTTON_CLICKED, self.h_weapon_1, self)
+	self:AddCallback("h_weapon_2", ui_events.BUTTON_CLICKED, self.h_weapon_2, self)
+	self:AddCallback("h_weapon_4", ui_events.BUTTON_CLICKED, self.h_weapon_4, self)
+	self:AddCallback("h_outfit", ui_events.BUTTON_CLICKED, self.h_outfit, self)
+	self:AddCallback("btn_repair", ui_events.BUTTON_CLICKED, self.repiar, self)
+	self:AddCallback("btn_quit", ui_events.BUTTON_CLICKED, self.on_quit, self)
+end
+
+------------------------------------------------------------------------------
+
+function repair_ui:actor_money()
+	local actor_money =  db.actor:money()
+	self:GetStatic("money_count_static"):SetText(actor_money .. " RU")
+end
+
+-- Ф-ции по выбору предмета мышкой
+function repair_ui:h_weapon_1()
+	if not w1_selected then
+		w1_selected = true
+		self:GetStatic("s_weapon_1"):Show(true)
+		self:indicators_upd()
+		self:draw_cost()
+		if snd_slot then snd_slot:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 2.0) end
+	else
+		w1_selected = false
+		self:GetStatic("s_weapon_1"):Show(false)
+		self:indicators_upd()
+		self:draw_cost()
+		if snd_slot then snd_slot:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 2.0) end
+	end
+end
+
+function repair_ui:h_weapon_2()
+	if not w2_selected then
+		w2_selected = true
+		self:GetStatic("s_weapon_2"):Show(true)
+		self:indicators_upd()
+		self:draw_cost()
+		if snd_slot then snd_slot:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 2.0) end
+	else
+		w2_selected = false
+		self:GetStatic("s_weapon_2"):Show(false)
+		self:indicators_upd()
+		self:draw_cost()
+		if snd_slot then snd_slot:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 2.0) end
+	end
+end
+
+function repair_ui:h_weapon_4()
+	if not w4_selected then
+		w4_selected = true
+		self:GetStatic("s_weapon_4"):Show(true)
+		self:indicators_upd()
+		self:draw_cost()
+		if snd_slot then snd_slot:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 2.0) end
+	else
+		w4_selected = false
+		self:GetStatic("s_weapon_4"):Show(false)
+		self:indicators_upd()
+		self:draw_cost()
+		if snd_slot then snd_slot:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 2.0) end
+	end
+end
+
+function repair_ui:h_outfit()
+	if not o_selected then
+		o_selected = true
+		self:GetStatic("s_outfit"):Show(true)
+		self:indicators_upd()
+		self:draw_cost()
+		if snd_slot then snd_slot:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 2.0) end
+	else
+		o_selected = false
+		self:GetStatic("s_outfit"):Show(false)
+		self:indicators_upd()
+		self:draw_cost()
+		if snd_slot then snd_slot:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 2.0) end
+	end
+end
+
+-- Обновление кнопки ремонта
+function repair_ui:indicators_upd()
+	local cI = 0
+
+	if w1_selected then
+		cI = cI + 1
+	end
+	if w2_selected then
+		cI = cI + 1
+	end
+	if w4_selected then
+		cI = cI + 1
+	end
+	if o_selected then
+		cI = cI + 1
+	end
+	if cI == 0 then
+		self:GetButton("btn_repair"):Enable(false)
+	end	
+	if cI > 0 then
+		if actor_check_money() and repair_costs() > 0 then
+			self:GetButton("btn_repair"):Enable(true)
+		else
+			self:GetButton("btn_repair"):Enable(false)
+		end
+	end
+end
+
+-- Вывод состояния
+function repair_ui:cond_upd()
+	local item_in_slot_1 = db.actor:item_in_slot(1)
+	local item_in_slot_2 = db.actor:item_in_slot(2)
+	local item_in_slot_4 = db.actor:item_in_slot(4)
+	local item_in_slot_6 = db.actor:item_in_slot(6)
+	if item_in_slot_1 then
+		if item_in_slot_1:condition() <= 1 and item_in_slot_1:condition() > 0.99 then
+			self:GetStatic("cond_1_100"):SetText("100%")
+		elseif item_in_slot_1:condition() <= 0.99 and item_in_slot_1:condition() >= 0.90 then
+			self:GetStatic("cond_1_100"):SetText(round(item_in_slot_1:condition()*100) .. "%")
+		elseif item_in_slot_1:condition() < 0.90 and item_in_slot_1:condition() >= 0.10 then
+			self:GetStatic("cond_1_90"):SetText(round(item_in_slot_1:condition()*100) .. "%")
+		elseif item_in_slot_1:condition() < 0.10 and item_in_slot_1:condition() >= 0 then
+			self:GetStatic("cond_1_0"):SetText(round(item_in_slot_1:condition()*100) .. "%")
+		end
+	end
+	if item_in_slot_2 then
+		if item_in_slot_2:condition() <= 1 and item_in_slot_2:condition() > 0.99 then
+			self:GetStatic("cond_2_100"):SetText("100%")
+		elseif item_in_slot_2:condition() <= 0.99 and item_in_slot_2:condition() >= 0.90 then
+			self:GetStatic("cond_2_100"):SetText(round(item_in_slot_2:condition()*100) .. "%")
+		elseif item_in_slot_2:condition() < 0.90 and item_in_slot_2:condition() >= 0.10 then
+			self:GetStatic("cond_2_90"):SetText(round(item_in_slot_2:condition()*100) .. "%")
+		elseif item_in_slot_2:condition() < 0.10 and item_in_slot_2:condition() >= 0 then
+			self:GetStatic("cond_2_0"):SetText(round(item_in_slot_2:condition()*100) .. "%")
+		end
+	end
+	if item_in_slot_4 
+		and item_in_slot_4:section() ~= "racya_b" 
+		and item_in_slot_4:section() ~= "wpn_binoc" 
+	then
+		if item_in_slot_4:condition() <= 1 and item_in_slot_4:condition() > 0.99 then
+			self:GetStatic("cond_4_100"):SetText("100%")
+		elseif item_in_slot_4:condition() <= 0.99 and item_in_slot_4:condition() >= 0.90 then
+			self:GetStatic("cond_4_100"):SetText(round(item_in_slot_4:condition()*100) .. "%")
+		elseif item_in_slot_4:condition() < 0.90 and item_in_slot_4:condition() >= 0.10 then
+			self:GetStatic("cond_4_90"):SetText(round(item_in_slot_4:condition()*100) .. "%")
+		elseif item_in_slot_4:condition() < 0.10 and item_in_slot_4:condition() >= 0 then
+			self:GetStatic("cond_4_0"):SetText(round(item_in_slot_4:condition()*100) .. "%")
+		end
+	end
+	if item_in_slot_6 then
+		if item_in_slot_6:condition() <= 1 and item_in_slot_6:condition() > 0.99 then
+			self:GetStatic("cond_6_100"):SetText("100%")
+		elseif item_in_slot_6:condition() <= 0.99 and item_in_slot_6:condition() >= 0.90 then
+			self:GetStatic("cond_6_100"):SetText(math.floor(item_in_slot_6:condition()*100) .. "%")
+		elseif item_in_slot_6:condition() < 0.90 and item_in_slot_6:condition() >= 0.10 then
+			self:GetStatic("cond_6_90"):SetText(math.floor(item_in_slot_6:condition()*100) .. "%")
+		elseif item_in_slot_6:condition() < 0.10 and item_in_slot_6:condition() >= 0 then
+			self:GetStatic("cond_6_0"):SetText(math.floor(item_in_slot_6:condition()*100) .. "%")
+		end
+	end
+end
+
+-- Вывод цены ремонта на экран
+function repair_ui:draw_cost()
+	if actor_check_money() then
+		self:GetStatic("repair_cost_count_red"):SetText("")
+		self:GetStatic("repair_cost_count"):SetText(repair_costs() .. " RU")
+	else
+		self:GetStatic("repair_cost_count"):SetText("")
+		self:GetStatic("repair_cost_count_red"):SetText(repair_costs() .. " RU")
+	end
+end
+
+
+-- Ремонтируем
+function repair_ui:repiar()
+	local item_in_slot_1 = db.actor:item_in_slot(1)
+	local item_in_slot_2 = db.actor:item_in_slot(2)
+	local item_in_slot_4 = db.actor:item_in_slot(4)
+	local item_in_slot_6 = db.actor:item_in_slot(6)
+	local cost = repair_costs()
+	
+	if w1_selected or w2_selected or w4_selected then
+		if snd_r_w then snd_r_w:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 2.0) end
+	end
+	if o_selected then
+		if snd_r_o then snd_r_o:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 2.0) end
+	end
+		
+	if item_in_slot_1 and w1_selected then
+		item_in_slot_1:set_condition(1)
+		w1_selected = false
+		self:GetButton("h_weapon_1"):Enable(false)
+		self:GetStatic("s_weapon_1"):Show(false)
+		self:GetStatic("cond_1_100"):SetText("100%")
+		self:GetStatic("cond_1_90"):SetText("")
+		self:GetStatic("cond_1_0"):SetText("")
+	end
+	if item_in_slot_2 and w2_selected then
+		item_in_slot_2:set_condition(1)
+		w2_selected = false
+		self:GetButton("h_weapon_2"):Enable(false)
+		self:GetStatic("s_weapon_2"):Show(false)
+		self:GetStatic("cond_2_100"):SetText("100%")
+		self:GetStatic("cond_2_90"):SetText("")
+		self:GetStatic("cond_2_0"):SetText("")
+	end
+	if item_in_slot_4 and w4_selected then
+		item_in_slot_4:set_condition(1)
+		w4_selected = false
+		self:GetButton("h_weapon_4"):Enable(false)
+		self:GetStatic("s_weapon_4"):Show(false)
+		self:GetStatic("cond_4_100"):SetText("100%")
+		self:GetStatic("cond_4_90"):SetText("")
+		self:GetStatic("cond_4_0"):SetText("")
+	end
+	if item_in_slot_6 and o_selected then
+		item_in_slot_6:set_condition(1)
+		o_selected = false
+		self:GetButton("h_outfit"):Enable(false)
+		self:GetStatic("s_outfit"):Show(false)
+		self:GetStatic("cond_6_100"):SetText("100%")
+		self:GetStatic("cond_6_90"):SetText("")
+		self:GetStatic("cond_6_0"):SetText("")
+	end
+	db.actor:give_money(-cost)
+	self:indicators_upd()
+	self:actor_money()
+	self:draw_cost()
+end
+
+-- Кнопка "Выход"
+function repair_ui:on_quit()
+	self:GetHolder():start_stop_menu(self, true)
+	bind_stalker.restore_weapon()
+end
+
+-- Выход по нажатию "Esc"
+function repair_ui:OnKeyboard(dik, keyboard_action)
+    CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
+    if keyboard_action == ui_events.WINDOW_KEY_PRESSED then
+        if dik == DIK_keys.DIK_ESCAPE then
+            self:on_quit()
+        end
+    end
+    return true
+end
+
+-- Возвращаем цену ремонта выбранных предметов
+function repair_costs()
+	local item_in_slot_1 = db.actor:item_in_slot(1)
+	local item_in_slot_2 = db.actor:item_in_slot(2)
+	local item_in_slot_4 = db.actor:item_in_slot(4)
+	local item_in_slot_6 = db.actor:item_in_slot(6)
+	local cost = 0
+
+	if new_cost then
+		if item_in_slot_1 and w1_selected and item_in_slot_1:condition() <= 0.99 and item_in_slot_1:condition() >= 0.10 then
+			cost = cost + math.floor((1-item_in_slot_1:condition()) * item_in_slot_1:cost() * coef_cost_wpn + 100)
+		end
+		if item_in_slot_2 and w2_selected and item_in_slot_2:condition() <= 0.99 and item_in_slot_2:condition() >= 0.10 then
+			cost = cost + math.floor((1-item_in_slot_2:condition()) * item_in_slot_2:cost() * coef_cost_wpn + 100)
+		end
+		if item_in_slot_4 and w4_selected and item_in_slot_4:condition() <= 0.99 and item_in_slot_4:condition() >= 0.10 then
+			cost = cost + math.floor((1-item_in_slot_4:condition()) * item_in_slot_4:cost() * coef_cost_wpn + 100)
+		end
+		if item_in_slot_6 and o_selected and item_in_slot_6:condition() <= 0.99 and item_in_slot_6:condition() >= 0.10 then
+			cost = cost + math.floor((1-item_in_slot_6:condition()) * item_in_slot_6:cost() * coef_cost_outfit + 100)
+		end
+    else
+		if item_in_slot_1 and w1_selected and item_in_slot_1:condition() <= 0.99 and item_in_slot_1:condition() >= 0.10 then
+			cost = cost + math.floor((1-item_in_slot_1:condition()) * item_in_slot_1:cost() - ((1-item_in_slot_1:condition()) * item_in_slot_1:cost() / 3) + 100)
+		end
+		if item_in_slot_2 and w2_selected and item_in_slot_2:condition() <= 0.99 and item_in_slot_2:condition() >= 0.10 then
+			cost = cost + math.floor((1-item_in_slot_2:condition()) * item_in_slot_2:cost() - ((1-item_in_slot_2:condition()) * item_in_slot_2:cost() / 3) + 100)
+		end
+		if item_in_slot_4 and w4_selected and item_in_slot_4:condition() <= 0.99 and item_in_slot_4:condition() >= 0.10 then
+			cost = cost + math.floor((1-item_in_slot_4:condition()) * item_in_slot_4:cost() - ((1-item_in_slot_4:condition()) * item_in_slot_4:cost() / 3) + 100)
+		end
+		if item_in_slot_6 and o_selected and item_in_slot_6:condition() <= 0.99 and item_in_slot_6:condition() >= 0.10 then
+			cost = cost + math.floor((1-item_in_slot_6:condition()) * item_in_slot_6:cost() - ((1-item_in_slot_6:condition()) * item_in_slot_6:cost() / 3) + 100)
+    	end
+  	end
+  	return cost
+end
+
+-- Проверка денег
+function actor_check_money()
+	local cost = repair_costs()
+	local actor_money = db.actor:money()
+
+	if actor_money >= cost then
+	  return true
+	else
+	  return false
+	end
+end
+
+-- Получение иконки оружия или костюма 
+function icon_pos(Pitem, slot)
+	local y_fix = 0
+    local x_fix = 0
+    local w_fix = 0
+    local h_fix = 0
+    local x = sys_ini:r_float(Pitem, "inv_grid_x") * 50
+	local y = sys_ini:r_float(Pitem, "inv_grid_y") * 50
+	local width = sys_ini:r_float(Pitem, "inv_grid_width") * 50
+	local height = sys_ini:r_float(Pitem, "inv_grid_height") * 50
+
+	if slot == 1 or slot == 2 or slot == 4 then        
+		if width > 297 then
+			x_fix = 35
+			w_fix = 300*0.78
+		else
+			w_fix = width*0.78
+			x_fix = (300 - width*0.78)/2
+		end
+		if height < 100 then
+		    y_fix = height/2
+		else
+		    y_fix = 0
+		end
+	elseif slot == 6 then 
+		if sys_ini:r_float(Pitem, "inv_grid_height") == 2 and sys_ini:r_float(Pitem, "inv_grid_width") == 2 then
+			y_fix = 35
+			x_fix = 31
+			w_fix = width*0.75
+		 	h_fix = height
+		elseif sys_ini:r_float(Pitem, "inv_grid_height") == 3 and sys_ini:r_float(Pitem, "inv_grid_width") == 3 then
+			y_fix = 20
+			x_fix = 19
+			w_fix = width*0.65
+		  	h_fix = height - 20
+		-- Предполагаем, что любые другие иконки костюмов будут иметь соотношение 2x3, чтобы хоть как-то выводились в слот
+		else --elseif sys_ini:r_float(Pitem, "inv_grid_height") == 3 and sys_ini:r_float(Pitem, "inv_grid_width") == 2 then
+			y_fix = 20
+			x_fix = 36
+			w_fix = width*0.65
+			h_fix = height * 0.87
+		end
+	end
+	
+	return x, y, width, height, y_fix, x_fix, w_fix, h_fix
+end

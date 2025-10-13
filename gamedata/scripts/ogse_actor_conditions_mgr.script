@@ -1,0 +1,129 @@
+-- -*- mode: lua; coding: windows-1251-dos -*-
+-- UPD by Muvbed
+
+-- минимальная и максимальная амплитуда раскачки ходьбы
+function attach(sm)
+    sm:subscribe({signal = "on_spawn", fun = this.on_spawn})
+    sm:subscribe({signal = "update_artefacts_on_belt", fun = this.update_artefacts_on_belt})
+end
+
+-- читаем глобальные параметры эффектов
+local thirst_light_limit = get_float("actor_condition", "thirst_light_limit")
+local satiety_light_limit = get_float("actor_condition", "satiety_light_limit")
+local thirst_critical_limit = get_float("actor_condition", "thirst_critical_limit")
+local satiety_critical = get_float("actor_condition", "satiety_critical")
+local def_jump_power = get_float( "actor_condition", "jump_power" )
+local jump_speed = get_float( "actor", "jump_speed" )
+
+walk_accel_factor = 1.0 -- Для воздействий из вне (Muvbed)
+local walk_accel = get_float("actor", "walk_accel")
+local min_walk_accel = walk_accel / 2
+
+local cur_cam_inert = 0.1
+
+function on_spawn()
+    cur_cam_inert = 0.1
+    level.set_cam_inert(cur_cam_inert)
+end
+
+function update_artefacts_on_belt(dt)
+    local act = db.actor
+    local aobj = get_actor_obj()
+    local health_power_limit = 0.75
+    local sleep_level = ogse_sleep_mgr.sleep_level
+    local sleep_supressed = ogse_sleep_mgr.sleep_supressed
+    local cur_walk_accel = walk_accel - min_walk_accel
+    local new_cam_inert = 1
+    local stand_power_factor = 1
+    local cur_jump_power = def_jump_power
+
+    if act.health < health_power_limit then
+        new_cam_inert = new_cam_inert * (act.health / health_power_limit)
+        
+        local health_factor = act.health
+
+        if health_factor < 0.3 then
+            health_factor = 0.3
+        end
+        
+        cur_walk_accel = cur_walk_accel * (health_factor / health_power_limit)
+    end
+
+    if act.power < health_power_limit then
+        new_cam_inert = new_cam_inert * (act.power / health_power_limit)
+
+        local power_factor = act.power
+
+        if power_factor < 0.3 then
+            power_factor = 0.3
+        end
+
+        cur_walk_accel = cur_walk_accel * (power_factor / health_power_limit)
+    end
+
+    if not sleep_supressed and sleep_level > 0 then
+        local sleep_factor = 1 - sleep_level / 10
+
+		stand_power_factor = stand_power_factor * (1 - sleep_level / 10)
+        cur_walk_accel = cur_walk_accel * sleep_factor
+    end
+
+    if act.thirst < thirst_light_limit then
+		stand_power_factor = stand_power_factor * act.thirst / thirst_light_limit
+        
+        if act.thirst <= thirst_critical_limit then
+	        cur_walk_accel = cur_walk_accel * act.thirst / thirst_critical_limit
+        end
+    end
+
+    if act.satiety < satiety_light_limit then
+		stand_power_factor = stand_power_factor * act.satiety / satiety_light_limit
+        
+		if act.satiety <= satiety_critical then
+	        cur_walk_accel = cur_walk_accel * act.satiety / satiety_critical
+        end
+        
+        cur_jump_power = cur_jump_power + (
+	        (0.2 - cur_jump_power) * (1 - (act.satiety / satiety_light_limit))
+	    )
+    end
+	
+	if act.health < health_power_limit then
+	    cur_jump_power = cur_jump_power + (
+	        (0.2 - cur_jump_power) * (1 - (act.health / health_power_limit))
+	    )
+	end
+	
+	aobj.jump_power = cur_jump_power
+	
+	if cur_walk_accel < min_walk_accel then
+		aobj.jump_speed = (jump_speed / 2) + ((jump_speed / 2) * (cur_walk_accel / min_walk_accel))
+	else
+		aobj.jump_speed = jump_speed
+	end
+    
+    if stand_power_factor < 0.1 then
+    	stand_power_factor = 0.1
+    end
+    
+    if act:zoom_mode() then
+		stand_power_factor = stand_power_factor - 1.25
+	end
+
+	act.power = (1 - stand_power_factor) * -0.001
+	
+    aobj.walk_accel = (min_walk_accel + cur_walk_accel) * walk_accel_factor
+    
+    new_cam_inert = 1 - new_cam_inert
+	
+    if new_cam_inert > 0.75 then
+        new_cam_inert = 0.75
+    end
+
+    if new_cam_inert == cur_cam_inert then
+        return
+    end
+
+    cur_cam_inert = new_cam_inert
+    level.set_cam_inert(cur_cam_inert)
+end

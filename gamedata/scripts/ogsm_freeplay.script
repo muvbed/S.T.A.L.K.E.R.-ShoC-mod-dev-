@@ -1,0 +1,57 @@
+----------------------- Функции фриплея для OGSM 2.4 --------------------------
+
+------------------------- Copyright 2007-2018 DEXXX ---------------------------
+
+-- Спавн всех нужных переходов
+-- Common LC spawn. Takes place after final credits. Actor teleports to NPP.
+function set_lc()
+	if not db.actor or not has_alife_info("game_end") then
+		xr_effects.after_credits()
+	else
+		level.add_pp_effector("teleport.ppe", 2008, false)
+
+		-- Перемещаем актора, засчитываем все задания
+		db.actor:set_actor_position(vector():set(86.648, 9.0, 132.537))
+		set_complete_tasks()
+		
+		-- Спавним монстров
+		ogsm_respawn.level_spawn()
+	end
+end
+
+-- Отмечаем на карте новые точки перехода
+-- Making new map spots for LCs. Function is called from on_game_load() procedure.
+function mark_lc()
+	if level.name() == "l11_pripyat" and has_alife_info("freeplay") and not has_alife_info("pri_trader_first_talk") then
+		local obj
+		local id
+
+		for i = 1, 65535 do
+			obj = alife():object(i)
+			if obj and string.find(obj:name(), "pri_trader") then
+				id = obj.id
+			end
+		end
+
+		if id then
+			level.map_add_object_spot(id, "blue_location", "talk_to_dealer")
+			amk.start_timer("pri", 10)
+		end
+	end
+end
+
+
+-- Засчитываем квестовые задания, удаляем квестовые предметы
+-- Completing storyline tasks.
+function set_complete_tasks()
+	if has_alife_info("game_end") and not has_alife_info("freeplay") and (level.name() == "l12_stancia" or level.name() == "l12_stancia_2") then
+		db.actor:give_info_portion("freeplay")
+		db.actor:disable_info_portion("game_end")
+		db.gameover_credits_started = false
+		amk.start_timer("fpl", 1)
+	end
+end
+
+----------------------- Функции фриплея для OGSM 2.4 --------------------------
+
+------------------------- Copyright 2007-2018 DEXXX ---------------------------

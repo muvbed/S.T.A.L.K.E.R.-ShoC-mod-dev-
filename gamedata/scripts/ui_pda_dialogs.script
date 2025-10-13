@@ -1,0 +1,144 @@
+--[[-----------------------------------------------------------------------------------------------
+ File         : ui_pda_dialogs.script
+ Description  : Чат
+ Copyright    : DMX MOD
+ Authors      : Shadows & Charsi
+ Date         : 11.07.2011
+ Last edit    : 24.05.2012
+--]]-----------------------------------------------------------------------------------------------
+
+local tips_icons = {
+	default			= {83, 220},
+	pda_icon		= {83, 220},
+	common_channel	= {0, 220},
+	money			= {166, 220},
+	exe				= {166, 267},
+	radio			= {249, 220},
+ 	note			= {0, 267},
+	bulldozer		= {83, 267},
+	actor_sms		= {249, 267},
+	blowout_sms		= {332, 220},
+	saharov 		= {332, 267},
+	o_soznanie		= {332, 267},
+	military		= {0, 314},
+	stalker 		= {83, 314},
+	bandit			= {166, 314},
+	dolg			= {249, 314},
+	freedom			= {332, 314},
+	killer			= {0, 361},
+	ecolog			= {83, 361},
+	ecolog2			= {166, 361},
+	trader			= {249, 361},
+	monolith		= {332, 361},
+	military_chat	= {0, 314},
+	stalkers_chat	= {83, 314},
+	rank			= {0, 408},
+	reputation_up	= {83, 408},
+	reputation_down	= {166, 408},
+	exp_icon		= {249, 408},
+	level_icon		= {332, 408},
+	article			= {415, 408}
+}
+local pda_news = xr_sound.get_safe_sound_object([[device\pda\pda_news]])
+local pda_tips = xr_sound.get_safe_sound_object([[device\pda\pda_tip]])
+local pda_task = xr_sound.get_safe_sound_object([[device\pda\pda_objective]])
+local pda_sos = xr_sound.get_safe_sound_object([[device\pda\pda_sos]])
+local pda_rank = xr_sound.get_safe_sound_object([[device\pda\pda_rank]])
+local pda_rep = xr_sound.get_safe_sound_object([[device\pda\pda_reputation]])
+local pda_enc = xr_sound.get_safe_sound_object([[device\pda\pda_encyclopedia]])
+
+-- Сообщения: текст, заголовок, через сколько, сколько показывать, иконка, звук
+function send_tip(news_text, header, timeout, showtime, sender, sound)
+	if news_text==nil then return end
+	if header==nil then header = translate("st_tip") end
+	if timeout == nil then timeout = 0 end
+	if showtime == nil then showtime = 5 end
+	local player
+	if sound=="news" then
+		player = pda_news
+	elseif sound=="task" then
+		player = pda_task
+	elseif sound=="questman_death" then
+		player = pda_sos
+	elseif sound=="rank" then
+		player = pda_rank
+	elseif sound=="reputation" then
+		player = pda_rep
+	elseif sound=="enc" then
+		player = pda_enc
+	else
+		player = pda_tips
+	end
+	player:play_no_feedback(db.actor, sound_object.s2d, timeout, vector(), 1.0)
+	if sender == nil then
+		sender = "default"
+	end
+	local x = tips_icons[sender][1]
+	local y = tips_icons[sender][2]
+	local news_text = "%c[255,160,160,160]"..header.."\\n".."%c[default]"..news_text
+	db.actor:give_game_news(news_text, "ui\\ui_pda_options", Frect():set(x,y,83,47), timeout*1000, showtime*1000)
+	return true
+end
+
+-- Возвращает копию строки маленькими буквами (с поддержкой кириллицы)
+function string_lower(text)
+	local lower = ""
+	local a = [[йцукенгшщзхъфывапролджэячсмитьбюqwertyuiopasdfghjklzxcvbnm]]
+	local A = [[ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮQWERTYUIOPASDFGHJKLZXCVBNM]]
+	for i = 1, #text do
+		local character = string.sub(text, i, i)
+		for j = 1, #A do
+			if character == string.sub(A, j, j) then character = string.sub(a, j, j) break end
+		end
+		lower = lower..character
+	end
+	return lower
+end
+
+-- Склонение слов в зависимости от числа
+function string_declension(n, a, b, c)
+	return (n%10 == 1 and n%100 ~= 11) and (tostring(n).." "..a) or (n%10 >= 2 and n%10 <= 4 and (n%100 < 10 or n%100 >= 20) and (tostring(n).." "..b) or (tostring(n).." "..c))
+end
+
+-- Новая статья в 'Энциклопедии'
+function encyclopedy_news(group, name)
+	if group == "Diary" then
+		news_manager.send_encyclopedy("diary", group)
+		send_tip(game.translate_string(name), "Заметка в журнале:", nil, 7, "article", "enc")
+	elseif group == "Mutants" then
+		news_manager.send_encyclopedy("encyclopedy", group)
+		send_tip(game.translate_string(name), "Заметка о мутантах:", nil, 7, "article", "enc")
+	elseif group == "Social" then
+		news_manager.send_encyclopedy("encyclopedy", group)
+		send_tip(game.translate_string(name), "Информация о группировке:", nil, 7, "article", "enc")
+	elseif group == "Artifacts" then
+		news_manager.send_encyclopedy("encyclopedy", group)
+		send_tip(game.translate_string(name), "Заметка об артефактах:", nil, 7, "article", "enc")
+	elseif group == "Anomalies" then
+		news_manager.send_encyclopedy("encyclopedy", group)
+		send_tip(game.translate_string(name), "Заметка об аномалиях:", nil, 7, "article", "enc")
+	elseif group == "Locations" then
+		news_manager.send_encyclopedy("encyclopedy", group)
+		send_tip(game.translate_string(name), "Информация о локации:", nil, 7, "article", "enc")
+	elseif group == "Zone-story" then
+		news_manager.send_encyclopedy("encyclopedy", group)
+		send_tip(game.translate_string(name), "История Зоны:", nil, 7, "article", "enc")
+	elseif group == "Stories" then
+		news_manager.send_encyclopedy("encyclopedy", group)
+		send_tip(game.translate_string(name), "Местный фольклор:", nil, 7, "article", "enc")
+	elseif group == "memuars" then
+		news_manager.send_encyclopedy("encyclopedy", group)
+		send_tip(game.translate_string(name), "Личная заметка:", nil, 7, "article", "enc")
+	elseif group == "Vehicles" then
+		news_manager.send_encyclopedy("encyclopedy", group)
+		send_tip(game.translate_string(name), "Информация о транспорте:", nil, 7, "article", "enc")
+	elseif group == "Found_PDA" then
+		news_manager.send_encyclopedy("encyclopedy", group)
+		send_tip(game.translate_string(name), "Загружены данные:", nil, 7, "article", "enc")
+	elseif group == "st_operation_agroprom" or group == "LabX18_information" or group == "aes_military_task" then
+		news_manager.send_encyclopedy("encyclopedy", group)
+		send_tip(game.translate_string(name), "Заметка в журнале:", nil, 7, "article", "enc")
+	end
+end
+
+---------------------------------------------------------------------------------------------------

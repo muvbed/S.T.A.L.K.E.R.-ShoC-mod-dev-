@@ -1,0 +1,189 @@
+----------------------------------------------------------------------------------------------------
+-- Physic objects binding
+----------------------------------------------------------------------------------------------------
+-- Разработчик: Evgeniy Negrobov (Jon) jon@gsc-game.kiev.ua
+-- Доработки: Andrey Fidrya (Zmey) af@svitonline.com
+----------------------------------------------------------------------------------------------------
+
+function init(obj)
+	----------------------------------------------------------------------------------------
+	-- Старые схемы
+	----------------------------------------------------------------------------------------
+
+	local ini = obj:spawn_ini()
+	if ini and ini:section_exist("animation") then
+		return
+	end
+
+	----------------------------------------------------------------------------------------
+	-- Новые схемы
+	----------------------------------------------------------------------------------------
+
+	-- Биндить предмет нет смысла, если у него нет секции logic
+	if not ini or not ini:section_exist("logic") then
+		-- Прожектор нужно биндить даже без logic
+		if ini and not ini:section_exist("drop_box") then
+			if obj:clsid() ~= clsid.projector then
+				return
+			end
+		end
+	end
+	
+	db.storage[obj:id()] = { }
+	local new_binder = generic_physics_binder(obj)
+	obj:bind_object(new_binder)
+end
+
+---------------------------------------------------------------------------------------------
+class "generic_physics_binder" (object_binder)
+function generic_physics_binder:__init(obj) 
+	super(obj)
+	self.initialized = false
+	self.loaded = false
+	self.box_items = nil
+	self.am = ogse_signals.get_mgr()
+end 
+
+function generic_physics_binder:reload(section)
+	object_binder.reload(self, section)
+end
+
+function generic_physics_binder:reinit()
+	object_binder.reinit(self)
+	local obj = self.object
+	db.storage[obj:id()] = { }
+	self.st = db.storage[obj:id()]
+end
+
+function generic_physics_binder:update(delta)
+	object_binder.update(self, delta)
+
+	local obj = self.object
+	local stor = self.st
+
+	if not self.initialized and db.actor then
+		self.initialized = true
+		xr_logic.initialize_obj(obj, stor, self.loaded, db.actor, modules.stype_item)        
+
+        --' Запускаем ассоциированный с объектом партикл.
+        local particle = utils.cfg_get_string(stor.ini, stor.section_logic, "particle", obj, false, "", nil)
+        if particle ~= nil then
+            self.particle = particles_object(particle)
+            self.particle:play_at_pos(obj:position())
+        end
+
+        --' Дизаблим ассоциированный с объектом граф
+        local graph_point_marker = utils.cfg_get_string(stor.ini, stor.section_logic, "graph_point_marker", obj, false, "", nil)
+        if graph_point_marker ~= nil then
+            self.disable_graph_point = patrol(graph_point_marker):game_vertex_id(0)
+            game_graph():accessible(self.disable_graph_point, false)
+        end
+	end
+
+	if stor.active_section or (obj:spawn_ini() and obj:spawn_ini():section_exist("drop_box")) then
+		xr_logic.issue_event(obj, stor[stor.active_scheme], "update", delta)
+
+		if stor.active_section or (obj:spawn_ini() and obj:spawn_ini():section_exist("drop_box")) then
+            obj:set_callback(callback.hit, self.hit_callback, self)
+            obj:set_callback(callback.death, self.death_callback, self)
+        end
+	end
+
+	if obj:section() == "mattress" then
+		ogse_sleep_mgr.mattress_update(obj)
+	elseif stor.active_section or (obj:spawn_ini() and obj:spawn_ini():section_exist("drop_box")) or obj:clsid() == clsid.inventory_box then
+		obj:set_callback(callback.use_object, self.use_callback, self)
+	end
+end
+
+function generic_physics_binder:net_spawn(data)
+	if not object_binder.net_spawn(self, data) then
+		return false
+	end
+	local obj = self.object
+	db.add_obj(obj)
+
+	if obj:section() == "mattress" then
+		ogse_sleep_mgr.mattress_spawn(obj)
+	end	
+	return true
+end
+
+function generic_physics_binder:net_destroy()
+	local obj = self.object
+	local stor = self.st
+	if stor.active_scheme then
+		xr_logic.issue_event(obj, stor[stor.active_scheme], "net_destroy")
+	end
+    if self.particle ~= nil then
+        self.particle:stop()
+    end
+	db.del_obj(obj)
+
+	obj:set_callback(callback.use_object, nil)
+    obj:set_callback(callback.hit, nil)
+    obj:set_callback(callback.death, nil)
+    obj:set_callback(callback.entity_alive_before_hit, nil)
+
+	db.storage[obj:id()] = nil
+	object_binder.net_destroy(self)
+end
+
+function generic_physics_binder:net_save_relevant()
+	return true
+end
+
+function generic_physics_binder:save(packet)
+	object_binder.save(self, packet)
+	xr_logic.save_obj(self.object, packet, not self.initialized)
+end
+
+function generic_physics_binder:load(reader)
+	self.loaded = true
+	object_binder.load(self, reader)
+	xr_logic.load_obj(self.object, reader)
+end
+
+function generic_physics_binder:use_callback(victim, who)
+	local stor = self.st
+	local obj = self.object
+	if stor and stor.active_section then
+		xr_logic.issue_event(obj, stor[stor.active_scheme], "use_callback", victim, who)
+	end
+	if victim:clsid() == CLID_INVENTORY_BOX then
+		self.am:call("on_use_box", victim, who)
+	end
+end
+
+function generic_physics_binder:hit_callback(victim, amount, local_direction, who, bone_index)
+    local stor = self.st
+    local obj = self.object
+	if stor.ph_on_hit then
+		xr_logic.issue_event(obj, stor.ph_on_hit, "hit_callback", victim, amount, local_direction, who, bone_index)
+	end
+	if stor.active_section then
+		xr_logic.issue_event(obj, stor[stor.active_scheme], "hit_callback", victim, amount, local_direction, who, bone_index)
+	end
+end
+
+function generic_physics_binder:death_callback(victim, who)
+    local stor = self.st
+    local obj = self.object
+	local ini = obj:spawn_ini()
+
+	if stor.active_section then
+		xr_logic.issue_event(obj, stor[stor.active_scheme], "death_callback", victim, who)
+	end
+    if self.particle ~= nil then
+        self.particle:stop()
+    end
+    if self.disable_graph_point ~= nil then
+        game_graph():accessible(self.disable_graph_point, true)
+    end
+	if ini ~= nil and ini:section_exist("drop_box") == true then
+		self.box_items = xr_box.ph_item_box(self.object)
+		if self.box_items then
+			self.box_items:spawn_items()
+		end
+	end
+end

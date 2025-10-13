@@ -1,0 +1,204 @@
+;----------- Аномалия Мясорубка (Карусель)-----------------------
+[zone_mincer]
+script_binding      		= ogse_dbg_anomaly_binder.init
+
+GroupControlSection			= spawn_group_zone
+$spawn 						= "zones\mincer zone"
+$prefetch 					= 16
+class						= ZS_MINCE
+
+bend_grass_idle_anim 		= 2
+bend_grass_idle_radius 		= 4.0
+bend_grass_idle_speed 		= 1.3
+
+bend_grass_whenactive_anim 	= 3
+bend_grass_whenactive_str 	= 3.5
+bend_grass_whenactive_speed = 4.5
+
+bend_grass_blowout 			= true
+bend_grass_blowout_duration = 5500
+bend_grass_blowout_speed 	= 5.0
+bend_grass_blowout_radius 	= 20.0	
+
+ef_anomaly_type				= 2
+ef_weapon_type				= 14
+
+sound						= zone_mosquito_bald
+;postprocess				= postprocess_gravi
+hit_effect					= explosions\expl_02_sparks
+
+artefacts					= af_blood,0.6, af_mincer_meat,0.3, af_soul,0.1
+BirthProbability 			= 0.1
+artefact_spawn_probability	= 0.1
+artefact_spawn_rnd			= 10  								;вероятность заспавнить артефакт в процентах.								;вероятность, что во время срабатывания аномалии будет рожден артефакт
+
+artefact_spawn_particles	= anomaly2\gravi_anomaly_shield_00	;партиклы, которые отыграются на месте рождения артефакта (опционально)
+artefact_born_sound			= anomaly\pux_blast					;звук, который отыграются на месте рождения артефакта (опционально)
+throw_out_power				= 10								;импульс с которым артефакт будет выброшен из зоны в произвольном направлении
+artefact_spawn_height		= 10								;(м) высота на центром зоны где будет рожден артефакт
+
+
+;----------- Anomaly settings -----------------------
+min_start_power				= 0.4
+max_start_power				= 0.5
+attenuation					= 1
+period						= 1
+min_artefact_count			= 0
+max_artefact_count			= 1
+artefact_spawn_idle			= 24  ;насколько часто спонить артефакты в офлайне, в часах
+
+tearing_particles			= anomaly2\body_tear_00
+torn_particles				= anomaly2\gravi_anomaly_shield_00
+idle_particles				= zones_mine\zone_gravity_mine_idle_strong
+;accum_particles				= anomaly2\gravi_zaxvat_myasorubka
+;awake_particles				= anomaly2\gravi_zaxvat_myasorubka
+blowout_particles			= zones_mine\zone_gravity_mine_hit_strong
+
+hit_small_particles			= hit_fx\hit_metal_02
+hit_big_particles			= anomaly2\gravity_damage_02_blood2
+idle_small_particles		= anomaly2\gravity_damage_01_smoke
+idle_big_particles			= anomaly2\gravity_damage_02_blood2
+entrance_small_particles	= anomaly2\gravi_anomaly_shield_00
+entrance_big_particles		= anomaly2\gravi_anomaly_00;
+
+tele_particles_small		= anomaly2\gravity_damage_01_smoke	
+tele_particles_big			= anomaly2\gravity_damage_02_smoke	
+
+idle_sound					= anomaly\gravi_idle01			;постоянный звук
+awake_sound					= anomaly\gravi_idle01
+accum_sound					= anomaly\gravi_idle01
+blowout_sound				= anomaly\anomaly_mincer_blowout							;во время выброса(удара) в центре аномалии	
+hit_sound					= anomaly\anomaly_gravy_hit1								;на персонаже, когда тот получает хит
+entrance_sound				= anomaly\gravi_idle01										;при попадании объекта в аномалию
+body_tearing_sound			= anomaly\anomaly_body_tear_1								;звук разрывания трупа
+hit_type					= strike
+hit_impulse_scale			= 0.1							;соотношение физического импульса и силы хита
+effective_radius			= 0.95							;размер радиуса в процентах от оригинального, где действует зона
+
+disable_time				= -1							;время игнорирования неживого объекта в зоне (-1 если не нужно)
+disable_time_small			= -1							;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
+disable_idle_time			= 100							;время отключения idle партиклов
+
+ignore_nonalive				= false
+ignore_small				= true
+ignore_artefacts			= true
+
+blowout_light				= on
+light_color					= 1.4,1.6,1.3
+light_range					= 20.0
+light_time 					= 0.38
+light_height				= 1.5							;подъем источника света на высоту
+
+idle_light					= off
+
+awaking_time				= 50
+blowout_time				= 10000	
+accamulate_time				= 4000
+
+blowout_particles_time		= 50
+blowout_sound_time  		= 100
+blowout_light_time			= 5988
+blowout_explosion_time		= 5999
+
+;параметры телекинеза для зоны
+throw_in_impulse			= 1000	;сила втягивания для единичной массы на расстоянии один метр
+throw_out_impulse			= 1500	;сила выбрасывания взрывом
+throw_in_impulse_alive		= 300	;сила импульса втягивания для живых
+throw_in_atten				= 1.2	;коэфф. затягивания (чем меньше, тем плавнее затягивает)
+blowout_radius_percent		= 0.6	;радиус (в процентах от всего радиуса) непосредственно выброса
+actor_blowout_radius_percent= 0.6
+
+tele_height					= 10 					;высота подъема телекинеза 
+time_to_tele				= 7000					;время деражания объекта в воздухе
+tele_pause					= 4000					;пауза перед тем как снова поднять упавший объект
+
+visible_by_detector			= on
+
+;; ветер
+blowout_wind				= on
+
+blowout_wind_time_start     = 0
+blowout_wind_time_peak      = 5900
+blowout_wind_time_end		= 10000
+blowout_wind_power			= 0.5					;сила поднимаего ветра (от 0 до 1), в момент blowout_wind_time_peak 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;рождение артефактов во время срабатывания
+spawn_blowout_artefacts		= off
+
+[zone_mincer_weak]:zone_mincer
+$spawn 						= "zones\mincer_zone_weak"
+
+effective_radius			= 0.75
+
+throw_in_impulse_alive		= 300	;сила импульса втягивания для живых
+
+;; ветер
+blowout_wind_power			= 0.2	
+
+;----------- Anomaly settings -----------------------
+min_start_power				= 0.4
+max_start_power				= 0.5
+
+artefacts					= af_blood,0.6, af_mincer_meat,0.3, af_soul,0.1
+BirthProbability 			= 0.1
+artefact_spawn_probability 	= 0.1
+artefact_spawn_rnd			= 10  ;вероятность заспавнить артефакт в процентах.
+
+awaking_time				= 75
+
+; Не производящая артефактов слабая аномалия
+[zone_mincer_weak_noart]:zone_mincer_weak
+$spawn 						= "zones\mincer_zone_weak_noart"
+spawn_blowout_artefacts		= off
+
+[zone_mincer_average]:zone_mincer
+$spawn 						= "zones\mincer zone_average"
+	
+effective_radius			= 0.8
+
+throw_in_impulse_alive		= 450	;сила импульса втягивания для живых
+
+;; ветер
+blowout_wind_power			= 0.5	
+
+;----------- Anomaly settings -----------------------
+min_start_power				= 1.0
+max_start_power				= 1.2
+
+artefacts					= af_blood,0.5, af_mincer_meat,0.3, af_soul,0.2
+BirthProbability 			= 0.2
+artefact_spawn_probability 	= 0.2
+artefact_spawn_rnd			= 20  	;вероятность заспавнить артефакт в процентах.
+
+awaking_time				= 50
+
+[zone_mincer_strong]:zone_mincer
+$spawn 						= "zones\mincer zone_strong"
+	
+effective_radius			= 0.95
+
+throw_in_impulse_alive		= 600	;сила импульса втягивания для живых
+
+;; ветер
+blowout_wind_power			= 1	
+
+;----------- Anomaly settings -----------------------
+min_start_power				= 2.1
+max_start_power				= 2.5
+
+artefacts					= af_blood,0.4, af_mincer_meat,0.3, af_soul,0.2, af_dummy_spring,0.1
+BirthProbability 			= 0.3
+artefact_spawn_probability 	= 0.3
+artefact_spawn_rnd			= 30  ;вероятность заспавнить артефакт в процентах.
+
+awaking_time				= 25
+
+[noartf_mincer_weak]:zone_mincer_weak
+$spawn 						= "zones\mincer_weak_noartf"
+
+[noartf_mincer_average]:zone_mincer_average
+$spawn 						= "zones\mincer_average_noartf"
+
+[noartf_mincer_strong]:zone_mincer_strong
+$spawn 						= "zones\mincer_strong_noartf"

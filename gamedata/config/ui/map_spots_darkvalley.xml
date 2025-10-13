@@ -1,0 +1,5 @@
+
+	<val_sos_location2 hint="val_sos_help_main_hint" store="1">
+		<level_map spot="crlc_mdl_spot"></level_map>
+		<mini_map spot="crlc_small"></mini_map>
+	</val_sos_location2>

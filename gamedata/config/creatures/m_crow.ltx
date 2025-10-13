@@ -1,0 +1,66 @@
+[m_crow]
+GroupControlSection                             = spawn_group
+$spawn                                          = "monsters\crow"
+$prefetch                                       = 50
+spawn                                           = on
+cform                                           = skeleton
+class                                           = AI_CROW
+visual                                          = monsters\crow\crow.ogf
+corpse_visual                                   = monsters\crow\crow.ogf
+speed                                           = 6.0
+angular_speed                                   = 0.1
+goal_change_delta                               = 5.0
+min_height                                      = 35
+goal_variability                                = 10.0, 15.0, 200.0
+idle_sound_delta                                = 400.f
+Health                                          = 1
+MaxHealthValue                                  = 1
+
+ef_creature_type                                = -1
+
+ph_box0_center                                  = 0.0,0.025,0.0
+ph_box0_size                                    = 0.1,0.05,0.1
+ph_box1_center                                  = 0.0,0.025,0.0
+ph_box1_size                                    = 0.1,0.05,0.1
+ph_crash_speed_min                              = 16
+ph_crash_speed_max                              = 30
+ph_mass                                         = 1
+
+ph_skeleton_airr_lin_factor   					= -0.30 
+ph_skeleton_airr_ang_factor   					= -0.15 
+
+min_wound_size                                  = 0.01
+
+satiety_v                                       = 0.00
+radiation_v                                     = 0.00001
+satiety_power_v                                 = 0.001
+satiety_health_v                                = 0.001
+satiety_critical                                = -1.0
+radiation_health_v                              = 0.0
+bleeding_v                                      = 0.05
+wound_incarnation_v                             = 0.01
+morale_v                                        = 0.01
+health_hit_part                                 = 1.0
+power_hit_part                                  = 1.0
+psy_health_v                                    = 0.1
+
+sleep_health                                    = 1.0
+sleep_power                                     = 1.0
+sleep_satiety                                   = 1.0
+sleep_radiation                                 = 1.0
+sleep_psy_health                                = 1.0
+
+species                                         = bird
+
+immunities_sect                         		= crow_immunities
+
+[crow_immunities]
+burn_immunity                                   = 1.0
+strike_immunity                                 = 1.0
+shock_immunity                                  = 1.0
+wound_immunity                                  = 1.0
+radiation_immunity                              = 0.0
+telepatic_immunity                              = 1.0
+chemical_burn_immunity                          = 1.0
+explosion_immunity                              = 1.0
+fire_wound_immunity                             = 1.0

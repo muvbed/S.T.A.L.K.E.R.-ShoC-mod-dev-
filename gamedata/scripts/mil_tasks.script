@@ -1,0 +1,251 @@
+function proceed()
+    local actor = db.actor
+       	
+	if actor:object ("bandit_flash") then 
+	   db.actor:give_info_portion("mil_bandit_flash_get")  
+	end
+
+	if actor:object ("ugrum_flash") then 
+	   db.actor:give_info_portion("mil_ugrum_flash_get")  
+	end
+
+	if actor:object ("max_flash") then 
+	   db.actor:give_info_portion("mil_max_owner_flash_get")  
+	end
+	
+	if actor:object ("crazy_flash") then
+	   db.actor:give_info_portion("crazy_info")  
+	end
+end
+
+--' final update, изворачиваемся с метками квеста и вырезаем рудименты
+function process_info_portion(info_id)
+	if info_id == "mil_rg6_gain" then       
+		level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 3) 
+		level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 0) 
+
+	elseif info_id == "mil_max_arrive" then
+		db.actor:disable_info_portion ("mil_lukash_go_to_max")
+
+	elseif info_id == "mil_cook_question_already" and not has_alife_info("mil_svoboda_rg6_gain") then
+		level_tasks.add_location_by_sid(story_ids.Mil_Cook, "cookfix_location", "mil_rg6_hint2")
+
+	elseif info_id == "mil_freedom_cook_rg6_ask" then
+		level_tasks.remove_location_by_sid(story_ids.Mil_Cook, "cookfix_location")
+		
+	elseif info_id == "mil_lukash_blockpost" then
+		level_tasks.add_location_by_sid(story_ids.Mil_Kap, "blue_location", "mil_cap_hint")    
+		
+	elseif info_id == "mil_fblockpost_quest_reward" or this.fblockpost_job_failed() then
+		level_tasks.remove_location_by_sid(story_ids.Mil_Kap, "blue_location", "mil_cap_hint")     
+	
+	end
+	
+	return false
+end
+
+function set_cook_mapspot ()
+   level_tasks.add_location_by_sid(story_ids.Mil_Cook, "mil_cook_location")
+end
+
+function set_lukash_mapspot ()
+end
+
+function mil_lukash_test (npc1, npc2)
+end
+
+-- test !!!
+function mil_test_task_rg6_have ()
+    return db.actor:object ("wpn_rg-6") ~= nil
+end
+
+function mil_test_task_l85_have ()
+    return db.actor:object ("wpn_l85") ~= nil
+end    
+
+function mil_test_task_lr300_have ()
+    return db.actor:object ("wpn_lr300") ~= nil
+end    
+
+function mil_task_rg6_have(task_id, subtask)
+	local obj = db.actor:object("wpn_rg-6")
+    if obj ~= nil then
+		return true
+	end
+	return false
+end
+
+function mil_task_crazy_flash_have (task_id, subtask)
+    if db.actor:object ("crazy_flash") ~= nil then
+		if not has_alife_info("mil_max_flash_get") then
+			db.actor:give_info_portion ("mil_max_flash_get")
+		end
+       return true
+    end
+    return false    
+end
+
+function switch_mutants_online (task_id, subtask)
+    db.actor:disable_info_portion ("mil_mutants_offline")
+end
+
+function fail_rg6_task (task_id, subtask)
+    if has_alife_info("mil_cook_dead")
+      or xr_effects.is_actor_enemy(728) 
+      or this.is_actor_enemy_freedom() then
+       return true
+    end
+    return false   
+end
+
+function full_fail_rg6_task ()
+    if xr_effects.is_actor_enemy(507) 
+      or db.actor:character_community() == "actor_freedom" then
+       return true
+    end
+    return false   
+end
+
+function lukash_job_fail (task_id, subtask)
+    if has_alife_info("mil_lukash_dolg_task_fail") 
+       or xr_effects.is_actor_enemy(707) 
+       or this.is_actor_enemy_freedom() 
+    then
+       return true
+    end
+    return false     
+end
+
+function lukash_job_max_fail (task_id, subtask)
+    if this.lukash_job_fail()
+       or has_alife_info("mil_max_dead") 
+       or has_alife_info("mil_lukash_dolg_task_reject") 
+       or xr_effects.is_actor_enemy(702) then
+       return true
+    end
+    return false     
+end
+
+function max_job_failed (task_id, subtask)
+    if has_alife_info("mil_max_dead") 
+       or xr_effects.is_actor_enemy(702)
+       or this.is_actor_enemy_freedom() then
+       return true
+    end
+    return false     
+end
+
+function courier_job_failed (task_id, subtask)
+    if has_alife_info("mil_leader_quest2_failed") 
+      or xr_effects.is_actor_enemy(707) 
+      or this.is_actor_enemy_freedom() then
+       return true
+    end
+    return false     
+end
+
+function fblockpost_job_failed (task_id, subtask)
+    if has_alife_info("mil_fblockpost_quest_fail") 
+       or has_alife_info("mil_fblockpost_commander_dead") 
+       or xr_effects.is_actor_enemy(724) 
+       or this.is_actor_enemy_freedom() 
+    then
+       return true
+    end
+    return false     
+end
+
+function fblockpost_job_failed2 (task_id, subtask) 
+end
+
+function miser_task_failed (task_id, subtask)
+    if has_alife_info("mil_miser_task_failed") or 
+       xr_effects.is_actor_enemy(734) or 
+       this.is_actor_enemy_freedom() then
+       return true
+    end
+    return false     
+end
+
+function kill_controller_failed (task_id, subtask)
+    if has_alife_info("mil_ugrumy_dead") or 
+       xr_effects.is_actor_enemy(725) or 
+       this.is_actor_enemy_freedom() then
+       return true
+    end
+    return false     
+end
+
+function final_subtask_dolg_main (task_id, subtask)
+    return has_alife_info("mil_lukash_dead") 
+    	and (has_alife_info("mil_dolg_dead") or has_alife_info("mil_dolg_task_final"))
+end
+
+function dolg_job_fail1 (task_id, subtask)
+    return has_alife_info("mil_scull_dead") 
+    	or has_alife_info("mil_dolg_dead")
+    	or this.is_actor_enemy_dolg() 
+    	or xr_effects.is_actor_enemy(708) 
+end
+
+function dolg_job_fail2 (task_id, subtask)
+    return has_alife_info("mil_dolg_dead")
+    	or this.is_actor_enemy_dolg()
+    	or xr_effects.is_actor_enemy(708) 
+end
+
+function is_actor_enemy_dolg ()
+    return xr_gulag.isGulagEnemy( "mil_dolg", db.actor ) 
+    	or db.actor:character_community() == "actor_freedom"
+end
+
+function is_actor_enemy_freedom ()
+    return xr_gulag.isGulagEnemy( "mil_freedom", db.actor ) 
+    	or db.actor:character_community() == "actor_dolg"
+end
+
+function check_murder(victim)
+	local victim_smart = dsh_enemies.get_smart_terrain(victim)
+    
+    if victim_smart then
+    	if victim_smart:name() == "mil_dolg" then
+			if db.actor:character_community() ~= "actor_dolg" then
+				xr_gulag.setGulagEnemy("mil_dolg", db.actor)
+			end
+		
+			if has_alife_info("mil_lukash_dolg_task_reject") 
+			  and not mil_tasks.is_actor_enemy_freedom() then
+				db.actor:give_info_portion("mil_lukash_dolg_task")
+			end
+		elseif victim_smart:name() == "mil_freedom" then
+			if db.actor:character_community() ~= "actor_freedom" 
+			  and victim:character_community() ~= "prefreedom" then
+				xr_gulag.setGulagEnemy("mil_freedom", db.actor)
+			end
+		
+			if not has_alife_info("mil_dolg_final_task") 
+			  and (has_alife_info("mil_dolg_skull_talk") or has_alife_info("mil_dolg_auto_attack")) 
+			  and not has_alife_info("mil_dolg_dead") 
+			  and not mil_tasks.is_actor_enemy_dolg() then
+				db.actor:give_info_portion("mil_dolg_final_task")
+			end
+		elseif victim_smart:name() == "mil_monolit" then
+			if not this.is_actor_enemy_freedom() 
+			  and not xr_gulag.isGulagEnemy( "mil_fblockpost", db.actor ) 
+			  and not has_alife_info("mil_fblockpost_quest") then 
+			    db.actor:give_info_portion("mil_fblockpost_quest")
+			end
+		end
+	end
+end
+
+function bloodsuckers_dead (task_id, subtask)
+    local actor = db.actor
+    if has_alife_info ("mil_bloodsucker1_dead") == true and 
+       has_alife_info ("mil_bloodsucker2_dead") == true and
+	   has_alife_info ("mil_bloodsucker3_dead") == true and  
+       has_alife_info ("mil_bloodsucker4_dead") == true then
+       return true
+    end   
+    return false
+end

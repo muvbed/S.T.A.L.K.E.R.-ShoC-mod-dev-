@@ -1,0 +1,32 @@
+
+
+
+function attach(sm)
+	sm:subscribe({ signal = "on_npc_death", fun = this.npc_on_death })
+	sm:subscribe({ signal = "on_monster_death", fun = this.npc_on_death })
+end
+
+function npc_on_death(victim, who)
+	local binder = victim:binded_object()
+	if not binder.last_hit_data then return end
+	local hd       = binder.last_hit_data
+	local hit_type = hd.hit_type
+	ASSERT( hit_type, "hit_type not found" )
+	if not ( hit_type == hit.fire_wound or hit_type == hit.explosion ) then
+	  return
+  	end
+	--
+	local effect
+	--
+	if who:is_helicopter() or who:is_car() then
+		effect = "hit_fx\\hit_pblow"
+	end
+	--
+	if effect then
+		action(
+			victim,
+			particle(effect, get_string(victim:section(), "bone_head", "bip01_head"), particle_params( vector():set(0, 0, 0.3), vector():set(0, 0, 0), vector():set(1, 0, 0) ), false),
+			cond(cond.time_end, 1000)
+		)
+	end
+end

@@ -1,0 +1,59 @@
+------------------------------------
+-- Рабочие функции к Monnoroch's AI.
+-- Created by Monnoroch (кое что взято у AMK-team, Rulix (Bak), frags, malandrikus, Kirag, GSC).
+-- 15.07.09
+------------------------------------
+
+urodi = {
+    ["agr_defector_stalker1"] = true,
+    ["mil_stalker0012"] = true,
+    ["yantar_ecolog_general"] = true,
+    ["mil_freedom_member0021"] = true,
+    ["esc_wolf"] = true,
+    ["esc_fanat"] = true,
+    ["esc_fox"] = true,
+    ["esc_ranger"] = true,
+    ["esc_soldier_commander"] = true,
+    ["esc_soldier_blockpost_commander"] = true,
+    ["agr_krot"] = true,
+    ["agr_nii_commander"] = true,
+    ["agr_soldier_sniper_default1"] = true,
+    ["bar_bar_osvedomitel"] = true,
+    ["bar_bar_hunter"] = true,
+    ["bar_bar_drunk_dolg"] = true,
+    ["bar_bar_lisiy"] = true,
+    ["bar_dolg_leader"] = true,
+    ["bar_dolg_petrenko"] = true,
+    ["bar_dolg_ivancov"] = true,
+    ["bar_dolg_guard_commander"] = true,
+    ["bar_stalker_freeman"] = true,
+    ["val_bandit_borov"] = true,
+    ["val_dolg_prisoner"] = true,
+    ["gar_seriy"] = true,
+    ["gar_dolg_blokpost_commander"] = true,
+    ["esc_shustryi"] = true
+}
+
+--------------------------------------------------
+
+function get_camp(npc)
+    local hides = ogse_hideouts.restrictor_list
+    local mindist = 70
+    local lvid
+    if hides then
+        for i, id in ipairs(hides) do
+        	local sobj = alife():object(id)
+        	if sobj then
+        		local _, _, hide_lvid = ogse_hideouts.get_community_hide(sobj)
+	            if hide_lvid and npc:accessible(hide_lvid) then
+	                local dist = level.vertex_position(hide_lvid):distance_to(npc:position())
+	                if dist < mindist then
+	                    mindist = dist
+	                    lvid = hide_lvid
+	                end
+	            end
+            end
+        end
+    end
+    return lvid
+end

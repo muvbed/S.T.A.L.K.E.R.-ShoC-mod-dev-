@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<string_table>
+	<string id="id_mp_money">
+		<text>Деньги</text>
+	</string>
+	<string id="mm_mp_pda_hunt">
+		<text>Бонус за КПК</text>
+	</string>
+	<string id="st_drink">
+		<text>выпить</text>
+	</string>
+	<string id="st_mp_direct_ip">
+		<text>Прямой IP</text>
+	</string>
+	<string id="ui_mm_render_2">
+		<text>Рендер-2</text>
+	</string>
+	<string id="ui_pda_details">
+		<text># /детали</text>
+	</string>
+	<string id="ui_st_btn_cancel">
+		<text>Отмена</text>
+	</string>
+	<string id="ui_st_btn_no">
+		<text>Нет</text>
+	</string>
+	<string id="ui_st_btn_ok">
+		<text>Ок</text>
+	</string>
+	<string id="ui_st_btn_yes">
+		<text>Да</text>
+	</string>
+	<string id="ui_st_cant_run_r2">
+		<text>Вы не можете запустить второй рендер на вашем компьютере</text>
+	</string>
+	<string id="ui_st_conn_invalid_host">
+		<text>Ошибка соединения: Неверный хост</text>
+	</string>
+	<string id="ui_st_conn_invalid_pass">
+		<text>Ошибка соединения: Неверный пароль</text>
+	</string>
+	<string id="ui_st_conn_rejected_server">
+		<text>Ошибка соединения: Соединение прервано сервером</text>
+	</string>
+	<string id="ui_st_conn_sess_full">
+		<text>Ошибка соединения: Сервер заполнен</text>
+	</string>
+	<string id="ui_st_days">
+		<text>дн.</text>
+	</string>
+	<string id="ui_st_error">
+		<text>Ошибка</text>
+	</string>
+	<string id="ui_st_hours">
+		<text>час.</text>
+	</string>
+	<string id="ui_st_leave">
+		<text>Уйти (Q)</text>
+	</string>
+	<string id="ui_st_mins">
+		<text>мин.</text>
+	</string>
+	<string id="ui_st_months">
+		<text>мес.</text>
+	</string>
+	<string id="ui_st_params">
+		<text>Параметры</text>
+	</string>
+	<string id="ui_st_secs">
+		<text>сек.</text>
+	</string>
+	<string id="ui_st_select_one_map">
+		<text>Пожалуйста, выберите хотя бы одну карту</text>
+	</string>
+	<string id="ui_st_take_all">
+		<text>Взять всё (X)</text>
+	</string>
+	<string id="ui_st_time_remains">
+		<text>Осталось</text>
+	</string>
+	<string id="ui_st_trade">
+		<text>Торговать (T)</text>
+	</string>
+	<string id="ui_st_voting_disabled">
+		<text>Голосование отключено</text>
+	</string>
+	<string id="ui_st_your_items">
+		<text>Ваши вещи</text>
+	</string>
+	<string id="st_level">
+		<text>Уровень</text>
+	</string>
+	<string id="st_opening_stream">
+		<text>Открытие потока</text>
+	</string>
+	<string id="st_loading_cform">
+		<text>Загрузка формы объектов</text>
+	</string>
+	<string id="st_prefetching_objects">
+		<text>Кэширование объектов</text>
+	</string>
+	<string id="st_creating_new_game">
+		<text>Создание новой игры</text>
+	</string>
+	<string id="st_loading_alife_simulator">
+		<text>Сервер: Загрузка симуляции жизни</text>
+	</string>
+	<string id="st_server_connecting">
+		<text>Сервер: Соединение</text>
+	</string>
+	<string id="st_loading_saved_game">
+		<text>Загрузка игры</text>
+	</string>
+	<string id="st_validating_cdkey">
+		<text>Проверка ключа</text>
+	</string>
+	<string id="st_loading_ai_objects">
+		<text>Загрузка ИИ-объектов</text>
+	</string>
+	<string id="st_client_connecting_to">
+		<text>Клиент: Соединение с</text>
+	</string>
+	<string id="st_client_spawning">
+		<text>Клиент: Создание</text>
+	</string>
+	<string id="st_loading_textures">
+		<text>Загрузка текстур</text>
+	</string>
+	<string id="st_client_synchronising">
+		<text>Клиент: Синхронизация</text>
+	</string>
+	<string id="st_server_starting">
+		<text>Сервер: Старт</text>
+	</string>
+	<string id="st_loading_shaders">
+		<text>Загрузка шейдеров</text>
+	</string>
+	<string id="st_loading_geometry">
+		<text>Загрузка геометрии</text>
+	</string>
+	<string id="st_loading_spatial_db">
+		<text>Загрузка базы пространств</text>
+	</string>
+	<string id="st_loading_details">
+		<text>Загрузка детальных объектов</text>
+	</string>
+	<string id="st_loading_sectors_portals">
+		<text>Загрузка секторов и порталов</text>
+	</string>
+	<string id="ui_st_conn_version_differs">
+		<text>Ошибка соединения: Отличаются версии.</text>
+	</string>
+	<string id="ui_st_conn_cdkey_invalid">
+		<text>Ошибка соединения: Неверный CD-Key.</text>
+	</string>
+	<string id="ui_st_conn_cdkey_in_use">
+		<text>Ошибка соединения: Такой CD-Key уже используется.</text>
+	</string>
+	<string id="ui_st_conn_cdkey_disabled">
+		<text>Ошибка соединения: Ваш CD-Key заблокирован. Свяжитесь со службой поддержки.</text>
+	</string>
+	<string id="ui_st_conn_new_patch">
+		<text>Доступен новый патч.\nВерсия: %s\n%s\nХотите загрузить его сейчас?</text>
+	</string>
+	<string id="ui_st_conn_no_new_patch">
+		<text>Нет новых патчей</text>
+	</string>
+	<string id="st_game_paused">
+		<text>| |</text>
+	</string>
+	<string id="st_bolt">
+		<text>Болт</text>
+	</string>
+	<string id="st_items">
+		<text>Предметы</text>
+	</string>
+	<string id="st_video">
+		<text>Видео</text>
+	</string>
+	<string id="st_audio">
+		<text>Звук</text>
+	</string>
+	<string id="st_game">
+		<text>Игра</text>
+	</string>
+	<string id="st_controll">
+		<text>Управление</text>
+	</string>
+	<string id="ui_st_connecting_to_masterserver">
+		<text>Присоединение к мастер-серверу</text>
+	</string>
+	<string id="mp_only_one_voting">
+		<text>Разрешено только одно активное голосование</text>
+	</string>
+	<string id="ui_st_patch_download_success">
+		<text>Патч успешно скачан. Установить?</text>
+	</string>
+	<string id="ui_st_patch_download_error">
+		<text>Невозможно скачать патч.</text>
+	</string>
+	<string id="lc_mngr_string1">
+		<text>Получена информация о переходе</text>
+	</string>
+	<string id="lc_mngr_string2">
+		<text>с Кордона на Топи</text>
+	</string>
+	<string id="lc_mngr_string3">
+		<text>с Кордона в Тёмную долину</text>
+	</string>
+	<string id="lc_mngr_string4">
+		<text>с Агропрома на Топи</text>
+	</string>
+	<string id="lc_mngr_string5">
+		<text>с Агропрома на Янтарь</text>
+	</string>
+	<string id="lc_mngr_string6">
+		<text>из Тёмной долины в ПЖД</text>
+	</string>
+	<string id="lc_mngr_string7">
+		<text>из Тёмной долины на Армейские склады</text>
+	</string>
+	<string id="lc_mngr_string8">
+		<text>с Армейских складов в Мёртвый город</text>
+	</string>
+	<string id="lc_mngr_string9">
+		<text>с Армейских складов в Тёмную долину</text>
+	</string>
+	<string id="lc_mngr_string10">
+		<text>с Янтаря на Агропром</text>
+	</string>
+	<string id="lc_mngr_string11">
+		<text>с Янтаря в Мёртвый город</text>
+	</string>
+	<string id="lc_mngr_string12">
+		<text>с Янтаря на Радар</text>
+	</string>
+	<string id="lc_mngr_string13">
+		<text>с Радара в ПЖД</text>
+	</string>
+	<string id="lc_mngr_string14">
+		<text>с Радара на Янтарь</text>
+	</string>
+	<string id="lc_mngr_string15">
+		<text>с ЧАЭС на ЧАЭС-2</text>
+	</string>
+	<string id="lc_mngr_string16">
+		<text>с ЧАЭС-2 на Генераторы</text>
+	</string>
+	<string id="lc_mngr_string17">
+		<text>с ЧАЭС-2 на ЧАЭС</text>
+	</string>
+	<string id="lc_mngr_string18">
+		<text>из Мёртвого города на Армейские склады</text>
+	</string>
+	<string id="lc_mngr_string19">
+		<text>из Мёртвого города на Генераторы</text>
+	</string>
+	<string id="lc_mngr_string20">
+		<text>из Мёртвого города в ПЖД</text>
+	</string>
+	<string id="lc_mngr_string21">
+		<text>из ПЖД в Тёмную долину</text>
+	</string>
+	<string id="lc_mngr_string22">
+		<text>из ПЖД в Мёртвый город</text>
+	</string>
+	<string id="st_pda_change_spot_hint">
+		<text>Изменить текст метки</text>
+	</string>
+	<string id="st_pda_delete_spot">
+		<text>Удалить метку</text>
+	</string>
+	<string id="st_move">
+		<text>перенести</text>
+	</string>
+	<string id="st_move_all">
+		<text>перенести всё</text>
+	</string>
+	<string id="st_move_to_slot_1">
+		<text>переместить в первый слот</text>
+	</string>
+	<string id="st_move_to_slot_2">
+		<text>переместить во второй слот</text>
+	</string>
+	<string id="st_move_to_slot_4">
+		<text>переместить в дополнительный слот</text>
+	</string>
+	<string id="st_attach_addon_to_wpn_in_slot_1">
+		<text>прикрепить %s к %s в первом слоте</text>
+	</string>
+	<string id="st_attach_addon_to_wpn_in_slot_2">
+		<text>прикрепить %s к %s во втором слоте</text>
+	</string>
+	<string id="st_attach_addon_to_wpn_in_slot_4">
+		<text>прикрепить %s к %s в дополнительном слоте</text>
+	</string>
+	<string id="kb_cam_1">
+		<text>Вид от первого лица</text>
+	</string>
+	<string id="kb_cam_2">
+		<text>Вид от третьего лица</text>
+	</string>
+	<string id="kb_cam_3">
+		<text>Вид от третьего лица (freelook)</text>
+	</string>
+	<string id="kb_hide_hud">
+		<text>Скрыть HUD</text>
+	</string>
+	<string id="kb_show_hud">
+		<text>Показать HUD</text>
+	</string>
+	<string id="inventory_item_use_or_drag">
+		<text>Поднять предмет ($$ACTION_USE$$)\nПеретащить предмет (SHIFT+$$ACTION_USE$$)</text>
+	</string>
+	<string id="game_object_drag">
+		<text>Перетащить предмет (SHIFT+$$ACTION_USE$$)</text>
+	</string>
+	<string id="st_press_any_key">
+		<text>Нажмите любую кнопку</text>
+	</string>
+	<string id="ui_st_money_descr">
+		<text>RU</text>
+	</string>
+	<string id="st_rank_decreased">
+		<text>Ранг понижен</text>
+	</string>
+	<string id="st_rank_increased">
+		<text>Ранг повышен</text>
+	</string>
+	<string id="st_reputation_decreased">
+		<text>Репутация ухудшилась</text>
+	</string>
+	<string id="st_reputation_increased">
+		<text>Репутация улучшилась</text>
+	</string>
+	<string id="st_ui_buy">
+		<text>Купить</text>
+	</string>
+	<string id="st_ui_sell">
+		<text>Продать</text>
+	</string>
+	<string id="st_ui_kg">
+		<text>кг.</text>
+	</string>
+	
+	<string id="bp_l10_radar_0">
+	    <text>блокпост у тоннеля</text>
+	</string>
+	<string id="bp_l10_radar_1">
+	    <text>блокпоста у тоннеля</text>
+	</string>
+	<string id="bp_l10_radar_2">
+	    <text>на блокпосту у тоннеля</text>
+	</string>
+	<string id="bp_l10_radar_3">
+	    <text>переход в Припять</text>
+	</string>
+	<string id="bp_l10_radar_4">
+	    <text>перехода в Припять</text>
+	</string>
+	<string id="bp_l10_radar_5">
+	    <text>у перехода в Припять</text>
+	</string>
+	<string id="bp_l10_radar_6">
+	    <text>блокпост у перехода на Склады</text>
+	</string>
+	<string id="bp_l10_radar_7">
+	    <text>блокпоста около перехода на Склады</text>
+	</string>
+	<string id="bp_l10_radar_8">
+	    <text>на блокпосту у перехода на Склады</text>
+	</string>
+	<string id="bp_l10_radar_9">
+	    <text>вертолёт в лесу</text>
+	</string>
+	<string id="bp_l10_radar_10">
+	    <text>вертолёта в лесу</text>
+	</string>
+	<string id="bp_l10_radar_11">
+	    <text>около вертолёта в лесу</text>
+	</string>
+	<string id="bp_l10_radar_12">
+	    <text>антенны</text>
+	</string>
+	<string id="bp_l10_radar_13">
+	    <text>антенн</text>
+	</string>
+	<string id="bp_l10_radar_14">
+	    <text>на территории комплекса с антеннами</text>
+	</string>
+	<string id="bp_l11_pripyat_0">
+	    <text>стадион</text>
+	</string>
+	<string id="bp_l11_pripyat_1">
+	    <text>стадиона</text>
+	</string>
+	<string id="bp_l11_pripyat_2">
+	    <text>на стадионе</text>
+	</string>
+	<string id="bp_l11_pripyat_3">
+	    <text>ДК "Энергетик"</text>
+	</string>
+	<string id="bp_l11_pripyat_4">
+	    <text>в ДК "Энергетик"</text>
+	</string>
+	<string id="bp_l11_pripyat_5">
+	    <text>гостиница</text>
+	</string>
+	<string id="bp_l11_pripyat_6">
+	    <text>гостиницы</text>
+	</string>
+	<string id="bp_l11_pripyat_7">
+	    <text>в гостинице</text>
+	</string>
+	<string id="bp_l11_pripyat_8">
+	    <text>детский сад</text>
+	</string>
+	<string id="bp_l11_pripyat_9">
+	    <text>детского сада</text>
+	</string>
+	<string id="bp_l11_pripyat_10">
+	    <text>в детском саду</text>
+	</string>
+	<string id="bp_l11_pripyat_11">
+	    <text>переход на Радар</text>
+	</string>
+	<string id="bp_l11_pripyat_12">
+	    <text>перехода на Радар</text>
+	</string>
+	<string id="bp_l11_pripyat_13">
+	    <text>у перехода на Радар</text>
+	</string>
+	<string id="bp_l11_pripyat_14">
+	    <text>автовокзал</text>
+	</string>
+	<string id="bp_l11_pripyat_15">
+	    <text>автовокзала</text>
+	</string>
+	<string id="bp_l11_pripyat_16">
+	    <text>в автовокзале</text>
+	</string>
+	<string id="bp_l11_pripyat_17">
+	    <text>центральная площадь</text>
+	</string>
+	<string id="bp_l11_pripyat_18">
+	    <text>центральной площади</text>
+	</string>
+	<string id="bp_l11_pripyat_19">
+	    <text>на центральной площади</text>
+	</string>
+	<string id="bp_l11_pripyat_20">
+	    <text>колесо обозрения</text>
+	</string>
+	<string id="bp_l11_pripyat_21">
+	    <text>колеса обозрения</text>
+	</string>
+	<string id="bp_l11_pripyat_22">
+	    <text>около колеса обозрения</text>
+	</string>
+</string_table>

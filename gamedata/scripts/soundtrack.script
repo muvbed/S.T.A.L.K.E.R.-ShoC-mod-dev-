@@ -1,0 +1,115 @@
+------Copyright DEXXX-------
+-- независимый объект для звуков выброса
+-- и функция к нему
+local function surge_play(path)
+	local surge_snd_obj = xr_sound.get_safe_sound_object(path)
+	if surge_snd_obj then
+		surge_snd_obj:play_at_pos(db.actor, vector():set(0, 0, 0), 0, sound_object.s2d)
+	end
+end
+
+local function surge_play_random_from_tbl(sounds_tbl)
+	surge_play(sounds_tbl[math.random(#sounds_tbl)])
+end
+
+------Звуки перед началом выброса-------
+local preblow_snds = {
+	[[ambient\blowout\blowout_begin]],
+	[[ambient\blowout\blowout_begin_02]],
+}
+function preblow()
+	surge_play_random_from_tbl(preblow_snds)
+end
+
+function attention_everyone() surge_play([[ambient\blowout\blowout_siren]]) end
+function surge_begin() 		  surge_play([[ambient\blowout\blowout_rumble]]) end
+function surge_wave_1() 	  surge_play([[ambient\blowout\blowout_wave_01]]) end
+function surge_wave_2() 	  surge_play([[ambient\blowout\blowout_wave_02_short]]) end
+local surge_wave_3_snds = {
+	[[ambient\blowout\blowout_wave_03]],
+	[[ambient\blowout\blowout_wave_03_short]],
+}
+function surge_wave_3()
+	surge_play_random_from_tbl(surge_wave_3_snds)
+end
+function surge_wave_4() surge_play([[ambient\blowout\blowout_wave_04]]) end
+function surge_rumble() surge_play([[ambient\blowout\blowout_rumble]]) end
+function surge_outro()  surge_play([[ambient\blowout\blowout_outro]]) end
+
+-- Проигрыш звуков осыпей
+local rock_sound_snds = {
+	[[ambient\rnd_outdoor\rnd_obval]],
+	[[ambient\rnd_outdoor\rnd_rock1]],
+	[[ambient\rnd_outdoor\rnd_rock2]],
+	[[ambient\rnd_outdoor\rnd_rock3]],
+}
+function rock_sound()
+	surge_play_random_from_tbl(rock_sound_snds)
+end
+-- Проигрыш эмбиента
+local ambient_snds = {
+	[[ambient\rt_ambient1]],
+	[[ambient\rt_ambient2]],
+	[[ambient\rt_dark_indoor_amb1]],
+	[[ambient\rt_eerie_wind1]],
+	[[ambient\sfx_amb_wind_tat_a_loop]],
+}
+function play_ambient()
+	surge_play_random_from_tbl(ambient_snds)
+end
+
+-- Проигрыш звуков, сигналов, шумов Выброса
+local surge_sound_snds = {
+	[[anomaly\dezodor]],
+	[[anomaly\dezodor1]],
+	[[anomaly\dezodor2]],
+	[[anomaly\dezodor3]],
+	[[anomaly\dezodor4]],
+}
+function surge_sound()
+	surge_play_random_from_tbl(surge_sound_snds)
+end
+
+-- Проигрыш странных звуков
+local strange_sounds_snds_left = {
+	[[ambient\rnd_outdoor\rnd_dark4]],
+	[[ambient\rnd_outdoor\rnd_moan1]],
+	[[ambient\rnd_outdoor\rnd_moan2]],
+	[[ambient\rnd_outdoor\rnd_dark6]],
+}
+local strange_sounds_snds_right = {
+	[[ambient\rnd_outdoor\rnd_dark4]],
+	[[ambient\rnd_outdoor\rnd_moan1]],
+	[[ambient\rnd_outdoor\rnd_moan1]],
+	[[ambient\rnd_outdoor\rnd_dark6]],
+}
+
+local sound_obj_left = xr_sound.get_safe_sound_object([[$no_sound]])
+local sound_obj_right = xr_sound.get_safe_sound_object([[$no_sound]])
+
+local function get_random_sound(sounds_names)
+	return xr_sound.get_safe_sound_object(sounds_names[math.random(1,#sounds_names)])
+end
+
+function strange_sounds()
+	if not sound_obj_left:playing() then 
+		sound_obj_left = get_random_sound(strange_sounds_snds_left)
+		
+		if sound_obj_left then
+			sound_obj_left:play_at_pos (db.actor, vector():set(1, 0, 1), 0, sound_object.s2d) 
+			sound_obj_left.volume = 0.5
+		end
+	end
+	if not sound_obj_right:playing() then 
+		sound_obj_right = get_random_sound(strange_sounds_snds_right)
+		
+		if sound_obj_right then
+			sound_obj_right:play_at_pos (db.actor, vector():set(-1, 0, 1), 0, sound_object.s2d) 
+			sound_obj_right.volume = 0.5
+		end
+	end
+end
+
+-- ещё звуки для выброса
+function earthquake_sound() 	surge_play([[ambient\earthquake]]) end
+function actor_breath_sound() 	surge_play([[actor\breath_1]]) end
