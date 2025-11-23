@@ -63,7 +63,7 @@
 	<main x="0" y="0" width="1024" height="768"/>
     
     <!-- Быстрый сброс -->
-    <static_ruck x="52" y="130" width="75" height="93.8" stretch="1">
+    <static_ruck x="52" y="120" width="75" height="93.8" stretch="1">
     	<texture x="0" y="0" width="100" height="125">ui\ruck_static</texture>
     </static_ruck>
 
@@ -72,18 +72,18 @@
 	</back>
 
 	<!-- Деньги ГГ -->
-    <money_static x="232" y="56" width="119" height="46">
+    <money_static x="55" y="666" width="119" height="46">
 		<text align="r" y="16" font="arial_14" color="white_3" complex_mode="0"/>
     </money_static>
 
 	<!-- Рюкзак -->
-    <dragdrop_bag x="7" y="51" width="634" height="586"
+    <dragdrop_bag x="7" y="56" width="634" height="581"
 			cell_width="46" cell_height="46" rows_num="12" cols_num="13"
 			unlimited="1" group_similar="0" condition_progress_bar="1" 
 			always_show_scroll="0" a="0" />
 
 	<!-- Слот костюма -->
-    <dragdrop_outfit x="225" y="138" width="92" height="184" custom_placement="0"
+    <dragdrop_outfit x="225" y="128" width="92" height="184" custom_placement="0"
             cell_width="46" cell_height="46" rows_num="4" cols_num="2"
             virtual_cells="1" vc_vert_align="c" vc_horiz_align="c"
 			condition_progress_bar="0" a="0" />
@@ -101,30 +101,32 @@
 			condition_progress_bar="0" a="0" />
 
 	<!-- Пояс -->
-	<dragdrop_belt x="372" y="15" width="644" height="46"
+	<dragdrop_belt x="372" y="17" width="644" height="46"
             cell_width="46" cell_height="46" rows_num="1" cols_num="14"/>
 
 	<!-- Слоты OGSE -->
-	<dragdrop_knife x="35" y="681" width="92" height="46" custom_placement="0"
+	<dragdrop_knife x="254" y="17" width="92" height="46" custom_placement="0"
             cell_width="46" cell_height="46" rows_num="1" cols_num="2"
 			virtual_cells="1" vc_vert_align="c" vc_horiz_align="c" a="0"/>
 	<dragdrop_binocular x="42" y="266" width="92" height="92" custom_placement="0"
             cell_width="46" cell_height="46" rows_num="2" cols_num="2"
 			virtual_cells="1" vc_vert_align="c" vc_horiz_align="c" a="0"/>
-	<dragdrop_detector x="309" y="681" width="46" height="46" custom_placement="0"
-            cell_width="46" cell_height="46" rows_num="1" cols_num="1"
-			virtual_cells="1" vc_vert_align="c" vc_horiz_align="c" a="0"/>
-	<dragdrop_torch x="182" y="681" width="92" height="46" custom_placement="0"
+	<dragdrop_torch x="99999" y="681" width="92" height="46" custom_placement="0"
             cell_width="46" cell_height="46" rows_num="1" cols_num="2"
 			virtual_cells="1" vc_vert_align="c" vc_horiz_align="c" a="0"/>
 	<dragdrop_helmet x="99999" y="186" width="92" height="92" custom_placement="0"
             cell_width="46" cell_height="46" rows_num="2" cols_num="2"
 			virtual_cells="1" vc_vert_align="c" vc_horiz_align="c" a="0"/>
-	<dragdrop_biodetector x="99999" y="245" width="46" height="46" custom_placement="0"
+		
+	<!-- Слоты OGSE, переделанные под быстрый доступ -->	
+	<dragdrop_detector x="381" y="692" width="46" height="46" custom_placement="0"
             cell_width="46" cell_height="46" rows_num="1" cols_num="1"
 			virtual_cells="1" vc_vert_align="c" vc_horiz_align="c" a="0"/>
-	<dragdrop_nv x="99999" y="191" width="92" height="46" custom_placement="0"
-            cell_width="46" cell_height="46" rows_num="1" cols_num="2"
+	<dragdrop_nv x="448" y="692" width="46" height="46" custom_placement="0"
+            cell_width="46" cell_height="46" rows_num="1" cols_num="1"
+			virtual_cells="1" vc_vert_align="c" vc_horiz_align="c" a="0"/>
+	<dragdrop_biodetector x="515" y="692" width="46" height="46" custom_placement="0"
+            cell_width="46" cell_height="46" rows_num="1" cols_num="1"
 			virtual_cells="1" vc_vert_align="c" vc_horiz_align="c" a="0"/>
 
 	<!-- Отображение отключенных слотов -->
@@ -141,7 +143,7 @@
 	<static_personal/>
 
 	<!-- Шкала здоровья -->
-    <progress_bar_health x="14" y="39" width="214" height="15" horz="1" min="0" max="100" pos="0">
+    <progress_bar_health x="14" y="46" width="214" height="15" horz="1" min="0" max="100" pos="0">
 		<progress>
 			<texture color="red">ui_inv_shk_healthbar</texture>
 		</progress>

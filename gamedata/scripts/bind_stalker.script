@@ -460,29 +460,3 @@ function actor_binder:level_changer_action( obj, wnd )
 	self.am:call( "level_changer_action", obj, wnd )
 end
 ----------------------------------------------------------------------------------------------------------------------
-
--- Weapon functions
-local restore_wpn_t, weapon_hide
-
-function hide_weapon()
-  weapon_hide = true
-  if restore_wpn_t then return end
-  db.actor:hide_weapon()
-  restore_wpn_t = dsh.wait_condition(
-    function()
-      return not ( weapon_hide or db.actor:is_talking() )
-    end,
-    function()
-      db.actor:restore_weapon()
-      weapon_hide   = false
-      restore_wpn_t = nil
-    end,
-    function()
-      ogse_signals.get_mgr():reschedule( 200 )
-    end
-  )
-end
-
-function restore_weapon()
-	weapon_hide = false
-end

@@ -82,17 +82,24 @@ function BodyWindow:BodyClose()
 end
 
 function on_info(info_id)
-	if info_id=="ui_car_body" then
+	if info_id == "ui_car_body" then
 	    body_window = level.main_input_receiver()
-		if not initial then	rec_wnd = BodyWindow(level.main_input_receiver()) end
-		if not rec_wnd.stat:IsShown() then rec_wnd:ShowWnd() end
+	    
+		if not initial then	
+			rec_wnd = BodyWindow(level.main_input_receiver()) 
+		end
+		if not rec_wnd.stat:IsShown() then 
+			rec_wnd:ShowWnd() 
+		end
 		
-		bind_stalker.hide_weapon()
-	elseif info_id=="ui_car_body_hide" then
-		if rec_wnd then rec_wnd:DetachWnd() end
+		db.actor:hide_weapon()
+	elseif info_id == "ui_car_body_hide" then
+		if rec_wnd then 
+			rec_wnd:DetachWnd() 
+		end
 
-		dsh.timeout(500, function() 
-			bind_stalker.restore_weapon()
+		dsh.timeout(1, function() 
+			db.actor:restore_weapon()
 		end)
 	end
 end

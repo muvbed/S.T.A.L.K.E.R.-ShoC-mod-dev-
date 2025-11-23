@@ -60,6 +60,15 @@
 	<string id="st_move_to_slot">
 		<text>поместить в слот</text>
 	</string>
+	<string id="st_move_to_slot_8">
+		<text>поместить в подсумок 1</text>
+	</string>
+	<string id="st_move_to_slot_11">
+		<text>поместить в подсумок 2</text>
+	</string>
+	<string id="st_move_to_slot_12">
+		<text>поместить в подсумок 3</text>
+	</string>
 	<string id="st_sell_item">
 		<text>продать предмет</text>
 	</string>

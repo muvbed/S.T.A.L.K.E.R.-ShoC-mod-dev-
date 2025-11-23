@@ -91,15 +91,15 @@ satiety_health_v                                = 0.00001
 satiety_critical                                = -1.0
 radiation_health_v                              = 0.0
 morale_v                                        = 0.1
-health_hit_part                                 = 0.8
+health_hit_part                                 = 1.0
 power_hit_part                                  = 1.0
 psy_health_v                                    = 0.1
 
 immunities_sect                                 = pseudodog_immunities
 
-bleeding_v                                      = 0.05
-wound_incarnation_v                             = 0.04
-min_wound_size                                  = 0.01
+bleeding_v										= 0.003			 	;потеря крови при номинальной ране в секунду
+wound_incarnation_v								= 0.0004		 	;скорость заживления раны
+min_wound_size									= 0.0128			;минимальный размер раны, после которого она считается зажившей
 
 sleep_health                                    = 1.0
 sleep_power                                     = 1.0
@@ -248,24 +248,44 @@ stand_run_dmg_0                                 = 1,0.2,1,0.25,1,0.7,1,0.75,1
 stand_drag_0                                    = 1,0.2,1,0.25,1,0.7,1,0.75,1
 
 [pseudodog_immunities]
-burn_immunity                                   = 0.8
-strike_immunity                                 = 0.525
-shock_immunity                                  = 0.65
-wound_immunity                                  = 0.7
-radiation_immunity                              = 0.0
-telepatic_immunity                              = 1.0
-chemical_burn_immunity                          = 0.65
-explosion_immunity                              = 0.875
-fire_wound_immunity                             = 0.35
+burn_immunity                  					= 0.9
+strike_immunity                					= 0.6
+shock_immunity                 					= 0.8
+wound_immunity                 					= 0.6
+radiation_immunity             					= 0.0
+telepatic_immunity             					= 1.0
+chemical_burn_immunity         					= 0.8
+explosion_immunity             					= 0.6
+fire_wound_immunity            					= 0.6
 
 [m_Pseudodog_damage]
-default											= 0.3, -1, 0.1
+default											= 0.01, -1, 0.1
 
-bip01_pelvis 									= 1.0, -1, 0.1
-bip01_spine 									= 1.0, -1, 0.1
-bip01_spine1 									= 1.0, -1, 0.1
-bip01_neck 										= 1.0, -1, 1.5
-bip01_head 										= 2.0, -1, 0.3, 10
+bip01_pelvis 									= 0.25, -1, 0.4
+bip01_spine 									= 0.40, -1, 0.5
+bip01_spine1 									= 0.50, -1, 0.6
+bip01_spine2 									= 0.60, -1, 0.7
+
+bip01_l_thigh									= 0.20, -1, 0.3
+bip01_l_calf									= 0.15, -1, 0.2
+bip01_l_foot									= 0.10, -1, 0.1
+
+bip01_r_thigh									= 0.20, -1, 0.3
+bip01_r_calf									= 0.15, -1, 0.2
+bip01_r_foot									= 0.10, -1, 0.1
+
+bip01_l_clavicle								= 0.20, -1, 0.3
+bip01_l_upperarm								= 0.15, -1, 0.2
+bip01_l_forearm									= 0.10, -1, 0.1
+
+bip01_r_clavicle								= 0.20, -1, 0.3
+bip01_r_upperarm								= 0.15, -1, 0.2
+bip01_r_forearm									= 0.10, -1, 0.1
+
+bip01_neck 										= 0.65, -1, 0.6
+bip01_head 										= 0.75, -1, 0.5, 10
+bip01_ponytail1									= 1.00, -1, 0.8, 10
+bip01_ponytail2									= 1.00, -1, 0.8, 10
 
 [pseudodogs_terrain]
 	255,000,255,255
@@ -294,7 +314,6 @@ Spawn_Inventory_Item_Probability                = 0.6
 rank                                            = 801
 spec_rank                                       = strong
 panic_threshold                                 = 0.15
-health_hit_part                                 = 0.75
 attack_params                                   = pseudodog_attack_params_strong
 
 [pseudodog_attack_params_strong]

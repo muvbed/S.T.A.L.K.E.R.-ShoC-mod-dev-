@@ -32,6 +32,7 @@ remove_this_shit_immediately = { -- Таблица с секциями предметов, которые надо у
 	["gl_fake_missile_ammo_vog-25p"] 	= true,
 	["gl_fake_missile_ammo_m209"] 		= true,
 	["device_pda"] 						= true,
+	["device_torch"] 					= true,
 	["kolbasa_a"] 						= true,
 	["vodka_a"] 						= true,
 	["bread_a"] 						= true,
@@ -202,7 +203,9 @@ function keep_item(npc, item)
     
     local section = srv_obj:section_name()
     
-    if remove_this_shit_immediately[section] then
+    if remove_this_shit_immediately[section] 
+      or (string.find(section, "wpn_knife") and math.random(1,100) > 35)
+    then
 		alife():release(srv_obj, true)
 	elseif item:is_ammo() then
 		local ammo_sz = get_ammo_size(item)

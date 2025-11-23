@@ -12,9 +12,10 @@ end
 
 -- Эффекты при снятии/надевании шлема
 function use_effect(flag)
+	level.disable_input()
 	db.actor:hide_weapon()
 	
-	level.add_pp_effector ("black_unfade.ppe", 7031, false)
+	level.add_pp_effector("black_unfade.ppe", 7031, false)
 	level.add_cam_effector("camera_effects\\item_use_slow.anm", 7032, false, "")
 
 	local outfit = db.actor:get_current_outfit()
@@ -49,6 +50,7 @@ function use_effect(flag)
 	end
 	
 	dsh.timeout(3000, function() 
+		level.enable_input()
 		db.actor:restore_weapon()
 	end)
 end
@@ -105,7 +107,7 @@ function update()
 end
 
 -- Проверка на возможность использования предмета
-function check_item_abble(section)
+function check_item_able(section)
 	local helmet = db.actor:item_in_slot(10)
 	
 	if 
@@ -131,17 +133,17 @@ end
 
 -- Запрет на использование предмета
 function before_use(item)
-	if not check_item_abble(item:section()) then
+	if not check_item_able(item:section()) then
 		item:zero_effects()
 	
 		local item_cond = item:condition()
 		local new_sobj = alife():create( 
-							item:section(), 
-							db.actor:position(), 
-							db.actor:level_vertex_id(), 
-							db.actor:game_vertex_id(), 
-							db.actor:id() 
-						 )
+			item:section(), 
+			db.actor:position(), 
+			db.actor:level_vertex_id(), 
+			db.actor:game_vertex_id(), 
+			db.actor:id() 
+		)
 		
 		level.client_spawn_manager():add( new_sobj.id, -1, function(id, obj)
 			obj:set_condition( item_cond )

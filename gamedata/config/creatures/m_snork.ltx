@@ -89,16 +89,16 @@ satiety_health_v               = 0.0001
 satiety_critical               = -1.0
 radiation_health_v             = 0.0
 morale_v                       = 0.01
-health_hit_part                = 0.8
+health_hit_part                = 1.0
 power_hit_part                 = 1.0
 psy_health_v                   = 0.1
 health_restore_v               = 0.0001
 
 immunities_sect                = snork_immunities
 
-bleeding_v					   = 0.04	
-wound_incarnation_v			   = 0.05	
-min_wound_size				   = 0.01
+bleeding_v					   = 0.004			;потеря крови при номинальной ране в секунду
+wound_incarnation_v			   = 0.0005		 	;скорость заживления раны
+min_wound_size				   = 0.0128			;минимальный размер раны, после которого она считается зажившей
 
 DamagedThreshold               = 0.3
 
@@ -229,13 +229,33 @@ transparency_threshold         = 0.3
 still_visible_time             = 0
 
 [m_Snork_damage]
-default						   = 0.5, -1, 0.1
+default						   = 0.01, -1, 0.1
 
-bip01_pelvis 				   = 1.0, -1, 0.1
-bip01_spine 				   = 1.0, -1, 0.1
-bip01_spine1 				   = 1.0, -1, 0.1
-bip01_neck 					   = 1.0, -1, 0.5
-bip01_head 					   = 2.0, -1, 0.1, 10
+bip01_head 					   = 0.85, -1, 0.6, 10
+bip01_neck 					   = 0.80, -1, 0.7
+
+bip01_spine1 				   = 0.55, -1, 0.6
+bip01_spine 				   = 0.45, -1, 0.4
+bip01_pelvis 				   = 0.30, -1, 0.3
+hip							   = 0.30, -1, 0.3
+
+leftupleg					   = 0.20, -1, 0.3
+bip01_l_calf				   = 0.15, -1, 0.2
+leftfoot					   = 0.05, -1, 0.1
+
+rightupleg					   = 0.20, -1, 0.3
+bip01_r_calf			   	   = 0.15, -1, 0.2
+rightfoot					   = 0.05, -1, 0.1
+
+leftshoulder				   = 0.20, -1, 0.3
+leftarm						   = 0.10, -1, 0.2
+bip01_l_forearm				   = 0.05, -1, 0.1
+lefthandtwist				   = 0.05, -1, 0.1
+
+rightshoulder				   = 0.20, -1, 0.3
+rightarm					   = 0.10, -1, 0.2
+bip01_r_forearm				   = 0.05, -1, 0.1
+righthandtwist				   = 0.05, -1, 0.1
 
 [m_snork_attack_effector]
 duality_h                      = 0.05
@@ -265,15 +285,15 @@ stand_run_damaged_0            = 1, 0.2,  1, 0.25, 0.7, 0.7, 1.0, 0.7, 1.0
 stand_steal_0                  = 1, 0.2,  1, 0.25, 0.7, 0.7, 1.0, 0.7, 1.0
 
 [snork_immunities]
-burn_immunity                  = 0.7
-strike_immunity                = 0.45
-shock_immunity                 = 0.7
-wound_immunity                 = 0.6
+burn_immunity                  = 0.8
+strike_immunity                = 0.6
+shock_immunity                 = 0.8
+wound_immunity                 = 0.5
 radiation_immunity             = 0.0
-telepatic_immunity             = 1.0
+telepatic_immunity             = 0.0
 chemical_burn_immunity         = 0.7
-explosion_immunity             = 0.75
-fire_wound_immunity            = 0.3
+explosion_immunity             = 0.6
+fire_wound_immunity            = 0.5
 
 [snork_terrain]
 	255,000,255,255
@@ -310,7 +330,6 @@ panic_threshold                = 0.05
 Spawn_Inventory_Item_Probability = 0.6
 rank                           = 801
 spec_rank                      = strong
-health_hit_part                = 0.75
 attack_params                  = snork_attack_params_strong
 
 [snork_attack_params_strong]

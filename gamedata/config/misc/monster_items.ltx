@@ -589,54 +589,6 @@ inv_grid_x			= 10
 inv_grid_y			= 28
 cost				= 0
 
-[mutant_fracture_hand]:identity_immunities
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn 				= "devices\monster_items\izlom_hand"
-;$prefetch 			= 32
-class				= II_ATTCH
-cform				= skeleton
-visual				= monsters\monster_items\izlom_hand.ogf
-radius				= 1
-
-script_binding  	= lwc_food.init
-
-cor_time			= 1
-
-inv_name			= mutant_fracture_hand
-inv_name_short		= mutant_fracture_hand
-description			= mutant_fracture_hand_description
-
-inv_weight			= 0.5
-can_trade			= on
-
-inv_grid_width		= 1
-inv_grid_height		= 1
-inv_grid_x			= 9
-inv_grid_y			= 28
-cost				= 3500
-
-[mutant_fracture_hand_fake]:identity_immunities
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn 				= "devices\monster_items\izlom_hand"
-
-class				= II_ATTCH
-cform				= skeleton
-visual				= monsters\monster_items\izlom_hand.ogf
-
-description			= mutant_fracture_hand_description_bad
-
-inv_name			= mutant_fracture_hand_bad
-inv_name_short		= mutant_fracture_hand_bad
-inv_weight			= 0.5
-
-inv_grid_width		= 1
-inv_grid_height		= 1
-inv_grid_x			= 9
-inv_grid_y			= 28
-cost				= 0
-
 [mutant_poltergeist_glas]:identity_immunities
 GroupControlSection	= spawn_group
 discovery_dependency = 

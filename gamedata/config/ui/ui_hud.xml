@@ -141,6 +141,7 @@
     <texture id="ui_inv_icon_explosion"					x="377" y="596" width="19" height="19"/>	<!-- значок взрыва -->
     <texture id="ui_inv_icon_fire_wound"				x="377" y="616" width="19" height="19"/>	<!-- значок пулестойкости -->
     <texture id="ui_inv_icon_health"					x="356" y="637" width="19" height="19"/>	<!-- значок здоровья -->
+    <texture id="ui_inv_icon_psy_health"				x="396" y="637" width="19" height="19"/>	<!-- значок пси-здоровья -->
     <texture id="ui_inv_icon_bleeding"					x="356" y="658" width="19" height="19"/>	<!-- значок кровотечения -->
     <texture id="ui_inv_icon_thirst"					x="356" y="677" width="19" height="19"/>	<!-- значок насыщения -->
     <texture id="ui_inv_icon_satiety"					x="376" y="658" width="19" height="19"/>	<!-- значок сытости -->

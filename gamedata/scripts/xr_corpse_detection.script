@@ -85,7 +85,6 @@ local monster_parts_cut_bones = {
 		[clsid.burer_s] = "bip01_r_hand",
 		[clsid.controller_s] = "bip01_r_hand",
 		[clsid.poltergeist_s] = "bip01_head",
-		[clsid.fracture_s] = "bip01_l_hand",
 		[clsid.cat_s] = "bip01_tail1",
 		[clsid.psy_dog_s] = "bip01_tail1",
 }

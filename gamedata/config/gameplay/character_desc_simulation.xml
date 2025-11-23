@@ -1000,6 +1000,7 @@
 		<crouch_type>0</crouch_type>
 		<rank>910</rank>
 		<reputation>-63</reputation>
+		<money min="2000" max="5000" infinitive="0"/>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<supplies>

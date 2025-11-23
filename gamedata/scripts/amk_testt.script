@@ -9,7 +9,7 @@ function IsNpcStalker(sobj)
             m_s_c = sobj:community()
         end
     end
-    if m_s_c == "stalker" or m_s_c == "ecolog" then
+    if m_s_c == "stalker" then
         return true
     end
 end

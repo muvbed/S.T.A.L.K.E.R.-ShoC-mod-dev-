@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="helmet_name">
-        <text>Шлем/маска</text>
+        <text>Защитная маска</text>
     </string>
     <string id="helmet_descr">
-        <text>Шлем/маска, входящая в комплект с костюмом.</text>
+        <text>Защитная маска, входящая в комплект с костюмом.</text>
     </string>
     
     <string id="pda_bunker_name">

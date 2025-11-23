@@ -1,6 +1,6 @@
 harmonica_a 		= 1, prob = 0.25 \n
 guitar_a 			= 1, prob = 0.25 \n
-device_torch 		= 1, prob = 0.60 \n
+device_torch 		= 1, prob = 1.00 \n
 device_pda 			= 1, prob = 1.00 \n
 sigaret	   			= 1, prob = 0.50 \n
 inv_ruck			= 1, prob = 0.05 \n

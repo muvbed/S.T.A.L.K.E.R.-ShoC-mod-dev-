@@ -1,5 +1,82 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
+	<string id="arts_barman_info_start">
+		<text>Мне нужна информация об артефактах.</text>
+	</string>
+	<string id="arts_barman_info_1">
+		<text>Вот вся информация по артефактам, которая у меня есть в продаже: "Каменный цветок", "Грави", "Ломоть мяса", "Огненный шар", "Вспышка", "Кристальная колючка", "Слизняк". Стоимость — по 700 рублей за статью.</text>
+	</string>
+	<string id="arts_barman_info_10">
+		<text>"Каменный цветок".</text>
+	</string>
+	<string id="arts_barman_info_11">
+		<text>"Грави".</text>
+	</string>
+	<string id="arts_barman_info_12">
+		<text>"Ломоть мяса".</text>
+	</string>
+	<string id="arts_barman_info_13">
+		<text>"Огненный шар".</text>
+	</string>
+	<string id="arts_barman_info_14">
+		<text>"Вспышка".</text>
+	</string>
+	<string id="arts_barman_info_15">
+		<text>"Кристальная колючка".</text>
+	</string>
+	<string id="arts_barman_info_16">
+		<text>"Слизняк".</text>
+	</string>
+	<string id="arts_barman_info_reject">
+		<text>В другой раз.</text>
+	</string>
+	<string id="arts_barman_info_done_loop">
+		<text>Отправил данные на твой КПК.\nЧто-нибудь ещё?</text>
+	</string>
+	<string id="arts_barman_info_done">
+		<text>Отправил данные на твой КПК.</text>
+	</string>
+	
+	<string id="arts_informator_info_start">
+		<text>Мне нужна информация об артефактах.</text>
+	</string>
+	<string id="arts_informator_info_1">
+		<text>Готов предоставить информацию о самых редких артефактах, известных на данный момент: "Колобок", "Мамины бусы", "Плёнка", "Батарейка", "Пустышка", "Пружина". Стоимость статьи о каждом из них составляет 1500 рублей.</text>
+	</string>
+	<string id="arts_informator_info_2">
+		<text>У меня в продаже только самая эксклюзивная информация, и тема артефактов — не исключение. Сейчас как раз готовю по-настоящему интересные материалы. Заходи позже — уверен, ты не пожалеешь.</text>
+	</string>
+	<string id="arts_informator_info_3">
+		<text>Новой информации по артефактам пока нет. Заходи позже.</text>
+	</string>
+	<string id="arts_informator_info_10">
+		<text>"Колобок".</text>
+	</string>
+	<string id="arts_informator_info_11">
+		<text>"Мамины бусы".</text>
+	</string>
+	<string id="arts_informator_info_12">
+		<text>"Плёнка".</text>
+	</string>
+	<string id="arts_informator_info_13">
+		<text>"Батарейка".</text>
+	</string>
+	<string id="arts_informator_info_14">
+		<text>"Пустышка".</text>
+	</string>
+	<string id="arts_informator_info_15">
+		<text>"Пружина".</text>
+	</string>
+	<string id="arts_informator_info_reject">
+		<text>В другой раз.</text>
+	</string>
+	<string id="arts_informator_info_done_loop">
+		<text>Выслал файл с описанием на твой КПК.\nИнтересует что-то ещё?</text>
+	</string>
+	<string id="arts_informator_info_done">
+		<text>Выслал файл с описанием на твой КПК.</text>
+	</string>
+	
     <string id="bar_arena_man_job_0">
         <text>Продолжай.</text>
     </string>

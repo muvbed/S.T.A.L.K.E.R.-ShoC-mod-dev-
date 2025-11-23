@@ -1,4 +1,4 @@
-device_torch 		= 1, prob = 0.40 \n
+device_torch 		= 1, prob = 1.00 \n
 device_pda 			= 1, prob = 1.00 \n
 detector_simple 	= 1, prob = 0.05 \n
 matches				= 1, prob = 0.10 \n

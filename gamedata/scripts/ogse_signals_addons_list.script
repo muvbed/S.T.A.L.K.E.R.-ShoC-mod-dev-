@@ -47,11 +47,10 @@ addons = {
 	"xr_sound",
 	"xr_kamp",
 	"ogse_hitfx",
-	"ogsr_dof",
 	"ogsr_quick_saveload",
 	"ogsr_torch",
 	"ogsr_addons_npc",
-	"ogsr_quick_slots",
+	"quick_slots",
 	-- "ogsr_actor_animation", -- когда прикручу оружейный пак
 	"ogsr_body_states",
 	"smart_ruck",

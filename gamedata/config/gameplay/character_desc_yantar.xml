@@ -31,6 +31,7 @@
 		<actor_dialog>tm_ecolog_reward</actor_dialog>
 		<actor_dialog>repair_dialog</actor_dialog>
 		<actor_dialog>ucheniy_skan</actor_dialog>
+		<actor_dialog>arts_ucheniy_info</actor_dialog>
 	</specific_character>
 
 <!---------------------------RESCUE_ECOLOG------------------------>

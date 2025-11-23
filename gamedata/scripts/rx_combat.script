@@ -25,7 +25,6 @@ local md_monsters = {
 	chimera = math.pi*0.15,
 	dog = math.pi*0.2,
 	flesh = 0,
-	fracture = 0,
 	giant = 0,
 	pseudodog = 0,
 	psy_dog = math.pi*0.8,

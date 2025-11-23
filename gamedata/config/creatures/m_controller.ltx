@@ -113,15 +113,15 @@ satiety_health_v               = 0.001
 satiety_critical               = -1.0
 radiation_health_v             = 0.0
 morale_v                       = 0.1
-health_hit_part                = 0.8
+health_hit_part                = 1.0
 power_hit_part                 = 1.0
 psy_health_v                   = 0.1
 
 immunities_sect                = controller_immunities
 
-bleeding_v                     = 0.04
-wound_incarnation_v            = 0.05	
-min_wound_size                 = 0.01
+bleeding_v					   = 0.004			;потеря крови при номинальной ране в секунду
+wound_incarnation_v			   = 0.0003		 	;скорость заживления раны
+min_wound_size				   = 0.0128			;минимальный размер раны, после которого она считается зажившей
 
 sleep_health                   = 1.0
 sleep_power                    = 1.0
@@ -256,15 +256,15 @@ stand_run_fwd_0                = 1,0.01,1,0.25,0.6
 stand_run_dmg_0                = 1,0.01,1,0.25,0.6
 
 [controller_immunities]
-burn_immunity                  = 0.9
-strike_immunity                = 0.6
+burn_immunity                  = 1.0
+strike_immunity                = 0.7
 shock_immunity                 = 0.9
-wound_immunity                 = 0.8
+wound_immunity                 = 0.7
 radiation_immunity             = 0.0
 telepatic_immunity             = 0.0
-chemical_burn_immunity         = 0.9
-explosion_immunity             = 1.0
-fire_wound_immunity            = 0.4
+chemical_burn_immunity         = 1.0
+explosion_immunity             = 0.7
+fire_wound_immunity            = 0.7
 
 [controller_control_effector]
 duality_h                      = 0.1
@@ -326,13 +326,34 @@ stand_attack_1 				   = 0.25,		0.30,	  100,        0.0, 1.0, 0.0,		 -1.6, 1.6, -
 	255,000,255,255
 
 [m_Controller_damage]
-default						   = 0.5, -1, 0.1
+default									= 0.01, -1, 0.1
 
-bip01_pelvis 				   = 1.0, -1, 0.5
-bip01_spine 				   = 1.0, -1, 0.5
-bip01_spine1 				   = 1.0, -1, 0.5
-bip01_neck 					   = 1.0, -1, 1.0
-bip01_head 					   = 2.0, -1, 0.5, 10
+bip01_pelvis							= 0.30, -1, 0.4
+bip01_spine 							= 0.45, -1, 0.5
+bip01_spine1 							= 0.55, -1, 0.6
+bip01_spine2 							= 0.65, -1, 0.7
+bip01_spine3 							= 0.65, -1, 0.7
+
+bip01_l_thigh							= 0.20, -1, 0.3
+bip01_l_calf							= 0.15, -1, 0.2
+bip01_l_foot							= 0.05, -1, 0.1
+
+bip01_r_thigh							= 0.20, -1, 0.3
+bip01_r_calf							= 0.15, -1, 0.2
+bip01_r_foot							= 0.05, -1, 0.1
+
+bip01_l_clavicle						= 0.25, -1, 0.3
+bip01_l_upperarm						= 0.15, -1, 0.2
+bip01_l_forearm							= 0.10, -1, 0.1
+
+bip01_r_clavicle						= 0.25, -1, 0.3
+bip01_r_upperarm						= 0.15, -1, 0.2
+bip01_r_forearm							= 0.10, -1, 0.1
+
+bip01_neck 								= 0.80, -1, 0.7
+bip01_head 								= 0.95, -1, 0.8, 10
+bip01_ponytail1							= 1.00, -1, 0.9, 10
+bip01_ponytail2							= 1.00, -1, 0.9, 10
 
 
 [m_controller_normal]:m_controller_e

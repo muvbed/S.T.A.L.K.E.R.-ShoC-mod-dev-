@@ -14,12 +14,6 @@ function opt_video:InitControls(x, y, xml, handler)
 
 	xml:InitFrame("frame", self)
 
-	local cap_brightness = xml:InitStatic("tab_video:cap_brightness", self)
-	local track_brightness = xml:InitTrackBar("tab_video:track_brightness", self)
-
-	local cap_contrast = xml:InitStatic("tab_video:cap_contrast", self)
-	local track_contrast = xml:InitTrackBar("tab_video:track_contrast", self)
-
 	local cap_gamma = xml:InitStatic("tab_video:cap_gamma", self)
 	local track_gamma = xml:InitTrackBar("tab_video:track_gamma", self)
 

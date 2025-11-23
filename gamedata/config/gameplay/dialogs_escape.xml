@@ -1750,7 +1750,6 @@
             </phrase>
             <phrase id="21211">
                 <text>escape_lager_volk_talk_21211</text>
-                <action>escape_dialog.wolf_additional_reward</action>
             </phrase>
             <phrase id="511">
                 <text>escape_lager_volk_talk_511</text>
@@ -1830,6 +1829,7 @@
             <phrase id="2121">
                 <text>escape_lager_volk_talk_2121</text>
                 <action>escape_dialog.transfer_wolf_reward</action>
+                <action>escape_dialog.wolf_additional_reward</action>
                 <give_info>esc_kill_bandits_quest_done</give_info>
                 <give_info>esc_petruha_great</give_info>
                 <next>21211</next>
@@ -1884,5 +1884,111 @@
             </phrase>
         </phrase_list>
     </dialog>
-
+	<dialog id="arts_sidor_info">
+    	<precondition>escape_dialog.arts_sidor_has_infos</precondition>
+    	<has_info>tutorial_end</has_info>
+        <phrase_list>
+            <phrase id="0">
+                <text>arts_sidor_info_start</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>arts_sidor_info_1</text>
+                <next>10</next>
+                <next>11</next>
+                <next>12</next>
+                <next>13</next>
+                <next>14</next>
+                <next>15</next>
+                <next>16</next>
+                <next>17</next>
+            </phrase>
+            <phrase id="10">
+            	<precondition>escape_dialog.arts_sidor_has_money</precondition>
+            	<dont_has_info>encyclopedy_zone_artifact_af_medusa</dont_has_info>
+            	<give_info>encyclopedy_zone_artifact_af_medusa</give_info>
+            	<text>arts_sidor_info_10</text>
+            	<action>escape_dialog.arts_sidor_give_money</action>
+            	<next>101</next>
+            	<next>102</next>
+            </phrase>
+            <phrase id="11">
+            	<precondition>escape_dialog.arts_sidor_has_money</precondition>
+            	<dont_has_info>encyclopedy_zone_artifact_af_vyvert</dont_has_info>
+            	<give_info>encyclopedy_zone_artifact_af_vyvert</give_info>
+            	<text>arts_sidor_info_11</text>
+            	<action>escape_dialog.arts_sidor_give_money</action>
+            	<next>101</next>
+            	<next>102</next>
+            </phrase>
+            <phrase id="12">
+            	<precondition>escape_dialog.arts_sidor_has_money</precondition>
+            	<dont_has_info>encyclopedy_zone_artifact_af_blood</dont_has_info>
+            	<give_info>encyclopedy_zone_artifact_af_blood</give_info>
+            	<text>arts_sidor_info_12</text>
+            	<action>escape_dialog.arts_sidor_give_money</action>
+            	<next>101</next>
+            	<next>102</next>
+            </phrase>
+            <phrase id="13">
+            	<precondition>escape_dialog.arts_sidor_has_money</precondition>
+            	<dont_has_info>encyclopedy_zone_artifact_af_drops</dont_has_info>
+            	<give_info>encyclopedy_zone_artifact_af_drops</give_info>
+            	<text>arts_sidor_info_13</text>
+            	<action>escape_dialog.arts_sidor_give_money</action>
+            	<next>101</next>
+            	<next>102</next>
+            </phrase>
+            <phrase id="14">
+            	<precondition>escape_dialog.arts_sidor_has_money</precondition>
+            	<dont_has_info>encyclopedy_zone_artifact_af_electra_sparkler</dont_has_info>
+            	<give_info>encyclopedy_zone_artifact_af_electra_sparkler</give_info>
+            	<text>arts_sidor_info_14</text>
+            	<action>escape_dialog.arts_sidor_give_money</action>
+            	<next>101</next>
+            	<next>102</next>
+            </phrase>
+            <phrase id="15">
+            	<precondition>escape_dialog.arts_sidor_has_money</precondition>
+            	<dont_has_info>encyclopedy_zone_artifact_af_rusty_thorn</dont_has_info>
+            	<give_info>encyclopedy_zone_artifact_af_rusty_thorn</give_info>
+            	<text>arts_sidor_info_15</text>
+            	<action>escape_dialog.arts_sidor_give_money</action>
+            	<next>101</next>
+            	<next>102</next>
+            </phrase>
+            <phrase id="16">
+            	<precondition>escape_dialog.arts_sidor_has_money</precondition>
+            	<dont_has_info>encyclopedy_zone_artifact_af_ameba_slime</dont_has_info>
+            	<give_info>encyclopedy_zone_artifact_af_ameba_slime</give_info>
+            	<text>arts_sidor_info_16</text>
+            	<action>escape_dialog.arts_sidor_give_money</action>
+            	<next>101</next>
+            	<next>102</next>
+            </phrase>
+            <phrase id="101">
+            	<precondition>escape_dialog.arts_sidor_has_infos</precondition>
+            	<text>arts_sidor_info_done_loop</text>
+            	<next>10</next>
+                <next>11</next>
+                <next>12</next>
+                <next>13</next>
+                <next>14</next>
+                <next>15</next>
+                <next>16</next>
+                <next>17</next>
+            </phrase>
+            <phrase id="102">
+            	<precondition>escape_dialog.arts_sidor_done_infos</precondition>
+            	<text>arts_sidor_info_done</text>
+            </phrase>
+            <phrase id="17">
+            	<text>arts_sidor_info_reject</text>
+            	<next>171</next>
+            </phrase>
+           	<phrase id="171">
+            	<text />
+            </phrase>
+        </phrase_list>
+    </dialog>
 </game_dialogs>

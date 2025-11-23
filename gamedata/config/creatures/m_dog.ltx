@@ -125,13 +125,13 @@ satiety_health_v                                = 0.005
 satiety_critical                                = -1.0
 radiation_health_v                              = 0.0
 morale_v                                        = 0.01
-health_hit_part                                 = 0.9
+health_hit_part                                 = 1.0
 power_hit_part                                  = 1.0
 psy_health_v                                    = 0.1
 
-bleeding_v                                      = 0.04
-wound_incarnation_v                             = 0.05
-min_wound_size                                  = 0.01
+bleeding_v										= 0.004			 	;потеря крови при номинальной ране в секунду
+wound_incarnation_v								= 0.0004		 	;скорость заживления раны
+min_wound_size									= 0.0128			;минимальный размер раны, после которого она считается зажившей
 
 sleep_health                                    = 1.0
 sleep_power                                     = 1.0
@@ -259,25 +259,42 @@ still_visible_time                              = 0
 	255,000,255,255
 
 [dog_immunities]
-burn_immunity                                   = 0.85
-strike_immunity                                 = 0.525
-shock_immunity                                  = 0.7
-wound_immunity                                  = 0.7
-radiation_immunity                              = 0.0
-telepatic_immunity                              = 1.0
-chemical_burn_immunity                          = 0.7
-explosion_immunity                              = 0.875
-fire_wound_immunity                             = 0.35
+burn_immunity                           		= 0.9
+strike_immunity                         		= 0.7
+shock_immunity                          		= 0.5
+wound_immunity                          		= 0.7
+radiation_immunity                      		= 0.0
+telepatic_immunity                      		= 1.0
+chemical_burn_immunity                  		= 0.6
+explosion_immunity                      		= 0.7
+fire_wound_immunity                     		= 0.7
 
 [m_Dog_damage]
-default											= 0.5, -1, 0.2
+default											= 0.01, -1, 0.1
 
-bip01_pelvis 									= 1.0, -1, 0.5
-bip01_spine 									= 1.0, -1, 0.5
-bip01_spine1 									= 1.0, -1, 0.5
-bip01_neck 										= 1.0, -1, 1.5
-bip01_head 										= 2.5, -1, 0.5, 10
+bip01_pelvis 									= 0.25, -1, 0.4
+bip01_spine 									= 0.40, -1, 0.5
+bip01_spine1 									= 0.50, -1, 0.6
+bip01_spine2 									= 0.60, -1, 0.7
 
+bip01_l_thigh									= 0.20, -1, 0.3
+bip01_l_calf									= 0.15, -1, 0.2
+bip01_l_foot									= 0.10, -1, 0.1
+
+bip01_r_thigh									= 0.20, -1, 0.3
+bip01_r_calf									= 0.15, -1, 0.2
+bip01_r_foot									= 0.10, -1, 0.1
+
+bip01_l_clavicle								= 0.20, -1, 0.3
+bip01_l_upperarm								= 0.15, -1, 0.2
+bip01_l_forearm									= 0.10, -1, 0.1
+
+bip01_r_clavicle								= 0.20, -1, 0.3
+bip01_r_upperarm								= 0.15, -1, 0.2
+bip01_r_forearm									= 0.10, -1, 0.1
+
+bip01_neck 										= 0.70, -1, 0.7
+bip01_head 										= 0.85, -1, 0.6, 10
 
 [m_dog_attack_params]
 stand_attack_0                                 =   0.2, 0.20,  50, 0.0, 0.1, 0.0, -0.5, 0.5, -1.0, 1.0, 2.0
@@ -383,7 +400,6 @@ corpse_visual                                   = monsters\dog\dog_white_dead
 icon                                            = ui_npc_monster_dog_white
 Spawn_Inventory_Item_Probability                = 0.6
 panic_threshold                                 = 0.2
-health_hit_part                                 = 0.85
 rank                                            = 801
 spec_rank                                       = strong
 attack_params                                   = dog_attack_params_strong

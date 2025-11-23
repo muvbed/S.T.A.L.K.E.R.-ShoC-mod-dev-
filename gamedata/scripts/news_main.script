@@ -7,7 +7,7 @@ off_prob                         = 0.2     -- От 0 до единицы. Вероятность в про
 local timer_check_freq           = 20      -- Как часто проверять новости и выдавать сгруппированные, в игровых минутах
 local hear_fight_prob            = 0.12    -- Вероятность отправки в чат СМС о том, что НПС стал свидетелем какого-то события
 local timer_stalker_death        = 10      -- Сообщение о смерти сталкера
-local timer_spawn                = 50      --20 	-- Сообщение о увиденном
+local timer_spawn                = 50      --20 -- Сообщение о увиденном
 local timer_general              = 10      --20	-- Прочее
 local timer_weather              = 1       -- При изменнии погоды
 local timer_heli                 = 10      -- При замеченном вертолетике
@@ -65,10 +65,12 @@ function message_offwar(text, place, name)
         amk.send_tip(text .. " " .. place .. ".", name, 1, 15, "common_channel")
     else
         amk.send_tip(text, name, 1, 15, "common_channel")
+        
         if math.random() < 0.4 then
-            amk.send_tip(news_data.text_offwar_noplace[math.random(#news_data.text_offwar_noplace)], amk_testt.name_npc(), math.random(5, 8), 15, "common_channel")
+            amk.send_tip(news_data.text_offwar_noplace[math.random(#news_data.text_offwar_noplace)], amk_testt.name_npc(), 10 + math.random(5), 15, "common_channel")
+            
             if math.random() < 0.5 then
-                amk.send_tip(place .. ".", name, math.random(13, 15, "common_channel"), 15, "common_channel")
+                amk.send_tip(place .. ".", name, 20 + math.random(5), 15, "common_channel")
             end
         end
     end
@@ -83,13 +85,13 @@ function hear_fight(npc1, npc2)
         if gns then
             if npc1 and npc2 then --война между людьми
                 amk.send_tip(news_data.war_between_mans[math.random(#news_data.war_between_mans)] .. " " .. get_point_description(get_object_levelname(npc1), get_object_position(npc1)) .. ".", gns:character_name(),
-                    math.random(60, 100), 15, "common_channel")
+                    60 + math.random(40), 15, "common_channel")
             elseif npc1 and (not npc2) then
                 amk.send_tip(news_data.mans_at_mons[math.random(#news_data.mans_at_mons)] .. " " .. get_point_description(get_object_levelname(npc1), get_object_position(npc1)) .. ".", gns:character_name(),
-                    math.random(60, 100), 15, "common_channel")
+                    60 + math.random(40), 15, "common_channel")
             elseif (not npc1) and npc2 then
                 amk.send_tip(news_data.mons_at_mans[math.random(#news_data.mons_at_mans)] .. " " .. get_point_description(get_object_levelname(npc2), get_object_position(npc2)) .. ".", gns:character_name(),
-                    math.random(60, 100), 15, "common_channel")
+                    60 + math.random(40), 15, "common_channel")
             end
         end
     end
@@ -422,6 +424,7 @@ function on_weather_change(old_weather, new_weather)
                 local s_text = s_list[i][rnd(#s_list[i])]
                 if (rnd() < prob) then
                     local name, sname = amk_names_lists.get_strings()
+                    
                     amk.send_tip(s_text, amk_testt.non_quest(), 2, 15, "common_channel")
                     timer_weather_showed = amk.game_minutes()
                 end
@@ -719,7 +722,6 @@ function do_seen_monster()
                 end
 
                 if b_ok then
-                    local asas = rnd(timer_spawn, timer_spawn * 3)
                     local comm_new = {
                         "А ведь даже выброса не было...", "Оп, значит пойдём другой тропой.", "Кто-нибудь! Завалите эту тварь! И так жить страшно стало!",
                         "Почему-то я даже не удивлён...", "Да неужели?", "Поохотимся, братцы?", "Кто не зассыт проверить?", "Великолепная новость. Сука.",
@@ -727,12 +729,14 @@ function do_seen_monster()
                         "Лучше бы с проблемой этой разобрался, чем стукачить тут." }
                     if (s_author ~= "") then
                         if author_id then
-                            amk.send_tip(text, s_author, asas, 15, icon, author_id, 1)
+                            amk.send_tip(text, s_author, timer_spawn, 15, icon, author_id, 1)
                         else
-                            amk.send_tip(text, s_author, asas, 15, common_channel)
+                            amk.send_tip(text, s_author, timer_spawn, 15, common_channel)
                         end
-                        amk.send_tip(comm_new[math.random(#comm_new)], amk_testt.non_quest(), asas + 10, 15, "common_channel")
+                        
+                        amk.send_tip(comm_new[math.random(#comm_new)], amk_testt.non_quest(), timer_spawn + 10 + math.random(5), 15, "common_channel")
                     end
+                    
                     news_data.do_seen_monster_templates[t].enabled = false
                 end
             end
@@ -781,11 +785,15 @@ function on_wound(obj)
                 local sstalk = rnd(timer_stalker_death, timer_stalker_death * 2)
                 if math.random() < 0.5 then
                     amk.send_tip(m_s, sfrom, sstalk, 15, "common_channel")
-                    local ranen = { "Чёрт, я далеко.", "Держись!!!", "Так тебе и надо, сука.", "Кто нападавший?", "Сам виноват.", "Ещё одного Зона забирает...",
-                        "Держись, братишка!",
-                        "Что там происходит, интересно...", "Ох, мародеры сейчас налетят...", "Терпи, брат, постараюсь успеть!" } --КОММЕНТ
+                    
+                    local ranen = { 
+                    	"Чёрт, я далеко.", "Держись!!!", "Кто нападавший?", "Ещё одного Зона забирает...",
+                        "Держись, мужик!", "Что там происходит, интересно...", "Ох, мародёры сейчас налетят...", 
+                        "Терпи, брат, постараюсь успеть!" 
+                    } --КОММЕНТ
+                    
                     if math.random() < 0.4 then
-                        amk.send_tip(ranen[math.random(#ranen)], amk_testt.name_npc(), sstalk + time[math.random(#time)], 15, "common_channel")
+                        amk.send_tip(ranen[math.random(#ranen)], amk_testt.name_npc(), sstalk + 10 + math.random(5), 15, "common_channel")
                     end
                 end
             end
@@ -917,20 +925,26 @@ function on_offline_trade(npc, item)
         if (m_str ~= "") then
             local time_shop = rnd(timer_general, timer_general * 5)
 
-            local trade_comm = { "О, отличная штука", "Откуда надыбал?", "Пахнет разводом.", "Уже не актуально.", "О, у меня такое же.", "А потом ещё патроны ищи.",
-                "Отличная вещь!", "Нахлёбка же, не?", "Да эта фигня ломается на раз-два, кому такое нужно?", "На лоха что ли продаешь?",
-                "Блин, дружище, попридержи, чуть накоплю и обязательно возьму!", "Мне не надо.", "Я обменять на что-нибудь могу." }
-            local comm_trade = { "Ещё немного тут посижу и свалю. Торопитесь.", "Сегодня весь день буду тут, успейте.", "Хотя я передумал. Себе оставлю.",
-                "Брать кто будет, нет?", "Никому не нужно? Торговцу тогда сдам.", "Блин, уже отобрали.", "Класс, пока писал, собаки увели уже.",
-                "Если будет дорого, согласен на обмен.", "Обмен не предлагать!", "По пустякам не пишите - да-да, нет-нет." }
+			local trade_comm = {
+				"О, отличная штука!", "Откуда надыбал?", "Пахнет разводом.", "Уже не актуально.", "О, у меня такое же.", "А потом ещё патроны ищи.",
+				"Отличная вещь!", "Нахлёбка же, не?", "Да эта фигня ломается на раз-два, кому такое нужно?", "На лоха что ли продаёшь?",
+				"Блин, дружище, попридержи, чуть накоплю и обязательно возьму!", "Мне не надо.", "Я обменять на что-нибудь могу."
+			}
+			local comm_trade = {
+				"Ещё немного тут посижу и свалю. Торопитесь.", "Сегодня весь день буду тут, успейте.", "Хотя я передумал. Себе оставлю.",
+				"Брать кто будет, нет?", "Никому не нужно? Торговцу тогда сдам.", "Блин, уже отобрали.", "Класс, пока писал, собаки увели уже.",
+				"Если будет дорого, согласен на обмен.", "Обмен не предлагать!", "По пустякам не пишите - да-да, нет-нет."
+			}
 
             if (rnd() < 0.7) then
                 amk.send_tip(m_str, m_from, time_shop, 15, "common_channel")
+                
                 if (rnd() < 0.5) then
-                    amk.send_tip(trade_comm[math.random(#trade_comm)], amk_testt.non_quest(), time_shop + 10, 15, "common_channel")
+                    amk.send_tip(trade_comm[math.random(#trade_comm)], amk_testt.non_quest(), time_shop + 10 + math.random(5), 15, "common_channel")
                 end
+                
                 if (rnd() < 0.5) then
-                    amk.send_tip(comm_trade[math.random(#comm_trade)], m_from, time_shop + 17, 15, "common_channel")
+                    amk.send_tip(comm_trade[math.random(#comm_trade)], m_from, time_shop + 20 + math.random(5), 15, "common_channel")
                 end
             end
         end
@@ -1059,28 +1073,35 @@ function do_RANDOM_NEWS()
 
     local rnd = math.random
     local name_npc = amk_testt.non_quest()
-    local negodyem = {
-        "Алё?", "Мужики?", "Ну и молчите.", "Чё молчите?", "Языки в жопу засунули?", "Все повымерали?", "А чё все игнорят?", "А ответить впадлу?",
-        "Чё, руки обоссали ответить?", "У вас кнопки что ли залипли?", "Кнопки водярой залили?", "Мой вопрос видели?", "Алло, ёпта!",
-        "Ну и хрен я больше чё напишу.", "Ну и ко мне с вопросами больше не подходите." }
-    local blag = {
-        "Ясно.", "Понятно.", "Да уж.", "Ок.", "Эх.", "О, хоть кто-то ответил.", "Ладно.", "Принял.", "Понял.", "Спасибо, что отписал.", "Спс.", "Благодарю.",
-        "Спасибо.", "Фига се.", "Обалдеть." }
+	local negodyem = {
+		"Алё?", "Мужики?", "Ну и молчите.", "Чё молчите?", "Языки в жопу засунули?", "Все повымерли?", "А чё все игнорят?", "А ответить впадлу?",
+		"Чё, руки обоссали ответить?", "У вас кнопки что ли залипли?", "Кнопки водярой залили?", "Мой вопрос видели?", "Алло, ёпта!",
+		"Ну и хрен я больше чё напишу.", "Ну и ко мне с вопросами больше не подходите." 
+	}
+	local blag = {
+		"Ясно.", "Понятно.", "Да уж.", "Ок.", "Эх.", "О, хоть кто-то ответил.", "Ладно.", "Принял.", "Понял.", "Спасибо, что отписал.", "Спс.", "Благодарю.",
+		"Спасибо.", "Фига се.", "Обалдеть." 
+	}
     local random_news_number = 1
+    
     if (rnd() < 0.5) and name_npc ~= nil then --разделим функцию пополам, тут один вариант событий (из таблицы "Сценарии")
         random_news_number = math_random(#news_data.tabl_mess_begin)
         amk.send_tip(news_data.tabl_mess_begin[random_news_number]["chat1"], name_npc, 1, 15, "common_channel")
+        
         if (rnd() < 0.5) then
             amk.send_tip(news_data.tabl_mess_begin[random_news_number]["chat2"], amk_testt.name_npc(), 15, 15, "common_channel")
+            
             if (rnd() < 0.6) then
                 amk.send_tip(news_data.tabl_mess_begin[random_news_number]["chat3"], amk_testt.name_npc(), 31, 15, "common_channel")
             end
+            
             if (rnd() < 0.5) then
                 amk.send_tip(news_data.tabl_mess_begin[random_news_number]["chat4"], name_npc, 40, 15, "common_channel")
             end
         else
             if (rnd() < 0.5) then
                 amk.send_tip(negodyem[math.random(#negodyem)], name_npc, 20, 15, "common_channel")
+                
                 if (rnd() < 0.5) then
                     amk.send_tip(news_data.tabl_mess_begin[random_news_number]["chat2"], amk_testt.name_npc(), 35, 15, "common_channel")
                     amk.send_tip(blag[math.random(#blag)], name_npc, 48, 15, "common_channel")
@@ -1089,15 +1110,19 @@ function do_RANDOM_NEWS()
         end
     elseif name_npc ~= nil then --вторая половина функции. Другой вариант событий (Персонажи)
         random_news_number = math_random(#news_data.personazi)
+        
         amk.send_tip(news_data.personazi[random_news_number]["chat1"], name_npc, 1, 15, "common_channel")
         amk.send_tip(news_data.personazi[random_news_number]["chat2"], "", 20, 15, "common_channel")
         amk.send_tip(news_data.personazi[random_news_number]["chat3"], name_npc, 35, 15, "common_channel")
         amk.send_tip(news_data.personazi[random_news_number]["chat4"], "", 47, 15, "common_channel")
+        
         if (rnd() < 0.5) then
             amk.send_tip(news_data.personazi[random_news_number]["chat5"], name_npc, 60, 15, "common_channel")
+            
             if (rnd() < 0.5) then
                 amk.send_tip(news_data.personazi[random_news_number]["chat6"], amk_testt.name_npc(), 70, 15, "common_channel")
             end
+            
             amk.send_tip(news_data.personazi[random_news_number]["chat7"], "", 86, 15, "common_channel")
         end
     end

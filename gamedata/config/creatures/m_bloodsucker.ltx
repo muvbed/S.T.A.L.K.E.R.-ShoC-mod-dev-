@@ -77,8 +77,8 @@ Accel_Calm                              = 2.5
 Accel_Aggressive                        = 20.0
 
 
-MinAttackDist                           = 1.6 	   
-MaxAttackDist                           = 2.6		
+MinAttackDist                           = 1.8 	   
+MaxAttackDist                           = 2.7		
 EffectDistance                          = 20.0
 hit_type                                = wound
 as_min_dist                             = 0.3    
@@ -104,16 +104,16 @@ satiety_health_v                        = 0.001
 satiety_critical                        = -1.0
 radiation_health_v                      = 0.0
 morale_v                                = 0.01
-health_hit_part                         = 0.7
+health_hit_part                         = 1.0
 power_hit_part                          = 1.0
 psy_health_v                            = 0.1
 health_restore_v                        = 0.001
 
 immunities_sect                         = bloodsucker_immunities
 
-bleeding_v                              = 0.09
-wound_incarnation_v                     = 0.05
-min_wound_size                          = 0.01
+bleeding_v								= 0.003			 	;потеря крови при номинальной ране в секунду
+wound_incarnation_v						= 0.0004		 	;скорость заживления раны
+min_wound_size							= 0.0128			;минимальный размер раны, после которого она считается зажившей
 
 DamagedThreshold                        = 0.3
 
@@ -257,21 +257,34 @@ transparency_threshold                  = 0.36
 
 
 [m_bloodsucker_damage]
-default       							= 0.5, -1, 0.5
+default									= 0.01, -1, 0.1
 
-bip01_spine     						= 0.9, -1, 0.5
-bip01_spine1    						= 0.9, -1, 1.0
-bip01_spine2    						= 0.9, -1, 1.0
-bip01_spine3    						= 0.9, -1, 1.0
-bip01_neck      						= 0.9, -1, 1.5
-bip01_head      						= 1.0, -1, 0.5, 10
-bip01_l_upperarm 						= 0.8, -1, 2.5
-bip01_l_forearm 						= 0.8, -1, 2.5
-bip01_l_hand 							= 0.8, -1, 2.5
-bip01_r_upperarm 						= 0.8, -1, 2.5
-bip01_r_forearm 						= 0.8, -1, 2.5
-bip01_r_hand 							= 0.8, -1, 2.5
-bip01_pelvis 							= 0.8, -1, 2.5
+bip01_neck 								= 1.00, -1, 1.0
+bip01_head 								= 0.95, -1, 0.7, 10
+bip01_ponytail1							= 1.00, -1, 0.8, 10
+bip01_ponytail2							= 1.00, -1, 0.8, 10
+
+bip01_spine1 							= 0.60, -1, 0.6
+bip01_spine2 							= 0.65, -1, 0.7
+bip01_spine3 							= 0.60, -1, 0.6
+bip01_spine 							= 0.55, -1, 0.5
+bip01_pelvis 							= 0.45, -1, 0.4
+
+bip01_l_thigh							= 0.25, -1, 0.3
+bip01_l_calf							= 0.15, -1, 0.2
+bip01_l_foot							= 0.05, -1, 0.1
+
+bip01_r_thigh							= 0.25, -1, 0.3
+bip01_r_calf							= 0.15, -1, 0.2
+bip01_r_foot							= 0.05, -1, 0.1
+
+bip01_l_clavicle						= 0.25, -1, 0.3
+bip01_l_upperarm						= 0.15, -1, 0.2
+bip01_l_forearm							= 0.10, -1, 0.1
+
+bip01_r_clavicle						= 0.25, -1, 0.3
+bip01_r_upperarm						= 0.15, -1, 0.2
+bip01_r_forearm							= 0.10, -1, 0.1
 
 [bloodsucker_critical_wound_bones_head]
 bip01_neck
@@ -354,24 +367,24 @@ stand_steal_0                           = 2,0.15,0.2,0.50,0.2
 
 
 [m_bloodsucker_attack_params]
-stand_attack_0             				=  0.30,  0.3,   50,    3.5,    2.0,    0.5,   -1.0,    1.0,   -1.0,    1.0,    2.6
-stand_attack_1             				=  0.30,  0.4,   60,    0.0,    2.0,    4.0,   -0.8,    0.8,   -1.2,    1.2,    2.6
-stand_attack_2             				=  0.30,  0.3,   50,   -4.0,    2.5,   0.50,   -1.0,    1.0,   -1.0,    1.0,    2.6
-vampire_2                  				=  0.60,  0.7,   100,   0.0,    2.5,   4.50,   -1.2,    1.2,   -1.2,    1.2,    2.6
-stand_run_attack_left_0    				=  0.30,  0.4,   65,    3.5,    2.0,    0.5,   -1.0,    1.0,   -1.0,    1.0,    2.6
-stand_run_attack_right_0   				=  0.30,  0.4,   65,    3.5,    2.0,    0.5,   -1.0,    1.0,   -1.0,    1.0,    2.6
+stand_attack_0             				=  0.30,  0.3,   50,    3.5,    2.0,    0.5,   -1.0,    1.0,   -1.0,    1.0,    2.7
+stand_attack_1             				=  0.30,  0.4,   60,    0.0,    2.0,    4.0,   -0.8,    0.8,   -1.2,    1.2,    2.7
+stand_attack_2             				=  0.30,  0.3,   50,   -4.0,    2.5,   0.50,   -1.0,    1.0,   -1.0,    1.0,    2.7
+vampire_2                  				=  0.60,  0.7,   100,   0.0,    2.5,   4.50,   -1.2,    1.2,   -1.2,    1.2,    2.7
+stand_run_attack_left_0    				=  0.30,  0.4,   65,    3.5,    2.0,    0.5,   -1.0,    1.0,   -1.0,    1.0,    2.7
+stand_run_attack_right_0   				=  0.30,  0.4,   65,    3.5,    2.0,    0.5,   -1.0,    1.0,   -1.0,    1.0,    2.7
 
 
 [bloodsucker_immunities]
-burn_immunity                           = 0.7
-strike_immunity                         = 0.3
-shock_immunity                          = 0.7
+burn_immunity                           = 0.8
+strike_immunity                         = 0.5
+shock_immunity                          = 0.4
 wound_immunity                          = 0.4
 radiation_immunity                      = 0.0
 telepatic_immunity                      = 0.0
 chemical_burn_immunity                  = 0.7
 explosion_immunity                      = 0.5
-fire_wound_immunity                     = 0.2
+fire_wound_immunity                     = 0.4
 
 
 [m_bloodsucker_vampire_effector]
@@ -416,17 +429,16 @@ $spawn                                  = "monsters\bloodsuckers\bloodsucker_02_
 rank                                    = 401
 spec_rank                               = normal
 Spawn_Inventory_Item_Probability        = 0.5
-health_hit_part                         = 0.65
 attack_params                           = bloodsucker_attack_params_normal
 
 
 [bloodsucker_attack_params_normal]
-stand_attack_0             				=  0.30,  0.4,   50,    3.5,    2.0,    0.5,   -1.0,    1.0,   -1.0,    1.0,    2.6
-stand_attack_1             				=  0.30,  0.5,   60,    0.0,    2.0,    4.0,   -0.8,    0.8,   -1.2,    1.2,    2.6
-stand_attack_2             				=  0.30,  0.4,   50,   -4.0,    2.5,   0.50,   -1.0,    1.0,   -1.0,    1.0,    2.6
-vampire_2                  				=  0.60,  0.8,   100,   0.0,    2.5,   4.50,   -1.2,    1.2,   -1.2,    1.2,    2.6
-stand_run_attack_left_0    				=  0.30,  0.5,   65,    3.5,    2.0,    0.5,   -1.0,    1.0,   -1.0,    1.0,    2.6
-stand_run_attack_right_0   				=  0.30,  0.5,   65,    3.5,    2.0,    0.5,   -1.0,    1.0,   -1.0,    1.0,    2.6
+stand_attack_0             				=  0.30,  0.4,   50,    3.5,    2.0,    0.5,   -1.0,    1.0,   -1.0,    1.0,    2.7
+stand_attack_1             				=  0.30,  0.5,   60,    0.0,    2.0,    4.0,   -0.8,    0.8,   -1.2,    1.2,    2.7
+stand_attack_2             				=  0.30,  0.4,   50,   -4.0,    2.5,   0.50,   -1.0,    1.0,   -1.0,    1.0,    2.7
+vampire_2                  				=  0.60,  0.8,   100,   0.0,    2.5,   4.50,   -1.2,    1.2,   -1.2,    1.2,    2.7
+stand_run_attack_left_0    				=  0.30,  0.5,   65,    3.5,    2.0,    0.5,   -1.0,    1.0,   -1.0,    1.0,    2.7
+stand_run_attack_right_0   				=  0.30,  0.5,   65,    3.5,    2.0,    0.5,   -1.0,    1.0,   -1.0,    1.0,    2.7
 
 
 [bloodsucker_strong]:m_bloodsucker_e
@@ -438,17 +450,16 @@ Predator_Visual                         = monsters\krovosos\krovosos_strong_xray
 rank                                    = 801
 spec_rank                               = strong
 Spawn_Inventory_Item_Probability        = 0.6
-health_hit_part                         = 0.6
 attack_params                           = bloodsucker_attack_params_strong
 
 
 [bloodsucker_attack_params_strong]
-stand_attack_0             				=  0.30,  0.5,   50,    3.5,    2.0,    0.5,   -1.0,    1.0,   -1.0,    1.0,    2.6
-stand_attack_1             				=  0.30,  0.6,   60,    0.0,    2.0,    4.0,   -0.8,    0.8,   -1.2,    1.2,    2.6
-stand_attack_2             				=  0.30,  0.5,   50,   -4.0,    2.5,   0.50,   -1.0,    1.0,   -1.0,    1.0,    2.6
-vampire_2                  				=  0.60,  0.9,   100,   0.0,    2.5,   4.50,   -1.2,    1.2,   -1.2,    1.2,    2.6
-stand_run_attack_left_0    				=  0.30,  0.6,   65,    3.5,    2.0,    0.5,   -1.0,    1.0,   -1.0,    1.0,    2.6
-stand_run_attack_right_0   				=  0.30,  0.6,   65,    3.5,    2.0,    0.5,   -1.0,    1.0,   -1.0,    1.0,    2.6
+stand_attack_0             				=  0.30,  0.5,   50,    3.5,    2.0,    0.5,   -1.0,    1.0,   -1.0,    1.0,    2.7
+stand_attack_1             				=  0.30,  0.6,   60,    0.0,    2.0,    4.0,   -0.8,    0.8,   -1.2,    1.2,    2.7
+stand_attack_2             				=  0.30,  0.5,   50,   -4.0,    2.5,   0.50,   -1.0,    1.0,   -1.0,    1.0,    2.7
+vampire_2                  				=  0.60,  0.9,   100,   0.0,    2.5,   4.50,   -1.2,    1.2,   -1.2,    1.2,    2.7
+stand_run_attack_left_0    				=  0.30,  0.6,   65,    3.5,    2.0,    0.5,   -1.0,    1.0,   -1.0,    1.0,    2.7
+stand_run_attack_right_0   				=  0.30,  0.6,   65,    3.5,    2.0,    0.5,   -1.0,    1.0,   -1.0,    1.0,    2.7
 
 
 [bloodsucker_arena]:bloodsucker_strong

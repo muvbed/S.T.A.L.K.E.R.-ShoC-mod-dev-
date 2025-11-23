@@ -17,10 +17,6 @@ function se_zone_anom:STATE_Read(packet, size)
     cse_anomalous_zone.STATE_Read(self, packet, size)
 	local rad = packet:r_float()
 	packet:r_seek(p2)
-    
-    if self.id ~= 65535 then
-		anomaly_holder.add_anomaly(self.id, self:clsid(), self:section_name(), rad)
-	end
 end
 
 --' Регистрация объекта
@@ -30,7 +26,6 @@ function se_zone_anom:on_register()
 end
 
 function se_zone_anom:on_unregister()
-	anomaly_holder.remove_anomaly(self.id)
     cse_anomalous_zone.on_unregister(self)
     anoms[self.id] = nil
 end

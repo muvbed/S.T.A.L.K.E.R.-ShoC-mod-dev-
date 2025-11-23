@@ -87,16 +87,16 @@ satiety_health_v                                = 0.0005
 satiety_critical                                = -1.0
 radiation_health_v                              = 0.0
 morale_v                                        = 0.01
-health_hit_part                                 = 0.6
+health_hit_part                                 = 1.0
 power_hit_part                                  = 1.0
 psy_health_v                                    = 0.1
 health_restore_v                                = 0.0002
 
 immunities_sect                                 = flesh_immunities
 
-bleeding_v                                      = 0.01
-wound_incarnation_v                             = 0.04
-min_wound_size                                  = 0.01
+bleeding_v										= 0.004			 	;потеря крови при номинальной ране в секунду
+wound_incarnation_v								= 0.0003		 	;скорость заживления раны
+min_wound_size									= 0.0128			;минимальный размер раны, после которого она считается зажившей
 
 sleep_health                                    = 1.5
 sleep_power                                     = 1.5
@@ -213,25 +213,42 @@ still_visible_time                              = 0
 	255,000,255,255
 
 [m_Flesh_damage]
-default       									= 0.2, -1, 1.5
+default                                 		= 0.01, -1, 0.1
 
-bip01_pelvis    								= 0.2, -1, 1.5
-bip01_spine     								= 0.2, -1, 1.5
-bip01_neck      								= 0.2, -1, 2.3
-bip01_head      								= 0.5, -1, 1.5, 1
-bip01_ponytail2 								= 1.0, -1, 3.0, 1
+bip01_pelvis                            		= 0.20, -1, 0.3
+bip01_spine                             		= 0.25, -1, 0.4
+
+bip01_l_thigh                           		= 0.15, -1, 0.3
+bip01_l_calf                            		= 0.10, -1, 0.2
+bip01_l_horselink                       		= 0.05, -1, 0.1
+
+bip01_r_thigh                           		= 0.15, -1, 0.3
+bip01_r_calf                            		= 0.10, -1, 0.2
+bip01_r_horselink                       		= 0.05, -1, 0.1
+
+bip01_l_clavicle                        		= 0.15, -1, 0.3
+bip01_l_upperarm                        		= 0.10, -1, 0.2
+bip01_l_forearm                         		= 0.05, -1, 0.1
+
+bip01_r_clavicle                        		= 0.15, -1, 0.3
+bip01_r_upperarm                        		= 0.10, -1, 0.2
+bip01_r_forearm                         		= 0.05, -1, 0.1
+
+bip01_neck                              		= 0.25, -1, 0.3
+bip01_head                              		= 0.30, -1, 0.4
+bip01_ponytail2                         		= 1.00, -1, 0.8, 10
 
 
 [flesh_immunities]
-burn_immunity                                   = 0.9
-strike_immunity                                 = 0.225
-shock_immunity                                  = 0.85
-wound_immunity                                  = 0.3
-radiation_immunity                              = 0.0
-telepatic_immunity                              = 1.0
-chemical_burn_immunity                          = 0.8
-explosion_immunity                              = 0.375
-fire_wound_immunity                             = 0.15
+burn_immunity                           		= 0.7
+strike_immunity                         		= 0.3
+shock_immunity                          		= 0.6
+wound_immunity                          		= 0.3
+radiation_immunity                      		= 0.0
+telepatic_immunity                      		= 1.0
+chemical_burn_immunity                  		= 0.6
+explosion_immunity                      		= 0.3
+fire_wound_immunity                     		= 0.3
 
 [m_flesh_attack_params]
 stand_attack_0                                  = 0.25,0.6,70,0.0,0.5,1.0,-1.0,1.0,-1.0,1.0,2.6
@@ -293,7 +310,6 @@ Spawn_Inventory_Item_Probability                = 0.6
 panic_threshold                                 = 0.3
 rank                                            = 801
 spec_rank                                       = strong
-health_hit_part                                 = 0.55
 attack_params                                   = flesh_attack_params_strong
 sound_idle                                      = monsters\pseudoflesh\flesh_idle_
 

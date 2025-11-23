@@ -111,8 +111,6 @@ local is_good_stalker = {
 
 local rel_enemy, rel_friend
 
---интенсивность поиска (количество отрабатываемых неписей)
-local search_intensivity = 30
 -- продолжительность боев
 local max_rounds = 8
 -- ѕри каком уровне здоровь€ Ќѕ— считаетс€ раненым
@@ -127,7 +125,7 @@ local sell_limit = 2000
 -- –ейтинг за убийство. ѕри убийстве более слабого - 0.5 * rate_kill_base, более сильного - 2 * rate_kill_base
 local rate_kill_base = 100
 local rate_art_found = 100
-local to_actor = 1500
+local to_actor = 500
 local look_radius_box = 25 * 25
 local look_radius_art = 50 * 50
 local look_radius_stalker = 140
@@ -160,11 +158,9 @@ end
 --- lsclon ---
 
 function update()
-	ogse_signals.get_mgr():reschedule(200)
-	
     if (bFlag == false and iTime ~= -1) then
         if (amk.game_minutes() - iTime > iFreq) then
-            bFlag = true
+			bFlag = true
             off_npcs = {}
             items = {}
             iCounter = 1
@@ -334,68 +330,116 @@ end
 
 function update_npc_tables()
     off_npcs = {}
-    local obj
+    
     local sim = alife()
-    for a = 1, 65534 do
-        obj = sim:object(a)
-        if obj then
-            add_fresh_meat(obj)
+    
+    for id, sobj in sim:objects() do
+        if sobj then
+            add_fresh_meat(sobj)
         end
-    end
+	end
+    	
     bFlag = false
     iTime = amk.game_minutes()
-    iCounter = 1
+	iCounter = 1
 end
 
 --генерируем оффлайн событи€
 function offline_alife()
+	for map = 1, #maps do
+		local lname = maps[map]
+		
+		if lname and off_npcs[lname] and off_npcs[lname].stalkers then 
+	        local st = #off_npcs[lname].stalkers 
+	        
+	        if st > 0 then	
+	        	for i = 1, st do
+	        		local npc = off_npcs[lname].stalkers[i]
+	        	
+		            if npc and math_random() < 0.5 then
+		                local victim = alife():object(npc.id)
+		                
+		                if 
+		                    victim 
+		                    and not victim.online 
+		                    and victim.health 
+		                    and victim.can_switch_online 
+		                    and victim:health() > 0 
+		                    and victim:can_switch_online() 
+		                    and victim:name() == npc.name 
+		                then
+		                    local vdata = collect_info(victim, lname)
+		                    
+		                    -- ѕровер€ем, что vdata существует и имеет нужные пол€
+		                    if vdata then
+		                    	if vdata.artefacts and #vdata.artefacts > 0 then
+		                            -- есть арты
+		                            on_artifacts_found(victim, vdata)
+		                        end
+		                        if vdata.weapons and vdata.weapons.seen and #vdata.weapons.seen > 0 then
+		                            -- есть бесхозное оружие
+		                            on_weapons_found(victim, vdata)
+		                        end
+		                       	if vdata.corpses and vdata.corpses.stalkers and #vdata.corpses.stalkers > 0 then
+		                            -- есть труп сталкера
+		                            on_npc_corpses_found(victim, vdata)
+		                        end
+		                        if vdata.corpses and vdata.corpses.monsters and #vdata.corpses.monsters > 0 then
+		                            -- есть труп монстра
+		                            on_monster_corpses_found(victim, vdata)
+		                        end
+		                        if vdata.inv_boxes and #vdata.inv_boxes > 0 then
+		                            -- есть контейнеры. Ќадо обыскать.
+		                            on_inv_boxes_found(victim, vdata)
+		                        end
+		                    end
+		                end
+		            end
+	        	end
+	    	end
+	    end
+	end
+
+    
     local lname = maps[math_random(#maps)]
-    local st = 0
-    if off_npcs[lname] then st = #off_npcs[lname].stalkers end
-    if st > 0 then
-        for search = 1, search_intensivity do
-            local rnd = math_random(st)
-            if off_npcs[lname].stalkers[rnd] then
-                local victim = alife():object(off_npcs[lname].stalkers[rnd].id)
-                if victim and not victim.online and victim.health and victim.can_switch_online and victim:health() > 0 and victim:can_switch_online() and victim:name() == off_npcs[lname].stalkers[rnd].name then
+		
+	if lname and off_npcs[lname] and off_npcs[lname].stalkers then 
+        local st = #off_npcs[lname].stalkers 
+        
+        if st > 0 then	
+        	local rnd = math_random(st)
+        	local npc = off_npcs[lname].stalkers[rnd]
+        	
+            if npc then
+                local victim = alife():object(npc.id)
+                
+                if 
+                    victim 
+                    and not victim.online 
+                    and victim.health 
+                    and victim.can_switch_online 
+                    and victim:health() > 0 
+                    and victim:can_switch_online() 
+                    and victim:name() == npc.name 
+                then
                     local vdata = collect_info(victim, lname)
-                    if #vdata.enemies > 0 then
-                        --есть вражина - воюем нах!
-                        on_enemies_found(victim, vdata, lname, rnd)
-                        break --прерываем цикл - событие отработано
-                    elseif #vdata.monsters > 0 then
-                        --есть монстр€тина - видели, слышали, убили, сдохли...
-                        on_monsters_found(victim, vdata, lname, rnd)
-                        break --прерываем цикл - событие отработано
-                    elseif #vdata.corpses.stalkers > 0 then
-                        --есть труп сталкера
-                        on_npc_corpses_found(victim, vdata)
-                        break --прерываем цикл - событие отработано
-                    elseif #vdata.corpses.monsters > 0 then
-                        --есть труп монстра
-                        on_monster_corpses_found(victim, vdata)
-                        break --прерываем цикл - событие отработано
-                    elseif #vdata.weapons.seen > 0 then
-                        --есть бесхозное оружие
-                        on_weapons_found(victim, vdata)
-                        break --прерываем цикл - событие отработано
-                    elseif #vdata.artefacts > 0 then
-                        --есть арты
-                        on_artifacts_found(victim, vdata)
-                        break --прерываем цикл - событие отработано
-                    elseif #vdata.inv_boxes > 0 then
-                        --есть контейнеры. Ќадо обыскать.
-                        on_inv_boxes_found(victim, vdata)
-                        break --прерываем цикл - событие отработано
-                    elseif items[victim.id] and #items[victim.id] > 0 then
-                        --попробуем продать вс€кого
-                        process_trade(victim)
-                        break
-                    else
+                    
+                    -- ѕровер€ем, что vdata существует и имеет нужные пол€
+                    if vdata then
+                    	if vdata.enemies and #vdata.enemies > 0 then
+                            -- есть вражина - воюем нах!
+                            on_enemies_found(victim, vdata, lname, rnd)
+                        elseif vdata.monsters and #vdata.monsters > 0 then
+                            -- есть монстр€тина - видели, слышали, убили, сдохли...
+                            on_monsters_found(victim, vdata, lname, rnd)
+                        elseif items[victim.id] and #items[victim.id] > 0 then
+                            -- попробуем продать вс€кого
+                            process_trade(victim)
+                        end
                     end
                 end
             end
-        end
+    	end
     end
 end
 
@@ -1276,7 +1320,6 @@ function on_npc_corpses_found(victim, vdata)
             end
         end
     end
-    process_trade(victim)
 end
 
 -- ќ, трупик монстра. Ѕудем шмонать?
@@ -1310,7 +1353,6 @@ function on_monster_corpses_found(victim, vdata)
             end
         end
     end
-    process_trade(victim)
 end
 
 -- ’ороша€ пушка - не помешает.
@@ -1328,7 +1370,6 @@ function on_weapons_found(victim, vdata)
             end
         end
     end
-    process_trade(victim)
 end
 
 -- ћо€ прелесссть
@@ -1358,7 +1399,6 @@ function on_artifacts_found(victim, vdata)
             end
         end
     end
-    process_trade(victim)
 end
 
 -- ќ, нычка - это гуд.
@@ -1432,7 +1472,6 @@ function on_inv_boxes_found(victim, vdata)
             victim:set_rank(victim:rank() + rate_art_found)
         end
     end
-    process_trade(victim)
 end
 
 function pick_item(npc, obj)
@@ -1917,7 +1956,7 @@ function is_valuable(item)
         local cost = get_item_cost(item)
         if IAmAWeapon[item:clsid()] and cost >= 1000 then
             result = true
-        elseif cost >= 800 then
+        elseif cost >= 100 then
             result = true
         end
     end

@@ -406,3 +406,46 @@ function is_barman_info()
 	end
 	return true 
 end
+
+function arts_barman_has_money(actor, npc)
+    return actor:money() >= 700
+end
+
+function arts_barman_give_money(actor, npc)
+    dialogs.relocate_money(npc, 700, "out")    
+end
+
+function arts_barman_has_infos(actor, npc)
+    return not has_alife_info("encyclopedy_zone_artifact_af_cristall_flower")
+      or not has_alife_info("encyclopedy_zone_artifact_af_gravi")
+      or not has_alife_info("encyclopedy_zone_artifact_af_mincer_meat")
+      or not has_alife_info("encyclopedy_zone_artifact_af_fireball")
+      or not has_alife_info("encyclopedy_zone_artifact_af_electra_flash")
+      or not has_alife_info("encyclopedy_zone_artifact_af_rusty_kristall")
+      or not has_alife_info("encyclopedy_zone_artifact_af_ameba_slug")
+end
+
+function arts_barman_done_infos(actor, npc)
+    return not arts_barman_has_infos() 
+end
+
+function arts_informator_has_money(actor, npc)
+    return actor:money() >= 1500
+end
+
+function arts_informator_give_money(actor, npc)
+    dialogs.relocate_money(npc, 1500, "out")    
+end
+
+function arts_informator_has_infos(actor, npc)
+    return not has_alife_info("encyclopedy_zone_artifact_af_fuzz_kolobok")
+      or not has_alife_info("encyclopedy_zone_artifact_af_dummy_glassbeads")
+      or not has_alife_info("encyclopedy_zone_artifact_af_dummy_pellicle")
+      or not has_alife_info("encyclopedy_zone_artifact_af_dummy_battery")
+      or not has_alife_info("encyclopedy_zone_artifact_af_dummy_dummy")
+      or not has_alife_info("encyclopedy_zone_artifact_af_dummy_spring")
+end
+
+function arts_informator_done_infos(actor, npc)
+    return not arts_informator_has_infos() 
+end

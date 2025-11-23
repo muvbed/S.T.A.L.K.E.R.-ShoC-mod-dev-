@@ -63,6 +63,7 @@
 		<title>sar_perception</title>
 		<objective>
 			<text>sar_perception_0</text>
+			<icon>ui_iconsTotal_sar_warlab</icon>
 		</objective>
 		<objective>
 			<text>sar_perception_1</text>

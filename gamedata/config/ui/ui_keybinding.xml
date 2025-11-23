@@ -49,7 +49,6 @@
 		<command id="kb_quick_slot_1"				exe="quick_slot_1"/>
 		<command id="kb_quick_slot_2"				exe="quick_slot_2"/>
 		<command id="kb_quick_slot_3"				exe="quick_slot_3"/>
-		<command id="kb_quick_slot_4"				exe="quick_slot_4"/>
 		<command id="kb_set_hudmask"				exe="set_hudmask"/>
 		<command id="kb_swipe_mask"				    exe="swipe_mask"/>
 		<command id="kb_drop_ruck"					exe="drop_ruck"/>

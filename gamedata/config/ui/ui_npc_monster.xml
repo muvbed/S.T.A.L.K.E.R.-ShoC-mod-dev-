@@ -6,8 +6,6 @@
     <texture id="ui_npc_monster_zombie_immortal" x="165" y="432" width="165" height="108" />
     <texture id="ui_npc_monster_zombie_strong" x="495" y="432" width="165" height="108" />
     <texture id="ui_npc_monster_zombie_old" x="330" y="432" width="165" height="108" />
-    <texture id="ui_npc_monster_zombie_plague" x="825" y="432" width="165" height="108" />
-    <texture id="ui_npc_monster_zombie_rusty" x="0" y="540" width="165" height="108" />
 
     <texture id="ui_npc_monster_crow" x="495" y="540" width="165" height="108" />
     <texture id="ui_npc_monster_rat" x="825" y="540" width="165" height="108" />
@@ -16,9 +14,7 @@
     <texture id="ui_npc_monster_burer_strong" x="330" y="540" width="165" height="108" />
 
     <texture id="ui_npc_monster_chimera" x="330" y="324" width="165" height="108" />
-    <texture id="ui_npc_monster_chimera_strong" x="165" y="540" width="165" height="108" />
 
-    <texture id="ui_npc_monster_fracture" x="495" y="324" width="165" height="108" />
     <texture id="ui_npc_monster_cat" x="660" y="324" width="165" height="108" />
     <texture id="ui_npc_monster_dog_red" x="0" y="0" width="165" height="108" />
     <texture id="ui_npc_monster_dog" x="165" y="0" width="165" height="108" />

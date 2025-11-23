@@ -282,10 +282,6 @@ function enable_generic_schemes(ini, npc, stype, section)
 		xr_wounded.set_wounded (npc, ini, "wounded", field_value)
 
 		xr_abuse.set_abuse(npc, ini, "abuse", section)
-		
-		if anomaly_evader then
-			anomaly_evader.set_evade(npc, ini, "evader", section)
-		end
 
 		-- local meet_section
 		field_value = get_string(ini, section, "meet", npc, false, "")

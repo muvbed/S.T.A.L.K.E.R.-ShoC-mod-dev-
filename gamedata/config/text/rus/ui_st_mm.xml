@@ -5,9 +5,6 @@
 	<string id="ui_mm_newgame">
 		<text>Новая игра</text>
 	</string>
-	<string id="ui_mm_load_game">
-		<text>Загрузить игру</text>
-	</string>
 	<string id="ui_mm_last_save">
 		<text>Последняя игра</text>
 	</string>
@@ -42,8 +39,11 @@
 		<text>Вернуться</text>
 	</string>
 	<!-- Окно загрузки -->
+	<string id="ui_mm_load_game">
+		<text>Загрузить игру</text>
+	</string>
 	<string id="ui_mm_load">
-		<text>Выбрать</text>
+		<text>Загрузить</text>
 	</string>
 	<!-- загрузка разное -->
 	<string id="ui_st_load_game_confirm">
@@ -63,7 +63,7 @@
 		<text>Сохранить игру</text>
 	</string>
 	<string id="ui_mm_save">
-		<text>Сохранить игру</text>
+		<text>Сохранить</text>
 	</string>
 	<string id="ui_st_file_exist_owerwrite_q">
 		<text>Файл с таким именем уже существует. Перезаписать?</text>

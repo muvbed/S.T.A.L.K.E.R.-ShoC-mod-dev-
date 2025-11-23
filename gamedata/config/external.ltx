@@ -102,7 +102,7 @@ engine_ammo_repacker = false
 ; default_to_ruck = false
 ; как минимум в секцию [bolt]. Иначе не получится доставать и кидать болт.
 ; А для надежности, еще и в [device_pda], [device_torch] и в секции гранат.
-ruck_flag_preferred = false
+ruck_flag_preferred = true
 
 ; Включить старый режим отрисовки слота костюма (иконка актора в костюме в полный рост)
 old_outfit_slot_style = false
@@ -312,11 +312,11 @@ slot_persistent_5	= false		;binocular
 slot_persistent_6	= true		;bolt
 slot_persistent_7	= false		;outfit
 slot_persistent_8	= true		;pda
-slot_persistent_9	= false		;detector
-slot_persistent_10	= false		;torch
-slot_persistent_11	= false		;helmet
-slot_persistent_12	= true		;nightvision googles
-slot_persistent_13	= true		;biodetector
+slot_persistent_10	= true		;torch
+slot_persistent_11	= true		;helmet
+slot_persistent_9	= false		;fast slot 1
+slot_persistent_12	= false		;fast slot 2
+slot_persistent_13	= false		;fast slot 3
 
 slot_visible_8 = true ;pda
 
@@ -325,7 +325,6 @@ slot_visible_8 = true ;pda
 quick_slot_1 = kQUICK_SLOT_1
 quick_slot_2 = kQUICK_SLOT_2
 quick_slot_3 = kQUICK_SLOT_3
-quick_slot_4 = kQUICK_SLOT_4
 set_hudmask = kMASK
 drop_ruck = kRUCK
 swipe_mask = kSWIPE_MASK

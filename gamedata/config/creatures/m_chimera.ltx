@@ -135,16 +135,16 @@ satiety_health_v                        = 0.0001
 satiety_critical                        = -1.0
 radiation_health_v                      = 0.0
 morale_v                                = 0.0
-health_hit_part                         = 0.5
+health_hit_part                         = 1.0
 power_hit_part                          = 1.0
 psy_health_v                            = 0.1
 health_restore_v                        = 0.0001
 
 immunities_sect                         = chimera_immunities
 
-bleeding_v                              = 0.0001
-wound_incarnation_v                     = 0.15
-min_wound_size                          = 0.005
+bleeding_v								= 0.003			 	;потеря крови при номинальной ране в секунду
+wound_incarnation_v						= 0.0005		 	;скорость заживления раны
+min_wound_size							= 0.0128			;минимальный размер раны, после которого она считается зажившей
 
 sleep_health                            = 1.5
 sleep_power                             = 1.5
@@ -238,13 +238,45 @@ luminocity_factor                       = 2.5
 transparency_threshold                  = 0.25
 
 [m_chimera_damage]
-default                                 = 0.1, -1, 0.1
+default									= 0.01, -1, 0.1
 
-neck_r                                  = 0.4, -1, 0.6
-head_boss                               = 0.8, -1, 0.3
+hip										= 0.20, -1, 0.3
+spine									= 0.35, -1, 0.4
+spine_1									= 0.45, -1, 0.5
+chest									= 0.55, -1, 0.6
+
+l_thing									= 0.15, -1, 0.2
+l_leg									= 0.10, -1, 0.1
+l_leg_1									= 0.05, -1, 0.1
+
+r_thing									= 0.15, -1, 0.2
+r_leg									= 0.10, -1, 0.1
+r_leg_1									= 0.05, -1, 0.1
+
+sholder_l								= 0.20, -1, 0.2
+arm_l									= 0.15, -1, 0.1
+forearm_l								= 0.10, -1, 0.1
+
+sholder_r								= 0.20, -1, 0.2
+arm_r									= 0.15, -1, 0.1
+forearm_r								= 0.10, -1, 0.1
+
+neck_r                                  = 0.65, -1, 0.6
+neck_l									= 0.65, -1, 0.6
+
+head_little								= 0.75, -1, 0.5
+jaw_little								= 0.20, -1, 0.2
+
+head_boss                               = 0.85, -1, 0.6
+boss_jaw								= 0.25, -1, 0.2
+boss_jaw_1								= 0.25, -1, 0.2
+brow									= 0.80, -1, 0.5
+eye_l									= 1.00, -1, 0.7, 10
+eye_r									= 1.00, -1, 0.7, 10
+
 
 [m_chimera_attack_params]
-jump_attack_1  							= 	0.3,		1.65,		350,       0.0, 1.0, 0.0,		-1.8, 1.8, -1.8, 1.8,							  4.8
+jump_attack_1  							= 0.3,		1.65,		350,       0.0, 1.0, 0.0,		-1.8, 1.8, -1.8, 1.8,							  4.8
 
 [m_chimera_attack_effector]
 duality_h                               = 0.1
@@ -271,72 +303,21 @@ stand_walk_0                            = 1,0.01,1,0.25,0.7
 stand_run_fwd_0                         = 1,0.01,1,0.25,0.6
 
 [chimera_immunities]
-burn_immunity                           = 0.85
-strike_immunity                         = 0.15
-shock_immunity                          = 0.55
-wound_immunity                          = 0.2
+burn_immunity                           = 0.6
+strike_immunity                         = 0.2
+shock_immunity                          = 0.4
+wound_immunity                          = 0.3
 radiation_immunity                      = 0.0
 telepatic_immunity                      = 0.0
-chemical_burn_immunity                  = 0.85
-explosion_immunity                      = 0.25
-fire_wound_immunity                     = 0.1
+chemical_burn_immunity                  = 0.5
+explosion_immunity                      = 0.2
+fire_wound_immunity                     = 0.2
 
 [chimera_terrain]
 	255,000,255,255
 
 [chimera_weak]:m_chimera_e
 $spawn                                  = "monsters\chimera_weak"
-
-[chimera_strong]:chimera_weak
-$spawn                                  = "monsters\chimera_strong"
-visual                                  = monsters\chimera\chimera2
-corpse_visual                           = monsters\chimera\chimera2_dead
-
-rank                                    = 801
-spec_rank                               = strong
-Spawn_Inventory_Item_Probability        = 0.6
-health_hit_part                         = 0.45
-
-bones_particles                         = electro_chimera_particles
-immunities_sect                         = electro_chimera_immunities
-
-[electro_chimera_immunities]:chimera_immunities
-shock_immunity                          = 0.0
-
-[electro_chimera_particles]
-electro_chimera_particles_lfoot         = electro_chimera_lfoot
-electro_chimera_particles_rfoot         = electro_chimera_rfoot
-electro_chimera_particles_lhand         = electro_chimera_lhand
-electro_chimera_particles_rhand         = electro_chimera_rhand
-
-[electro_chimera_lfoot]
-particle                                = ogsm\ogsm_electrochimera
-sound                                   = anomaly\electra_idle1
-bone                                    = l_foot
-stop_on_death                           = true
-
-[electro_chimera_rfoot]
-particle                                = ogsm\ogsm_electrochimera
-bone                                    = r_foot
-stop_on_death                           = true
-
-[electro_chimera_lhand]
-particle                                = ogsm\ogsm_electrochimera
-bone                                    = hand_l
-stop_on_death                           = true
-
-[electro_chimera_rhand]
-particle                                = ogsm\ogsm_electrochimera
-bone                                    = hand_r
-stop_on_death                           = true
-
-[ros_electro_chimera]:chimera_strong
-$spawn                                  = "monsters\ros_electro_chimera"
-custom_data                             = scripts\ros_electrochimera.ltx
-
-[pri_electro_chimera]:chimera_strong
-$spawn                                  = "monsters\pri_electro_chimera"
-custom_data                             = scripts\pri_electrochimera.ltx
 
 [arena_chimera_1]:chimera_weak
 $spawn                                  = "monsters\arena_chimera_1"

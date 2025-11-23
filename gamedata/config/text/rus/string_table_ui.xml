@@ -88,7 +88,7 @@
 		<text>Переход</text>
 	</string>
 	<string id="tip_eat_disable">
-		<text>Необходимо снять шлем/маску для использования предмета</text>
+		<text>Необходимо снять защитную маску для использования предмета</text>
 	</string>
 	<string id="warn_no_matches">
 		<text>Нет спичек в рюкзаке</text>

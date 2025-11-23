@@ -74,7 +74,7 @@ local mattress_processed = 0
 
 -- Для накопления сонливости извне (значение в часах)
 function add_need_for_sleep(value)
-	last_need_for_sleep = value * 3600 + last_need_for_sleep
+	last_need_for_sleep = value * 18000 + last_need_for_sleep
 end
 
 
@@ -84,7 +84,7 @@ function begin_sleep(desired_sleep_time)
 	break_sleep_request = false -- если кто-то запрашивал прерывание сна во время бодрствования, то сбрасываем это
 	--
 	db.actor:stop_talk()
-	bind_stalker.hide_weapon()
+	db.actor:hide_weapon()
 	--
 	sleeping_now = true
 	local urgent_awakening = false
@@ -171,7 +171,7 @@ function begin_sleep(desired_sleep_time)
 	level.add_pp_effector ("black_unfade.ppe", 7031, false)
 	level.add_cam_effector("camera_effects\\item_use_slow.anm", 7032, false, "")
 
-	bind_stalker.restore_weapon()
+	db.actor:restore_weapon()
 	local snd_obj = xr_sound.get_safe_sound_object([[characters_voice\human_01\stalker\states\breath\breath_2]])
 	if snd_obj then
 		snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 15.0)

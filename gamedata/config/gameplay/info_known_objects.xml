@@ -59,7 +59,6 @@
   <article>mutant_cat_general</article>
   <article>mutant_burer_general</article>
   <article>mutant_zombie_general</article>
-  <article>mutant_fracture_general</article>
   <article>mutant_chimera_general</article>
   <article>mutant_blind_general</article>
   <article>mutant_tushkano</article>
@@ -80,14 +79,15 @@
   <article>social_stalker-clans_killers</article>
   <article>social_stalker-clans_loners</article>
 
-	<article>tutorial_binocular</article>
-	<article>tutorial_crouch</article>
+	<article>tutorial_inventory</article>
+	<article>tutorial_pockets</article>
+	<article>tutorial_ruck</article>
 	<article>tutorial_hide_weapon</article>
-	<article>tutorial_jump</article>
+	<article>tutorial_gaz</article>
 	<article>tutorial_overload</article>
 	<article>tutorial_radiation</article>
 	<article>tutorial_relation</article>
-	<article>tutorial_sprint</article>
+	<article>tutorial_saves</article>
 	<article>tutorial_weakness</article>
 	<article>tutorial_weapon</article>
 	<article>tutorial_wound</article>
@@ -99,111 +99,111 @@
 
 </info_portion>
   
-  <info_portion id="encyclopedy_zone_artifact_af-medusa">
+  <info_portion id="encyclopedy_zone_artifact_af_medusa">
 	<article>zone_artifact_af-medusa</article>
  </info_portion>
 
-  <info_portion id="encyclopedy_zone_artifact_af-cristall-flower">
+  <info_portion id="encyclopedy_zone_artifact_af_cristall_flower">
 	<article>zone_artifact_af-cristall-flower</article>
  </info_portion>
  
-  <info_portion id="encyclopedy_zone_artifact_af-night-star">
+  <info_portion id="encyclopedy_zone_artifact_af_night_star">
 	<article>zone_artifact_af-night-star</article>
  </info_portion>
   
-  <info_portion id="encyclopedy_zone_artifact_af-vyvert">
+  <info_portion id="encyclopedy_zone_artifact_af_vyvert">
 	<article>zone_artifact_af-vyvert</article>
  </info_portion>
   
-   <info_portion id="encyclopedy_zone_artifact_af-gravi">
+   <info_portion id="encyclopedy_zone_artifact_af_gravi">
 	<article>zone_artifact_af-gravi</article>
  </info_portion>
   
-    <info_portion id="encyclopedy_zone_artifact_af-gold-fish">
+    <info_portion id="encyclopedy_zone_artifact_af_gold_fish">
 	<article>zone_artifact_af-gold-fish</article>
  </info_portion>
  
-  <info_portion id="encyclopedy_zone_artifact_af-blood">
+  <info_portion id="encyclopedy_zone_artifact_af_blood">
 	<article>zone_artifact_af-blood</article>
  </info_portion>
  
-   <info_portion id="encyclopedy_zone_artifact_af-mincer-meat">
+   <info_portion id="encyclopedy_zone_artifact_af_mincer_meat">
 	<article>zone_artifact_af-mincer-meat</article>
  </info_portion>
  
-   <info_portion id="encyclopedy_zone_artifact_af-soul">
+   <info_portion id="encyclopedy_zone_artifact_af_soul">
 	<article>zone_artifact_af-soul</article>
  </info_portion>
  
-   <info_portion id="encyclopedy_zone_artifact_af-drops">
+   <info_portion id="encyclopedy_zone_artifact_af_drops">
 	<article>zone_artifact_af-drops</article>
  </info_portion>
  
-   <info_portion id="encyclopedy_zone_artifact_af-fireball">
+   <info_portion id="encyclopedy_zone_artifact_af_fireball">
 	<article>zone_artifact_af-fireball</article>
  </info_portion>
  
-   <info_portion id="encyclopedy_zone_artifact_af-cristall">
+   <info_portion id="encyclopedy_zone_artifact_af_cristall">
 	<article>zone_artifact_af-cristall</article>
  </info_portion>
  
- <info_portion id="encyclopedy_zone_artifact_af-electra-sparkler">
+ <info_portion id="encyclopedy_zone_artifact_af_electra_sparkler">
 	<article>zone_artifact_af-electra-sparkler</article>
  </info_portion>
  
-  <info_portion id="encyclopedy_zone_artifact_af-electra-flash">
+  <info_portion id="encyclopedy_zone_artifact_af_electra_flash">
 	<article>zone_artifact_af-electra-flash</article>
  </info_portion>
  
-   <info_portion id="encyclopedy_zone_artifact_af-electra-moonlight">
+   <info_portion id="encyclopedy_zone_artifact_af_electra_moonlight">
 	<article>zone_artifact_af-electra-moonlight</article>
  </info_portion>
  
-  <info_portion id="encyclopedy_zone_artifact_af-rusty-thorn">
+  <info_portion id="encyclopedy_zone_artifact_af_rusty_thorn">
 	<article>zone_artifact_af-rusty-thorn</article>
  </info_portion>
  
-   <info_portion id="encyclopedy_zone_artifact_af-rusty-kristall">
+   <info_portion id="encyclopedy_zone_artifact_af_rusty_kristall">
 	<article>zone_artifact_af-rusty-kristall</article>
  </info_portion>
  
-   <info_portion id="encyclopedy_zone_artifact_af-rusty-sea-urchin">
+   <info_portion id="encyclopedy_zone_artifact_af_rusty_sea-urchin">
 	<article>zone_artifact_af-rusty-sea-urchin</article>
  </info_portion>
  
-   <info_portion id="encyclopedy_zone_artifact_af-fuzz-kolobok">
+   <info_portion id="encyclopedy_zone_artifact_af_fuzz_kolobok">
 	<article>zone_artifact_af-fuzz-kolobok</article>
  </info_portion>
  
-   <info_portion id="encyclopedy_zone_artifact_af-ameba-slime">
+   <info_portion id="encyclopedy_zone_artifact_af_ameba_slime">
 	<article>zone_artifact_af-ameba-slime</article>
  </info_portion>
  
-   <info_portion id="encyclopedy_zone_artifact_af-ameba-slug">
+   <info_portion id="encyclopedy_zone_artifact_af_ameba_slug">
 	<article>zone_artifact_af-ameba-slug</article>
  </info_portion>
  
-   <info_portion id="encyclopedy_zone_artifact_af-ameba-mica">
+   <info_portion id="encyclopedy_zone_artifact_af_ameba_mica">
 	<article>zone_artifact_af-ameba-mica</article>
  </info_portion>
  
-   <info_portion id="encyclopedy_zone_artifact_af-dummy-glassbeads">
+   <info_portion id="encyclopedy_zone_artifact_af_dummy_glassbeads">
 	<article>zone_artifact_af-dummy-glassbeads</article>
  </info_portion>
  
-   <info_portion id="encyclopedy_zone_artifact_af-dummy-pellicle">
+   <info_portion id="encyclopedy_zone_artifact_af_dummy_pellicle">
 	<article>zone_artifact_af-dummy-pellicle</article>
  </info_portion>
  
-  <info_portion id="encyclopedy_zone_artifact_af-dummy-battery">
+  <info_portion id="encyclopedy_zone_artifact_af_dummy_battery">
 	<article>zone_artifact_af-dummy-battery</article>
  </info_portion>
  
-   <info_portion id="encyclopedy_zone_artifact_af-dummy-dummy">
+   <info_portion id="encyclopedy_zone_artifact_af_dummy_dummy">
 	<article>zone_artifact_af-dummy-dummy</article>
  </info_portion>
  
-  <info_portion id="encyclopedy_zone_artifact_af-dummy-spring">
+  <info_portion id="encyclopedy_zone_artifact_af_dummy_spring">
 	<article>zone_artifact_af-dummy-spring</article>
  </info_portion>
  
@@ -334,11 +334,6 @@
 	<article>mutant_bloodsucker_general</article>
  </info_portion>
 
-
-   <info_portion id="encyclopedy_mutant_fracture_general">
-	<article>mutant_fracture_general</article>
- </info_portion>
-
    <info_portion id="encyclopedy_mutant_chimera_general">
 	<article>mutant_chimera_general</article>
  </info_portion>
@@ -346,6 +341,10 @@
  
    <info_portion id="encyclopedy_mutant_burer_general">
 	<article>mutant_burer_general</article>
+ </info_portion>
+ 
+   <info_portion id="encyclopedy_mutant_psy_burer_general">
+	<article>enc_psy_burer</article>
  </info_portion>
 
    <info_portion id="encyclopedy_mutant_zombie_general">
@@ -358,6 +357,10 @@
  
    <info_portion id="encyclopedy_mutant_pseudogiant_general">
 	<article>mutant_pseudogiant_general</article>
+ </info_portion>
+ 
+   <info_portion id="encyclopedy_mutant_psydog_general">
+ 	<article>enc_psydog</article>
  </info_portion>
  
    <info_portion id="encyclopedy_mutant_poltergeist_general">
@@ -412,17 +415,20 @@
 	<article>social_stalker-clans_loners</article>
  </info_portion>
  
-	<info_portion id="encyclopedy_tutorial_binocular">
-		<article>tutorial_binocular</article>
+ 	<info_portion id="encyclopedy_tutorial_inventory">
+		<article>tutorial_inventory</article>
 	</info_portion>
-	<info_portion id="encyclopedy_tutorial_crouch">
-		<article>tutorial_crouch</article>
+	<info_portion id="encyclopedy_tutorial_pockets">
+		<article>tutorial_pockets</article>
+	</info_portion>
+	<info_portion id="encyclopedy_tutorial_ruck">
+		<article>tutorial_ruck</article>
 	</info_portion>
 	<info_portion id="encyclopedy_tutorial_hide_weapon">
 		<article>tutorial_hide_weapon</article>
 	</info_portion>
-	<info_portion id="encyclopedy_tutorial_jump">
-		<article>tutorial_jump</article>
+	<info_portion id="encyclopedy_tutorial_gaz">
+		<article>tutorial_gaz</article>
 	</info_portion>
 	<info_portion id="encyclopedy_tutorial_overload">
 		<article>tutorial_overload</article>
@@ -433,8 +439,8 @@
 	<info_portion id="encyclopedy_tutorial_relation">
 		<article>tutorial_relation</article>
 	</info_portion>
-	<info_portion id="encyclopedy_tutorial_sprint">
-		<article>tutorial_sprint</article>
+	<info_portion id="encyclopedy_tutorial_saves">
+		<article>tutorial_saves</article>
 	</info_portion>
 	<info_portion id="encyclopedy_tutorial_weakness">
 		<article>tutorial_weakness</article>

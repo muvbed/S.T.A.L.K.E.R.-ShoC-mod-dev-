@@ -9,33 +9,11 @@
         <text>enc_mutant_zombie_general</text>
     </article>
 
-    <article id="enc_zombie_rusty" name="Zombie_rusty" group="Mutants">
-        <texture>ui_npc_monster_zombie_rusty</texture>
-        <text>enc_mutant_zombie_rusty</text>
-    </article>
-
-    <article id="enc_zombie_plague" name="Zombie_plague" group="Mutants">
-        <texture>ui_npc_monster_zombie_plague</texture>
-        <text>enc_mutant_zombie_plague</text>
-    </article>
-
     <!-------------------------------- CHIMERA ----------------------------->
 
     <article id="mutant_chimera_general" name="Chimera" group="Mutants">
         <texture>ui_npc_monster_chimera</texture>
         <text>enc_mutant_chimera_general</text>
-    </article>
-
-    <article id="enc_electrochimera" name="electrochimera" group="Mutants">
-        <texture>ui_npc_monster_chimera_strong</texture>
-        <text>enc_mutant_electrochimera</text>
-    </article>
-
-    <!-------------------------------- IZLOM ----------------------------->
-
-    <article id="mutant_fracture_general" name="Fracture" group="Mutants">
-        <texture>ui_npc_monster_fracture</texture>
-        <text>enc_mutant_fracture_general</text>
     </article>
 
     <!-------------------------------- BURER ----------------------------->

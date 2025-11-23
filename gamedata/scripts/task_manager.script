@@ -135,6 +135,11 @@ function CRandomTask:__init()
 		curr_task_info.reward_reputation	= utils.cfg_get_number(sys_ini, id, "reward_reputation", nil, false)
 		curr_task_info.reward_relation		= parse_key_value(utils.cfg_get_string(sys_ini, id, "reward_relation", nil, false, ""))
 		
+		local infos = utils.cfg_get_string(sys_ini, id, "reward_infoportion", nil, false, "")
+		if infos ~= nil then
+			curr_task_info.reward_infoportion = parse_names(infos) 
+		end
+		
 		if sys_ini:line_exist(id, "condlist") then
 			curr_task_info.condlist			= xr_logic.parse_condlist(db.actor_proxy, "task_manager", "condlist", sys_ini:r_string(id, "condlist"))
 		else
@@ -819,6 +824,14 @@ function CRandomTask:task_reward(actor, npc, p1, p2)
 				if task_desc.reward_item ~= nil then
 					for kk,vv in pairs(task_desc.reward_item) do
 						dialogs.relocate_item_section(npc, vv, "in")
+					end
+				end
+				
+				if task_desc.reward_infoportion ~= nil then
+					for kk,vv in pairs(task_desc.reward_infoportion) do
+						if not has_alife_info(vv) then
+							db.actor:give_info_portion(vv)
+						end
 					end
 				end
 

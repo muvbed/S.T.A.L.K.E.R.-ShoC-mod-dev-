@@ -194,6 +194,7 @@
         </phrase_list>
     </dialog>
 	<dialog id="repair_dialog">
+		<precondition>dialogs.allow_repair_dialog</precondition>
 		<phrase_list>
 			<phrase id="0">
 				<text>ui_repair_dialog</text>

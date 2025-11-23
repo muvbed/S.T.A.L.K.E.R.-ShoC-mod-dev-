@@ -35,6 +35,7 @@
 		<actor_dialog>tm_barman_dialog</actor_dialog>
 		<actor_dialog>tm_barman_reward</actor_dialog>
 		<actor_dialog>repair_dialog</actor_dialog>
+		<actor_dialog>arts_barman_info</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bar_stalker_white_novice_1" team_default = "1">
@@ -405,6 +406,7 @@
 		<actor_dialog>bar_bar_osvedomitel_trade_info</actor_dialog>
 		<actor_dialog>tm_mercenary_dialog</actor_dialog>
 		<actor_dialog>tm_mercenary_reward</actor_dialog>
+		<actor_dialog>arts_informator_info</actor_dialog>
 
 #include "gameplay\character_dialogs.xml"				
 	</specific_character>	

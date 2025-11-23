@@ -1,0 +1,84 @@
+-- Author: Muvbed 12.07.2025 
+
+function update_hud(prop_item)
+	local hud = get_hud()
+
+	if not hud then return end
+	
+	local slots = {
+		[1] = db.actor:item_in_slot(8),
+		[2] = db.actor:item_in_slot(11),
+		[3] = db.actor:item_in_slot(12),
+	}
+
+	for i = 1, 3 do 
+		local v = slots[i]  
+		 
+		if v then
+			local item_section = v:section()
+			
+			if hud:GetCustomStatic("quick_slot_"..i) then
+				hud:RemoveCustomStatic("quick_slot_"..i)
+				hud:AddCustomStatic("quick_slot_"..i, true)		
+			end
+			if hud:GetCustomStatic("quick_slot_key_"..i) then
+				hud:RemoveCustomStatic("quick_slot_key_"..i)
+				hud:AddCustomStatic("quick_slot_key_"..i, true)	
+			end
+			
+			local quick_slot_static = hud:GetCustomStatic("quick_slot_"..i) or hud:AddCustomStatic("quick_slot_"..i, true)
+
+			CIconParams( item_section ):set_shader( quick_slot_static:wnd() )
+			quick_slot_static:wnd():SetColor( db.actor:object(item_section) and GetARGB(255,255,255,255) or GetARGB(128,255,255,255) )
+
+			local quick_slot_key_static = hud:GetCustomStatic("quick_slot_key_"..i) or hud:AddCustomStatic("quick_slot_key_"..i, true)
+			local dik = bind_to_dik(key_bindings["kQUICK_SLOT_"..i])
+			local key_name = dik and dik_to_keyname(dik) or false
+
+			quick_slot_key_static:wnd():SetText(key_name and key_name:sub(2) or "")
+			quick_slot_key_static:wnd():SetFont(GetFontLetterica16Russian())
+		else
+			hud:RemoveCustomStatic("quick_slot_"..i)
+			hud:RemoveCustomStatic("quick_slot_key_"..i)
+		end
+	end
+end
+
+local function eat_qs_item(slot)
+	local item_in_slot = db.actor:item_in_slot(slot)
+
+	if 
+	  item_in_slot 
+	  and item_in_slot:section()
+	  and dynamic_hud.check_item_able(item_in_slot:section()) 
+	then
+		db.actor:eat(item_in_slot)
+	end				
+end
+
+local binds_table = {
+	[key_bindings.kQUICK_SLOT_1] = function() return eat_qs_item(8) end,
+	[key_bindings.kQUICK_SLOT_2] = function() return eat_qs_item(11) end,
+	[key_bindings.kQUICK_SLOT_3] = function() return eat_qs_item(12) end,
+}
+
+local function on_key_down(key, bind)
+	if level.main_input_receiver() or not db.actor:alive() or device().precache_frame > 1 then 
+		return 
+	end
+
+	local fun = binds_table[bind]
+
+	if fun then
+		return fun()
+	end
+end
+
+function attach(sm)
+	sm:subscribe({ signal = "on_key_down",	     fun = on_key_down    })
+	sm:subscribe({ signal = "on_spawn",	     	 fun = update_hud     })
+	sm:subscribe({ signal = "on_item_to_slot",	 fun = update_hud     })
+	sm:subscribe({ signal = "on_item_to_ruck",	 fun = update_hud     })
+	sm:subscribe({ signal = "on_drop",           fun = update_hud     })
+end
+

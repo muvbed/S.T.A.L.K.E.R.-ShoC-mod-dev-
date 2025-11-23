@@ -1,4 +1,4 @@
-device_torch 		= 1, prob = 0.80 \n
+device_torch 		= 1, prob = 1.00 \n
 device_pda 			= 1, prob = 1.00 \n
 
 medkit 				= 1, prob = 0.25 \n

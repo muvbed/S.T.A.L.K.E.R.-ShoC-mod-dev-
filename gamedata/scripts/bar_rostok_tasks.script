@@ -5,9 +5,10 @@ function proceed()
 	-- выдача информации с флешки профессора
 	-- nv140420
 	if not has_alife_info("bar_ecolog_research_normal") and
-	   not has_alife_info("bar_ecolog_research_corrupted")
+	   not has_alife_info("bar_ecolog_research_corrupted") and
+	   db.actor:object("bar_ecolog_flash")
 	then
-		if has_alife_info("bar_rescue_research_corruped") and db.actor:object("bar_ecolog_flash") then
+		if has_alife_info("bar_rescue_research_corruped") then
 			db.actor:give_info_portion("bar_ecolog_research_corrupted")
 		end
 		

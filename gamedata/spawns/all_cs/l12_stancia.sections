@@ -207,9 +207,9 @@ aes_space_restrictor_timer_go
 aes_space_restrictor_weather
 aes_space_restrictor_zabor
 camp_fire_0000
-ogse_hide_restrictor_38
-ogse_hide_restrictor_41
-ogse_hide_restrictor_42
+ogse_hide_restrictor_aes_1
+ogse_hide_restrictor_aes_2
+ogse_hide_restrictor_aes_3
 aes_monolit_heli_hunter
 aes_monolit_stalker_0000
 aes_monolit_stalker_0001

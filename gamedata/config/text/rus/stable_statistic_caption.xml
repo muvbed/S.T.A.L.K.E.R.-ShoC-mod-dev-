@@ -1,14 +1,8 @@
 	<string id="chimera_weak">
 		<text>химера</text>
 	</string>
-	<string id="chimera_strong">
-		<text>электрохимера</text>
-	</string>
 	<string id="tushkano_normal">
 		<text>тушкан</text>
-	</string>
-	<string id="fracture_weak">
-		<text>излом</text>
 	</string>
 	<string id="cat_weak">
 		<text>кот-баюн</text>
@@ -186,12 +180,6 @@
 	</string>
 	<string id="tushkano_weak">
 		<text>тушкан</text>
-	</string>
-	<string id="zombie_rusty">
-		<text>зомби-камикадзе</text>
-	</string>
-	<string id="zombie_plague">
-		<text>чумной зомби</text>
 	</string>
 	<string id="zombie_strong">
 		<text>зомби-призрак</text>

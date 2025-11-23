@@ -176,7 +176,7 @@ local bad_circle_table = {
 		{313.16,   3.70, 116.90, 15},	-- лагерь "в поле"
 		{-156.70, -29.60,-369.30, 200},	-- армейский кордон
 		{20.72,  15.95, 668.35, 45},	-- заброшенный кордон
-		{-28.8600006103516, -18, -174.960006713867, 10}	-- Тёмная зона 1
+		{-28.86, -18, -174.96, 10}	-- Тёмная зона 1
 	},
 	["l02_garbage"] = {
 		--{ -16.76,   0.54, 284.90, 10},	-- точка перехода
@@ -188,7 +188,7 @@ local bad_circle_table = {
 		{-183.00,   0.00,-160.00, 20},	-- старт квестовых бандитов за кладбищем техники
 		{-100.00,   0.00,-204.00, 10},	-- наблюдатель с биноклем, пасущий бандитов
 		{-82.00,   0.00,-208.00, 40},	-- Бес, поле боя с бандитами
-		{211.729995727539, -4.40000009536743, -11.8199996948242, 10} -- Тёмная зона 2
+		{211.72, -4.40, -11.81, 10} -- Тёмная зона 2
 	},
 	["l03_agroprom"] = {
 		{76.33,  -0.05,  33.20, 20}, 	-- место боя нейтралов с солдатнёй
@@ -586,14 +586,14 @@ function generate_anoms(lname)
 	for i=1, rnd do
 		local pos, new_lv, new_gv = anomaly_position_choice(lname)
 		local section, shape = anomaly_section_choice(lname)
-		ASSERT(shape.shtype ~= 0 or ( shape.radius and shape.radius > 0 ), "Incorrect shape radius for section [%s]", section)
-		--shape.radius = shape.radius * get_float(section, "effective_radius", 1)
-		spawn_anomaly( section, pos, new_lv, new_gv, shape )
-		--log3("--[%s] Generated anomaly [%s] on level [%s]", script_name(), section, lname)
-
-		lvids_forbidden[new_lv] = true
-		table.insert(position_forbidden, pos)
 		
+		if section and (shape.shtype ~= 0 or ( shape.radius and shape.radius > 0 )) then
+			spawn_anomaly( section, pos, new_lv, new_gv, shape )
+			--log3("--[%s] Generated anomaly [%s] on level [%s]", script_name(), section, lname)
+	
+			lvids_forbidden[new_lv] = true
+			table.insert(position_forbidden, pos)
+		end
 	end
 	
 	spawn_blow_arts(lname) -- спавн рандомных артов
@@ -1124,20 +1124,22 @@ local anom_types = {
 }
 
 local anom_power = {
-	l01_escape =     {{postfix = "_weak", val =   1}, {postfix = "_average", val = 0.3}, {postfix = "_strong", val = 0.01}},
-	l02_garbage =    {{postfix = "_weak", val =   1}, {postfix = "_average", val = 0.6}, {postfix = "_strong", val = 0.05}},
-	l03_agroprom =   {{postfix = "_weak", val = 0.8}, {postfix = "_average", val =   1}, {postfix = "_strong", val =  0.2}},
-	l04_darkvalley = {{postfix = "_weak", val = 0.7}, {postfix = "_average", val =   1}, {postfix = "_strong", val =  0.3}},
-	l05_bar =        {{postfix = "_weak", val =   1}, {postfix = "_average", val = 0.6}, {postfix = "_strong", val =  0.1}},
-	l06_rostok =     {{postfix = "_weak", val = 0.6}, {postfix = "_average", val =   1}, {postfix = "_strong", val =  0.3}},
-	l07_military =   {{postfix = "_weak", val = 0.3}, {postfix = "_average", val =   1}, {postfix = "_strong", val =  0.6}},
-	l08_yantar =     {{postfix = "_weak", val = 0.7}, {postfix = "_average", val =   1}, {postfix = "_strong", val =  0.3}},
-	l10_radar =      {{postfix = "_weak", val = 0.2}, {postfix = "_average", val = 0.6}, {postfix = "_strong", val =    1}},
-	l11_pripyat =    {{postfix = "_weak", val = 0.1}, {postfix = "_average", val = 0.5}, {postfix = "_strong", val =    1}},
-	l12_stancia =    {{postfix = "_weak", val = 0.1}, {postfix = "_average", val = 0.4}, {postfix = "_strong", val =    1}},
-	l12_stancia_2 =  {{postfix = "_weak", val = 0.1}, {postfix = "_average", val = 0.4}, {postfix = "_strong", val =    1}},
+	l01_escape =     {{postfix = "_weak", val = 0.7}, {postfix = "_average", val = 0.3}},
+	l02_garbage =    {{postfix = "_weak", val = 0.6}, {postfix = "_average", val = 0.4}},
+	l03_agroprom =   {{postfix = "_weak", val = 0.5}, {postfix = "_average", val = 0.5}},
+	l04_darkvalley = {{postfix = "_weak", val = 0.5}, {postfix = "_average", val = 0.5}},
 	
-	other =          {{postfix = "_weak", val = 0.6}, {postfix = "_average", val =   1}, {postfix = "_strong", val =  0.3}}
+	l05_bar =        {{postfix = "_weak", val = 0.4}, {postfix = "_average", val = 0.5}, {postfix = "_strong", val = 0.1}},
+	l06_rostok =     {{postfix = "_weak", val = 0.3}, {postfix = "_average", val = 0.5}, {postfix = "_strong", val = 0.2}},
+	l08_yantar =     {{postfix = "_weak", val = 0.3}, {postfix = "_average", val = 0.5}, {postfix = "_strong", val = 0.2}},
+	l07_military =   {{postfix = "_weak", val = 0.2}, {postfix = "_average", val = 0.5}, {postfix = "_strong", val = 0.3}},
+	l10_radar =      {{postfix = "_weak", val = 0.1}, {postfix = "_average", val = 0.5}, {postfix = "_strong", val = 0.4}},
+	
+	l11_pripyat =    {{postfix = "_average", val = 0.5}, {postfix = "_strong", val = 0.5}},
+	l12_stancia =    {{postfix = "_average", val = 0.4}, {postfix = "_strong", val = 0.6}},
+	l12_stancia_2 =  {{postfix = "_average", val = 0.3}, {postfix = "_strong", val = 0.7}},
+	
+	other =          {{postfix = "_weak", val = 0.3}, {postfix = "_average", val = 0.5}, {postfix = "_strong", val = 0.2}}
 }
 
 local anoms_sections = {
@@ -1168,7 +1170,7 @@ function anomaly_section_choice(levelname)
 	local spawn_choose = math.random()
 	local low_level = 0.0
 
-	table.sort(anom_table_postfix,function(a,b) return a.val < b.val end)
+	table.sort(anom_table_postfix, function(a,b) return a.val < b.val end)
 
 	for key, value in pairs(anom_table_postfix) do
 		if spawn_choose < value.val and spawn_choose >= low_level then

@@ -11,11 +11,12 @@ function attach( sm )
   sm:subscribe({ signal = "on_update",        		fun = this.update              		})
 end
 
-
-local mark_for_drop = {}
-local mark_for_belt = {}
 local inv_ruck_id = nil
 local current_ruck = nil
+
+local mark_for_belt = {}
+local mark_for_slot = {}
+local mark_for_drop = {}
 
 function on_key()
 	if ogse.load_var("ruck_dropped", 0) == 0 then
@@ -34,7 +35,6 @@ function on_key()
 				level.map_add_object_spot_ser(id, "treasure", "%c[255,238,155,23]Мой рюкзак") 
 				news_manager.send_tip(db.actor, "Рюкзак сброшен", nil, nil, 5000) 
 				ogse.save_var("ruck_dropped", 1)
-				ogsr_quick_slots.buff_saving_slots(id)
 				
 				local cnt = db.actor:object_count()
 		
@@ -102,6 +102,15 @@ function item_to_backpack(obj)
 					else
 						table.insert(mark_for_drop, id)
 					end
+				elseif sys_ini:line_exist(sect, "slot") then
+					local item_slot = sys_ini:r_u32(sect, "slot") 
+					local item_in_slot = db.actor:item_in_slot(item_slot)
+					
+					if not item_in_slot then
+						table.insert(mark_for_slot, id)
+					else
+						table.insert(mark_for_drop, id)
+					end
 				else
 					table.insert(mark_for_drop, id)
 				end
@@ -132,7 +141,6 @@ function take_ruck()
 			
 			if ogse.load_var("ruck_dropped", 0) == 1 then
 				ogse.delete_var("ruck_dropped")
-				ogsr_quick_slots.restore_saving_slots(id)
 			else
 				alife():create("inv_ruck", db.actor:position(), db.actor:level_vertex_id(), db.actor:game_vertex_id(), db.actor:id())
 			end
@@ -162,52 +170,48 @@ function use_ruck(obj)
 	end
 end
 
+local function process_marks(marks, action_func)
+	if table.getn(marks) > 0 then
+		local cnt = db.actor:object_count()
+	
+		for i = 0, cnt - 1 do
+			local obj = db.actor:object(i)
+	
+			if obj then
+				local id = obj:id()
+	
+				for _, s in ipairs( marks ) do
+					if id == s then
+						action_func(obj)
+						table.remove(marks, _)
+					end
+			    end
+			end
+		end
+	end
+end
+
 function update()
 	ogse_signals.get_mgr():reschedule(100)
-
-	if table.getn(mark_for_belt) > 0 then
-		local cnt = db.actor:object_count()
 	
-		for i = 0, cnt - 1 do
-			local obj = db.actor:object(i)
+	process_marks(mark_for_belt, function(obj)
+	    db.actor:move_to_belt(obj)
+	end)
 	
-			if obj then
-				local id = obj:id()
+	process_marks(mark_for_slot, function(obj)
+	    db.actor:move_to_slot(obj)
+	end)
 	
-				for _, s in ipairs( mark_for_belt ) do
-					if id == s then
-						db.actor:move_to_belt(obj)
-						table.remove(mark_for_belt, _)
-					end
-			    end
-			end
-		end
-	end
-
-	if table.getn(mark_for_drop) > 0 then
-		local cnt = db.actor:object_count()
-	
-		for i = 0, cnt - 1 do
-			local obj = db.actor:object(i)
-	
-			if obj then
-				local id = obj:id()
-	
-				for _, s in ipairs( mark_for_drop ) do
-					if id == s then
-						db.actor:drop_item(obj)
-						table.remove(mark_for_drop, _)
-					end
-			    end
-			end
-		end
-	end
+	process_marks(mark_for_drop, function(obj)
+	    db.actor:drop_item(obj)
+	end)
 
 	if inv_ruck_id then
 		local sobj = alife():object(inv_ruck_id)
 
 		if not sobj or sobj:section_name() ~= "inv_ruck" then 
 			local ruck = alife():create("active_ruck", db.actor:position(), db.actor:level_vertex_id(), db.actor:game_vertex_id()) 
+			
 			alife():use_ai_locations(ruck, false)
 			level.map_add_object_spot_ser(ruck.id, "treasure", "%c[255,238,155,23]Мой тайник") 
 			news_manager.send_tip(db.actor, "Тайник заложен", nil, nil, 5000) 

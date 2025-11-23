@@ -13,12 +13,12 @@ function disable_ui_elements(actor, npc, p)
     local i, v = 0, 0
     for i, v in pairs(p) do
         if v == "all" then
-            bind_stalker.hide_weapon()
             level.disable_input()
             level.hide_indicators()
+            db.actor:hide_weapon()
             break
         elseif v == "weapon" then
-            bind_stalker.hide_weapon()
+            db.actor:hide_weapon()
         elseif v == "input" then
             level.disable_input()
         elseif v == "hud" then
@@ -33,28 +33,28 @@ function enable_ui_elements(actor, npc, p)
         if v == "all" then
             level.show_indicators()
             level.enable_input()
-            bind_stalker.restore_weapon()
+            db.actor:restore_weapon()
             break
         elseif v == "hud" then
             level.show_indicators()
         elseif v == "input" then
             level.enable_input()
         elseif v == "weapon" then
-            bind_stalker.restore_weapon()
+            db.actor:restore_weapon()
         end
     end
 end
 
 function disable_ui(actor, npc)
-    bind_stalker.hide_weapon()
     level.disable_input()
     level.hide_indicators()
+    db.actor:hide_weapon()
 end
 
 function enable_ui(actor, npc)
     level.show_indicators()
     level.enable_input()
-    bind_stalker.restore_weapon()
+    db.actor:restore_weapon()
 end
 
 function run_cam_effector(actor, npc, p)
@@ -434,16 +434,12 @@ function actor_punch(npc)
 		return
 	end
 	
-	local active_item = db.actor:active_item()
-	if active_item then
-		bind_stalker.hide_weapon()
-		bind_stalker.restore_weapon()
-	end
-
 	level.disable_input()
+    db.actor:hide_weapon()
 
 	dsh.timeout( 1000, function()
 		level.enable_input()
+		db.actor:restore_weapon()
 	end )
 	
 	local snd_obj = xr_sound.get_safe_sound_object([[affects\hit_fist]])
@@ -972,6 +968,7 @@ end
 
 local items_no_transfer = {
 	["device_pda"] = true,
+	["device_torch"] = true,
 	["bolt"] = true,
 }
 local function transfer_object_item(item)

@@ -296,10 +296,11 @@ end
 
 function wolf_additional_reward(first_speaker, second_speaker)
 	dialogs.relocate_money(second_speaker, 500, "in")
+	dialogs.relocate_item_section(first_speaker, "vodka", "in")
+	dialogs.relocate_item_section(first_speaker, "energy_drink", "in")
+	dialogs.relocate_item_section(first_speaker, "conserva", "in")
     dialogs.relocate_item_section(first_speaker, "medkit", "in")
-    dialogs.relocate_item_section(first_speaker, "bandage", "in")
-    dialogs.relocate_item_section(first_speaker, "wpn_fort", "in")
-    dialogs.relocate_item_section(first_speaker, "ammo_9x18_fmj", "in")        
+    dialogs.relocate_item_section(first_speaker, "bandage", "in")      
 	dialogs.relocate_item_section(first_speaker, "grenade_f1", "in") 
 end
 
@@ -371,4 +372,26 @@ end
 
 function loc_info()
 	db.actor:give_info_portion("l01_escape_level_info")
+end
+
+function arts_sidor_has_money(actor, npc)
+    return actor:money() >= 300
+end
+
+function arts_sidor_give_money(actor, npc)
+    dialogs.relocate_money(npc, 300, "out")    
+end
+
+function arts_sidor_has_infos(actor, npc)
+    return not has_alife_info("encyclopedy_zone_artifact_af_medusa")
+      or not has_alife_info("encyclopedy_zone_artifact_af_vyvert")
+      or not has_alife_info("encyclopedy_zone_artifact_af_blood")
+      or not has_alife_info("encyclopedy_zone_artifact_af_drops")
+      or not has_alife_info("encyclopedy_zone_artifact_af_electra_sparkler")
+      or not has_alife_info("encyclopedy_zone_artifact_af_rusty_thorn")
+      or not has_alife_info("encyclopedy_zone_artifact_af_ameba_slime")
+end
+
+function arts_sidor_done_infos(actor, npc)
+    return not arts_sidor_has_infos() 
 end

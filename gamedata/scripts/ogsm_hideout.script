@@ -510,9 +510,6 @@ function add_to_binder(object, char_ini, scheme, section, st)
 	action:add_precondition(world_property(stalker_ids.property_danger, false))
 	action:add_precondition(world_property(property_hideout_lost, false))
 	action:add_precondition(world_property(property_inhide, false))
-	if anomaly_evader then
-		action:add_precondition(world_property(1099, false))
-	end
 	action:add_precondition(world_property(property_blowout, true))
 	action:add_effect(world_property(property_blowout, false))
 	manager:add_action(act_hideout, action)

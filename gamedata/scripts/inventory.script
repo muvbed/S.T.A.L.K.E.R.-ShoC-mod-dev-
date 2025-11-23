@@ -68,10 +68,12 @@ end
 function outfit_change(var)
 	amk.save_variable("base_outfit", var)
 	
-	bind_stalker.hide_weapon()
+	level.disable_input()
+	db.actor:hide_weapon()
 	
 	dsh.timeout(3500, function() 
-		bind_stalker.restore_weapon()
+		level.enable_input()
+		db.actor:restore_weapon()
 	end)
 	
 	level.add_pp_effector ("black_unfade.ppe", 7031, false)
@@ -162,8 +164,8 @@ function on_inventory_info(npc, info_id)
 	elseif 
       info_id == "ui_inventory_hide" 
       or info_id == "ui_car_body_hide" 
-      or info_id == "ui_talk_hide"
-      or info_id == "ui_trade_hide"
+      or (info_id == "ui_talk_hide" and not db.actor:is_talking())
+      or (info_id == "ui_trade_hide" and not db.actor:is_talking())
 	then
 		dsh.timeout(1, function()
 			if not db.actor:is_talking() then

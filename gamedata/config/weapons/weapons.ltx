@@ -1,3 +1,8 @@
+[weapon_base]:identity_immunities
+use_aim_bullet						= false
+CartridgeInTheChamberEnabled 		= true
+default_to_ruck 					= false
+
 #include "delayed_action_fuse.ltx"
 #include "w_ak74.ltx"
 #include "w_ak74u.ltx"
@@ -1313,14 +1318,14 @@ immunities_sect			= explosive_fuelcan_immunities_sect
 [explosive_fuelcan_immunities_sect]
 ;коэффициенты для попаданий различными типами хитов
 burn_immunity			= 1.0
-strike_immunity			= 1.0
+strike_immunity			= 0.5
 shock_immunity			= 1.0
-wound_immunity			= 1.0
+wound_immunity			= 0.0
 radiation_immunity		= 1.0
 telepatic_immunity		= 1.0
 chemical_burn_immunity	= 1.0
 explosion_immunity		= 1.0
-fire_wound_immunity		= 0.7
+fire_wound_immunity		= 0.5
 
 
 [explosive_tank]:identity_immunities,delayed_action_fuse
@@ -1385,14 +1390,14 @@ immunities_sect			= explosive_tank_immunities_sect
 [explosive_tank_immunities_sect]
 ;коэффициенты для попаданий различными типами хитов
 burn_immunity			= 1.0
-strike_immunity			= 1.0
+strike_immunity			= 0.5
 shock_immunity			= 1.0
-wound_immunity			= 1.0
+wound_immunity			= 0.0
 radiation_immunity		= 1.0
 telepatic_immunity		= 1.0
 chemical_burn_immunity	= 1.0
 explosion_immunity		= 1.0
-fire_wound_immunity		= 0.7
+fire_wound_immunity		= 0.5
 
 
 [explosive_barrel_low]:identity_immunities,delayed_action_fuse
@@ -1458,15 +1463,15 @@ immunities_sect			= explosive_barrel_low_immunities_sect
 
 [explosive_barrel_low_immunities_sect]
 ;коэффициенты для попаданий различными типами хитов
-burn_immunity			= 1
-strike_immunity			= 1
-shock_immunity			= 1
-wound_immunity			= 1
-radiation_immunity		= 1
-telepatic_immunity		= 1
-chemical_burn_immunity	= 1
-explosion_immunity		= 1
-fire_wound_immunity		= 5
+burn_immunity			= 1.0
+strike_immunity			= 0.5
+shock_immunity			= 1.0
+wound_immunity			= 0.0
+radiation_immunity		= 1.0
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 1.0
+explosion_immunity		= 1.0
+fire_wound_immunity		= 0.5
 
 
 [explosive_barrel]:identity_immunities,delayed_action_fuse
@@ -1530,15 +1535,15 @@ wallmark_section		= explosion_marks
 
 [explosive_barrel_immunities_sect]
 ;коэффициенты для попаданий различными типами хитов
-burn_immunity			= 1
-strike_immunity			= 1
-shock_immunity			= 1
-wound_immunity			= 1
-radiation_immunity		= 1
-telepatic_immunity		= 1
-chemical_burn_immunity	= 1
-explosion_immunity		= 1
-fire_wound_immunity		= 0.7
+burn_immunity			= 1.0
+strike_immunity			= 0.5
+shock_immunity			= 1.0
+wound_immunity			= 0.0
+radiation_immunity		= 1.0
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 1.0
+explosion_immunity		= 1.0
+fire_wound_immunity		= 0.5
 
 
 [explosive_mobiltank]:identity_immunities,delayed_action_fuse
@@ -1603,14 +1608,14 @@ wallmark_section		= explosion_marks
 [explosive_mobiltank_immunities_sect]
 ;коэффициенты для попаданий различными типами хитов
 burn_immunity			= 1.0
-strike_immunity			= 1.0
+strike_immunity			= 0.5
 shock_immunity			= 1.0
-wound_immunity			= 1.0
+wound_immunity			= 0.0
 radiation_immunity		= 1.0
 telepatic_immunity		= 1.0
 chemical_burn_immunity	= 1.0
 explosion_immunity		= 1.0
-fire_wound_immunity		= 0.7
+fire_wound_immunity		= 0.5
 
 
 [explosive_dinamit]:delayed_action_fuse

@@ -9,7 +9,44 @@
 	<string id="ucheniy_newdialog_3">
 		<text>Не за что.</text>
 	</string>
-
+	
+	<string id="arts_ucheniy_info_start">
+		<text>Мне нужна информация об артефактах.</text>
+	</string>
+	<string id="arts_ucheniy_info_1">
+		<text>Рад слышать! У нас имеются достоверные исследования по следующим видам артефактов: "Ночная звезда", "Золотая рыбка", "Душа", "Кристалл", "Лунный свет", "Морской ёж", "Слюда". Цена за каждый набор данных — 1000 рублей.</text>
+	</string>
+	<string id="arts_ucheniy_info_10">
+		<text>"Ночная звезда".</text>
+	</string>
+	<string id="arts_ucheniy_info_11">
+		<text>"Золотая рыбка".</text>
+	</string>
+	<string id="arts_ucheniy_info_12">
+		<text>"Душа".</text>
+	</string>
+	<string id="arts_ucheniy_info_13">
+		<text>"Кристалл".</text>
+	</string>
+	<string id="arts_ucheniy_info_14">
+		<text>"Лунный свет".</text>
+	</string>
+	<string id="arts_ucheniy_info_15">
+		<text>"Морской ёж".</text>
+	</string>
+	<string id="arts_ucheniy_info_16">
+		<text>"Слюда".</text>
+	</string>
+	<string id="arts_ucheniy_info_reject">
+		<text>В другой раз.</text>
+	</string>
+	<string id="arts_ucheniy_info_done_loop">
+		<text>Благодарю Вас! Информация передана на Ваш КПК.\nВозможно, Вас интересует что-нибудь ещё?</text>
+	</string>
+	<string id="arts_ucheniy_info_done">
+		<text>Благодарю Вас! Информация передана на Ваш КПК.</text>
+	</string>
+	
 	<string id="yantar_general_ucheniy_talk_start_101">
 		<text>Благодарю Вас... э-э-э... Меченый, так? Вы помогли моему коллеге Круглову спастись, и в знак признательности я хотел бы вручить Вам наш рабочий костюм. Очень удобная штука, знаете ли... Возможно, я мог бы ещё чем-нибудь быть Вам полезен?</text>
 	</string>

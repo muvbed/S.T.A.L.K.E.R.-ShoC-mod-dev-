@@ -275,7 +275,7 @@ function fire_campfire_fx()
 
     local_kamp.is_locked = true
     level.disable_input()
-    bind_stalker.hide_weapon()
+    db.actor:hide_weapon()
     set_static("campfire_lit", false)
     --jr_actor_animation.toggle_force_crouch()
 
@@ -317,7 +317,7 @@ function fire_campfire_fx()
 
         local_kamp.is_locked = false
         level.enable_input()
-        bind_stalker.restore_weapon()
+        db.actor:restore_weapon()
         --jr_actor_animation.toggle_force_crouch()
     end)
 end

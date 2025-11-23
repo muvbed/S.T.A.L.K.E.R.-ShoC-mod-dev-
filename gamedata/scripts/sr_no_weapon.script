@@ -54,14 +54,14 @@ end
 function action_no_weapon:zone_enter()
 	self.state = state_inside
 	if ogsm_options.hide_weap == 1 then 
-		bind_stalker.hide_weapon() 
+	    db.actor:hide_weapon()
 	end
 end
 
 function action_no_weapon:zone_leave()
 	self.state = state_outside
 	if ogsm_options.hide_weap == 1 then 
-		bind_stalker.restore_weapon() 
+		db.actor:restore_weapon()
 	end
 end
 

@@ -870,7 +870,19 @@ end
 
 local effects_playing
 function run_vibros_effects()
-	if db.actor:item_in_slot(8) then
+	local items_count = db.actor:belt_count()
+	local found_flag = false
+	
+	for i = 0, items_count - 1 do
+		local belt_item = db.actor:item_on_belt(i)
+		local belt_item_sect = belt_item:section()
+		
+		if string.find(belt_item_sect, "detector") then
+			found_flag = true
+		end
+	end
+	
+	if found_flag then
 		xr_sound.set_actor_sound("level_border_detector")
 		xr_sound.set_actor_sound_factor(0.01)
 	else

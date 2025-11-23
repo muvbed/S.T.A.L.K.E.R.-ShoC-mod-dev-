@@ -71,9 +71,6 @@
 	
 	<!-- Сон -->
 	<hud_sleep_static x="990" y="580" width="26.8" height="35" stretch="1">
-		<auto_static x="-6" y="-8" width="36.3" height="50" stretch="1">
-			<texture color="hud_layer_satiety">ui\seq\ui_underlayer_hole</texture>
-		</auto_static>
 		<texture>ui_hud_icon_sleep</texture>
 	</hud_sleep_static>
 
@@ -180,63 +177,28 @@
 	<inv_poison_static_red x="825" y="12" width="30" height="40" stretch="1">
 		<texture color="red">ui_hud_hazard_chemical_area</texture>
 	</inv_poison_static_red>
-
-	<!-- Использование предметов -->
-	<none_static><texture/></none_static>
-	<medkit_static x="121" y="690" width="57" height="76" stretch="1" light_anim="ui_slow_blinking_alpha" la_alpha="1">
-		<texture color="red">ui\seq\ui_underlayer_smoke</texture>
-		<auto_static x="16" y="19" width="22.5" height="36" stretch="1" light_anim="ui_slow_blinking_alpha">
-			<texture>ui_hud_use_medkit</texture>
-		</auto_static>
-    </medkit_static>
-	<drink_static x="81" y="690" width="57" height="76" stretch="1" light_anim="ui_slow_blinking_alpha" la_alpha="1">
-		<texture color="blue">ui\seq\ui_underlayer_smoke</texture>
-		<auto_static x="16" y="19" width="22.5" height="36" stretch="1" light_anim="ui_slow_blinking_alpha">
-			<texture>ui_hud_use_drink</texture>
-		</auto_static>
-    </drink_static>	
-	<antirad_static x="41" y="690" width="57" height="76" stretch="1" light_anim="ui_slow_blinking_alpha" la_alpha="1">
-		<texture color="yellow">ui\seq\ui_underlayer_smoke</texture>
-		<auto_static x="16" y="19" width="22.5" height="36" stretch="1" light_anim="ui_slow_blinking_alpha">
-			<texture>ui_hud_use_antirad</texture>
-		</auto_static>
-    </antirad_static>	
-	<energy_static x="1" y="690" width="57" height="76" stretch="1">
-		<texture color="green">ui\seq\ui_underlayer_tornado</texture>
-		<auto_static x="16" y="19" width="22.5" height="36" stretch="1">
-			<texture>ui_hud_use_power</texture>
-		</auto_static>
-    </energy_static>
 	
-	<quick_slot_key_1 x="766" y="742" width="17" height="17" light_anim="ui_btn_hint" la_alpha="1" la_cyclic="0">
+	<quick_slot_key_1 x="766" y="742" width="17" height="17">
         <text font="letterica18" r="240" g="217" b="182" a="255" align="c"/>
 	</quick_slot_key_1>
 
-	<quick_slot_key_2 x="797" y="742" width="17" height="17" light_anim="ui_btn_hint" la_alpha="1" la_cyclic="0">
+	<quick_slot_key_2 x="797" y="742" width="17" height="17">
         <text font="letterica18" r="240" g="217" b="182" a="255" align="c"/>
 	</quick_slot_key_2>
 
-	<quick_slot_key_3 x="828" y="742" width="17" height="17" light_anim="ui_btn_hint" la_alpha="1" la_cyclic="0">
+	<quick_slot_key_3 x="828" y="742" width="17" height="17">
         <text font="letterica18" r="240" g="217" b="182" a="255" align="c"/>
 	</quick_slot_key_3>
 
-	<quick_slot_key_4 x="859" y="742" width="17" height="17" light_anim="ui_btn_hint" la_alpha="1" la_cyclic="0">
-        <text font="letterica18" r="240" g="217" b="182" a="255" align="c"/>
-	</quick_slot_key_4>
-
-	<quick_slot_1 x="760" y="717" width="26.6" height="36" light_anim="ui_btn_hint" la_alpha="1" la_cyclic="0" stretch="1">
+	<quick_slot_1 x="760" y="717" width="26.6" height="36" stretch="1">
 		<texture>ui\ui_icon_equipment</texture>
 	</quick_slot_1>
 
-	<quick_slot_2 x="791" y="717" width="26.6" height="36" light_anim="ui_btn_hint" la_alpha="1" la_cyclic="0" stretch="1">
+	<quick_slot_2 x="791" y="717" width="26.6" height="36" stretch="1">
 		<texture>ui\ui_icon_equipment</texture>
 	</quick_slot_2>
 
-	<quick_slot_3 x="822" y="717" width="26.6" height="36" light_anim="ui_btn_hint" la_alpha="1" la_cyclic="0" stretch="1">
+	<quick_slot_3 x="822" y="717" width="26.6" height="36" stretch="1">
 		<texture>ui\ui_icon_equipment</texture>
 	</quick_slot_3>
-
-	<quick_slot_4 x="853" y="717" width="26.6" height="36" light_anim="ui_btn_hint" la_alpha="1" la_cyclic="0" stretch="1">
-		<texture>ui\ui_icon_equipment</texture>
-	</quick_slot_4>
 </header>

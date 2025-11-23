@@ -611,7 +611,6 @@ monster_classes[clsid.psy_dog_s]     = { "psy_dog", "пси-собака", "пси-собаки", 
 monster_classes[clsid.dog_s]         = { "dog", "собака", "собаки", "собаку", "собакам", "собак" }
 monster_classes[clsid.flesh_s]       = { "flesh", "плоть", "плоти", "плоть", "плоти", "плотей" }
 monster_classes[clsid.tushkano_s]    = { "tushkano", "тушкан", "тушкана", "тушканов", "тушканам", "тушканов" }
-monster_classes[clsid.fracture_s]    = { "fracture", "излом", "излома", "излома", "излому", "изломов" }
 
 
 weather_templates_day    = {
@@ -1029,7 +1028,7 @@ do_seen_monster_templates = {
         enabled = true,
         text = "—талкеры! Ќесколько часов назад \"ƒолг\" понЄс т€жЄлые потери от неизвестных тварей. ¬сех, кто располагает информацией о мутаци€х, произошедших в существах «оны после последнего выброса, просим помочь. $where произошло нападение...",
         spawn = {
-            { class = "chimera_strong", count = 1, point = { -175.68, -0.00, 172.21 }, lv = 31609, gv = 1331 }
+            { class = "chimera_weak", count = 1, point = { -175.68, -0.00, 172.21 }, lv = 31609, gv = 1331 }
         },
         author = "\"ƒолг\"",
         icon = "dolg",
@@ -1047,9 +1046,9 @@ do_seen_monster_templates = {
     },
     {
         enabled = true,
-        text = "\"ƒолг\" сообщает о какой-то новой разновидности химер. ” них сорвалс€ рейд... $where шли на зачистку логова мутантов, и вдруг... в общем, отр€д порвали за несколько секунд. » это точно не обычна€ химера... не может она... столько человек разом...",
+        text = "\"ƒолг\" сообщает о повышенной активности химер. ” них сорвалс€ рейд... $where шли на зачистку логова мутантов, и вдруг... в общем, отр€д порвали за несколько секунд.",
         spawn = {
-            { class = "chimera_strong", count = 1, point = { -164.50, -0.20, -201.21 }, lv = 72576, gv = 554 }
+            { class = "chimera_weak", count = 1, point = { -164.50, -0.20, -201.21 }, lv = 72576, gv = 554 }
         },
         reward = { from = "author", r_type = "money", c_min = 30, c_max = 70 }
     },
@@ -1059,17 +1058,6 @@ do_seen_monster_templates = {
         spawn = {
             { class = "chimera_weak", count = 1, point = { -58.47, -12.51, -256.30 }, lv = 17990, gv = 1454 }
         },
-        reward = { from = "author", r_type = "money", c_min = 30, c_max = 70 }
-    },
-    {
-        enabled = true,
-        text = "—талкеры! $where, по нашим данным, по€вилась... необычна€ тварь. —корее всего, нова€ разновидность химеры, мутировавша€ под воздействием последнего выброса. Ѕудьте осторожны.",
-        spawn = {
-            { class = "chimera_strong", count = 1, point = { -16.08, -0.20, -1.09 }, lv = 224157, gv = 466 }
-        },
-        author = "—ахаров",
-        icon = "ecolog",
-        alive = 902,
         reward = { from = "author", r_type = "money", c_min = 30, c_max = 70 }
     },
     {

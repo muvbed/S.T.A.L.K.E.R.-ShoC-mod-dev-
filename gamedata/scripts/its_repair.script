@@ -23,7 +23,8 @@ local snd_r_o = xr_sound.get_safe_sound_object("interface\\inv_repair_outfit_sho
 function main(npc,actor)
 	local hud = repair_ui(get_hud())
 	level.start_stop_menu(hud, true)
-	bind_stalker.hide_weapon()
+
+	db.actor:hide_weapon()
 end
 
 
@@ -416,7 +417,8 @@ end
 -- Кнопка "Выход"
 function repair_ui:on_quit()
 	self:GetHolder():start_stop_menu(self, true)
-	bind_stalker.restore_weapon()
+	
+	db.actor:restore_weapon()
 end
 
 -- Выход по нажатию "Esc"

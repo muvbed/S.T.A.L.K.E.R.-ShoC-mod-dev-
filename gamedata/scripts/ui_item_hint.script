@@ -35,20 +35,22 @@ local forbidden_wpns = {
 
 -- Параметры актёра, по которым считаются некоторые параметры артефактов или костюмов
 local conditions = {
-	bleeding_restore_speed	= sys_ini:r_float('actor_condition', 'bleeding_v'),
-	health_restore_speed	= sys_ini:r_float('actor_condition', 'satiety_health_v'),
-	power_restore_speed		= sys_ini:r_float('actor_condition', 'satiety_power_v') *100,
-	satiety_restore_speed	= sys_ini:r_float('actor_condition', 'satiety_v'),
-	radiation_restore_speed	= sys_ini:r_float('actor_condition', 'radiation_v') *100
+	health_restore_speed	 = sys_ini:r_float('actor_condition', 'satiety_health_v') *100,
+	psy_health_restore_speed = sys_ini:r_float('actor_condition', 'psy_health_v') *100,
+	bleeding_restore_speed	 = sys_ini:r_float('actor_condition', 'bleeding_v') *10,
+	power_restore_speed		 = sys_ini:r_float('actor_condition', 'satiety_power_v') *100,
+	satiety_restore_speed	 = sys_ini:r_float('actor_condition', 'satiety_v') *100,
+	radiation_restore_speed	 = sys_ini:r_float('actor_condition', 'radiation_v') *100
 }
 
 -- Параметры костюмов и артов
 local conditions_params = {
-	{ prop = "health_restore_speed",	text = "Скорость восстановления здоровья:",		tex = "health", unit = "" },
-	{ prop = "bleeding_restore_speed",	text = "Остановка кровотечения:",				tex = "bleeding", unit = "" },
-	{ prop = "satiety_restore_speed",	text = "Сытость:",								tex = "satiety" },
-	{ prop = "power_restore_speed",		text = "Скорость восстановления сил:",			tex = "power" },
-	{ prop = "radiation_restore_speed",	text = "Радиация:",								tex = "radiation_2", unit = "" }
+	{ prop = "health_restore_speed",		text = "Скорость восстановления здоровья:",		tex = "health", unit = "" },
+	{ prop = "psy_health_restore_speed",	text = "Скорость восстановления пси-здоровья:",	tex = "psy_health", unit = "" },
+	{ prop = "bleeding_restore_speed",		text = "Остановка кровотечения:",				tex = "bleeding", unit = "" },
+	{ prop = "power_restore_speed",			text = "Скорость восстановления сил:",			tex = "power", unit = "" },
+	{ prop = "satiety_restore_speed",		text = "Сытость:",								tex = "satiety", unit = "" },
+	{ prop = "radiation_restore_speed",		text = "Радиация:",								tex = "radiation_2", unit = "" }
 }
 
 -- Типы хитов и соответствующие им текстуры и названия
@@ -66,12 +68,6 @@ local hit_types = {
 
 -- Параметры еды
 local eatable_params = {
-	{ prop = "process_health",			text = "Состояние здоровья:",					tex = "health" },
-	{ prop = "process_psy_health",		text = "Состояние психики:",					tex = "telepatic" },
-	{ prop = "process_radiation",		text = "Радиация:",								tex = "radiation_2" },
-	{ prop = "duration_psy_health",		text = "Скорость восстановления психики:",		tex = "telepatic", 		unit = "" },
-	{ prop = "duration_radiation",		text = "Радиация:",								tex = "radiation_2", 	unit = "" },
-	{ prop = "duration_power",			text = "Скорость восстановления сил:",			tex = "power", 			unit = "" },
 	{ prop = "eat_health",				text = "Состояние здоровья:",					tex = "health" },
 	{ prop = "wounds_heal_perc",		text = "Кровотечение:",							tex = "bleeding" },	
 	{ prop = "eat_psy_health",			text = "Состояние психики:",					tex = "telepatic" },
@@ -414,18 +410,24 @@ function CUIDescriptionWnd:ShowDescription(item)
 
 	-- generic description
 	self.item_name:SetTextST(inv_name)
-	self.descr:SetText(description)
+
+	-- artefacts
+	if item:is_artefact() and string.find(self.section, "af_") then
+		if has_alife_info("encyclopedy_zone_artifact_" .. self.section) then
+			self:ShowAfParams()
+		else
+			description = game.translate_string("enc_zone_artifact_unknown")	
+		end
+	end
+	
+	self.descr:SetText(description)	
 	self.descr:AdjustHeightToText()
 	self.scroll_v:AddWindow(self.descr, true)
 	self.descr:SetAutoDelete(false)
 	self.scroll_v:ScrollToBegin()
 	self.scrollPos = 0
 	self.addH = self.addH - 10
-
-	-- artefacts
-	if item:is_artefact() then
-		self:ShowAfParams()
-	end
+	
 	-- food
 	if isEatable(item) or self.section == "matches" then
 		self:ShowEatableParams()
@@ -639,7 +641,7 @@ function CUIDescriptionWnd:ShowOutfitParams()
 			txt = "%c[grey_4]"..t.text.." "
 			if t.prop == "bleeding_restore_speed" then
 				if val < 0 then
-					val = (val - 1) * -1
+					val = val * -1
 					txt = txt.."%c[red]-"
 				else
 					txt = txt.."%c[green]+"
@@ -689,7 +691,7 @@ function CUIDescriptionWnd:ShowAfParams()
 			txt = "%c[grey_4]"..t.text.." "
 			if t.prop == "bleeding_restore_speed" then
 				if val < 0 then
-					val = (val - 1) * -1
+					val = val * -1
 					txt = txt.."%c[red]-"
 				else
 					txt = txt.."%c[green]+"
@@ -738,8 +740,6 @@ function CUIDescriptionWnd:ShowEatableParams()
 				val = -val
 			elseif t.prop == "eat_alcohol"
 				or t.prop == "eat_radiation"
-				or t.prop == "process_radiation"
-				or t.prop == "duration_radiation"
 				or t.prop == "sleep_soporific"
 				or t.prop == "eat_radiation_arc"
 			then

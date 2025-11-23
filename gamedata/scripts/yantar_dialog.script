@@ -1,0 +1,35 @@
+function yantar_give_bad_psy_helmet(first_speaker, second_speaker)
+	dialogs.relocate_item_section(second_speaker, "bad_psy_helmet", "in")
+end
+function yantar_give_good_psy_helmet(first_speaker, second_speaker)
+	dialogs.relocate_item_section(second_speaker, "good_psy_helmet", "in")
+end
+
+function yantar_give_quest_artefact(first_speaker, second_speaker)
+    if not has_alife_info("yantar_ecolog_give_reward") then
+	    dialogs.relocate_item_section(second_speaker, "af_cristall_flower", "in")
+        db.actor:give_info_portion("yantar_ecolog_give_reward")
+    end
+end
+
+function arts_ucheniy_has_money(actor, npc)
+    return actor:money() >= 1000
+end
+
+function arts_ucheniy_give_money(actor, npc)
+    dialogs.relocate_money(npc, 1000, "out")    
+end
+
+function arts_ucheniy_has_infos(actor, npc)
+    return not has_alife_info("encyclopedy_zone_artifact_af_night_star")
+      or not has_alife_info("encyclopedy_zone_artifact_af_gold_fish")
+      or not has_alife_info("encyclopedy_zone_artifact_af_soul")
+      or not has_alife_info("encyclopedy_zone_artifact_af_cristall")
+      or not has_alife_info("encyclopedy_zone_artifact_af_electra_moonlight")
+      or not has_alife_info("encyclopedy_zone_artifact_af_rusty_sea-urchin")
+      or not has_alife_info("encyclopedy_zone_artifact_af_ameba_mica")
+end
+
+function arts_ucheniy_done_infos(actor, npc)
+    return not arts_ucheniy_has_infos() 
+end

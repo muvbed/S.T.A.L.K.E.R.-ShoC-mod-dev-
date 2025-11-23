@@ -292,22 +292,40 @@ function motivator_binder:death_callback(victim, who)
 
 	if rx_ai then rx_ai.npc_death(self.object,who) end
 
-	if who:is_actor() then
-		if self.object:character_community() == "freedom"
-		  and string.find(who:character_community(), "freedom") then
-			db.actor:set_character_community("actor", 0, 0)
-			relation_registry.set_community_goodwill("freedom", db.actor:id(), 0)
-			relation_registry.set_community_goodwill("prefreedom", db.actor:id(), 0)
-		end
-		if self.object:character_community() == "dolg"
-		  and string.find(who:character_community(), "dolg") then
-			db.actor:set_character_community("actor", 0, 0)
-			relation_registry.set_community_goodwill("dolg", db.actor:id(), 0)
-			relation_registry.set_community_goodwill("predolg", db.actor:id(), 0)
+	if who and ( who:is_stalker() or who:is_actor() ) then
+		local victim_smart = dsh_enemies.get_smart_terrain(victim)
+		local who_smart = dsh_enemies.get_smart_terrain(who)
+			
+		if 
+		  victim_smart 
+		  and victim_smart:name() 
+		  and not xr_gulag.isGulagEnemy(victim_smart:name(), who)
+		  and not (
+		    who_smart 
+		    and who_smart:name() 
+		    and who_smart:name() == victim_smart:name()
+		  )
+		then
+			xr_gulag.setGulagEnemy(victim_smart:name(), who)
 		end
 		
-		escape_tasks.check_murder(victim)
-		mil_tasks.check_murder(victim)
+		if who:is_actor() then
+			if self.object:character_community() == "freedom"
+			  and string.find(who:character_community(), "freedom") then
+				db.actor:set_character_community("actor", 0, 0)
+				relation_registry.set_community_goodwill("freedom", db.actor:id(), 0)
+				relation_registry.set_community_goodwill("prefreedom", db.actor:id(), 0)
+			end
+			if self.object:character_community() == "dolg"
+			  and string.find(who:character_community(), "dolg") then
+				db.actor:set_character_community("actor", 0, 0)
+				relation_registry.set_community_goodwill("dolg", db.actor:id(), 0)
+				relation_registry.set_community_goodwill("predolg", db.actor:id(), 0)
+			end
+			
+			escape_tasks.check_murder(victim)
+			mil_tasks.check_murder(victim)
+		end
 	end
 	
 	if self.st.death then
@@ -546,8 +564,4 @@ function addCommonPrecondition(action)
 	
 	if rx_ai then rx_ai.addCommonPrecondition(action) end
 	if mon_ai then mon_ai.addCommonPrecondition(action) end
-	
-	if anomaly_evader then
-		action:add_precondition (world_property(1099, false))
-	end
 end

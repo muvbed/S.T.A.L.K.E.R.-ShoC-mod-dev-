@@ -221,7 +221,7 @@ function action_facer:execute()
 			hi:bone(bone)
 			hi.type = hit.strike
 			hi.power = power/math.random(70,120)
-			hi.impulse = power >= 1 and math.random(power)*3 or 1
+			hi.impulse = power >= 1 and 1
 			hi.draftsman = npc
 			hi.direction = target:bone_position(bone):sub(npc:bone_position("bip01_neck"))
 			local drop
@@ -239,24 +239,20 @@ function action_facer:execute()
 			if math.random() < 0.33 and npc:relation(target) == game_object.enemy  then
 				hi.type = hit.wound
 				hi.power = hi.power+math.random(3)/10
-				hi.impulse = hi.impulse+math.random(60)
 			end
 			if target_is_actor and db.actor then
-				local active_item = db.actor:active_item()
-				if active_item then
-					bind_stalker.hide_weapon()
-					bind_stalker.restore_weapon()
-				end
-			
 				level.disable_input()
+		        db.actor:hide_weapon()
 			
 				dsh.timeout( 1000, function()
 					level.enable_input()
+					db.actor:restore_weapon()
 				end )
+				
 				rx_utils.get_sound([[affects\hit_fist]]):play_no_feedback(db.actor,sound_object.s2d,0,vector(),1.0)
 				level.add_cam_effector("camera_effects\\fusker.anm",959,false,"")
 				level.add_pp_effector("facer.ppe",959,false)
-				level.set_pp_effector_factor(959,hi.power+0.3)
+				level.set_pp_effector_factor(959,hi.power+0.1)
 				level.add_pp_effector("wink.ppe",960,false)
 			elseif cls == clsid.script_stalker and target:animation_count() == 0 and bone == "bip01_head" and npc:position():sub(target:position()):normalize():similar(target:direction(),math.pi*0.25) == 1 then
 				local rnd = math.random()

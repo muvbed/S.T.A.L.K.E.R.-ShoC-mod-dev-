@@ -722,4 +722,110 @@
             </phrase>
         </phrase_list>
     </dialog>
+    <dialog id="arts_ucheniy_info">
+    	<precondition>yantar_dialog.arts_ucheniy_has_infos</precondition>
+        <phrase_list>
+            <phrase id="0">
+                <text>arts_ucheniy_info_start</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>arts_ucheniy_info_1</text>
+                <next>10</next>
+                <next>11</next>
+                <next>12</next>
+                <next>13</next>
+                <next>14</next>
+                <next>15</next>
+                <next>16</next>
+                <next>17</next>
+            </phrase>
+            <phrase id="10">
+            	<precondition>yantar_dialog.arts_ucheniy_has_money</precondition>
+            	<dont_has_info>encyclopedy_zone_artifact_af_night_star</dont_has_info>
+            	<give_info>encyclopedy_zone_artifact_af_night_star</give_info>
+            	<text>arts_ucheniy_info_10</text>
+            	<action>yantar_dialog.arts_ucheniy_give_money</action>
+            	<next>101</next>
+            	<next>102</next>
+            </phrase>
+            <phrase id="11">
+            	<precondition>yantar_dialog.arts_ucheniy_has_money</precondition>
+            	<dont_has_info>encyclopedy_zone_artifact_af_gold_fish</dont_has_info>
+            	<give_info>encyclopedy_zone_artifact_af_gold_fish</give_info>
+            	<text>arts_ucheniy_info_11</text>
+            	<action>yantar_dialog.arts_ucheniy_give_money</action>
+            	<next>101</next>
+            	<next>102</next>
+            </phrase>
+            <phrase id="12">
+            	<precondition>yantar_dialog.arts_ucheniy_has_money</precondition>
+            	<dont_has_info>encyclopedy_zone_artifact_af_soul</dont_has_info>
+            	<give_info>encyclopedy_zone_artifact_af_soul</give_info>
+            	<text>arts_ucheniy_info_12</text>
+            	<action>yantar_dialog.arts_ucheniy_give_money</action>
+            	<next>101</next>
+            	<next>102</next>
+            </phrase>
+            <phrase id="13">
+            	<precondition>yantar_dialog.arts_ucheniy_has_money</precondition>
+            	<dont_has_info>encyclopedy_zone_artifact_af_cristall</dont_has_info>
+            	<give_info>encyclopedy_zone_artifact_af_cristall</give_info>
+            	<text>arts_ucheniy_info_13</text>
+            	<action>yantar_dialog.arts_ucheniy_give_money</action>
+            	<next>101</next>
+            	<next>102</next>
+            </phrase>
+            <phrase id="14">
+            	<precondition>yantar_dialog.arts_ucheniy_has_money</precondition>
+            	<dont_has_info>encyclopedy_zone_artifact_af_electra_moonlight</dont_has_info>
+            	<give_info>encyclopedy_zone_artifact_af_electra_moonlight</give_info>
+            	<text>arts_ucheniy_info_14</text>
+            	<action>yantar_dialog.arts_ucheniy_give_money</action>
+            	<next>101</next>
+            	<next>102</next>
+            </phrase>
+            <phrase id="15">
+            	<precondition>yantar_dialog.arts_ucheniy_has_money</precondition>
+            	<dont_has_info>encyclopedy_zone_artifact_af_rusty_sea-urchin</dont_has_info>
+            	<give_info>encyclopedy_zone_artifact_af_rusty_sea-urchin</give_info>
+            	<text>arts_ucheniy_info_15</text>
+            	<action>yantar_dialog.arts_ucheniy_give_money</action>
+            	<next>101</next>
+            	<next>102</next>
+            </phrase>
+            <phrase id="16">
+            	<precondition>yantar_dialog.arts_ucheniy_has_money</precondition>
+            	<dont_has_info>encyclopedy_zone_artifact_af_ameba_mica</dont_has_info>
+            	<give_info>encyclopedy_zone_artifact_af_ameba_mica</give_info>
+            	<text>arts_ucheniy_info_16</text>
+            	<action>yantar_dialog.arts_ucheniy_give_money</action>
+            	<next>101</next>
+            	<next>102</next>
+            </phrase>
+            <phrase id="101">
+            	<precondition>yantar_dialog.arts_ucheniy_has_infos</precondition>
+            	<text>arts_ucheniy_info_done_loop</text>
+            	<next>10</next>
+                <next>11</next>
+                <next>12</next>
+                <next>13</next>
+                <next>14</next>
+                <next>15</next>
+                <next>16</next>
+                <next>17</next>
+            </phrase>
+            <phrase id="102">
+            	<precondition>yantar_dialog.arts_ucheniy_done_infos</precondition>
+            	<text>arts_ucheniy_info_done</text>
+            </phrase>
+            <phrase id="17">
+            	<text>arts_ucheniy_info_reject</text>
+            	<next>171</next>
+            </phrase>
+           	<phrase id="171">
+            	<text />
+            </phrase>
+        </phrase_list>
+    </dialog>
 </game_dialogs>

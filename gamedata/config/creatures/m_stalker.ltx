@@ -99,56 +99,37 @@ SoundThreshold		 		= 0.6
 	world					= 0.2 	; коэффициент усиления приоритета\силы звука
 
 [stalker_damage]
-default						= 1.0, -1, 1.0
+default						= 0.01, -1,  0.1
 
-bip01_pelvis 				= 0.8,  2, 0.3	;	таз
-bip01_spine 		 		= 0.85, 2, 0.8	;	поясница-живот
-bip01_spine1 		 		= 0.9,  2, 0.8	;	низ торса
-bip01_spine2 		 		= 0.9,  2, 0.8	;	верх торса
-bip01_neck 			 		= 4.9,  0, 1.0, 5.0	;	шея
-bip01_head 			 		= 5.8,  0, 1.0, 5.0	;2.0, 0, 1.0, 5.0	;	голова
-eyelid_1 			 		= 6.8,  0, 1.0, 5.0	;2.0, 0, 1.0, 5.0	;	веки (?)
-eye_left 			 		= 6.8,  0, 1.0, 5.0	;2.0, 0, 1.0, 5.0	;	глаз лев
-eye_right 			 		= 6.8,  0, 1.0, 5.0	;2.0, 0, 1.0, 5.0	;	глаз прав
-jaw_1 		 		 		= 6.15, 0, 1.0, 3.0	;	челюсть
+bip01_pelvis 				= 0.45,  2,  0.8
+bip01_spine 				= 0.55,  2,  0.6
+bip01_spine1 				= 0.65,  2,  0.6
+bip01_spine2 				= 0.70,  2,  0.9
 
-bip01_l_clavicle	 		= 0.9,  10,0.7	;	ключица лев
-bip01_l_upperarm	 		= 0.4,  8, 0.6	;	плечо лев
-bip01_l_forearm	 	 	    = 0.3,  10,0.5	;	предплечье лев
-bip01_l_hand	 	 	    = 0.1, -1, 0.2	;	кисть лев
-bip01_l_finger0	 	 	    = 0.0, -1, 0.1
-bip01_l_finger01	 		= 0.0, -1, 0.1
-bip01_l_finger02	 		= 0.0, -1, 0.1
-bip01_l_finger1	 	 	    = 0.0, -1, 0.1
-bip01_l_finger11	 		= 0.0, -1, 0.1
-bip01_l_finger12	 		= 0.0, -1, 0.1
-bip01_l_finger2	 	 	    = 0.0, -1, 0.1
-bip01_l_finger21	 		= 0.0, -1, 0.1
-bip01_l_finger22	 		= 0.0, -1, 0.1
+bip01_neck 					= 1.00,  0,  1.0
+bip01_head 					= 1.00,  0,  0.8, 10
+eyelid_1 					= 1.00,  0,  0.7, 10
+eye_left 					= 1.00,  0,  0.7, 10
+eye_right 					= 1.00,  0,  0.7, 10
+jaw_1 						= 0.40,  0,  0.4
 
-bip01_r_clavicle	 		= 0.9,  8, 0.7	;	ключица прав
-bip01_r_upperarm	 		= 0.4,  8, 0.6	;	плечо прав
-bip01_r_forearm	 	 		= 0.3,  8, 0.5	;	предплечье прав
-bip01_r_hand	 	 		= 0.1, -1, 0.2	;	кисть прав
-bip01_r_finger0	 	 		= 0.0, -1, 0.1
-bip01_r_finger01	 		= 0.0, -1, 0.1
-bip01_r_finger02	 		= 0.0, -1, 0.1
-bip01_r_finger1	 	 		= 0.0, -1, 0.1
-bip01_r_finger11	 		= 0.0, -1, 0.1
-bip01_r_finger12	 		= 0.0, -1, 0.1
-bip01_r_finger2	 	 	 	= 0.0, -1, 0.1
-bip01_r_finger21	 		= 0.0, -1, 0.1
-bip01_r_finger22	 		= 0.0, -1, 0.1
+bip01_l_clavicle 			= 0.25,  10, 0.3
+bip01_l_upperarm 			= 0.15,  8,  0.5
+bip01_l_forearm 			= 0.10,  10, 0.2
+bip01_l_hand 				= 0.05,  -1, 0.1
 
-bip01_l_thigh	 	 		= 0.6,  8, 0.6	;	бедро лев
-bip01_l_calf	 	 		= 0.35, 4, 0.4	;	голень лев
-bip01_l_foot	 	 		= 0.25, 4, 0.3	;	пятка лев
-bip01_l_toe0	 	 		= 0.0, -1, 0.2
+bip01_r_clavicle 			= 0.25,  8,  0.3
+bip01_r_upperarm 			= 0.15,  8,  0.5
+bip01_r_forearm 			= 0.10,  8,  0.2
+bip01_r_hand 				= 0.05,  -1, 0.1
 
-bip01_r_thigh	 	 		= 0.6,  8, 0.6	;	бедро прав 
-bip01_r_calf	 	 		= 0.35, 4, 0.4	;	голень прав
-bip01_r_foot	 	 		= 0.25, 6, 0.3	;	пятка прав
-bip01_r_toe0	 	 		= 0.0, -1, 0.2
+bip01_l_thigh 				= 0.25,  8,  0.6
+bip01_l_calf 				= 0.15,  4,  0.2
+bip01_l_foot 				= 0.05,  4,  0.1
+
+bip01_r_thigh 				= 0.25,  8,  0.6
+bip01_r_calf 				= 0.15,  4,  0.2
+bip01_r_foot 				= 0.05,  6,  0.1
 
 [critical_wound_head_section]
 	bip01_head
@@ -253,9 +234,9 @@ limping_health_end          = 0.5
 limping_threshold			= 0.5
 
 ;открытые раны
-bleeding_v					= 0.001						;потеря крови при номинальной ране в секунду
-wound_incarnation_v			= 0.003					;крутизна кривой заживления (какой процент раны останется после заживления в игровую секунду)
-min_wound_size				= 0.0256
+bleeding_v					= 0.004			 	;потеря крови при номинальной ране в секунду
+wound_incarnation_v			= 0.0003		 	;скорость заживления раны
+min_wound_size				= 0.0128			;минимальный размер раны, после которого она считается зажившей
 
 [stalker_terrain]
 	255,000,255,255

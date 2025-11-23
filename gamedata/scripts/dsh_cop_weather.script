@@ -48,7 +48,6 @@ local wind_velocity_settings = {
 
 local weather_transitions_common = {
 ----------------------------------------------------
-  --[[
   clear = {
     wind_velocity = wind_velocity_settings.clear,
     end_w = math.random(3, 6),
@@ -63,7 +62,7 @@ local weather_transitions_common = {
       rain      = math.random(40, 75),
       rain_thun = math.random(40, 75),
 	  
-      foggy     = math.random(10, 25),
+      -- foggy     = math.random(10, 25),
       foggy_ns  = math.random(10, 25),
     },
   },
@@ -81,7 +80,7 @@ local weather_transitions_common = {
       rain      = math.random(40, 75),
       rain_thun = math.random(40, 75),
 	  
-      foggy     = math.random(10, 25),
+      -- foggy     = math.random(10, 25),
       foggy_ns  = math.random(10, 25),
     },
   },
@@ -99,7 +98,7 @@ local weather_transitions_common = {
       rain      = math.random(40, 75),
       rain_thun = math.random(40, 75),
 	  
-      foggy     = math.random(10, 25),
+      -- foggy     = math.random(10, 25),
       foggy_ns  = math.random(10, 25),
     },
   },
@@ -117,11 +116,10 @@ local weather_transitions_common = {
       rain      = math.random(40, 75),
       rain_thun = math.random(40, 75),
 	  
-      foggy     = math.random(10, 25),
+      -- foggy     = math.random(10, 25),
       foggy_ns  = math.random(10, 25),
     },
   },
-  --]]
   swtc = {
     wind_velocity = wind_velocity_settings.clear,
     end_w = math.random(3, 6),
@@ -145,10 +143,10 @@ local weather_transitions_common = {
     wind_velocity = wind_velocity_settings.cloudy,
     end_w = math.random(3, 6),
     tr_w  = {
-      -- clear     = math.random(40, 75),
-      -- clear2    = math.random(40, 75),
-      -- clear3    = math.random(40, 75),
-      -- clear4    = math.random(40, 75),
+      clear     = math.random(40, 75),
+      clear2    = math.random(40, 75),
+      clear3    = math.random(40, 75),
+      clear4    = math.random(40, 75),
       swtc      = math.random(40, 75),
 
       rain      = math.random(60, 85),
@@ -162,10 +160,10 @@ local weather_transitions_common = {
     wind_velocity = wind_velocity_settings.cloudy,
     end_w = math.random(3, 6),
     tr_w  = {
-      -- clear     = math.random(40, 75),
-      -- clear2    = math.random(40, 75),
-      -- clear3    = math.random(40, 75),
-      -- clear4    = math.random(40, 75),
+      clear     = math.random(40, 75),
+      clear2    = math.random(40, 75),
+      clear3    = math.random(40, 75),
+      clear4    = math.random(40, 75),
       swtc      = math.random(40, 75),
 
       rain      = math.random(60, 85),
@@ -179,10 +177,10 @@ local weather_transitions_common = {
     wind_velocity = wind_velocity_settings.cloudy,
     end_w = math.random(3, 6),
     tr_w  = {
-      -- clear     = math.random(40, 75),
-      -- clear2    = math.random(40, 75),
-      -- clear3    = math.random(40, 75),
-      -- clear4    = math.random(40, 75),
+      clear     = math.random(40, 75),
+      clear2    = math.random(40, 75),
+      clear3    = math.random(40, 75),
+      clear4    = math.random(40, 75),
       swtc      = math.random(40, 75),
 
       rain      = math.random(60, 85),
@@ -196,10 +194,10 @@ local weather_transitions_common = {
     wind_velocity = wind_velocity_settings.cloudy,
     end_w = math.random(3, 6),
     tr_w  = {
-      -- clear     = math.random(40, 75),
-      -- clear2    = math.random(40, 75),
-      -- clear3    = math.random(40, 75),
-      -- clear4    = math.random(40, 75),
+      clear     = math.random(40, 75),
+      clear2    = math.random(40, 75),
+      clear3    = math.random(40, 75),
+      clear4    = math.random(40, 75),
       swtc      = math.random(40, 75),
 
       rain      = math.random(60, 85),
@@ -213,10 +211,10 @@ local weather_transitions_common = {
     wind_velocity = wind_velocity_settings.cloudy,
     end_w = math.random(3, 6),
     tr_w  = {
-      -- clear     = math.random(40, 75),
-      -- clear2    = math.random(40, 75),
-      -- clear3    = math.random(40, 75),
-      -- clear4    = math.random(40, 75),
+      clear     = math.random(40, 75),
+      clear2    = math.random(40, 75),
+      clear3    = math.random(40, 75),
+      clear4    = math.random(40, 75),
       swtc      = math.random(40, 75),
 
       rain      = math.random(60, 85),
@@ -230,10 +228,10 @@ local weather_transitions_common = {
     wind_velocity = wind_velocity_settings.cloudy,
     end_w = math.random(3, 6),
     tr_w  = {
-      -- clear     = math.random(40, 75),
-      -- clear2    = math.random(40, 75),
-      -- clear3    = math.random(40, 75),
-      -- clear4    = math.random(40, 75),
+      clear     = math.random(40, 75),
+      clear2    = math.random(40, 75),
+      clear3    = math.random(40, 75),
+      clear4    = math.random(40, 75),
       swtc      = math.random(40, 75),
 
       rain      = math.random(60, 85),
@@ -258,10 +256,10 @@ local weather_transitions_common = {
       cloudy4   = math.random(40, 75),
       swtc_dark = math.random(40, 75),
 
-      -- clear     = math.random(20, 45),
-      -- clear2    = math.random(20, 45),
-      -- clear3    = math.random(20, 45),
-      -- clear4    = math.random(20, 45),
+      clear     = math.random(20, 45),
+      clear2    = math.random(20, 45),
+      clear3    = math.random(20, 45),
+      clear4    = math.random(20, 45),
       swtc      = math.random(20, 45),
 
       -- foggy     = math.random(20, 35),
@@ -282,10 +280,10 @@ local weather_transitions_common = {
       cloudy4   = math.random(40, 75),
       swtc_dark = math.random(40, 75),
 
-      -- clear     = math.random(20, 45),
-      -- clear2    = math.random(20, 45),
-      -- clear3    = math.random(20, 45),
-      -- clear4    = math.random(20, 45),
+      clear     = math.random(20, 45),
+      clear2    = math.random(20, 45),
+      clear3    = math.random(20, 45),
+      clear4    = math.random(20, 45),
       swtc      = math.random(20, 45),
 
       -- foggy     = math.random(20, 35),
@@ -327,10 +325,10 @@ local weather_transitions_common = {
       cloudy4   = math.random(40, 75),
       swtc_dark = math.random(40, 75),
 
-      -- clear     = math.random(40, 75),
-      -- clear2    = math.random(40, 75),
-      -- clear3    = math.random(40, 75),
-      -- clear4    = math.random(40, 75),
+      clear     = math.random(40, 75),
+      clear2    = math.random(40, 75),
+      clear3    = math.random(40, 75),
+      clear4    = math.random(40, 75),
       swtc      = math.random(40, 75),
 
       rain      = math.random(40, 75),
@@ -348,10 +346,10 @@ local weather_transitions_common = {
       cloudy4   = math.random(40, 75),
       swtc_dark = math.random(40, 75),
 
-      -- clear     = math.random(40, 75),
-      -- clear2    = math.random(40, 75),
-      -- clear3    = math.random(40, 75),
-      -- clear4    = math.random(40, 75),
+      clear     = math.random(40, 75),
+      clear2    = math.random(40, 75),
+      clear3    = math.random(40, 75),
+      clear4    = math.random(40, 75),
       swtc      = math.random(40, 75),
 
       rain      = math.random(40, 75),

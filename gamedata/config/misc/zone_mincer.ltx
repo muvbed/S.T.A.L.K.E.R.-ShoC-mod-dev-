@@ -39,8 +39,8 @@ artefact_spawn_height		= 10								;(м) высота на центром зоны где будет рожден 
 
 
 ;----------- Anomaly settings -----------------------
-min_start_power				= 0.4
-max_start_power				= 0.5
+min_start_power				= 0.6
+max_start_power				= 1.0
 attenuation					= 1
 period						= 1
 min_artefact_count			= 0
@@ -103,8 +103,8 @@ blowout_explosion_time		= 5999
 ;параметры телекинеза дл€ зоны
 throw_in_impulse			= 1000	;сила вт€гивани€ дл€ единичной массы на рассто€нии один метр
 throw_out_impulse			= 1500	;сила выбрасывани€ взрывом
-throw_in_impulse_alive		= 300	;сила импульса вт€гивани€ дл€ живых
-throw_in_atten				= 1.2	;коэфф. зат€гивани€ (чем меньше, тем плавнее зат€гивает)
+throw_in_impulse_alive		= 350	;сила импульса вт€гивани€ дл€ живых
+throw_in_atten				= 1.5	;коэфф. зат€гивани€ (чем меньше, тем плавнее зат€гивает)
 blowout_radius_percent		= 0.6	;радиус (в процентах от всего радиуса) непосредственно выброса
 actor_blowout_radius_percent= 0.6
 
@@ -129,16 +129,14 @@ spawn_blowout_artefacts		= off
 [zone_mincer_weak]:zone_mincer
 $spawn 						= "zones\mincer_zone_weak"
 
-effective_radius			= 0.75
-
-throw_in_impulse_alive		= 300	;сила импульса вт€гивани€ дл€ живых
-
 ;; ветер
 blowout_wind_power			= 0.2	
 
 ;----------- Anomaly settings -----------------------
-min_start_power				= 0.4
+min_start_power				= 0.3
 max_start_power				= 0.5
+
+throw_in_impulse_alive		= 250
 
 artefacts					= af_blood,0.6, af_mincer_meat,0.3, af_soul,0.1
 BirthProbability 			= 0.1
@@ -154,17 +152,15 @@ spawn_blowout_artefacts		= off
 
 [zone_mincer_average]:zone_mincer
 $spawn 						= "zones\mincer zone_average"
-	
-effective_radius			= 0.8
-
-throw_in_impulse_alive		= 450	;сила импульса вт€гивани€ дл€ живых
 
 ;; ветер
 blowout_wind_power			= 0.5	
 
 ;----------- Anomaly settings -----------------------
-min_start_power				= 1.0
-max_start_power				= 1.2
+min_start_power				= 0.6
+max_start_power				= 1.0
+
+throw_in_impulse_alive		= 350
 
 artefacts					= af_blood,0.5, af_mincer_meat,0.3, af_soul,0.2
 BirthProbability 			= 0.2
@@ -175,17 +171,15 @@ awaking_time				= 50
 
 [zone_mincer_strong]:zone_mincer
 $spawn 						= "zones\mincer zone_strong"
-	
-effective_radius			= 0.95
-
-throw_in_impulse_alive		= 600	;сила импульса вт€гивани€ дл€ живых
 
 ;; ветер
 blowout_wind_power			= 1	
 
 ;----------- Anomaly settings -----------------------
-min_start_power				= 2.1
-max_start_power				= 2.5
+min_start_power				= 0.9
+max_start_power				= 1.5
+
+throw_in_impulse_alive		= 450
 
 artefacts					= af_blood,0.4, af_mincer_meat,0.3, af_soul,0.2, af_dummy_spring,0.1
 BirthProbability 			= 0.3
