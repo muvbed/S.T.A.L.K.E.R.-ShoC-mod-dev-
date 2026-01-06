@@ -93,9 +93,9 @@
 		<visual>actors\neytral\stalker_neytral_balon_5</visual>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
+			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
-			wpn_ak74u_m1 \n
+			wpn_ak74u \n
 			ammo_5.45x39_fmj \n
 			hand_radio \n
 #include "gameplay\character_items_exp.xml"
@@ -368,7 +368,7 @@
 			[spawn] \n
 			wpn_pm \n
 			ammo_9x18_pmm = 1 \n
-			wpn_toz34 \n
+			wpn_bm16_full \n
 			ammo_12x70_buck = 1 \n
 #include "gameplay\character_items_exp.xml"
 		</supplies>
@@ -426,7 +426,7 @@
 
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
+			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
 			wpn_mp5 \n
 			ammo_9x19_fmj = 1 \n

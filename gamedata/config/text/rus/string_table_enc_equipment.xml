@@ -44,9 +44,9 @@
     <string id="binocular">
 		<text>Бинокль</text>
 	</string>
-    <string id="enc_equipment_devic_binocul1">
-        <text>Армейский портативный бинокль.</text>
-    </string>
+	<string id="enc_equipment_devic_binocul1">
+		<text>Армейский портативный бинокль.</text>
+	</string>
     
     <string id="device-PDA">
         <text>КПК</text>
@@ -61,6 +61,13 @@
     <string id="enc_equipment_devic_device-torch1">
         <text>Фонарик с довольно мощной лампой. Весьма полезная вещь в условиях недостаточной освещённости. Имеет два режима работы — ближний и дальний.</text>
     </string>
+    
+    <string id="voda">
+		<text>Минеральная вода</text>
+	</string>
+	<string id="enc_equipment_food_voda1">
+		<text>Чистая минеральная вода. Утоляет жажду и устраняет негативные эффекты лекарств при их частом применении.</text>
+	</string>
     
     <string id="Bread">
         <text>Хлеб</text>

@@ -360,10 +360,6 @@
     <text>freedom_find_item_1_text</text>
 </article>
 
-<article id="freedom_find_item_2_text" name="find_item" article_type="task">
-    <text>freedom_find_item_2_text</text>
-</article>
-
 <article id="freedom_find_item_3_text" name="find_item" article_type="task">
     <text>freedom_find_item_3_text</text>
 </article>
@@ -807,9 +803,6 @@
 <!--Freedom-->
 <article id="freedom_find_item_1_descr" name="find_item" article_type="task">
         <text>freedom_find_item_1_descr</text>
-</article>
-<article id="freedom_find_item_2_descr" name="find_item" article_type="task">
-        <text>freedom_find_item_2_descr</text>
 </article>
 <article id="freedom_find_item_3_descr" name="find_item" article_type="task">
         <text>freedom_find_item_3_descr</text>

@@ -9,7 +9,6 @@ local hint_colors = {
 
 local adv_vid_opt_params = {
 	{ "fov",                   "track", 0, hint_colors.green , "video_settings_name_61", "video_settings_desc_61" },
-	{ "hud_fov",               "track", 0, hint_colors.green , "video_settings_name_62", "video_settings_desc_62" },
 	--
 	{ "aa",                    "list",  0, hint_colors.green , "video_settings_name_19", "video_settings_desc_19" },
 	{ "cas",                   "track", 0, hint_colors.green , "video_settings_name_20", "video_settings_desc_20" },
@@ -17,12 +16,11 @@ local adv_vid_opt_params = {
 	--
 	{ "vis_dist",              "track", 0, hint_colors.yellow, "video_settings_name_2" , "video_settings_desc_2"  },
 	{ "geometry_lod",          "track", 0, hint_colors.yellow, "video_settings_name_3" , "video_settings_desc_3"  },
-	{ "dyn_opt_dist",          "track", 0, hint_colors.yellow, "video_settings_name_68", "video_settings_desc_68" },
+--	{ "dyn_opt_dist",          "track", 0, hint_colors.yellow, "video_settings_name_68", "video_settings_desc_68" },
 	--
 	{ "r__smap_size",          "list",  1, hint_colors.red   , "video_settings_name_59", "video_settings_desc_59" },
 	{ "r2_sun_quality",        "list",  0, hint_colors.red   , "", ""                                             },
 	{ "sun_shafts",            "list",  0, hint_colors.yellow, "video_settings_name_29", "video_settings_desc_29" },
---	{ "r2_actor_shadow",       "check", 0, hint_colors.green , "video_settings_name_56", ""                       },
 	--
 	{ "ao_mode",               "list",  0, hint_colors.red, "video_settings_name_38", "video_settings_desc_38" },
 	{ "ssao",                  "list",  0, hint_colors.red, "video_settings_name_37", "video_settings_desc_37" },

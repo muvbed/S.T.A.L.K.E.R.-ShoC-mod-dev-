@@ -83,8 +83,8 @@
 			always_show_scroll="0" a="0" />
 
 	<!-- Слот костюма -->
-    <dragdrop_outfit x="225" y="128" width="92" height="184" custom_placement="0"
-            cell_width="46" cell_height="46" rows_num="4" cols_num="2"
+    <dragdrop_outfit x="200" y="128" width="138" height="184" custom_placement="0"
+            cell_width="46" cell_height="46" rows_num="4" cols_num="3"
             virtual_cells="1" vc_vert_align="c" vc_horiz_align="c"
 			condition_progress_bar="0" a="0" />
 
@@ -108,8 +108,8 @@
 	<dragdrop_knife x="254" y="17" width="92" height="46" custom_placement="0"
             cell_width="46" cell_height="46" rows_num="1" cols_num="2"
 			virtual_cells="1" vc_vert_align="c" vc_horiz_align="c" a="0"/>
-	<dragdrop_binocular x="42" y="266" width="92" height="92" custom_placement="0"
-            cell_width="46" cell_height="46" rows_num="2" cols_num="2"
+	<dragdrop_binocular x="-4" y="266" width="184" height="92" custom_placement="0"
+            cell_width="46" cell_height="46" rows_num="2" cols_num="4"
 			virtual_cells="1" vc_vert_align="c" vc_horiz_align="c" a="0"/>
 	<dragdrop_torch x="99999" y="681" width="92" height="46" custom_placement="0"
             cell_width="46" cell_height="46" rows_num="1" cols_num="2"

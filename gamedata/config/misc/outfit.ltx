@@ -1,7 +1,16 @@
-[outfit_base]:identity_immunities
-; delete full_scale_icon	next update- obsolete, use  full_icon_name instead !!!
+[outfit_base]
+GroupControlSection 			= spawn_group
+discovery_dependency 			=
+class 							= E_STLK
+cform 							= skeleton
+
+slot 							= 6
+
+show_condition 					= false
 
 full_icon_name					= npc_icon_without_outfit
+
+nightvision_sect				=
 
 additional_inventory_weight		= 0		
 additional_inventory_weight2	= 0	
@@ -12,6 +21,7 @@ radiation_restore_speed 		= 0.0
 satiety_restore_speed 			= 0.0
 power_restore_speed 			= 0.0
 bleeding_restore_speed 			= 0.0
+player_hud_section				= actor_hud_05
 cost							= 0
 inv_weight						= 0.0
 power_loss 						= 1.0
@@ -23,7 +33,6 @@ default_to_ruck 				= false
 ;базовый костюм сталкера - костюм новичка. Обычная одежда туриста - штормовка+сапоги
 
 full_scale_icon					= 6,6
-player_hud_section				= actor_hud_05
 
 ;---------------------------------------------------------------------------------------------
 ;		Светлая куртка
@@ -36,7 +45,7 @@ $spawn 							= "outfit\novice_outfit"
 class							= E_STLK
 cform           				= skeleton
 visual          				= equipments\novice_suit
-actor_visual					= actors\hero\stalker_novice.ogf
+actor_visual					= actors\novice\green_stalker_antigas.ogf
 
 ef_equipment_type				= 3
 
@@ -44,7 +53,7 @@ inv_name						= outfit_soldier_name
 inv_name_short					= outfit_soldier_name
 description						= outfit_soldier_description
 inv_grid_width					= 2
-inv_grid_height					= 2
+inv_grid_height					= 3
 inv_grid_x						= 0
 inv_grid_y						= 18
 
@@ -54,7 +63,7 @@ slot							= 6
 full_scale_icon					= 0,11		;иконка сталкера в костюме в полный рост
 immunities_sect					= sect_novice_outfit_immunities
 
-nightvision_sect				=
+nightvision_sect_new			=
 
 ; NO RESISTANCE
 burn_protection 				= 0.10
@@ -76,7 +85,7 @@ cost							= 2000
 power_loss 						= 1.05
 artefact_count					= 6	
 bleeding_restore_speed			= 0.001
-player_hud_section				= actor_hud_15
+player_hud_section				= actor_hud_novice
 helmet_section 					= af_gaz
 legs 							= novice_outfit_legs
 
@@ -102,7 +111,7 @@ $spawn 							= "outfit\bandit_outfit"
 class							= E_STLK
 cform           				= skeleton
 visual          				= equipments\bandit_suit
-actor_visual					= actors\hero\stalker_bandit.ogf
+actor_visual					= actors\bandit\stalker_bandit_8.ogf
 
 ef_equipment_type				= 3
 
@@ -111,7 +120,7 @@ inv_name_short					= bandit_outfit_name
 description						= bandit_outfit_description
 
 inv_grid_width					= 2
-inv_grid_height					= 2
+inv_grid_height					= 3
 inv_grid_x						= 12
 inv_grid_y						= 0
 full_icon_name					= npc_icon_bandit_outfit
@@ -120,7 +129,7 @@ slot							= 6
 full_scale_icon					= 0,6			;иконка сталкера в костюме в полный рост
 immunities_sect					= sect_bandit_outfit_immunities
 
-nightvision_sect				=
+nightvision_sect_new			=
 
 ; NO RESISTANCE
 burn_protection 				= 0.15
@@ -142,7 +151,7 @@ cost							= 3000
 power_loss 						= 1.05
 artefact_count					= 7
 bleeding_restore_speed			= 0.001
-player_hud_section				= actor_hud_18
+player_hud_section				= actor_hud_bandit
 helmet_section 					= af_gaz
 legs 							= bandit_outfit_legs
 
@@ -186,7 +195,7 @@ slot							= 6
 full_scale_icon					= 0,6
 immunities_sect					= sect_bandit_veteran_outfit_immunities
 
-nightvision_sect				=
+nightvision_sect_new			=
 
 ; NO RESISTANCE
 burn_protection 				= 0.25
@@ -208,7 +217,7 @@ cost							= 20000
 power_loss 						= 1.1
 artefact_count					= 10
 bleeding_restore_speed			= 0.0015
-player_hud_section				= actor_hud_19
+player_hud_section				= actor_hud_pbrown
 helmet_section 					= af_gaz
 legs 							= brown_trench_legs
 
@@ -252,7 +261,7 @@ slot							= 6
 full_scale_icon					= 0,6
 immunities_sect					= sect_bandit_master_outfit_immunities
 
-nightvision_sect				=
+nightvision_sect_new			=
 
 ; NO RESISTANCE
 burn_protection 				= 0.15
@@ -274,7 +283,7 @@ cost							= 25000
 power_loss 						= 1.15
 artefact_count					= 11
 bleeding_restore_speed			= 0.0015
-player_hud_section				= actor_hud_01
+player_hud_section				= actor_hud_pblack
 helmet_section 					= af_gaz
 legs 							= black_trench_legs
 
@@ -300,7 +309,7 @@ $spawn 							= "outfit\soldier_outfit"
 class							= E_STLK
 cform           				= skeleton
 visual          				= equipments\soldier_suit
-actor_visual					= actors\hero\stalker_soldier.ogf
+actor_visual					= actors\soldier\soldier_bandana.ogf
 
 ef_equipment_type				= 3
 
@@ -319,7 +328,7 @@ slot							= 6
 full_scale_icon					= 6,6		;иконка сталкера в костюме в полный рост
 immunities_sect					= sect_soldier_outfit_immunities
 
-nightvision_sect				=
+nightvision_sect_new			=
 
 ; NO RESISTANCE
 burn_protection 				= 0.10
@@ -341,7 +350,7 @@ cost							= 5000
 power_loss 						= 1.15
 artefact_count					= 8
 bleeding_restore_speed			= 0.00125
-player_hud_section				= actor_hud_21
+player_hud_section				= actor_hud_soldier
 helmet_section 					= af_gaz
 legs 							= soldier_outfit_legs
 
@@ -367,7 +376,7 @@ $spawn 							= "outfit\specops_outfit"
 class							= E_STLK
 cform           				= skeleton
 visual          				= equipments\specnaz_suit
-actor_visual					= actors\hero\stalker_specops.ogf
+actor_visual					= actors\soldier\soldier_antigas.ogf
 
 ef_equipment_type				= 3
 
@@ -380,7 +389,7 @@ inv_grid_height					= 3
 inv_grid_x						= 10
 inv_grid_y						= 13
 full_icon_name					= npc_icon_specops_outfit
-nightvision_sect				= effector_nightvision_bad
+nightvision_sect_new			= effector_nightvision_bad
 
 slot							= 6
 full_scale_icon					= 4,6			;иконка сталкера в костюме в полный рост
@@ -406,7 +415,7 @@ cost							= 36000
 power_loss 						= 1.4
 artefact_count					= 12	
 bleeding_restore_speed			= 0.00175
-player_hud_section				= actor_hud_06
+player_hud_section				= actor_hud_specops
 helmet_section 					= af_mil
 legs 							= specops_outfit_legs
 
@@ -446,7 +455,7 @@ inv_grid_height					= 3
 inv_grid_x						= 10
 inv_grid_y						= 29
 full_icon_name					= npc_icon_military_outfit
-nightvision_sect				= effector_nightvision_good
+nightvision_sect_new			= effector_nightvision_good
 
 full_scale_icon					= 10,6		;иконка сталкера в костюме в полный рост
 immunities_sect					= sect_military_stalker_outfit_immunities
@@ -471,7 +480,7 @@ cost							= 95000
 power_loss 						= 1.45
 artefact_count					= 12
 bleeding_restore_speed			= 0.00175
-player_hud_section				= actor_hud_16
+player_hud_section				= actor_hud_skat
 helmet_section 					= af_skat
 legs 							= military_outfit_legs
 
@@ -497,7 +506,7 @@ $spawn 							= "outfit\stalker_outfit"
 class							= E_STLK
 cform           				= skeleton
 visual          				= equipments\stalker_suit
-actor_visual					= actors\hero\stalker_hood.ogf
+actor_visual					= actors\neytral\stalker_neytral_hood_9.ogf
 
 ef_equipment_type				= 3
 
@@ -515,7 +524,7 @@ slot							= 6
 full_scale_icon					= 14,11			;иконка сталкера в костюме в полный рост
 immunities_sect					= sect_stalker_outfit_immunities
 
-nightvision_sect				= 
+nightvision_sect_new			= 
 
 ; LOW RESISTANCE
 burn_protection 				= 0.35
@@ -537,7 +546,7 @@ cost							= 25000
 power_loss 						= 1.2
 artefact_count					= 9	
 bleeding_restore_speed			= 0.0015
-player_hud_section				= actor_hud_00
+player_hud_section				= actor_hud_stalker
 helmet_section 					= af_gaz
 legs 							= stalker_outfit_legs
 
@@ -563,7 +572,7 @@ $spawn 							= "outfit\killer_outfit"
 class							= E_STLK
 cform           				= skeleton
 visual          				= equipments\stalker_killer_suit
-actor_visual					= actors\hero\stalker_killer.ogf	
+actor_visual					= actors\killer\stalker_ki_antigas.ogf	
 
 ef_equipment_type				= 4
 
@@ -581,7 +590,7 @@ full_icon_name					= npc_icon_killer_outfit
 full_scale_icon					= 4,11			;иконка сталкера в костюме в полный рост
 immunities_sect					= sect_killer_outfit_immunities
 
-nightvision_sect				= effector_nightvision_good
+nightvision_sect_new			= effector_nightvision_good
 
 ; LOW RESISTANCE
 burn_protection 				= 0.25
@@ -603,7 +612,7 @@ cost							= 25000
 power_loss 						= 1.15
 artefact_count					= 8	
 bleeding_restore_speed			= 0.00125
-player_hud_section				= actor_hud_11
+player_hud_section				= actor_hud_killer
 helmet_section 					= af_merc
 legs 							= killer_outfit_legs
 
@@ -629,7 +638,7 @@ $spawn 							= "outfit\monolit_outfit"
 class							= E_STLK
 cform           				= skeleton
 visual          				= equipments\monolit_suit
-actor_visual					= actors\hero\stalker_monolit.ogf
+actor_visual					= actors\monolit\stalker_mo_hood_9.ogf
 
 ef_equipment_type				= 3
 
@@ -646,7 +655,7 @@ slot							= 6
 full_scale_icon					= 6,11			;иконка сталкера в костюме в полный рост
 immunities_sect					= sect_monolit_outfit_immunities
 
-nightvision_sect				=
+nightvision_sect_new			=
 
 ; LOW RESISTANCE
 burn_protection 				= 0.25
@@ -668,7 +677,7 @@ cost							= 28000
 power_loss 						= 1.15
 artefact_count					= 10	
 bleeding_restore_speed			= 0.0015
-player_hud_section				= actor_hud_17
+player_hud_section				= actor_hud_monolit
 helmet_section 					= af_gaz
 legs 							= monolit_outfit_legs
 
@@ -694,7 +703,7 @@ $spawn 							= "outfit\svoboda_light_outfit"
 class							= E_STLK
 cform           				= skeleton
 visual          				= equipments\svoboda_light_suit
-actor_visual					= actors\hero\stalker_svoboda_light.ogf
+actor_visual					= actors\svoboda\stalker_sv_hood_91.ogf
 
 ef_equipment_type				= 3
 
@@ -712,7 +721,7 @@ slot							= 6
 full_scale_icon					= 10,11			;иконка сталкера в костюме в полный рост
 immunities_sect					= sect_svoboda_light_outfit_immunities
 
-nightvision_sect				=
+nightvision_sect_new			=
 
 ; LOW RESISTANCE
 burn_protection 				= 0.40
@@ -734,7 +743,7 @@ cost							= 20000
 power_loss 						= 1.15
 artefact_count					= 9
 bleeding_restore_speed			= 0.0015
-player_hud_section				= actor_hud_03
+player_hud_section				= actor_hud_freedom_light
 helmet_section 					= af_gaz
 legs 							= svoboda_light_outfit_legs
 
@@ -760,7 +769,7 @@ $spawn 							= "outfit\svoboda_heavy_outfit"
 class							= E_STLK
 cform           				= skeleton
 visual          				= equipments\svoboda_heavy_suit
-actor_visual					= actors\hero\stalker_svoboda_heavy.ogf
+actor_visual					= actors\svoboda\stalker_sv_hood_9.ogf
 
 ef_equipment_type				= 3
 
@@ -773,7 +782,7 @@ inv_grid_height					= 3
 inv_grid_x						= 8
 inv_grid_y						= 15
 full_icon_name					= npc_icon_svoboda_heavy_outfit
-nightvision_sect				= 
+nightvision_sect_new			= 
 
 slot							= 6
 full_scale_icon					= 2,6			;иконка сталкера в костюме в полный рост
@@ -799,7 +808,7 @@ cost							= 35000
 power_loss 						= 1.2
 artefact_count					= 10
 bleeding_restore_speed			= 0.0015
-player_hud_section				= actor_hud_24
+player_hud_section				= actor_hud_freedom_heavy
 helmet_section 					= af_gaz
 legs 							= svoboda_heavy_outfit_legs
 
@@ -825,7 +834,7 @@ $spawn 							= "outfit\dolg_outfit"
 class							= E_STLK
 cform           				= skeleton
 visual          				= equipments\dolg_suit
-actor_visual					= actors\hero\stalker_dolg.ogf
+actor_visual					= actors\dolg\stalker_do_antigas.ogf
 
 ef_equipment_type				= 3
 
@@ -843,7 +852,7 @@ slot							= 6
 full_scale_icon					= 8,11			;иконка сталкера в костюме в полный рост
 immunities_sect					= sect_dolg_outfit_immunities
 
-nightvision_sect				= 
+nightvision_sect_new			= 
 
 ; LOW RESISTANCE
 burn_protection 				= 0.30
@@ -865,7 +874,7 @@ cost							= 23000
 power_loss 						= 1.2
 artefact_count					= 10
 bleeding_restore_speed			= 0.0015
-player_hud_section				= actor_hud_02
+player_hud_section				= actor_hud_dolg
 helmet_section 					= af_gaz
 legs 							= dolg_outfit_legs
 
@@ -891,7 +900,7 @@ $prefetch 						= 32
 class							= E_STLK
 cform           				= skeleton
 visual          				= equipments\exoskelet	
-actor_visual					= actors\hero\stalker_exoskeleton.ogf
+actor_visual					= actors\neytral\stalker_neytral_exoskeleton.ogf
 
 ef_equipment_type				= 5
 
@@ -900,12 +909,12 @@ inv_name_short					= exo_outfit_name
 description						= exo_outfit_description
 
 slot							= 6
-inv_grid_width					= 2
+inv_grid_width					= 3
 inv_grid_height					= 3
-inv_grid_x						= 14
-inv_grid_y						= 13
+inv_grid_x						= 20
+inv_grid_y						= 0
 full_icon_name					= npc_icon_exo_outfit
-nightvision_sect				= effector_nightvision_bad
+nightvision_sect_new			= effector_nightvision_bad
 
 full_scale_icon					= 2,11			;иконка сталкера в костюме в полный рост
 immunities_sect					= sect_exo_outfit_immunities
@@ -955,15 +964,15 @@ inv_name						= killer_blue_exoskeleton_name
 inv_name_short					= killer_blue_exoskeleton_name
 description						= killer_blue_exoskeleton_description
 
-inv_grid_x						= 10 
-inv_grid_y						= 38 
+inv_grid_x						= 23 
+inv_grid_y						= 0 
 
 visual          				= equipments\exoskelet_killer
 actor_visual					= actors\killer\stalker_ki_exoskeleton.ogf
 full_icon_name					= npc_icon_killer_blue_exoskeleton
 immunities_sect					= sect_killer_blue_exoskeleton_immunities
 
-nightvision_sect				= effector_nightvision_good
+nightvision_sect_new			= effector_nightvision_good
 
 ; MEDIUM RESISTANCE
 burn_protection 				= 0.25
@@ -985,7 +994,7 @@ cost							= 170000
 power_loss 						= 0.7
 artefact_count					= 14
 bleeding_restore_speed			= 0.002
-player_hud_section				= actor_hud_exo_kill
+player_hud_section				= actor_hud_exo_killer
 helmet_section 					= af_exo
 legs 							= killer_blue_exoskeleton_legs
 
@@ -1008,15 +1017,15 @@ $spawn							= "outfit\monolit_exoskeleton"
 inv_name						= monolit_exoskeleton_name
 inv_name_short					= monolit_exoskeleton_name
 description						= monolit_exoskeleton_description
-inv_grid_x						= 16
-inv_grid_y						= 38
+inv_grid_x						= 32 
+inv_grid_y						= 0 
 
 visual          				= equipments\exoskelet_monolith
 actor_visual					= actors\monolit\stalker_mo_exo.ogf
 full_icon_name					= npc_icon_monolit_exo_outfit
 immunities_sect					= sect_monolit_exoskeleton_immunities
 
-nightvision_sect				= 
+nightvision_sect_new			= 
 
 ; MEDIUM RESISTANCE
 burn_protection 				= 0.40
@@ -1038,7 +1047,7 @@ cost							= 190000
 power_loss 						= 0.7
 artefact_count					= 14
 bleeding_restore_speed			= 0.002
-player_hud_section				= actor_hud_exo_mono
+player_hud_section				= actor_hud_exo_monolit
 helmet_section 					= af_exo
 legs 							= monolit_exoskeleton_legs
 
@@ -1061,15 +1070,15 @@ $spawn							= "outfit\svoboda_exoskeleton"
 inv_name						= svoboda_exoskeleton_name
 inv_name_short					= svoboda_exoskeleton_name
 description						= svoboda_exoskeleton_description
-inv_grid_x						= 14
-inv_grid_y						= 38
+inv_grid_x						= 29 
+inv_grid_y						= 0 
 
 visual          				= equipments\exoskelet_freedom
 actor_visual					= actors\svoboda\stalker_sv_exoskeleton.ogf
 full_icon_name					= npc_icon_svoboda_exo_outfit
 immunities_sect					= sect_svoboda_exoskeleton_immunities
 
-nightvision_sect				= effector_nightvision_bad
+nightvision_sect_new			= effector_nightvision_bad
 ; MEDIUM RESISTANCE
 burn_protection 				= 0.35
 strike_protection 				= 0.65
@@ -1090,7 +1099,7 @@ cost							= 175000
 power_loss 						= 0.75
 artefact_count					= 14
 bleeding_restore_speed			= 0.002
-player_hud_section				= actor_hud_exo_free
+player_hud_section				= actor_hud_exo_freedom
 helmet_section 					= af_exo
 legs 							= exo_freedom_legs
 
@@ -1113,15 +1122,15 @@ $spawn							= "outfit\dolg_black_exoskeleton"
 inv_name						= dolg_black_exoskeleton_name
 inv_name_short					= dolg_black_exoskeleton_name
 description						= dolg_black_exoskeleton_description
-inv_grid_x						= 12
-inv_grid_y						= 38
+inv_grid_x						= 26 
+inv_grid_y						= 0 
 
 visual          				= equipments\exoskelet_dolg
 actor_visual					= actors\dolg\stalker_do_exoskeleton.ogf
 full_icon_name					= npc_icon_dolg_exo_outfit
 immunities_sect					= sect_dolg_black_exoskeleton_immunities
 
-nightvision_sect				= effector_nightvision_bad
+nightvision_sect_new			= effector_nightvision_bad
 
 ; MEDIUM RESISTANCE
 burn_protection 				= 0.25
@@ -1159,60 +1168,6 @@ explosion_immunity				= 0.0150
 fire_wound_immunity				= 0.0150
 
 ;---------------------------------------------------------------------------------------------
-;		Повреждённый экзоскелет
-;---------------------------------------------------------------------------------------------
-[broken_exoskeleton]:exo_outfit	;Модифицированный экзоскелет broken
-$spawn							= "outfit\broken_exoskeleton"
-inv_name						= broken_exoskeleton_name
-inv_name_short					= broken_exoskeleton_name
-description						= broken_exoskeleton_description
-inv_grid_x						= 18
-inv_grid_y						= 38
-
-visual          				= equipments\exoskelet
-actor_visual					= actors\stalker_zombi\zombie_exoskeleton.ogf
-full_icon_name					= npc_icon_broken_exo_outfit
-immunities_sect					= sect_broken_exoskeleton_immunities
-
-nightvision_sect				=  
-
-; MEDIUM RESISTANCE
-burn_protection 				= 0.30
-strike_protection 				= 0.70
-shock_protection 				= 0.35
-wound_protection				= 0.65
-radiation_protection 			= 0.10
-telepatic_protection 			= 0.35
-chemical_burn_protection 		= 0.20
-explosion_protection 			= 0.70
-fire_wound_protection  			= 0.65
-
-bones_koeff_protection			= exo_helmet_damage
-
-additional_inventory_weight		= 43
-additional_inventory_weight2	= 43
-inv_weight						= 35.0
-cost							= 20000
-power_loss 						= 1.5
-artefact_count					= 11
-bleeding_restore_speed			= 0.002
-player_hud_section				= actor_hud_exo
-helmet_section 					= af_exo
-legs 							= exo_outfit_legs
-sprint_allowed					= false
-
-[sect_broken_exoskeleton_immunities]
-burn_immunity					= 0.0060
-strike_immunity					= 0.0100
-shock_immunity					= 0.1000
-wound_immunity					= 0.0010
-radiation_immunity				= 0.0000
-telepatic_immunity				= 0.0000
-chemical_burn_immunity			= 0.0520
-explosion_immunity				= 0.0320
-fire_wound_immunity				= 0.0060
-
-;---------------------------------------------------------------------------------------------
 ;		Бронескафандр «Сева»
 ;---------------------------------------------------------------------------------------------
 [scientific_outfit]:outfit_base
@@ -1237,7 +1192,7 @@ inv_grid_height					= 3
 inv_grid_x						= 16
 inv_grid_y						= 13
 full_icon_name					= npc_icon_scientific_outfit
-nightvision_sect				= effector_nightvision_sci
+nightvision_sect_new			= effector_nightvision_sci
 
 full_scale_icon					= 12,11			;иконка сталкера в костюме в полный рост
 immunities_sect					= sect_scientific_outfit_immunities
@@ -1262,7 +1217,7 @@ cost							= 110000
 power_loss 						= 1.4
 artefact_count					= 9	
 bleeding_restore_speed			= 0.0015
-player_hud_section				= actor_hud_07
+player_hud_section				= actor_hud_sci
 helmet_section 					= af_sci
 legs 							= scientific_outfit_legs
 
@@ -1302,7 +1257,7 @@ inv_grid_height					= 3
 inv_grid_x						= 18
 inv_grid_y						= 30
 full_icon_name					= npc_icon_merc_scientific_outfit
-nightvision_sect				= effector_nightvision_good
+nightvision_sect_new			= effector_nightvision_good
 
 full_scale_icon					= 8,6		;иконка сталкера в костюме в полный рост
 immunities_sect					= sect_merc_scientific_outfit_immunities
@@ -1327,7 +1282,7 @@ cost							= 135000
 power_loss 						= 1.35
 artefact_count					= 10
 bleeding_restore_speed			= 0.0015
-player_hud_section				= actor_hud_07
+player_hud_section				= actor_hud_sci
 helmet_section 					= af_sci
 legs 							= merc_scientific_outfit_legs
 
@@ -1367,7 +1322,7 @@ inv_grid_height					= 3
 inv_grid_x						= 18
 inv_grid_y						= 33
 full_icon_name					= npc_icon_monolit_scientific_outfit
-nightvision_sect				= 
+nightvision_sect_new			= 
 
 full_scale_icon					= 8,6		;иконка сталкера в костюме в полный рост
 immunities_sect					= sect_monolit_scientific_outfit_immunities
@@ -1392,7 +1347,7 @@ cost							= 130000
 power_loss 						= 1.35
 artefact_count					= 10
 bleeding_restore_speed			= 0.0015
-player_hud_section				= actor_hud_09	
+player_hud_section				= actor_hud_sci_monolit	
 helmet_section 					= af_sci
 legs 							= monolit_scientific_outfit_legs
 
@@ -1432,7 +1387,7 @@ inv_grid_height					= 3
 inv_grid_x						= 18
 inv_grid_y						= 27
 full_icon_name					= npc_icon_freedom_scientific_outfit
-nightvision_sect				= effector_nightvision_sci
+nightvision_sect_new			= effector_nightvision_sci
 
 full_scale_icon					= 8,6		;иконка сталкера в костюме в полный рост
 immunities_sect					= sect_freedom_scientific_outfit_immunities
@@ -1457,7 +1412,7 @@ cost							= 130000
 power_loss 						= 1.4
 artefact_count					= 10
 bleeding_restore_speed			= 0.0015
-player_hud_section				= actor_hud_23
+player_hud_section				= actor_hud_sci_freedom
 helmet_section 					= af_sci
 legs 							= svoboda_sci_outfit_legs
 
@@ -1497,7 +1452,7 @@ inv_grid_height					= 3
 inv_grid_x						= 16
 inv_grid_y						= 16
 full_icon_name					= npc_icon_dolg_scientific_outfit
-nightvision_sect				= effector_nightvision_sci
+nightvision_sect_new			= effector_nightvision_sci
 
 full_scale_icon					= 8,6		;иконка сталкера в костюме в полный рост
 immunities_sect					= sect_dolg_scientific_outfit_immunities
@@ -1522,7 +1477,7 @@ cost							= 130000
 power_loss 						= 1.4
 artefact_count					= 10
 bleeding_restore_speed			= 0.0015
-player_hud_section				= actor_hud_22
+player_hud_section				= actor_hud_sci_dolg
 helmet_section 					= af_sci
 legs 							= dolg_scientific_outfit_legs
 
@@ -1548,7 +1503,7 @@ $prefetch 						= 32
 class							= E_STLK
 cform           				= skeleton
 visual          				= equipments\ecolog_suit.ogf	
-actor_visual					= actors\hero\stalker_ecolog.ogf
+actor_visual					= actors\ecolog\stalker_ecolog.ogf
 
 ef_equipment_type				= 2
 
@@ -1562,7 +1517,7 @@ inv_grid_height					= 3
 inv_grid_x						= 18
 inv_grid_y						= 13
 full_icon_name					= npc_icon_ecolog_outfit
-nightvision_sect				= effector_nightvision_sci
+nightvision_sect_new			= effector_nightvision_sci
 
 full_scale_icon					= 14,6			;иконка сталкера в костюме в полный рост
 immunities_sect					= sect_ecolog_outfit_immunities
@@ -1587,7 +1542,7 @@ cost							= 50000
 power_loss 						= 1.3
 artefact_count					= 6
 bleeding_restore_speed			= 0.001
-player_hud_section				= actor_hud_12
+player_hud_section				= actor_hud_eco
 helmet_section 					= af_sci
 legs 							= ecolog_outfit_legs
 
@@ -1613,7 +1568,7 @@ $prefetch 						= 32
 class							= E_STLK
 cform           				= skeleton
 visual          				= equipments\scientist_suit.ogf	
-actor_visual					= actors\hero\stalker_chemical.ogf
+actor_visual					= actors\ecolog\stalker_ecolog_military.ogf
 
 ef_equipment_type				= 2
 
@@ -1627,7 +1582,7 @@ inv_grid_height					= 3
 inv_grid_x						= 14
 inv_grid_y						= 16
 full_icon_name					= npc_icon_protection_outfit
-nightvision_sect				= effector_nightvision_sci
+nightvision_sect_new			= effector_nightvision_sci
 
 full_scale_icon					= 12,6			;иконка сталкера в костюме в полный рост
 immunities_sect					= sect_protection_outfit_immunities
@@ -1652,7 +1607,7 @@ cost							= 100000
 power_loss 						= 1.4
 artefact_count					= 8
 bleeding_restore_speed			= 0.00125
-player_hud_section				= actor_hud_25
+player_hud_section				= actor_hud_eco_pro
 helmet_section 					= af_sci
 legs 							= protection_outfit_legs
 

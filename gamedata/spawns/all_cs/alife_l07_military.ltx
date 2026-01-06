@@ -244,35 +244,6 @@ upd:ammo_left = 20
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-[9]
-
-; cse_abstract properties
-section_name = ammo_12x76_dart
-name = mil_ammo_12x76_dart
-position = -26.6738700866699, -5.88597059249878, -17.9488296508789
-direction = -9.22975004868931e-007, -0.0872660875320435, -8.07710449635124e-008
-id = 65535
-version = 118
-script_version = 7
-spawn_id = 9
-
-; cse_alife_object properties
-game_vertex_id = 1545
-level_vertex_id = 22
-object_flags = 0xffffff0f
-
-; cse_visual properties
-visual_name = weapons\ammo\ammo_12x76_dart
-
-; cse_alife_inventory_item properties
-condition = 1
-
-; cse_alife_item_ammo properties
-ammo_left = 10
-upd:ammo_left = 10
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 [10]
 
 ; cse_abstract properties
@@ -4107,8 +4078,7 @@ level_vertex_id = 22
 object_flags = 0xffffff3f
 custom_data = <<END
 [spawn]
-wpn_rg-6 = 1
-ammo_vog-25p = 6
+wpn_pk = 1
 END
 
 ; cse_visual properties
@@ -4134,7 +4104,6 @@ level_vertex_id = 22
 object_flags = 0xffffff3f
 custom_data = <<END
 [spawn]
-outfit_svoboda_m1 = 1
 svoboda_light_outfit = 1
 svoboda_heavy_outfit = 2
 END
@@ -11288,7 +11257,7 @@ object_flags = 0xffffff3a
 custom_data = <<END
 [drop_box]
 community = def_box
-items = ammo_9x39_sp5, 5
+items = ammo_9x39_ap, 5
 END
 
 ; cse_visual properties
@@ -16025,35 +15994,6 @@ skeleton_flags = 1
 ; cse_alife_object_physic properties
 physic_type = 0x3
 mass = 10
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-[512]
-
-; cse_abstract properties
-section_name = physic_object
-name = mil_physic_object_0127
-position = -18.2968349456787, -6.24674081802368, -30.394006729126
-direction = 0, -0.0872660428285599, 0
-id = 65535
-version = 118
-script_version = 7
-spawn_id = 512
-
-; cse_alife_object properties
-game_vertex_id = 1545
-level_vertex_id = 22
-object_flags = 0xffffff3a
-
-; cse_visual properties
-visual_name = weapons\ak74\wpn_ak74
-
-; cse_ph_skeleton properties
-
-; cse_alife_object_physic properties
-physic_type = 0x3
-mass = 10
-fixed_bones = magazin
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -24802,7 +24742,6 @@ bread = 2
 conserva = 3
 antirad = 2
 bandage = 4
-;wpn_groza = 2
 af_cristall = 1
 END
 story_id = 734
@@ -25056,41 +24995,11 @@ upd:addon_flags = 4
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-[719]
-
-; cse_abstract properties
-section_name = wpn_bm16
-name = mil_wpn_bm16
-position = -71.331672668457, -17.618522644043, 249.423110961914
-direction = 0.0587210692465305, 2.34329009056091, -1.43408131599426
-id = 65535
-version = 118
-script_version = 7
-spawn_id = 719
-
-; cse_alife_object properties
-game_vertex_id = 1545
-level_vertex_id = 22
-object_flags = 0xffffff0f
-
-; cse_visual properties
-visual_name = weapons\bm_16\wpn_bm-16
-
-; cse_alife_inventory_item properties
-condition = 1
-
-; cse_alife_item_weapon properties
-ammo_current = 90
-upd:condition = 1
-upd:ammo_ids = 
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 [720]
 
 ; cse_abstract properties
-section_name = wpn_lr300_m1
-name = mil_wpn_lr300_m1
+section_name = wpn_svu
+name = mil_wpn_svu
 position = -361.725769042969, -12.8635749816895, 385.554260253906
 direction = -0.228448912501335, -1.98511862754822, -0.0359346307814121
 id = 65535
@@ -25104,7 +25013,7 @@ level_vertex_id = 22
 object_flags = 0xffffff37
 
 ; cse_visual properties
-visual_name = weapons\lr300\wpn_lr300
+visual_name = weapons\svu\wpn_svu
 
 ; cse_alife_inventory_item properties
 condition = 1
@@ -25118,8 +25027,8 @@ upd:condition = 1
 [721]
 
 ; cse_abstract properties
-section_name = wpn_rg-6
-name = mil_wpn_rg-6
+section_name = wpn_pk
+name = mil_wpn_pk
 position = -274.552337646484, -27.4724235534668, 245.413619995117
 direction = -0.01620002835989, -1.25099992752075, -0.462600201368332
 id = 65535
@@ -25134,7 +25043,7 @@ object_flags = 0xffffff0b
 story_id = 706
 
 ; cse_visual properties
-visual_name = weapons\rg-6\wpn_rg-6
+visual_name = weapons\pk\wpn_pk
 
 ; cse_alife_inventory_item properties
 condition = 1

@@ -20,9 +20,9 @@
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_fmj \n
-			wpn_lr300 \n
+			wpn_m4 \n
 			ammo_5.56x45_ss190 = 1 \n
 #include "gameplay\character_items_mon.xml"
 		</supplies>
@@ -84,7 +84,7 @@
 			[spawn] \n
 			wpn_pm \n
 			ammo_9x18_fmj = 1 \n	
-			wpn_abakan \n
+			wpn_ak74 \n
             ammo_5.45x39_ap = 1 \n
 #include "gameplay\character_items_mon.xml"
 		</supplies>
@@ -115,7 +115,7 @@
 			[spawn] \n
 			wpn_pm \n
 			ammo_9x18_fmj = 1 \n	
-			wpn_abakan \n
+			wpn_ak74 \n
             ammo_5.45x39_ap = 1 \n
 #include "gameplay\character_items_mon.xml"
 		</supplies>
@@ -210,7 +210,7 @@
 			[spawn] \n
 			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
-			wpn_abakan \n
+			wpn_ak74 \n
             ammo_5.45x39_ap = 1 \n
 #include "gameplay\character_items_mon.xml"
 		</supplies>
@@ -239,9 +239,9 @@
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_hpsa \n
+			wpn_glock \n
 			ammo_9x19_fmj \n
-			wpn_lr300 \n
+			wpn_m4 \n
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items_mon.xml"
 		</supplies>
@@ -273,7 +273,7 @@
 			[spawn] \n
 			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
-			wpn_abakan \n
+			wpn_ak74 \n
             ammo_5.45x39_ap = 1 \n
 #include "gameplay\character_items_mon.xml"
 		</supplies>
@@ -304,7 +304,7 @@
 			[spawn] \n
 			wpn_colt1911 \n
 			ammo_11.43x23_fmj = 1 \n
-			wpn_lr300 \n
+			wpn_m4 \n
 	    	ammo_5.56x45_ss190 = 1 \n
 #include "gameplay\character_items_mon.xml"
 		</supplies>
@@ -333,9 +333,9 @@
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_hpsa \n
+			wpn_glock \n
 			ammo_9x19_fmj \n
-			wpn_lr300 \n
+			wpn_m4 \n
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items_mon.xml"
 		</supplies>
@@ -364,9 +364,9 @@
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n	
-			wpn_lr300 \n
+			wpn_m4 \n
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items_mon.xml"
 		</supplies>
@@ -428,9 +428,9 @@
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n	
-			wpn_abakan \n
+			wpn_ak74 \n
 			ammo_5.45x39_fmj \n
 #include "gameplay\character_items_mon.xml"
 		</supplies>
@@ -459,9 +459,9 @@
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n	
-			wpn_lr300 \n
+			wpn_m4 \n
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items_mon.xml"
 		</supplies>
@@ -492,7 +492,7 @@
 			[spawn] \n
 			wpn_colt1911 \n
 			ammo_11.43x23_fmj = 1 \n
-			wpn_l85  \n
+			wpn_sig550  \n
 			ammo_5.56x45_ap = 2 \n
 #include "gameplay\character_items_mon.xml"
 		</supplies>
@@ -524,9 +524,9 @@
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
-			wpn_lr300 \n
+			wpn_m4 \n
 			ammo_5.56x45_ss190 = 1 \n
 #include "gameplay\character_items_mon.xml"
 		</supplies>
@@ -555,9 +555,9 @@
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
-			wpn_abakan \n
+			wpn_ak74 \n
 			ammo_5.45x39_ap \n
 #include "gameplay\character_items_mon.xml"
 		</supplies>
@@ -588,7 +588,7 @@
 			[spawn] \n
 			wpn_colt1911 \n
 			ammo_11.43x23_fmj = 1 \n	
-			wpn_lr300 \n
+			wpn_m4 \n
 			ammo_5.56x45_ss190 = 1 \n
 #include "gameplay\character_items_mon.xml"
 		</supplies>
@@ -619,7 +619,7 @@
 			[spawn] \n
 			wpn_fort \n
 			ammo_9x18_fmj = 1 \n	
-			wpn_abakan \n
+			wpn_ak74 \n
             ammo_5.45x39_ap = 1 \n
 #include "gameplay\character_items_mon.xml"
 		</supplies>
@@ -681,9 +681,9 @@
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n	
-			wpn_l85 \n
+			wpn_sig550 \n
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items_mon.xml"
 		</supplies>
@@ -714,7 +714,7 @@
 			[spawn] \n
 			wpn_fort \n
 			ammo_9x18_fmj = 1 \n	
-			wpn_abakan \n
+			wpn_ak74 \n
             ammo_5.45x39_ap = 1 \n
 #include "gameplay\character_items_mon.xml"
 		</supplies>
@@ -743,9 +743,9 @@
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
-			wpn_lr300 \n
+			wpn_m4 \n
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items_mon.xml"
 		</supplies>
@@ -777,9 +777,9 @@
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
-			wpn_svu \n
+			wpn_svd \n
 			ammo_7.62x54_ap = 1 \n
 #include "gameplay\character_items_mon.xml"
 		</supplies>
@@ -808,7 +808,7 @@
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
 			wpn_svd \n
 			ammo_7.62x54_ap = 1 \n
@@ -842,7 +842,8 @@
 			[spawn] \n
 			wpn_colt1911 \n
 			ammo_11.43x23_fmj = 1 \n
-			wpn_lr300 = 1, scope \n
+			wpn_m4 = 1 \n
+			wpn_addon_scope_elcan \n
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items_mon.xml"
 		</supplies>
@@ -871,9 +872,9 @@
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
-			wpn_l85 \n
+			wpn_sig550 \n
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items_mon.xml"
 		</supplies>
@@ -902,9 +903,9 @@
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
-			wpn_lr300 \n
+			wpn_m4 \n
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items_mon.xml"
 		</supplies>
@@ -935,7 +936,7 @@
 			[spawn] \n
 			wpn_fort \n
 			ammo_9x18_fmj = 1 \n
-			wpn_abakan \n
+			wpn_ak74 \n
 			ammo_5.45x39_ap \n
 #include "gameplay\character_items_mon.xml"
 		</supplies>
@@ -969,9 +970,9 @@
     <visual>actors\monolit\stalker_mo_exo</visual>
     <supplies>
       [spawn] \n
-			wpn_sig220 \n
+			wpn_colt1911 \n
 			ammo_11.43x23_hydro = 1 \n
-			wpn_g36 \n
+			wpn_sig550 \n
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items_mon.xml"
     </supplies>
@@ -1001,9 +1002,9 @@
 		<visual>actors\monolit\stalker_mo_exo</visual>
 		<supplies>
 		[spawn] \n
-		wpn_sig220 \n
+		wpn_colt1911 \n
 		ammo_11.43x23_hydro = 1 \n
-		wpn_g36 \n
+		wpn_sig550 \n
 		ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items_mon.xml"
 		</supplies>
@@ -1035,7 +1036,7 @@
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_usp \n
+			wpn_colt1911 \n
 			ammo_11.43x23_fmj = 1 \n
 			wpn_rpg7 \n
 			ammo_og-7b = 1 \n
@@ -1066,7 +1067,7 @@
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_usp \n
+			wpn_colt1911 \n
 			ammo_11.43x23_fmj = 1 \n
 			wpn_rpg7 \n
 			ammo_og-7b = 1 \n
@@ -1195,9 +1196,9 @@
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
-			wpn_l85 \n
+			wpn_sig550 \n
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items_zmb.xml"
 		</supplies>
@@ -1226,7 +1227,7 @@
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
 			wpn_ak74 \n
 			ammo_5.45x39_ap = 1 \n
@@ -1257,9 +1258,9 @@
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
-			wpn_spas12 \n
+			wpn_saiga12 \n
 			ammo_12x76_zhekan = 1 \n
 #include "gameplay\character_items_zmb.xml"
 		</supplies>
@@ -1288,9 +1289,9 @@
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
-			wpn_lr300 \n
+			wpn_m4 \n
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items_zmb.xml"
 		</supplies>
@@ -1319,9 +1320,9 @@
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
-			wpn_lr300 \n
+			wpn_m4 \n
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items_zmb.xml"
 		</supplies>
@@ -1351,9 +1352,9 @@
   		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
-			wpn_l85 \n
+			wpn_sig550 \n
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items_zmb.xml"
 		</supplies>
@@ -1382,9 +1383,9 @@
   		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
-			wpn_lr300 \n
+			wpn_m4 \n
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items_zmb.xml"
 		</supplies>
@@ -1415,7 +1416,7 @@
 			[spawn] \n
 			wpn_colt1911 \n
 			ammo_11.43x23_fmj = 1 \n
-			wpn_spas12 \n
+			wpn_saiga12 \n
 			ammo_12x76_zhekan = 1 \n
 #include "gameplay\character_items_zmb.xml"
 		</supplies>
@@ -1444,9 +1445,9 @@
   		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
-			wpn_spas12 \n
+			wpn_saiga12 \n
 			ammo_12x76_zhekan = 1 \n
 #include "gameplay\character_items_zmb.xml"
 		</supplies>
@@ -1477,9 +1478,9 @@
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
-			wpn_lr300 \n
+			wpn_m4 \n
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items_exp.xml"
 		</supplies>
@@ -1509,9 +1510,10 @@
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
-			wpn_ak74 = 1, scope \n
+			wpn_ak74 = 1 \n
+			wpn_addon_scope \n
 			ammo_5.45x39_ap = 1 \n
 #include "gameplay\character_items_exp.xml"
 		</supplies>
@@ -1541,9 +1543,9 @@
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
-			wpn_l85 \n
+			wpn_sig550 \n
 			ammo_5.56x45_ss190 = 1 \n
 #include "gameplay\character_items_exp.xml"
 		</supplies>
@@ -1573,9 +1575,9 @@
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
-			wpn_abakan \n
+			wpn_ak74 \n
 			ammo_5.45x39_fmj \n
 #include "gameplay\character_items_exp.xml"
 		</supplies>
@@ -1605,9 +1607,10 @@
   		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
-			wpn_abakan = 1, scope \n
+			wpn_ak74 = 1 \n
+			wpn_addon_scope \n
 	    	ammo_5.45x39_ap = 1 \n
 #include "gameplay\character_items_exp.xml"
 		</supplies>
@@ -1638,10 +1641,10 @@
   		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
 			wpn_val \n
-			ammo_9x39_sp5 = 1 \n
+			ammo_9x39_ap = 1 \n
 #include "gameplay\character_items_exp.xml"
 		</supplies>
 
@@ -1670,9 +1673,10 @@
    		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
-			wpn_lr300 = 1, scope \n
+			wpn_m4 = 1 \n
+			wpn_addon_scope_elcan \n
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items_exp.xml"
 		</supplies>
@@ -1702,9 +1706,10 @@
   		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
-			wpn_abakan = 1, scope \n
+			wpn_ak74 = 1 \n
+			wpn_addon_scope \n
 			ammo_5.45x39_fmj = 1 \n
 #include "gameplay\character_items_exp.xml"
 		</supplies>
@@ -1733,9 +1738,10 @@
   		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
-			wpn_ak74 = 1, scope \n
+			wpn_ak74 = 1 \n
+			wpn_addon_scope \n
 	    	ammo_5.45x39_ap = 1 \n
 #include "gameplay\character_items_exp.xml"
 		</supplies>
@@ -1764,10 +1770,10 @@
   		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
 			wpn_val \n
-			ammo_9x39_sp5 = 1 \n
+			ammo_9x39_ap = 1 \n
 #include "gameplay\character_items_exp.xml"
 		</supplies>
 		
@@ -1798,9 +1804,10 @@
   		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
+			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
-			wpn_abakan = 1, scope \n
+			wpn_ak74 = 1 \n
+			wpn_addon_scope \n
 			ammo_5.45x39_ap = 1 \n
 #include "gameplay\character_items_mil.xml"
 		</supplies>
@@ -1829,9 +1836,10 @@
   		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
+			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
-			wpn_abakan = 1, scope \n
+			wpn_ak74 = 1 \n
+			wpn_addon_scope \n
 			ammo_5.45x39_ap = 1 \n
 #include "gameplay\character_items_mil.xml"
 		</supplies>
@@ -1860,9 +1868,10 @@
   		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
+			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
-			wpn_abakan = 1, scope \n
+			wpn_ak74 = 1 \n
+			wpn_addon_scope \n
 			ammo_5.45x39_ap = 1 \n
 #include "gameplay\character_items_mil.xml"
 		</supplies>
@@ -1893,9 +1902,9 @@
   		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_usp \n
+			wpn_colt1911 \n
 			ammo_11.43x23_fmj = 1 \n
-			wpn_g36 \n
+			wpn_sig550 \n
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items_exp.xml"
 		</supplies>
@@ -1924,9 +1933,10 @@
   		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_usp \n
+			wpn_colt1911 \n
 			ammo_11.43x23_fmj = 1 \n
-			wpn_lr300 = 1, scope \n
+			wpn_m4 = 1 \n
+			wpn_addon_scope_elcan \n
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items_exp.xml"
 		</supplies>
@@ -1955,9 +1965,9 @@
   		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_usp \n
+			wpn_colt1911 \n
 			ammo_11.43x23_fmj = 1 \n
-			wpn_g36 \n
+			wpn_sig550 \n
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items_exp.xml"
 		</supplies>
@@ -1987,10 +1997,10 @@
   		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_sig220 \n
+			wpn_colt1911 \n
 			ammo_11.43x23_hydro = 1 \n
 			wpn_val \n
-			ammo_9x39_sp5 = 1 \n
+			ammo_9x39_ap = 1 \n
 #include "gameplay\character_items_mil.xml"
 		</supplies>
 		
@@ -2018,11 +2028,11 @@
   		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_sig220 \n
+			wpn_colt1911 \n
 			ammo_11.43x23_hydro = 1 \n
-			wpn_groza \n
+			wpn_val \n
 			ammo_9x39_pab9 = 1 \n
-			ammo_9x39_sp5 = 1 \n
+			ammo_9x39_ap = 1 \n
 			ammo_vog-25 = 2 \n
 #include "gameplay\character_items_mil.xml"
 		</supplies>
@@ -2051,10 +2061,10 @@
   		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_sig220 \n
+			wpn_colt1911 \n
 			ammo_11.43x23_hydro = 1 \n
 			wpn_val \n
-			ammo_9x39_sp5 = 1 \n
+			ammo_9x39_ap = 1 \n
 #include "gameplay\character_items_mil.xml"
 		</supplies>
 		
@@ -2082,9 +2092,10 @@
   		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_sig220 \n
+			wpn_colt1911 \n
 			ammo_11.43x23_hydro = 1 \n
-			wpn_abakan = 1, scope \n
+			wpn_ak74 = 1 \n
+			wpn_addon_scope \n
 	    	ammo_5.45x39_ap = 1 \n
 #include "gameplay\character_items_mil.xml"
 		</supplies>
@@ -2115,7 +2126,7 @@
   		<crouch_type>1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_sig220 \n
+			wpn_colt1911 \n
 			ammo_11.43x23_hydro = 1 \n
 #include "gameplay\character_items_sci.xml"
 		</supplies>
@@ -2144,7 +2155,7 @@
   		<crouch_type>1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_sig220 \n
+			wpn_colt1911 \n
 			ammo_11.43x23_hydro = 1 \n
 			wpn_ak74 \n
 			ammo_5.45x39_fmj = 1 \n
@@ -2175,7 +2186,7 @@
   		<crouch_type>1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_sig220 \n
+			wpn_colt1911 \n
 			ammo_11.43x23_hydro = 1 \n
 			wpn_ak74 \n
 			ammo_5.45x39_fmj = 1 \n

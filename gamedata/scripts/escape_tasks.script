@@ -149,7 +149,7 @@ end
 
 --Методы для квеста на пистолет Кузнецова
 function tm_find_item_1_npc_has_item(first_speaker, second_speaker)
-	return first_speaker:object("wpn_fort_m1") ~= nil
+	return first_speaker:object("wpn_fort") ~= nil
 end
 
 function tm_find_item_1_not_npc_has_item(first_speaker, second_speaker)
@@ -165,7 +165,7 @@ function tm_find_item_1_give_money(first_speaker, second_speaker)
 end
 
 function tm_find_item_1_take_item(first_speaker, second_speaker)
-	dialogs.relocate_item_section(first_speaker, "wpn_fort_m1", "in")
+	dialogs.relocate_item_section(first_speaker, "wpn_fort", "in")
 end
 --
 

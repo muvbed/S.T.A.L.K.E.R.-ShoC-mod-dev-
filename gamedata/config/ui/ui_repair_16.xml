@@ -74,7 +74,7 @@
 	<h_weapon_4 x="168" y="232" width="125" height="85" stretch="1">
 		<texture_h>ui_repair_bf_s1_h_16</texture_h>
 	</h_weapon_4>
-	<h_outfit x="37" y="232" width="122" height="146" stretch="1">
+	<h_outfit x="37" y="234" width="124" height="148" stretch="1">
 		<texture_h>ui_repair_bf_s6_h_16</texture_h>
 	</h_outfit>
 
@@ -87,7 +87,7 @@
 	<s_weapon_4 x="168" y="232" width="125" height="85" stretch="1">
 		<texture>ui_repair_bf_s1_s_16</texture>
 	</s_weapon_4>
-	<s_outfit x="37" y="232" width="122" height="146" stretch="1">
+	<s_outfit x="37" y="234" width="124" height="148" stretch="1">
 		<texture>ui_repair_bf_s6_s_16</texture>
 	</s_outfit>
 

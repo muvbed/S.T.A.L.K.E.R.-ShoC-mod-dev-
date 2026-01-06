@@ -42,7 +42,6 @@ function sleep:__init() super()
 	self:Register(xml:Init3tButton("main:caption_1", self),"caption_1")
 	self:Register(xml:Init3tButton("main:btn_cancel", self),"btn_cancel")
 	self:AddCallback("btn_cancel", 	ui_events.BUTTON_CLICKED, self.on_quit, self)
-	ogsr_dof.dof_enable()
 	--log1("--sleep:__init()")
 end
 function sleep:__finalize()
@@ -67,5 +66,4 @@ end
 function sleep:on_quit()
 	self:GetHolder():start_stop_menu(self, true)
 	self:ClearCallbacks()
-	ogsr_dof.dof_disable()
 end

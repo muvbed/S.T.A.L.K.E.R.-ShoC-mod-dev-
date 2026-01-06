@@ -290,13 +290,6 @@ GetIconParams = function (section)
     end
     return {x=0, y=0, w=1, h=1, g=0}
 end
-
-function r_string_ex( section, line, def )
-	if sys_ini:line_exist(section, line) then
-		return sys_ini:r_string(section, line)
-	end
-	return def
-end
 ---------------------------------------------------------------------------------------------------
 class "CUIDescriptionWnd" (CUIScriptWnd)
 -- Структура окна описания
@@ -420,7 +413,10 @@ function CUIDescriptionWnd:ShowDescription(item)
 		end
 	end
 	
-	self.descr:SetText(description)	
+	if not isWeapon(item) or self.section == "wpn_binoc" then
+		self.descr:SetText(description)	
+	end
+	
 	self.descr:AdjustHeightToText()
 	self.scroll_v:AddWindow(self.descr, true)
 	self.descr:SetAutoDelete(false)
@@ -439,11 +435,6 @@ function CUIDescriptionWnd:ShowDescription(item)
 	-- outfits
 	elseif item:is_outfit() then
 		self:ShowOutfitParams()
-	-- scope
-	elseif item:is_scope() then
-		local zf = sys_ini:r_float(self.section, 'scope_zoom_factor')
-		local zoom = device().fov/(zf*0.75)
-		self:ShowProps( { {"scope", "%c[grey_4]кратность: x"..string_format("%.1f", zoom)} } )
 	end
 
 	-- weight
@@ -477,12 +468,12 @@ end
 -- ОПИСАНИЕ ОРУЖИЯ
 function CUIDescriptionWnd:ShowWeaponParams()
 	local st = self.xml:InitStatic("properties", self.scroll_v)
-	st.line= self.xml:InitStatic("properties:line", st)
+	--st.line= self.xml:InitStatic("properties:line", st)
+	
 	local stH = st:GetHeight() + vert_interval
 	self.addH = self.addH + stH
-
+	
 	-- БОЕПРИПАСЫ
-	st = self.xml:InitStatic("properties", self.scroll_v)
 	st:SetTextST("%c[grey_4]Боеприпасы:")
 	-- патроны
 	local ammo_class = sys_ini:r_string(self.section, 'ammo_class')
@@ -520,21 +511,45 @@ function CUIDescriptionWnd:ShowWeaponParams()
 	if n ~= 0 then
 		st2 = self.xml:InitStatic("properties", self.scroll_v)
 
-		addon = r_string_ex(self.section, 'scope_name', "wpn_addon_scope")
-		v = GetIconParams(addon)
-		if n == 1 then
-			s = sys_ini:r_float(self.section, 'scope_zoom_factor')
-			local f = device().fov/(s*0.75)
-			text = "Интегрированный x"..string_format("%.1f", f).."прицел"
+		local scopes = r_string_ex(self.section, 'scope_names', "wpn_addon_scope")
+
+		if string.find(scopes, ",") then
+			for addon in scopes:gmatch("[^,]+") do
+			    addon = addon:match("^%s*(.-)%s*$") or addon
+			    
+			    v = GetIconParams(addon)
+				if n == 1 then
+					s = sys_ini:r_float(self.section, 'scope_zoom_factor')
+					local f = device().fov/(s*0.75)
+					text = "Интегрированный x"..string_format("%.1f", f).." прицел"
+				else
+					text = get_inv_name(addon)
+				end
+				if n == 1 or bit_and(af, addon_flags.scope) ~= 0 then
+					clr = {255, 160, 255, 160}
+				else
+					clr = nil
+				end
+				self:ShowPropFromIni(v, text, clr)
+			end
 		else
-			text = get_inv_name(addon)
+			addon = scopes
+			v = GetIconParams(addon)
+			if n == 1 then
+				s = sys_ini:r_float(self.section, 'scope_zoom_factor')
+				local f = device().fov/(s*0.75)
+				text = "Интегрированный x"..string_format("%.1f", f).." прицел"
+			else
+				text = get_inv_name(addon)
+			end
+			if n == 1 or bit_and(af, addon_flags.scope) ~= 0 then
+				clr = {255, 160, 255, 160}
+			else
+				clr = nil
+			end
+			self:ShowPropFromIni(v, text, clr)
 		end
-		if n == 1 or bit_and(af, addon_flags.scope) ~= 0 then
-			clr = {255, 160, 255, 160}
-		else
-			clr = nil
-		end
-		self:ShowPropFromIni(v, text, clr)
+
 	end
 
 	-- глушитель
@@ -543,7 +558,7 @@ function CUIDescriptionWnd:ShowWeaponParams()
 		if st2 == nil then
 			st2 = self.xml:InitStatic("properties", self.scroll_v)
 		end
-		addon = r_string_ex(self.section, 'silencer_name', "wpn_addon_silencer")
+		addon = r_string_ex(self.section, 'silencer_name', "wpn_addon_sil_1143")
 		v = GetIconParams(addon)
 		if n == 1 then
 			text = "Интегрированный глушитель"
@@ -582,10 +597,10 @@ function CUIDescriptionWnd:ShowWeaponParams()
 		st2:SetTextY(6)
 		self.addH = self.addH + stH
 	end
-	self.xml:InitStatic("properties", self.scroll_v)
+	self.xml:InitStatic("padding", self.scroll_v)
 	line = self.xml:InitStatic("properties:line", self.scroll_v)
 	line:SetTextureOffset(0, -2)
-	self.addH = self.addH + stH + 20
+	self.addH = self.addH + stH - 10
 
 	-- некоторые характеристики
 	v = {}
@@ -601,15 +616,17 @@ function CUIDescriptionWnd:ShowWeaponParams()
 	text = "%c[grey_4]ёмкость магазина: "..string_format("%d", n)
 	table_insert( v, {"ammo_mag_size", text} )
 
-	n = sys_ini:r_float(self.section, 'hit_power')
-	text = "%c[grey_4]урон: "..string_format(math.floor(n*100))
-	table_insert( v, {"hit_power", text} )
-
 	self:ShowProps(v)
 end
 ---------------------------------------------------------------------------------------------------
 -- ПАРАМЕТРЫ КОСТЮМОВ
 function CUIDescriptionWnd:ShowOutfitParams()
+	local st = self.xml:InitStatic("padding_line", self.scroll_v)
+	st.line = self.xml:InitStatic("padding_line:line", st)
+	
+	local stH = st:GetHeight() + vert_interval
+	self.addH = self.addH + stH
+	
 	local params = {}
 	local val, val_helm, txt 	= 0, 1, ""
 	
@@ -671,6 +688,12 @@ end
 ---------------------------------------------------------------------------------------------------
 -- ПАРАМЕТРЫ АРТЕФАКТОВ
 function CUIDescriptionWnd:ShowAfParams()
+	local st = self.xml:InitStatic("padding_line", self.scroll_v)
+	st.line = self.xml:InitStatic("padding_line:line", st)
+	
+	local stH = st:GetHeight() + vert_interval
+	self.addH = self.addH + stH
+	
 	local params = {}
 	local val, txt = 0, ""
 	
@@ -721,6 +744,12 @@ end
 ---------------------------------------------------------------------------------------------------
 -- ПАРАМЕТРЫ СЪЕДОБНЫХ ПРЕДМЕТОВ
 function CUIDescriptionWnd:ShowEatableParams()
+	local st = self.xml:InitStatic("padding_line", self.scroll_v)
+	st.line = self.xml:InitStatic("padding_line:line", st)
+	
+	local stH = st:GetHeight() + vert_interval
+	self.addH = self.addH + stH
+	
 	local params = {}
 	local val, txt = 0, ""
 	for i, t in ipairs(eatable_params) do

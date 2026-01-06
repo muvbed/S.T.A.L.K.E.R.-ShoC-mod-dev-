@@ -1,3 +1,538 @@
+[hud_base]
+aim_hud_offset_pos					=  0,0,0
+aim_hud_offset_rot					=  0,0,0
+
+aim_hud_offset_pos_16x9				=  0,0,0
+aim_hud_offset_rot_16x9				=  0,0,0
+
+gl_hud_offset_pos_16x9				=  0,0,0
+gl_hud_offset_rot_16x9				=  0,0,0
+
+gl_hud_offset_pos					=  0,0,0
+gl_hud_offset_rot					=  0,0,0
+
+lean_hud_offset_pos		        = 0,0,0
+lean_hud_offset_rot		        = 0,0,0
+
+inertion_pitch_offset_r = -0.008
+inertion_pitch_offset_n = -0.006
+inertion_pitch_offset_d = -0.001
+inertion_origin_offset = -0.06
+
+inertion_aim_origin_offset = 0.015
+inertion_aim_speed = 10
+
+
+;приземление - первая фаза
+hud_move_landing_offset_pos = 0,-0.2,0.03
+hud_move_landing_offset_rot = 0,-5,10
+
+hud_move_landing_offset_pos_16x9 = 0,-0.2,0.03
+hud_move_landing_offset_rot_16x9 = 0,-5,10
+
+;приземление - вторая фаза
+hud_move_landing2_offset_pos = 0,-0.3,0.03
+hud_move_landing2_offset_rot = 0,-13,20
+
+hud_move_landing2_offset_pos_16x9 = 0,-0.3,0.03
+hud_move_landing2_offset_rot_16x9 = 0,-13,20
+
+;настройки самоубийства под воздействием контролера
+prohibit_suicide = true 			;запретить самоубийство этим оружием вообще
+suicide_by_animation = false 			;использовать анимацию суицида, а не худовые смещения
+suicide_speed_pos = 0.00205 			;скорость суицида, не ставить меньше дрожания!
+suicide_speed_rot = 0.0901 			;скорость суицида, не ставить меньше дрожания
+no_other_hud_moving_while_suicide = true	;не смешивать суицидальное смещение с наклонами движения
+suicide_delay = 0.2				;время от выстрела до зажмуривания
+controller_time = 3				;время, на которое контролер будет захватывать контроль над игроком с данным оружием (если используется самоубийство смещением координат, то имеет смысл ставить побольше, иначе - поменьше, пару секунд). 
+
+controller_g_attack_min_dist = 10; если дистанция меньше - контролер не будет пытаться подорвать актора греной
+controller_shoot_expl_min_dist = 10; если дистанция меньше - контролер не будет пытаться подорвать актора из РПГ или РГ-6
+controller_shoot_gl_min_dist = 10; если дистанция меньше - контролер не будет пытаться подорвать актора из подствола
+controller_can_shoot_gl = false; может ли контролер стрелять из подствола
+controller_can_switch_gl = false; может ли контролер отключать подствол
+
+jitter_pos_amplitude = 0.002
+jitter_rot_amplitude = 0.09
+jitter_stop_time = 3	;время успокоения тряски рук
+
+hud_move_suicide_offset_pos = -0.12, -1.1, -0.3
+hud_move_suicide_offset_rot = 0, 87, 0
+
+hud_move_suicide_offset_pos = 0.74, -0.18, 0.4
+hud_move_suicide_offset_rot = 130, 15, -2
+
+hud_move_suicide_offset_pos_16x9 = 0.74, -0.18, 0.4
+hud_move_suicide_offset_rot_16x9 = 130, 15, -2
+
+;наклоны оружия при ходьбе
+hud_move_speed_rot = 3			;скорость доворота до заданного угла			
+hud_move_speed_pos = 2		        ;скорость перемещения до заданной позиции
+hud_move_stabilize_factor = 3.5		;во сколько раз быстрее возвращаемся в нейтральное положение при идле
+hud_move_weaponhide_factor = 3.5	;во сколько раз быстрее возвращаемся в нейтральное положение при убирании оружия
+hud_move_unzoom_factor = 2.0
+hud_move_slow_factor = 0.5		;во сколько раз менять амплитуду при шаге
+hud_move_crouch_factor = 0.5		;во сколько раз менять амплитуду при присяде
+hud_move_slow_crouch_factor = 0.3	;во сколько раз менять амплитуду при полном присяде
+
+
+;пнв и затемнение экрана при включении
+
+mark_anm_nv_on = 0.55
+
+use_ppe_effector_anm_nv_on = true
+ppe_effector_anm_nv_on = black.ppe
+ppe_start_anm_nv_on = 0.35
+ppe_end_anm_nv_on = 0.6
+lock_time_start_anm_nv_on = 0.55
+lock_time_end_anm_nv_on = 0.75
+
+use_ppe_effector_anm_nv_on_empty = true
+ppe_effector_anm_nv_on_empty = black.ppe
+ppe_start_anm_nv_on_empty = 0.35
+ppe_end_anm_nv_on_empty = 0.6
+lock_time_start_anm_nv_on_empty = 0.55
+lock_time_end_anm_nv_on_empty = 0.75
+
+use_ppe_effector_anm_nv_on_jammed = true
+ppe_effector_anm_nv_on_jammed = black.ppe
+ppe_start_anm_nv_on_jammed = 0.35
+ppe_end_anm_nv_on_jammed = 0.6
+lock_time_start_anm_nv_on_jammed = 0.55
+lock_time_end_anm_nv_on_jammed = 0.75
+
+use_ppe_effector_anm_nv_on_w_gl = true
+ppe_effector_anm_nv_on_w_gl = black.ppe
+ppe_start_anm_nv_on_w_gl = 0.35
+ppe_end_anm_nv_on_w_gl = 0.6
+lock_time_start_anm_nv_on_w_gl = 0.55
+lock_time_end_anm_nv_on_w_gl = 0.75
+
+use_ppe_effector_anm_nv_on_empty_w_gl = true
+ppe_effector_anm_nv_on_empty_w_gl = black.ppe
+ppe_start_anm_nv_on_empty_w_gl = 0.35
+ppe_end_anm_nv_on_empty_w_gl = 0.6
+lock_time_start_anm_nv_on_empty_w_gl = 0.55
+lock_time_end_anm_nv_on_empty_w_gl = 0.75
+
+use_ppe_effector_anm_nv_on_jammed_w_gl = true
+ppe_effector_anm_nv_on_jammed_w_gl = black.ppe
+ppe_start_anm_nv_on_jammed_w_gl = 0.35
+ppe_end_anm_nv_on_jammed_w_gl = 0.6
+lock_time_start_anm_nv_on_jammed_w_gl = 0.55
+lock_time_end_anm_nv_on_jammed_w_gl = 0.75
+
+use_ppe_effector_anm_nv_on_g = true
+ppe_effector_anm_nv_on_g = black.ppe
+ppe_start_anm_nv_on_g = 0.35
+ppe_end_anm_nv_on_g = 0.6
+lock_time_start_anm_nv_on_g = 0.55
+lock_time_end_anm_nv_on_g = 0.75
+
+use_ppe_effector_anm_nv_on_empty_g = true
+ppe_effector_anm_nv_on_empty_g = black.ppe
+ppe_start_anm_nv_on_empty_g = 0.35
+ppe_end_anm_nv_on_empty_g = 0.6
+lock_time_start_anm_nv_on_empty_g = 0.55
+lock_time_end_anm_nv_on_empty_g = 0.75
+
+use_ppe_effector_anm_nv_on_jammed_g = true
+ppe_effector_anm_nv_on_jammed_g = black.ppe
+ppe_start_anm_nv_on_jammed_g = 0.35
+ppe_end_anm_nv_on_jammed_g = 0.6
+lock_time_start_anm_nv_on_jammed_g = 0.55
+lock_time_end_anm_nv_on_jammed_g = 0.75
+
+mark_anm_nv_off = 0.3
+
+use_ppe_effector_anm_nv_off = true
+ppe_effector_anm_nv_off = black.ppe
+ppe_start_anm_nv_off = 0.2
+ppe_end_anm_nv_off = 0.5
+lock_time_start_anm_nv_off = 0.3
+lock_time_end_anm_nv_off = 1.0
+
+use_ppe_effector_anm_nv_off_empty = true
+ppe_effector_anm_nv_off_empty = black.ppe
+ppe_start_anm_nv_off_empty = 0.2
+ppe_end_anm_nv_off_empty = 0.5
+lock_time_start_anm_nv_off_empty = 0.3
+lock_time_end_anm_nv_off_empty = 1.0
+
+use_ppe_effector_anm_nv_off_jammed = true
+ppe_effector_anm_nv_off_jammed = black.ppe
+ppe_start_anm_nv_off_jammed = 0.2
+ppe_end_anm_nv_off_jammed = 0.5
+lock_time_start_anm_nv_off_jammed = 0.3
+lock_time_end_anm_nv_off_jammed = 1.0
+
+use_ppe_effector_anm_nv_off_w_gl = true
+ppe_effector_anm_nv_off_w_gl = black.ppe
+ppe_start_anm_nv_off_w_gl = 0.2
+ppe_end_anm_nv_off_w_gl = 0.5
+lock_time_start_anm_nv_off_w_gl = 0.3
+lock_time_end_anm_nv_off_w_gl = 1.0
+
+use_ppe_effector_anm_nv_off_empty_w_gl = true
+ppe_effector_anm_nv_off_empty_w_gl = black.ppe
+ppe_start_anm_nv_off_empty_w_gl = 0.2
+ppe_end_anm_nv_off_empty_w_gl = 0.5
+lock_time_start_anm_nv_off_empty_w_gl = 0.3
+lock_time_end_anm_nv_off_empty_w_gl = 1.0
+
+use_ppe_effector_anm_nv_off_jammed_w_gl = true
+ppe_effector_anm_nv_off_jammed_w_gl = black.ppe
+ppe_start_anm_nv_off_jammed_w_gl = 0.2
+ppe_end_anm_nv_off_jammed_w_gl = 0.5
+lock_time_start_anm_nv_off_jammed_w_gl = 0.3
+lock_time_end_anm_nv_off_jammed_w_gl = 1.0
+
+use_ppe_effector_anm_nv_off_g = true
+ppe_effector_anm_nv_off_g = black.ppe
+ppe_start_anm_nv_off_g = 0.2
+ppe_end_anm_nv_off_g = 0.5
+lock_time_start_anm_nv_off_g = 0.3
+lock_time_end_anm_nv_off_g = 1.0
+
+use_ppe_effector_anm_nv_off_empty_g = true
+ppe_effector_anm_nv_off_empty_g = black.ppe
+ppe_start_anm_nv_off_empty_g = 0.2
+ppe_end_anm_nv_off_empty_g = 0.5
+lock_time_start_anm_nv_off_empty_g = 0.3
+lock_time_end_anm_nv_off_empty_g = 1.0
+
+use_ppe_effector_anm_nv_off_jammed_g = true
+ppe_effector_anm_nv_off_jammed_g = black.ppe
+ppe_start_anm_nv_off_jammed_g = 0.2
+ppe_end_anm_nv_off_jammed_g = 0.5
+lock_time_start_anm_nv_off_jammed_g = 0.3
+lock_time_end_anm_nv_off_jammed_g = 1.0
+
+
+;пнв и затемнение экрана при включении - АВТОРЕЖИМ
+
+mark_anm_nv_on_auto = 0.55
+
+use_ppe_effector_anm_nv_on_auto = true
+ppe_effector_anm_nv_on_auto = black.ppe
+ppe_start_anm_nv_on_auto = 0.35
+ppe_end_anm_nv_on_auto = 0.6
+lock_time_start_anm_nv_on_auto = 0.55
+lock_time_end_anm_nv_on_auto = 0.75
+
+use_ppe_effector_anm_nv_on_auto_empty = true
+ppe_effector_anm_nv_on_auto_empty = black.ppe
+ppe_start_anm_nv_on_auto_empty = 0.35
+ppe_end_anm_nv_on_auto_empty = 0.6
+lock_time_start_anm_nv_on_auto_empty = 0.55
+lock_time_end_anm_nv_on_auto_empty = 0.75
+
+use_ppe_effector_anm_nv_on_auto_jammed = true
+ppe_effector_anm_nv_on_auto_jammed = black.ppe
+ppe_start_anm_nv_on_auto_jammed = 0.35
+ppe_end_anm_nv_on_auto_jammed = 0.6
+lock_time_start_anm_nv_on_auto_jammed = 0.55
+lock_time_end_anm_nv_on_auto_jammed = 0.75
+
+use_ppe_effector_anm_nv_on_auto_w_gl = true
+ppe_effector_anm_nv_on_auto_w_gl = black.ppe
+ppe_start_anm_nv_on_auto_w_gl = 0.35
+ppe_end_anm_nv_on_auto_w_gl = 0.6
+lock_time_start_anm_nv_on_auto_w_gl = 0.55
+lock_time_end_anm_nv_on_auto_w_gl = 0.75
+
+use_ppe_effector_anm_nv_on_auto_empty_w_gl = true
+ppe_effector_anm_nv_on_auto_empty_w_gl = black.ppe
+ppe_start_anm_nv_on_auto_empty_w_gl = 0.35
+ppe_end_anm_nv_on_auto_empty_w_gl = 0.6
+lock_time_start_anm_nv_on_auto_empty_w_gl = 0.55
+lock_time_end_anm_nv_on_auto_empty_w_gl = 0.75
+
+use_ppe_effector_anm_nv_on_auto_jammed_w_gl = true
+ppe_effector_anm_nv_on_auto_jammed_w_gl = black.ppe
+ppe_start_anm_nv_on_auto_jammed_w_gl = 0.35
+ppe_end_anm_nv_on_auto_jammed_w_gl = 0.6
+lock_time_start_anm_nv_on_auto_jammed_w_gl = 0.55
+lock_time_end_anm_nv_on_auto_jammed_w_gl = 0.75
+
+use_ppe_effector_anm_nv_on_auto_g = true
+ppe_effector_anm_nv_on_auto_g = black.ppe
+ppe_start_anm_nv_on_auto_g = 0.35
+ppe_end_anm_nv_on_auto_g = 0.6
+lock_time_start_anm_nv_on_auto_g = 0.55
+lock_time_end_anm_nv_on_auto_g = 0.75
+
+use_ppe_effector_anm_nv_on_auto_empty_g = true
+ppe_effector_anm_nv_on_auto_empty_g = black.ppe
+ppe_start_anm_nv_on_auto_empty_g = 0.35
+ppe_end_anm_nv_on_auto_empty_g = 0.6
+lock_time_start_anm_nv_on_auto_empty_g = 0.55
+lock_time_end_anm_nv_on_auto_empty_g = 0.75
+
+use_ppe_effector_anm_nv_on_auto_jammed_g = true
+ppe_effector_anm_nv_on_auto_jammed_g = black.ppe
+ppe_start_anm_nv_on_auto_jammed_g = 0.35
+ppe_end_anm_nv_on_auto_jammed_g = 0.6
+lock_time_start_anm_nv_on_auto_jammed_g = 0.55
+lock_time_end_anm_nv_on_auto_jammed_g = 0.75
+
+
+mark_anm_nv_off_auto = 0.3
+
+use_ppe_effector_anm_nv_off_auto = true
+ppe_effector_anm_nv_off_auto = black.ppe
+ppe_start_anm_nv_off_auto = 0.2
+ppe_end_anm_nv_off_auto = 0.5
+lock_time_start_anm_nv_off_auto = 0.3
+lock_time_end_anm_nv_off_auto = 1.0
+
+use_ppe_effector_anm_nv_off_auto_empty = true
+ppe_effector_anm_nv_off_auto_empty = black.ppe
+ppe_start_anm_nv_off_auto_empty = 0.2
+ppe_end_anm_nv_off_auto_empty = 0.5
+lock_time_start_anm_nv_off_auto_empty = 0.3
+lock_time_end_anm_nv_off_auto_empty = 1.0
+
+use_ppe_effector_anm_nv_off_auto_jammed = true
+ppe_effector_anm_nv_off_auto_jammed = black.ppe
+ppe_start_anm_nv_off_auto_jammed = 0.2
+ppe_end_anm_nv_off_auto_jammed = 0.5
+lock_time_start_anm_nv_off_auto_jammed = 0.3
+lock_time_end_anm_nv_off_auto_jammed = 1.0
+
+use_ppe_effector_anm_nv_off_auto_w_gl = true
+ppe_effector_anm_nv_off_auto_w_gl = black.ppe
+ppe_start_anm_nv_off_auto_w_gl = 0.2
+ppe_end_anm_nv_off_auto_w_gl = 0.5
+lock_time_start_anm_nv_off_auto_w_gl = 0.3
+lock_time_end_anm_nv_off_auto_w_gl = 1.0
+
+use_ppe_effector_anm_nv_off_auto_empty_w_gl = true
+ppe_effector_anm_nv_off_auto_empty_w_gl = black.ppe
+ppe_start_anm_nv_off_auto_empty_w_gl = 0.2
+ppe_end_anm_nv_off_auto_empty_w_gl = 0.5
+lock_time_start_anm_nv_off_auto_empty_w_gl = 0.3
+lock_time_end_anm_nv_off_auto_empty_w_gl = 1.0
+
+use_ppe_effector_anm_nv_off_auto_jammed_w_gl = true
+ppe_effector_anm_nv_off_auto_jammed_w_gl = black.ppe
+ppe_start_anm_nv_off_auto_jammed_w_gl = 0.2
+ppe_end_anm_nv_off_auto_jammed_w_gl = 0.5
+lock_time_start_anm_nv_off_auto_jammed_w_gl = 0.3
+lock_time_end_anm_nv_off_auto_jammed_w_gl = 1.0
+
+use_ppe_effector_anm_nv_off_auto_g = true
+ppe_effector_anm_nv_off_auto_g = black.ppe
+ppe_start_anm_nv_off_auto_g = 0.2
+ppe_end_anm_nv_off_auto_g = 0.5
+lock_time_start_anm_nv_off_auto_g = 0.3
+lock_time_end_anm_nv_off_auto_g = 1.0
+
+use_ppe_effector_anm_nv_off_auto_empty_g = true
+ppe_effector_anm_nv_off_auto_empty_g = black.ppe
+ppe_start_anm_nv_off_auto_empty_g = 0.2
+ppe_end_anm_nv_off_auto_empty_g = 0.5
+lock_time_start_anm_nv_off_auto_empty_g = 0.3
+lock_time_end_anm_nv_off_auto_empty_g = 1.0
+
+use_ppe_effector_anm_nv_off_auto_jammed_g = true
+ppe_effector_anm_nv_off_auto_jammed_g = black.ppe
+ppe_start_anm_nv_off_auto_jammed_g = 0.2
+ppe_end_anm_nv_off_auto_jammed_g = 0.5
+lock_time_start_anm_nv_off_auto_jammed_g = 0.3
+lock_time_end_anm_nv_off_auto_jammed_g = 1.0
+
+
+;задаются максимальные отклонения от центрального в разных режимах ходьбы
+;Аддитивно!
+
+;стрейф влево
+hud_move_left_offset_pos = -0.03,-0.018,0
+hud_move_left_offset_rot = 0,0,-3.5
+
+hud_move_left_offset_pos_16x9 = -0.03,-0.018,0
+hud_move_left_offset_rot_16x9 = 0,0,-3.5
+
+;стрейф вправо
+hud_move_right_offset_pos = 0.03,-0.005,0
+hud_move_right_offset_rot = 0,0,5
+
+hud_move_right_offset_pos_16x9 = 0.03,-0.005,0
+hud_move_right_offset_rot_16x9 = 0,0,5
+
+;движение вперед
+hud_move_forward_offset_pos = 0,-0.005,-0.035
+hud_move_forward_offset_rot = 0,0,0
+
+hud_move_forward_offset_pos_16x9 = 0,-0.005,-0.035
+hud_move_forward_offset_rot_16x9 = 0,0,0
+
+;движение назад
+hud_move_back_offset_pos = 0,-0.005,0.045
+hud_move_back_offset_rot = 0,0,0
+
+hud_move_back_offset_pos_16x9 = 0,-0.005,0.045
+hud_move_back_offset_rot_16x9 = 0,0,0
+
+;прыжок
+hud_move_jump_offset_pos = 0,0.05,0.03
+hud_move_jump_offset_rot = 0,-10,-10
+
+hud_move_jump_offset_pos_16x9 = 0,0.05,0.03
+hud_move_jump_offset_rot_16x9 = 0,-10,-10
+
+;падение
+hud_move_fall_offset_pos = 0,-0.05,0.06
+hud_move_fall_offset_rot = 0,5,0
+
+hud_move_fall_offset_pos_16x9 = 0,-0.05,0.06
+hud_move_fall_offset_rot_16x9 = 0,5,0
+
+;приземление - первая фаза
+hud_move_landing_offset_pos = 0,-0.2,0.03
+hud_move_landing_offset_rot = 0,-5,10
+
+hud_move_landing_offset_pos_16x9 = 0,-0.2,0.03
+hud_move_landing_offset_rot_16x9 = 0,-5,10
+
+;приземление - вторая фаза
+hud_move_landing2_offset_pos = 0,-0.3,0.03
+hud_move_landing2_offset_rot = 0,-13,20
+
+hud_move_landing2_offset_pos_16x9 = 0,-0.3,0.03
+hud_move_landing2_offset_rot_16x9 = 0,-13,20
+
+;переход из стойки в присяд
+to_crouch_time = 0.15
+hud_move_to_crouch_offset_pos = 0,-0.02, 0
+hud_move_to_crouch_offset_rot = 0,1.5,-4
+
+hud_move_to_crouch_offset_pos_16x9 = 0,-0.02, 0
+hud_move_to_crouch_offset_rot_16x9 = 0,1.5,-4
+
+;переход из присяда в стойку
+from_crouch_time = 0.15
+hud_move_from_crouch_offset_pos = 0,-0.008,0
+hud_move_from_crouch_offset_rot = 0,-0.8,3
+
+hud_move_from_crouch_offset_pos_16x9 = 0,-0.008,0
+hud_move_from_crouch_offset_rot_16x9 = 0,-0.8,3
+
+;переход из присяда в низкий присяд
+to_slow_crouch_time = 0.15
+hud_move_to_slow_crouch_offset_pos = 0,-0.05, 0
+hud_move_to_slow_crouch_offset_rot = 0,1,-2
+
+hud_move_to_slow_crouch_offset_pos_16x9 = 0,-0.05, 0
+hud_move_to_slow_crouch_offset_rot_16x9 = 0,1,-2
+
+;переход из низкого присяда в присяд
+from_slow_crouch_time = 0.15
+hud_move_from_slow_crouch_offset_pos = 0,0.02,0
+hud_move_from_slow_crouch_offset_rot = 0,-1,2
+
+hud_move_from_slow_crouch_offset_pos_16x9 = 0,0.02,0
+hud_move_from_slow_crouch_offset_rot_16x9 = 0,-1,2
+
+;переход из обычного в наклон влево
+to_llookout_time = 0.15
+hud_move_to_llookout_offset_pos 	= -0.01, 0, 0
+hud_move_to_llookout_offset_rot		= 0,0,0
+hud_move_to_llookout_offset_pos_16x9 	= -0.01, 0, 0
+hud_move_to_llookout_offset_rot_16x9	= 0,0,0
+
+;переход из наклона влево в обычный
+from_llookout_time = 0.15
+hud_move_from_llookout_offset_pos 	= -0.01, 0, 0
+hud_move_from_llookout_offset_rot	= 0,0,0
+hud_move_from_llookout_offset_pos_16x9 	= -0.01, 0, 0
+hud_move_from_llookout_offset_rot_16x9	= 0,0,0
+
+
+;переход из обычного в наклон вправо
+to_rlookout_time = 0.15
+hud_move_to_rlookout_offset_pos 	= 0.01, 0, 0
+hud_move_to_rlookout_offset_rot		= 0,0,0
+hud_move_to_rlookout_offset_pos_16x9 	= 0.01, 0, 0
+hud_move_to_rlookout_offset_rot_16x9	= 0,0,0
+
+;переход из наклона вправо в обычный
+from_rlookout_time = 0.15
+hud_move_from_rlookout_offset_pos 	= 0.01, 0, 0
+hud_move_from_rlookout_offset_rot	= 0,0,0
+hud_move_from_rlookout_offset_pos_16x9 	= 0.01, 0, 0
+hud_move_from_rlookout_offset_rot_16x9	= 0,0,0
+
+;наклон влево (постоянная компонента)
+hud_move_llookout_offset_speed_factor = 2.8
+hud_move_llookout_offset_pos 		= -0.045, -0.03, 0
+hud_move_llookout_offset_pos_16x9 	= -0.045, -0.03, 0
+hud_move_llookout_offset_rot 		= 0, 0, -9
+hud_move_llookout_offset_rot_16x9 	= 0, 0, -9
+
+;наклон вправо (постоянная компонента)
+hud_move_rlookout_offset_speed_factor = 2.8
+hud_move_rlookout_offset_pos 		= 0.04, -0.01, 0
+hud_move_rlookout_offset_pos_16x9 	= 0.04, -0.01, 0
+hud_move_rlookout_offset_rot 		= 0, 0, 10
+hud_move_rlookout_offset_rot_16x9 	= 0, 0, 10
+
+
+;аналогично для прицеливания
+;переход из стойки в присяд
+hud_aim_move_to_crouch_offset_pos = 0,0.003, 0
+hud_aim_move_to_crouch_offset_rot = 0,0.3,-0.5
+
+hud_aim_move_to_crouch_offset_pos_16x9 = 0,0.003, 0
+hud_aim_move_to_crouch_offset_rot_16x9 = 0,0.3,-0.5
+
+;переход из присяда в стойку
+hud_aim_move_from_crouch_offset_pos = 0,-0.003,0
+hud_aim_move_from_crouch_offset_rot = 0,-0.3,0.5
+
+hud_aim_move_from_crouch_offset_pos_16x9 = 0,-0.003,0
+hud_aim_move_from_crouch_offset_rot_16x9 = 0,-0.3,0.5
+
+;переход из присяда в низкий присяд
+hud_aim_move_to_slow_crouch_offset_pos = 0,0.001, 0
+hud_aim_move_to_slow_crouch_offset_rot = 0,0.3,-0.5
+
+hud_aim_move_to_slow_crouch_offset_pos_16x9 = 0,0.002, 0
+hud_aim_move_to_slow_crouch_offset_rot_16x9 = 0,0.3,-0.5
+
+;переход из низкого присяда в присяд
+hud_aim_move_from_slow_crouch_offset_pos = 0,-0.001,0
+hud_aim_move_from_slow_crouch_offset_rot = 0,-0.3,0.5
+
+hud_aim_move_from_slow_crouch_offset_pos_16x9 = 0,-0.001,0
+hud_aim_move_from_slow_crouch_offset_rot_16x9 = 0,-0.3,0.5
+
+;переход из обычного в наклон влево
+hud_aim_move_to_llookout_offset_pos 	        = -0.003, 0, 0
+hud_aim_move_to_llookout_offset_rot		= 0,0,-0.6
+hud_aim_move_to_llookout_offset_pos_16x9 	= -0.003, 0, 0
+hud_aim_move_to_llookout_offset_rot_16x9	= 0,0,-0.6
+
+;переход из наклона влево в обычный
+hud_aim_move_from_llookout_offset_pos 	        = 0, 0, 0
+hud_aim_move_from_llookout_offset_rot	        = 0,0,-1
+hud_aim_move_from_llookout_offset_pos_16x9 	= 0, 0, 0
+hud_aim_move_from_llookout_offset_rot_16x9	= 0,0,-1
+
+
+;переход из обычного в наклон вправо
+hud_aim_move_to_rlookout_offset_pos 	        = 0.003, 0, 0
+hud_aim_move_to_rlookout_offset_rot		= 0,0,0.6
+hud_aim_move_to_rlookout_offset_pos_16x9 	= 0.003, 0, 0
+hud_aim_move_to_rlookout_offset_rot_16x9	= 0,0,0.6
+
+;переход из наклона вправо в обычный
+hud_aim_move_from_rlookout_offset_pos 	        = 0, 0, 0
+hud_aim_move_from_rlookout_offset_rot	        = 0,0,1
+hud_aim_move_from_rlookout_offset_pos_16x9 	= 0, 0, 0
+hud_aim_move_from_rlookout_offset_rot_16x9	= 0,0,1
+
+
 [sect_identity_immunities]
 burn_immunity						= 1.0
 strike_immunity						= 1.0
@@ -12,12 +547,66 @@ fire_wound_immunity					= 1.0
 
 [identity_immunities]
 immunities_sect						= sect_identity_immunities
+use_aim_bullet						= false
 hit_probability_gd_novice			= 0.20
 hit_probability_gd_stalker			= 0.40
 hit_probability_gd_veteran			= 0.50
 hit_probability_gd_master			= 0.70
 
-multiply_hit_from_actor 			= 1.7
+show_condition			= false
+
+nearwall_hud_offset_speed = 0.1
+
+walk_effect_position = -0.0,0.009, -0.025
+walk_effect_orientation = 1.0,-2.0, 0.0
+
+walk_effect_time = 0.36
+walk_effect_restore_factor = 1.7
+
+jump_hud_offset_pos = 0.0, 0.06, -0.09
+jump_hud_offset_rot = 0.0, -10.0, -10.0
+
+jump_aim_hud_offset_pos = 0.0, -0.03, 0.01
+jump_aim_hud_offset_rot = 0.0, 2.5, -3.0
+
+fall_hud_offset_pos = 0.0, -0.03, 0.03
+fall_hud_offset_rot = 0.0, 6.0, 6.0
+
+fall_aim_hud_offset_pos = 0.0, 0.03, -0.01
+fall_aim_hud_offset_rot = 0.0, -2.5, 3.0
+
+jump_transition_time = 0.5
+fall_transition_time = 1.0
+
+jump_aim_transition_time = 0.45
+fall_aim_transition_time = 0.7
+
+snd_sprint_start								   = weapons\sprint_start, 0.4
+snd_sprint_end								   	   = weapons\sprint_end, 0.4
+
+dont_interrupt_shot_anm = true
+
+scope_zoom_factor		= 1.15
+; следующий параметр в общем случае должен быть равен scope_zoom_factor
+; избыточен для некоторых типов оружия, но и вреда от него в этом случае тоже не будет
+ironsight_zoom_factor	= 1.0
+CartridgeInTheChamberEnabled = true
+
+snd_zoom_change = weapons\zoom_change, 0.2 ;звук при изменении зума
+snd_tact_item_on = weapons\vss\vss_firemode ;звук включения фонаря, лцу
+snd_item_on = weapons\headflash_on ;звук включения налобного фонаря, пнв
+snd_mag_shot									   = weapons\mag_shot
+
+
+[base_wpn_shotgun]
+crosshair_class = shotgun
+
+;Имена текстур пуль прописанных в модели, которые будут заменяться
+bullet_textures_in_model = wpn\ammo_12x70_blue, wpn\ammo_12x70
+;Пары "название секции патронов, текстура для пуль из этой секции"
+bullet_textures_for_ammos = ammo_12x76_zhekan, wpn\ammo_12x70_blue, ammo_12x76_dart, wpn\ammo_12x70_rd, ammo_12x70_buck, wpn\ammo_12x70
+
+snd_mag_shot									   = $silent
 
 [common_ph_friction_params_on_npc_death] ;Параметры для задания изменения трения в момент смерти персонажа
 ; Эта секция общая для мутантов и сталкеров, т.ч. тут самое место всунуть исключения детектора аномалий.
@@ -32,6 +621,7 @@ ph_skel_fatal_impulse_factor  		= 6.0
 ph_after_death_velocity_factor		= 0.75
 ph_skel_shot_up_factor        		= 0.25
 
+
 ph_skeleton_skin_friction_start		= 0.0   ; Стартовое значение трения для оболочки
 ph_skeleton_skin_friction_end		= 2.0   ; Финальное значение трения для оболочки
 ph_skeleton_skin_ddelay				= 6.0	; Время изменения значения трения с момента создания шелла, сек.
@@ -43,3 +633,13 @@ ph_character_have_wounded_state 	= false; имеет ли персонаж состояние раненый
 
 [monster_base]:common_ph_friction_params_on_npc_death
 actor_hit_effect 					= effector_monster_hit
+
+[gwr_base_trash]
+GroupControlSection = spawn_group
+$spawn        = "physics\object"
+$prefetch       = 8
+class       = O_PHYS_S
+script_binding      = ogsr_items_anims.init_trash
+remove_time     = 90; after this time  unbreaked removable bone will be removed
+startup_animation =
+fixed_bones =

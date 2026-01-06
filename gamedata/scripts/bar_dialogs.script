@@ -157,16 +157,16 @@ end
 -- ********************************************************
 --Свобода РГ-6
 function have_rg6(first_speaker, second_speaker)
-  	return first_speaker:object("wpn_rg-6") ~= nil
+  	return first_speaker:object("wpn_pk") ~= nil
 end
 
 function dont_have_rg6(first_speaker, second_speaker)
-  	return first_speaker:object("wpn_rg-6") == nil or not has_alife_info("mil_svoboda_rg6_gain")
+  	return first_speaker:object("wpn_pk") == nil or not has_alife_info("mil_svoboda_rg6_gain")
 end
 
 
 function give_rg6(first_speaker, second_speaker)
-	dialogs.relocate_item_section(second_speaker, "wpn_rg-6", "out")
+	dialogs.relocate_item_section(second_speaker, "wpn_pk", "out")
 end
 
 function enter_to_dolg(first_speaker, second_speaker)
@@ -257,10 +257,9 @@ function arena_give_reward(actor, npc)
 	elseif has_alife_info("bar_arena_fight_3_reward") then
 		dialogs.relocate_money(npc, 2500, "in")
 		dialogs.relocate_item_section(npc, "ammo_12x76_zhekan", "in")
-		dialogs.relocate_item_section(npc, "ammo_12x76_dart", "in")
+		dialogs.relocate_item_section(npc, "ammo_12x76_zhekan", "in")
 		dialogs.relocate_item_section(npc, "mutant_psevdodog_tail", "in")
 		dialogs.relocate_item_section(npc, "medkit", "in")
-		dialogs.relocate_item_section(npc, "wpn_addon_silencer", "in")
 	elseif has_alife_info("bar_arena_fight_4_reward") then
 		dialogs.relocate_money(npc, 3400, "in")
 		dialogs.relocate_item_section(npc, "ammo_12x70_buck", "in")
@@ -269,7 +268,7 @@ function arena_give_reward(actor, npc)
 		dialogs.relocate_item_section(npc, "conserva", "in")
 	elseif has_alife_info("bar_arena_fight_5_reward") then
 		dialogs.relocate_money(npc, 4800, "in")
-		dialogs.relocate_item_section(npc, "ammo_9x39_sp5", "in")
+		dialogs.relocate_item_section(npc, "ammo_9x39_ap", "in")
 		dialogs.relocate_item_section(npc, "antirad", "in")
 		dialogs.relocate_item_section(npc, "medkit_army", "in")
 	elseif has_alife_info("bar_arena_fight_6_reward") then
@@ -277,13 +276,6 @@ function arena_give_reward(actor, npc)
 		dialogs.relocate_item_section(npc, "af_vyvert", "in")
 		dialogs.relocate_item_section(npc, "ammo_11.43x23_fmj", "in")
 		dialogs.relocate_item_section(npc, "ammo_5.56x45_ss190", "in")
-	elseif has_alife_info("bar_arena_fight_7_reward") then
-		dialogs.relocate_money(npc, 7600, "in") 
-		dialogs.relocate_item_section(npc, "af_fireball", "in")
-		dialogs.relocate_item_section(npc, "ammo_9x19_pbp", "in")
-		dialogs.relocate_item_section(npc, "ammo_7.62x54_7h14", "in")
-		dialogs.relocate_item_section(npc, "ammo_vog-25", "in")
-		dialogs.relocate_item_section(npc, "wpn_knife", "in")
 	elseif has_alife_info("bar_arena_fight_8_reward") then
 		dialogs.relocate_money(npc, 10000, "in")
 		dialogs.relocate_item_section(npc, "vodka", "in")
@@ -291,7 +283,7 @@ function arena_give_reward(actor, npc)
 		dialogs.relocate_item_section(npc, "vodka", "in")
 		dialogs.relocate_item_section(npc, "ammo_5.56x45_ss190", "in")
 		dialogs.relocate_item_section(npc, "ammo_5.56x45_ap", "in")
-		dialogs.relocate_item_section(npc, "wpn_sig_m1", "in")
+		dialogs.relocate_item_section(npc, "wpn_m4", "in")
 	end
 	db.actor:give_info_portion("bar_arena_reset")	
 	xr_zones.purge_arena_items("bar_arena")
@@ -327,14 +319,14 @@ end
 
 function arena_has_reward ()
 	return has_alife_info("bar_arena_fight_1_reward") or has_alife_info("bar_arena_fight_2_reward") or has_alife_info("bar_arena_fight_3_reward") or has_alife_info("bar_arena_fight_4_reward") or has_alife_info("bar_arena_fight_5_reward") 
-		or has_alife_info("bar_arena_fight_6_reward") or has_alife_info("bar_arena_fight_7_reward") or has_alife_info("bar_arena_fight_8_reward")
+		or has_alife_info("bar_arena_fight_6_reward") or has_alife_info("bar_arena_fight_8_reward")
 end
 
 function arena_hasnt_reward ()
 	return not
 		( 
 			has_alife_info("bar_arena_fight_1_reward") or has_alife_info("bar_arena_fight_2_reward") or has_alife_info("bar_arena_fight_3_reward") or has_alife_info("bar_arena_fight_4_reward") or has_alife_info("bar_arena_fight_5_reward") 
-			or has_alife_info("bar_arena_fight_6_reward") or has_alife_info("bar_arena_fight_7_reward") or has_alife_info("bar_arena_fight_8_reward")
+			or has_alife_info("bar_arena_fight_6_reward") or has_alife_info("bar_arena_fight_8_reward")
 		)
 end
 

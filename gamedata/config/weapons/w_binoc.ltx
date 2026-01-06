@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; BINOCULARS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-[wpn_binoc]:weapon_base
+[wpn_binoc]:identity_immunities
 GroupControlSection			= spawn_group
 discovery_dependency		= 
 $spawn						= "weapons\binocular"
@@ -11,18 +11,31 @@ scheduled					= off							; option for ALife Simulator
 cform						= skeleton
 class						= WP_BINOC
 hud							= wpn_binoc_hud
+crosshair_class 			= pistol
+inv_show_condition 			= false
+default_to_ruck				= false
 
 ef_main_weapon_type			= 5
 ef_weapon_type				= 0
+
+walk_effect_position 		= -0.0,-0.00, -0.025
+walk_effect_orientation 	= 0.0,-0.0, 0.0
+
+;---DOF-------------------------------------------------------------------------
+;zoom_dof					= -1.0, 10.0, 350
+reload_dof					= 0.0, 0.5, 5, 1.7
+;-------------------------------------------------------------------------------
+
 
 flame_particles		   		= weapons\generic_weapon05
 smoke_particles		   		= weapons\generic_shoot_00
 
 fire_point               	= 0.0, 0.133, 0.161
 shell_point		 			= 0.0, 0.133, 0.047
-shell_particles	 			= weapons\generic_shells
+shell_dir		 			= 0.0, 0.0, 0.4
+shell_particles	 			=
 
-position					= -0.08 , -0.05 , 0.05 
+position					= -0.08 , -0.05 , 0.05
 normal						= 0, 1, 0
 direction					= 0, 0, 1
 orientation					= 0 , -90, 70
@@ -32,8 +45,7 @@ attach_position_offset		= 0.080000,0.021273,0.100000
 attach_bone_name			= bip01_r_hand
 auto_attach					= false
 
-visual						= weapons\binoculars\wpn_binoculars.ogf
-description					= enc_equipment_devic_binocul1
+visual                      = weapons\binoculars\wpn_binoculars
 hand_dependence		 		= 1
 single_handed				= 0
 
@@ -45,11 +57,12 @@ ammo_current		 		= 0
 ammo_elapsed		 		= 0
 
 ammo_mag_size		 		= 0
-ammo_class		 			= ammo_9x19_fmj
+ammo_class		 			= ammo_binoc_01_dummy
 
+description					= enc_equipment_devic_binocul1
 inv_name		 			= binocular
 inv_name_short				= binocular
-inv_weight		 			= 0.5
+inv_weight		 			= 1.0
 
 show_ammo					= false
 
@@ -80,8 +93,9 @@ silencer_status				= 0
 grenade_launcher_status		= 0
 
 zoom_enabled				= true
-scope_texture				= wpn\wpn_crosshair_bino
-scope_zoom_factor			= 7.5
+scope_texture				= wpn\scopes\scope_bino_bpo
+scope_texture_autoresize = false ;такие широкие текстуры не подходят под шейдерную адаптацию к сторонам монитора
+scope_zoom_factor			= 20
 
 fire_dispersion_base		= 0.1
 
@@ -102,6 +116,7 @@ hit_type					= fire_wound
 fire_distance            	= 1
 bullet_speed		 	 	= 1		
 rpm                      	= 1
+rpm_empty_click 	 		= 1
 
 light_color		 			= 0.6,0.5,0.3
 light_range		 			= 3.0
@@ -109,37 +124,101 @@ light_var_color		 		= 0.05
 light_var_range		 		= 0.5
 light_time 		 			= 0.2
 
-snd_draw					= weapons\generic_draw
-snd_holster					= weapons\generic_holster
-snd_gyro					= weapons\binoculars_gyro
-snd_zoomin					= weapons\binoculars_zoomin
-snd_zoomout					= weapons\binoculars_zoomout
-snd_shoot					= weapons\walther_p99_shoot
-snd_empty					= weapons\pistol_empty
-snd_reload					= weapons\pm_reload, 0.8
-snd_close					= weapons\generic_close
+snd_sprint_start        = weapons\detector_prepare, 0.8
+snd_sprint_end          = weapons\pistol_sprint_end, 0.4
+snd_draw					= weapons\bino_draw
+snd_holster					= weapons\bino_holster
+snd_gyro					= $silent, 0
+snd_zoomin					= weapons\bino_aim_in_1
+snd_zoomout					= weapons\bino_aim_out_1
+snd_shoot			= $silent, 0
+snd_empty			= $silent, 0
+snd_reload			= $silent, 0
+snd_close			= $silent, 0
 
-vision_present				= true
+
+
+
+vision_present				= false
 vis_frame_speed				= 4				; скорость, с которой наводится рамка на цель
 vis_frame_color				= 0.7,0.7,0.7,1.0	; цвет рамки RGBA (A) Не учитывается
 found_snd					= detectors\DA-2_beep1
 
 [wpn_binoc_hud]
-shell_point					= 0.0, 0.0, 0.0
-fire_point              	= 0.05, 0.0, 0.1
-fire_bone               	= binoculars
-orientation             	= 10, 0, -2
-position                	= 0.18, 0, 0
-visual                  	= weapons\binoculars\wpn_binoculars_hud.ogf
+zoom_hide_crosshair			= true
 
-zoom_offset					= -0.238600,0.153600,0.000000
-zoom_rotate_x				= -0.014000
-zoom_rotate_y				= 0.324000
+hands_position				= 0.0,-0.13,0.03
+hands_orientation			= 0.0,0.0,0.0
+hands_position_16x9			= 0.0,-0.13,0.03
+hands_orientation_16x9			= 0.0,0.0,0.0
 
-anim_idle					= idle
-anim_reload					= idle
-anim_draw					= draw
-anim_holster				= holster
-anim_shoot					= idle
-anim_idle_aim				= idle
-anim_idle_sprint = idle_sprint
+item_position				= 0.0,0.0,0.005
+item_orientation			= 0.0,0.0,0.0
+
+item_visual             	= dynamics\devices\dev_binoculars\dev_binoculars_hud
+attach_place_idx				= 0
+
+anm_show			= binocular_draw
+anm_hide			= binocular_hide
+
+anm_idle			= binocular_idle
+anm_idle_slow                   = binocular_idle
+anm_idle_crouch                 = binocular_idle
+anm_idle_crouch_slow            = binocular_idle
+
+anm_idle_aim_start		= binocular_aim_start
+anm_idle_aim			= binocular_aim
+anm_idle_aim_moving		= binocular_aim
+anm_idle_aim_end		= binocular_aim_end
+
+disable_bore = true
+
+anm_idle_moving	 		= binocular_walk
+anm_idle_moving_slow 		= binocular_slow
+anm_idle_moving_crouch 	        = binocular_slow_down
+anm_idle_moving_crouch_slow 	= binocular_slow_super
+
+anm_idle_sprint_start           = binocular_sprint_start
+anm_idle_sprint	 		= binocular_sprint
+anm_idle_sprint_end             = binocular_sprint_end
+
+
+anm_idle_sprint_start_empty       = binocular_sprint_start
+anm_idle_sprint_end_empty        = binocular_sprint_end
+
+anm_bore			= binocular_hide
+
+anm_headlamp_on = binocular_headflash
+anm_headlamp_off = binocular_headflash
+lock_time_end_anm_headlamp_on = 0.5
+lock_time_end_anm_headlamp_off = 0.5
+
+anm_headlamp_on_empty = binocular_headflash
+anm_headlamp_off_empty = binocular_headflash
+
+lock_time_end_anm_headlamp_on_empty = 0.5
+lock_time_end_anm_headlamp_off_empty = 0.5
+
+anm_nv_on = binocular_headflash
+anm_nv_off = binocular_headflash
+
+lock_time_end_anm_nv_on_aim = 0.5
+lock_time_end_anm_nv_off_aim = 0.5
+
+anm_headlamp_on_aim = binocular_aim_headflash
+anm_headlamp_off_aim = binocular_aim_headflash
+
+anm_nv_on_aim = binocular_aim_headflash
+anm_nv_off_aim = binocular_aim_headflash
+
+aim_hud_offset_pos			= 0.0,0.0,0.0
+aim_hud_offset_rot			= 0.0,0.0,0.0
+
+aim_hud_offset_pos_16x9		= 0.0,0.0,0.0
+aim_hud_offset_rot_16x9		= 0.0,0.0,0.0
+
+gl_hud_offset_pos				= 0,0,0
+gl_hud_offset_rot				= 0,0,0
+
+lean_hud_offset_pos			= 0,0,0
+lean_hud_offset_rot			= 0,0,0

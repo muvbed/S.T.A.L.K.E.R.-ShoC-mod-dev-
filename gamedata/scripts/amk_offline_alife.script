@@ -137,12 +137,10 @@ wpn_priors_by_comms = {
     military = {
         ["wpn_ak74"] = 3,
         ["wpn_ak74u"] = 3,
-        ["wpn_abakan"] = 3,
         ["wpn_pm"] = 2,
-        ["wpn_val"] = 3,
-        ["wpn_walther"] = 2,
-        ["wpn_vintorez"] = 3,
-        ["wpn_groza"] = 3
+        ["wpn_fort"] = 2,
+        ["wpn_val"] = 4,
+        ["wpn_svd"] = 4
     }
 } -- end of wpn_priors_by_comms
 

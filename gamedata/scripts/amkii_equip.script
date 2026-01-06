@@ -95,27 +95,22 @@ local aOutfitsList = { --[Секция костюма] = Ключ для таб�
 	-- stalker
 	["stalker_outfit"] 						= "stalker",
 	["outfit_stalker_m1"] 					= "stalker",
-	["outfit_stalker_m2"] 					= "stalker",
 	["scientific_outfit"] 					= "stalker",
 	["exo_outfit"]							= "stalker",
-	["outfit_exo_m1"]						= "stalker",
 
 	-- dolg
 	["dolg_outfit"] 						= "dolg",
-	["outfit_dolg_m1"] 						= "dolg",
 	["dolg_scientific_outfit"]				= "dolg",
 	["dolg_black_exoskeleton"]				= "dolg",
 
 	-- freedom
 	["svoboda_light_outfit"] 				= "svoboda",
-	["outfit_svoboda_m1"] 					= "svoboda",
 	["svoboda_heavy_outfit"] 				= "svoboda",
 	["freedom_scientific_outfit"] 			= "svoboda",
 	["svoboda_exoskeleton"] 				= "svoboda",
 
 	-- killer
 	["killer_outfit"] 						= "killer",
-	["outfit_killer_m1"] 					= "killer",
 	["merc_scientific_outfit"]				= "killer",
 	["killer_blue_exoskeleton"]				= "killer",
 
@@ -360,8 +355,7 @@ local aExactEquip = { -- Жестко забитые переодевания (�
 	},
 	["stalker"] = {
 		["stalker_outfit"] = [[actors\neytral\stalker_neytral_balon_8]],
-		["outfit_stalker_m1"] = [[actors\neytral\stalker_neytral_balon_8]],
-		["outfit_stalker_m2"] = [[actors\neytral\stalker_neytral_balon_8]]
+		["outfit_stalker_m1"] = [[actors\neytral\stalker_neytral_balon_8]]
 	},
 	["bandit"] = {
 		["bandit_outfit"] = [[actors\bandit\stalker_bandit_3]],
@@ -373,16 +367,13 @@ local aExactEquip = { -- Жестко забитые переодевания (�
 	},
 	["svoboda"] = {
 		["svoboda_light_outfit"] = [[actors\svoboda\stalker_sv_rukzak_1_1]],
-		["outfit_svoboda_m1"] = [[actors\svoboda\stalker_sv_rukzak_1_1]],
 		["svoboda_heavy_outfit"] = [[actors\svoboda\stalker_sv_rukzak_2]]
 	},
 	["dolg"] = {
-		["dolg_outfit"] = [[actors\dolg\stalker_do_balon_8]],
-		["outfit_dolg_m1"] = [[actors\dolg\stalker_do_balon_8]]
+		["dolg_outfit"] = [[actors\dolg\stalker_do_balon_8]]
 	},
 	["killer"] = {
-		["killer_outfit"] = [[actors\killer\stalker_ki_mask]],
-		["outfit_killer_m1"] = [[actors\killer\stalker_ki_mask]]
+		["killer_outfit"] = [[actors\killer\stalker_ki_mask]]
 	},
 	["monolit"] = {
 		["monolit_outfit"] = [[actors\monolit\stalker_mo_mask]]
@@ -401,10 +392,8 @@ local aExactEquipGas = { -- Жестко забитые переодевания
 	["stalker"] = {
 		["stalker_outfit"] = [[actors\neytral\stalker_neytral_hood_9]],
 		["outfit_stalker_m1"] = [[actors\neytral\stalker_neytral_hood_9]],
-		["outfit_stalker_m2"] = [[actors\neytral\stalker_neytral_hood_9]],
 		["scientific_outfit"] = [[actors\neytral\stalker_neytral_nauchniy]],
-		["exo_outfit"] = [[actors\neytral\stalker_neytral_exoskeleton]],
-		["outfit_exo_m1"] = [[actors\neytral\stalker_neytral_exoskeleton]]
+		["exo_outfit"] = [[actors\neytral\stalker_neytral_exoskeleton]]
 	},
 	["bandit"] = {
 		["bandit_outfit"] = [[actors\bandit\stalker_bandit_8]],
@@ -412,20 +401,17 @@ local aExactEquipGas = { -- Жестко забитые переодевания
 	},
 	["svoboda"] = {
 		["svoboda_light_outfit"] = [[actors\svoboda\stalker_sv_hood_91]],
-		["outfit_svoboda_m1"] = [[actors\svoboda\stalker_sv_hood_91]],
 		["svoboda_heavy_outfit"] = [[actors\svoboda\stalker_sv_hood_9]],
 		["freedom_scientific_outfit"] = [[actors\svoboda\stalker_sv_nauchniy]],
 		["svoboda_exoskeleton"] = [[actors\svoboda\stalker_sv_exoskeleton]]
 	},
 	["dolg"] = {
 		["dolg_outfit"] = [[actors\dolg\stalker_do_antigas]],
-		["outfit_dolg_m1"] = [[actors\dolg\stalker_do_antigas]],
 		["dolg_scientific_outfit"] = [[actors\dolg\stalker_do_nauchniy]],
 		["dolg_black_exoskeleton"] = [[actors\dolg\stalker_do_exoskeleton]]
 	},
 	["killer"] = {
 		["killer_outfit"] = [[actors\killer\stalker_ki_antigas]],
-		["outfit_killer_m1"] = [[actors\killer\stalker_ki_antigas]],
 		["merc_scientific_outfit"] = [[actors\killer\stalker_ki_nauchniy]],
 		["killer_blue_exoskeleton"] = [[actors\killer\stalker_ki_exoskeleton]]
 	},

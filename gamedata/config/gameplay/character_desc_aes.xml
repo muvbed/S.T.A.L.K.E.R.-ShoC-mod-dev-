@@ -24,7 +24,7 @@
 		<visual>actors\monolit\stalker_mo_mask</visual>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_fmj \n
 			wpn_rpg7 \n
 			ammo_og-7b = 1 \n
@@ -183,9 +183,9 @@
     <visual>actors\monolit\stalker_mo_exo</visual>
     <supplies>
       [spawn] \n
-	  wpn_usp  \n
+	  wpn_colt1911  \n
 	  ammo_11.43x23_hydro = 1 \n
-      wpn_g36 \n
+      wpn_sig550 \n
       ammo_5.56x45_ss190 = 1 \n
 #include "gameplay\character_items_mon.xml"
     </supplies>
@@ -218,10 +218,10 @@
 		<visual>actors\soldier\soldier_beret_5</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_usp  \n
+			wpn_colt1911  \n
 			ammo_11.43x23_hydro = 1 \n
 			wpn_val \n
-			ammo_9x39_sp5 = 1 \n
+			ammo_9x39_ap = 1 \n
 #include "gameplay\character_items_mil.xml"
 		</supplies>	
 
@@ -253,10 +253,10 @@
 		<visual>actors\militari\stalker_militari_antigas_2</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_usp  \n
+			wpn_colt1911  \n
 			ammo_11.43x23_hydro = 1 \n
 			wpn_val \n
-			ammo_9x39_sp5 = 1 \n
+			ammo_9x39_ap = 1 \n
 #include "gameplay\character_items_mil.xml"
 		</supplies>		
 
@@ -288,10 +288,10 @@
 		<visual>actors\soldier\soldier_antigas</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_usp \n
+			wpn_colt1911 \n
 			ammo_11.43x23_hydro	= 1 \n
 			wpn_val \n
-			ammo_9x39_sp5 = 1 \n
+			ammo_9x39_ap = 1 \n
 #include "gameplay\character_items_mil.xml"
 		</supplies>	
 		
@@ -323,10 +323,10 @@
 		<visual>actors\militari\stalker_militari_antigas_2</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_usp \n
+			wpn_colt1911 \n
 			ammo_11.43x23_hydro = 1 \n
 			wpn_val \n
-			ammo_9x39_sp5 = 1 \n
+			ammo_9x39_ap = 1 \n
 #include "gameplay\character_items_mil.xml"
 		</supplies>		
 
@@ -358,9 +358,9 @@
 		<visual>actors\militari\stalker_militari_1</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_beretta \n
 			ammo_9x19_fmj \n
-			wpn_svu \n
+			wpn_svd \n
 			ammo_7.62x54_ap = 1 \n
 #include "gameplay\character_items_mil.xml"
 		</supplies>		
@@ -370,76 +370,4 @@
 		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
-
-<!---------------------------SOLDIER SNIPER---------------------->
-	<specific_character id="aes_x" team_default = "1">
-		<name>GENERATE_NAME_private</name>
-		<icon>ui_npc_u_stalker_militari_antigas_1</icon>
-		<map_icon x="1" y="2"></map_icon>
-		<bio>aes_Soldier_sniper_bio</bio>
-
-		<team>Soldier_sniper</team>
-		
-		<class>aes_x</class>
-		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
-		
-		<rank>900</rank>
-		<reputation>0</reputation>
-
-        <snd_config>characters_voice\human_03\military\</snd_config>
-		<crouch_type>0</crouch_type>
-    	<panic_threshold>0.0</panic_threshold>
-
-		<visual>actors\militari\stalker_militari_antigas_1</visual>		
-		<supplies>
-			[spawn] \n
-			wpn_walther \n
-			ammo_9x19_fmj \n
-			wpn_sig550 \n
-			ammo_5.56x45_ap = 1 \n
-#include "gameplay\character_items_mil.xml"
-		</supplies>		
-
-#include "gameplay\character_criticals_6.xml"
-					
-		<start_dialog>hello_dialog</start_dialog>
-#include "gameplay\character_dialogs.xml"
-	</specific_character>
-<!---------------------------SOLDIER SNIPER---------------------->
-	<specific_character id="aes_x_2" team_default = "1">
-		<name>GENERATE_NAME_private</name>
-		<icon>ui_npc_u_stalker_militari_antigas_1</icon>
-		<map_icon x="1" y="2"></map_icon>
-		<bio>aes_Soldier_sniper_bio</bio>
-
-		<team>Soldier_sniper</team>
-		
-		<class>aes_x_2</class>
-		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
-		
-		<rank>900</rank>
-		<reputation>0</reputation>
-
-        <snd_config>characters_voice\human_03\military\</snd_config>
-		<crouch_type>0</crouch_type>
-
-    	<panic_threshold>0.0</panic_threshold>
-
-		<visual>actors\militari\stalker_militari_antigas_1</visual>		
-		<supplies>
-			[spawn] \n
-			wpn_walther \n
-			ammo_9x19_fmj \n
-			wpn_sig550 \n
-			ammo_5.56x45_ap = 1 \n
-#include "gameplay\character_items_mil.xml"
-		</supplies>		
-
-#include "gameplay\character_criticals_6.xml"
-					
-		<start_dialog>hello_dialog</start_dialog>
-#include "gameplay\character_dialogs.xml"
-	</specific_character>
-
-	
 </xml>

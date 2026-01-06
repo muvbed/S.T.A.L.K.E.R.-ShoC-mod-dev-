@@ -407,7 +407,7 @@ function CRandomTask:action_give_task(actor, npc, p1, p2)
 		objective:set_object_id(task_desc.selected_target)
 		
 		--'  вест на пистолет  узнецова
-		if task_desc.target == "wpn_fort_m1" and not has_item_to_bring(task_desc) then
+		if task_desc.target == "wpn_fort" and not has_item_to_bring(task_desc) then
 			db.actor:give_info_portion("tm_find_item_1_proceed") 
 		end
 		--
@@ -508,7 +508,7 @@ function CRandomTask:task_complete(p1, p2)
 		
 		elseif string.find(p1, "artefact") or string.find(p1, "monster_part") or string.find(p1, "find_item") then
 			if db.actor:object(sel_task.target) ~= nil then
-				if sel_task.target == "wpn_fort_m1" and has_alife_info("tm_find_item_1_proceed") then
+				if sel_task.target == "wpn_fort" and has_alife_info("tm_find_item_1_proceed") then
 					db.actor:disable_info_portion("tm_find_item_1_proceed")
 				end
 				self.task_info[self.active_task_by_type[p1]].status = "completed"

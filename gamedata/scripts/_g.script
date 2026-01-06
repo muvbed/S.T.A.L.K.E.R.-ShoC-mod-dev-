@@ -40,11 +40,10 @@ always_keep_item = {
 	["decoder"]							= true,
 	["pda_bunker"]						= true,
 	["hunters_toz"]						= true,
-	["wpn_fort_m1"]						= true,
 	["outfit_stalker_m1"]				= true,
-	["wpn_lr300_m1"]					= true,
+	["wpn_svu"]							= true,
 	["outfit_specnaz_m1"]				= true,
-	["wpn_abakan_m2"]					= true,
+	["wpn_abakan"]						= true,
 	["outfit_bandit_m1"]				= true,
 }
 
@@ -1755,4 +1754,11 @@ function radius_formatter(r, d)
     local m, e = tostring(r):match("([^eE]+)[eE]?([+-]?%d*)")
     
     return string.format("%."..d.."f", tonumber(m))
+end
+
+function r_string_ex( section, line, def )
+	if sys_ini:line_exist(section, line) then
+		return sys_ini:r_string(section, line)
+	end
+	return def
 end

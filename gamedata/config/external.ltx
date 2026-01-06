@@ -39,8 +39,11 @@ remove_alt_keybinding = false
 ; и при прицеливании оно будет обладать свойствами бинокля. Еще нужно не забыть добавить в секцию этого оружия настройки для бинокля.
 binoc_firing = false
 
+; Отключает возможность переключаться между слотами колесиком мыши.
+no_mouse_wheel_switch_slot = true
+
 ; Выключает использование анимации рассматривания болта, подкидывания гранат и кручения ножа, т.е. anim_playing.
-stop_anim_playing = false
+stop_anim_playing = true
 
 ; Включает коллизию с трупами. Это значит, что мобы будут тупить, уперевшись в тушку мутантами,
 ; т.к. не умеют обходить препятствия, а также гора трупов будет лагать.
@@ -84,7 +87,7 @@ scope_textures_autoresize = true
 ogse_new_slots = true
 
 ; ОГСЕ-специфичная система оружейного зума. С ванильным ТЧ несовместима без правки оружейных конфигов.
-ogse_wpn_zoom_system = false
+ogse_wpn_zoom_system = true
 
 ; Цена оружия будет включать в себя стоимость установленных аддонов
 wpn_cost_include_addons = true
@@ -209,24 +212,9 @@ equipped_untradable = false
 ; Подсветка при наведении мыши на предмет будет иметь самый высокий приоритет по отношению к другим подсветкам. Если выключено - самый низкий.
 select_mode_1342 = false
 
-
 [user_spots]
 ; Переопределить тип метки, используемой для пользовательских меток на карте. По умолчанию используется red_location
 ;spot_type = red_location
-
-
-; Настройки для wpn_bobbing
-[wpn_bobbing_effector]
-controller_amplitude = 0.002
-limp_amplitude = 0.011
-limp_speed     = 4.6
-run_amplitude  = 0.0075
-run_speed      = 6.74
-walk_amplitude = 0.005
-walk_speed     = 6.26
-crouch_k = 0.75
-;zoom_k   = 0.1
-scope_zoom_k = 0.1
 
 
 [engine_callbacks]
@@ -330,11 +318,11 @@ drop_ruck = kRUCK
 swipe_mask = kSWIPE_MASK
 
 ; Замена шейдеров в визуалах
-;[vis_shaders_replace]
+[vis_shaders_replace]
 ; шейдер тесселяции: models\model -> models\model_pn. Должен присутствовать в shaders.xr!
-;dynamics\weapons\wpn_hand = models\model,models\model_pn, models\weapons,models\model_pn
-;actors   = models\model,models\model_pn, models\weapons,models\model_pn, models\artefact,models\model_pn, models\artefact2,models\model_pn
-;monsters = models\model,models\model_pn
+dynamics\weapons\wpn_hand = models\model,models\model_pn, models\weapons,models\model_pn
+actors   = models\model,models\model_pn, models\weapons,models\model_pn, models\artefact,models\model_pn, models\artefact2,models\model_pn
+monsters = models\model,models\model_pn
 
 
 [hud_movement_layers]

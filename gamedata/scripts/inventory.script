@@ -4,6 +4,7 @@ function attach(sm)
 	sm:subscribe({signal = "on_info", fun = this.on_inventory_info})
 	sm:subscribe({signal = "on_take", fun = this.on_item_take})
 	sm:subscribe({signal = "on_drop", fun = this.on_item_drop})
+	sm:subscribe({signal = "on_update", fun = this.on_change_outfit})
 	sm:subscribe({signal = "on_update", fun = this.on_update})
 	sm:subscribe({signal = "on_inventory_reset", fun = this.on_reset})
 	sm:subscribe({signal = "on_item_to_belt", fun = this.on_reset})
@@ -18,12 +19,13 @@ belt_status = false
 local need_update = true
 local inventory_open = false
 local separator_spawned = false
-local separator = "zip_separator"
+local separator = "grenade_separator"
 
 local flag
 
-function on_update()
-	----------------------------------------------------------------------
+function on_change_outfit()
+	ogse_signals.get_mgr():reschedule(200)
+	
 	local current_outfit = db.actor:get_current_outfit()
 	
 	if current_outfit then
@@ -33,8 +35,9 @@ function on_update()
 	elseif amk.load_variable("base_outfit", "nil") ~= "nil" then
 		outfit_change("nil")
 	end
-	----------------------------------------------------------------------
+end
 
+function on_update()
 	if (need_update == false) then return end
 
 	-- —павним раздел€ющий елемент
@@ -179,6 +182,10 @@ function on_inventory_info(npc, info_id)
 end
 
 function on_reset(separator_type)
-	separator = string.find(tostring_all(separator_type), "separator") and separator_type or "zip_separator"
-	need_update = true
+	if string.find(tostring_all(separator_type), "separator") then
+		separator = separator_type
+		need_update = true
+	else
+		update_inventory_window()
+	end
 end

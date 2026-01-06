@@ -11246,7 +11246,7 @@ object_flags = 0xffffff3a
 custom_data = <<END
 [drop_box]
 community = small_box_ussr
-items = ammo_5.45x39_fmj, 4, wpn_addon_silencer
+items = ammo_5.45x39_fmj, 4, wpn_addon_sil_545
 END
 
 ; cse_visual properties
@@ -13939,7 +13939,7 @@ object_flags = 0xffffff3a
 custom_data = <<END
 [drop_box]
 community = def_box
-items = wpn_pb, ammo_9x18_fmj, 2, medkit, bandage, 3
+items = wpn_pm, ammo_9x18_fmj, 2, medkit, bandage, 3
 END
 
 ; cse_visual properties
@@ -15962,40 +15962,6 @@ skeleton_name =
 ; cse_alife_object_physic properties
 physic_type = 0x3
 mass = 10
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-[2281]
-
-; cse_abstract properties
-section_name = physic_object
-name = trader_physic_object0009
-position = -241.142578125, -23.9534664154053, -135.007308959961
-direction = -0.158035218715668, 3.58381509780884, 0.0743808746337891
-id = 65535
-version = 118
-script_version = 7
-spawn_id = 2281
-
-; cse_alife_object properties
-game_vertex_id = 0
-level_vertex_id = 594270
-object_flags = 0xffffff7a
-custom_data = <<END
-[collide]
-ignore_static
-END
-
-; cse_visual properties
-visual_name = weapons\groza\wpn_groza
-
-; cse_ph_skeleton properties
-skeleton_name = 
-
-; cse_alife_object_physic properties
-physic_type = 0x3
-mass = 10
-fixed_bones = wpn_body
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -24016,7 +23982,7 @@ esc2_most = {+esc_kill_bandits_quest_kill -agroprom_military_case_done}
 mil_lager = {+esc_kill_bandits_quest_kill +agroprom_military_case_done}
 
 [spawn]
-wpn_pb
+wpn_pm
 ammo_9x18_fmj
 hand_radio
 END
@@ -25393,35 +25359,6 @@ object_flags = 0xffffff07
 
 ; cse_visual properties
 visual_name = weapons\pm\wpn_pm
-
-; cse_alife_inventory_item properties
-condition = 1
-
-; cse_alife_item_weapon properties
-ammo_current = 90
-upd:condition = 1
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-[2506]
-
-; cse_abstract properties
-section_name = wpn_walther
-name = esc_wpn_walther
-position = 23.9060764312744, 21.9242000579834, 680.584045410156
-direction = 0.00350201036781073, 0.892683148384094, -1.58184349536896
-id = 65535
-version = 118
-script_version = 7
-spawn_id = 2506
-
-; cse_alife_object properties
-game_vertex_id = 0
-level_vertex_id = 594270
-object_flags = 0xffffff3f
-
-; cse_visual properties
-visual_name = weapons\walter_99\wpn_walter_99
 
 ; cse_alife_inventory_item properties
 condition = 1

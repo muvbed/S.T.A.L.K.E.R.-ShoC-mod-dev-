@@ -36,11 +36,11 @@
 			<texture x="0" y="768" width="497" height="171">ui\ui_static_mm_back_04</texture>
 		</file_info>
 
-		<file_caption x="299" y="109" width="512" height="20" complex_mode="1">
+		<file_caption x="304" y="115" width="512" height="20" complex_mode="1">
 			<text font="graffiti22" color="yellow"/>
 		</file_caption>
 
-		<file_data x="299" y="135" width="512" height="50" complex_mode="1">
+		<file_data x="304" y="137" width="512" height="50" complex_mode="1">
 			<text font="ui_font_utf" color="grey_5"/>
 		</file_data>
 

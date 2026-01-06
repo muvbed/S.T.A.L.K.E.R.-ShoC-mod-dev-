@@ -1,123 +1,125 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Devices
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#include "hud_items\pda.ltx"
 
 [device_atifact_merger]:identity_immunities
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn 				= "devices\artifact merger"
-;$prefetch 			= 32
-class				= II_ATTCH
-cform				= skeleton
-visual				= equipments\item_merger.ogf
-radius				= 1
+GroupControlSection		= spawn_group
+discovery_dependency 	= 
+$spawn 					= "devices\artifact merger"
+;$prefetch 				= 32
+class					= II_ATTCH
+cform					= skeleton
+visual					= equipments\item_merger.ogf
+radius					= 1
 
-inv_name			= ArtefactMerger
-inv_name_short		= AfMerger
-inv_weight			= 3
+inv_name				= ArtefactMerger
+inv_name_short			= AfMerger
+inv_weight				= 3
 
-inv_grid_width		= 2
-inv_grid_height		= 1
-inv_grid_x			= 6
-inv_grid_y			= 13
-cost				= 5000
+inv_grid_width			= 2
+inv_grid_height			= 1
+inv_grid_x				= 6
+inv_grid_y				= 13
+cost					= 5000
 
 [inventory_box]:identity_immunities
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn 				= "devices\inventory box"
-class				= O_INVBOX
-cform				= skeleton
-inv_name			= ArtefactMerger
-inv_name_short		= AfMerger
-inv_weight			= 3
-visual				= physics\box\expl_dinamit.ogf
-script_binding      = bind_physic_object.init
+GroupControlSection		= spawn_group
+discovery_dependency 	= 
+$spawn 					= "devices\inventory box"
+class					= O_INVBOX
+cform					= skeleton
+inv_name				= ArtefactMerger
+inv_name_short			= AfMerger
+inv_weight				= 3
+visual					= physics\box\expl_dinamit.ogf
+script_binding      	= bind_physic_object.init
 
 [inv_ruck]:identity_immunities 
-GroupControlSection = spawn_group 
-discovery_dependency = 
+GroupControlSection 	= spawn_group 
+discovery_dependency 	= 
 
-$spawn = "food and drugs\inv_ruck" 
-$prefetch = 32 
+$spawn 					= "food and drugs\inv_ruck" 
+$prefetch 				= 32 
 
-class = II_ANTIR 
-cform = skeleton 
+class 					= II_ANTIR 
+cform 					= skeleton 
 
-visual = equipments\item_rukzak 
+visual 					= equipments\item_rukzak 
 
-inv_name = tre_ruck 
-inv_name_short = tre_ruck_s
-description = enc_tre_ruck
+inv_name 				= tre_ruck 
+inv_name_short 			= tre_ruck_s
+description 			= enc_tre_ruck
 
-inv_weight = 0.9 
-inv_grid_width = 2 
-inv_grid_height = 3 
-inv_grid_x = 14
-inv_grid_y = 35
+inv_weight 				= 0.9 
+inv_grid_width 			= 2 
+inv_grid_height 		= 3 
+inv_grid_x 				= 14
+inv_grid_y 				= 35
 
-cost = 2500
+cost 					= 2500
 
-eat_health = 0 
-eat_satiety = 0 
-eat_power = 0 
-eat_radiation = 0 
-eat_alcohol = 0 
-wounds_heal_perc = 0 
-eat_portions_num = 1
+eat_health 				= 0 
+eat_satiety 			= 0 
+eat_power 				= 0 
+eat_radiation 			= 0 
+eat_alcohol 			= 0 
+wounds_heal_perc 		= 0 
+eat_portions_num 		= 1
 
-animation_slot = 4
+animation_slot 			= 4
 
-hud = wpn_vodka_hud
+hud 					= wpn_vodka_hud
 
 [active_ruck]:inventory_box 
-visual = equipments\item_rukzak 
-custom_data = scripts\treasure_inventory_box.ltx 
-radius = 1
+visual 					= equipments\item_rukzak 
+custom_data 			= scripts\treasure_inventory_box.ltx 
+radius 					= 1
 
 [device_torch]:identity_immunities
-GroupControlSection	= spawn_group
-discovery_dependency =
-$spawn				= "devices\torch"
-$prefetch 			= 32
-class				= TORCH_S
-cform				= skeleton
-visual				= equipments\light_night.ogf
-description			= enc_equipment_devic_device-torch1
-cost				= 100
-inv_name			= device-torch
-inv_name_short		= device-torch
-inv_weight			= 0
-inv_grid_width		= 2
-inv_grid_height		= 1
-inv_grid_x			= 16
-inv_grid_y			= 12
+GroupControlSection		= spawn_group
+discovery_dependency 	=
+$spawn					= "devices\torch"
+$prefetch 				= 32
+class					= TORCH_S
+cform					= skeleton
+visual					= equipments\light_night.ogf
+description				= enc_equipment_devic_device-torch1
+cost					= 100
+inv_name				= device-torch
+inv_name_short			= device-torch
+inv_weight				= 0
+inv_grid_width			= 2
+inv_grid_height			= 1
+inv_grid_x				= 16
+inv_grid_y				= 12
 
 ;вещью нельзя торговать
-can_trade					= true
+can_trade				= true
 
-position					= 0.35,0.25,0.0
-light_trace_bone			= cone_bone
-attach_angle_offset			= 0, -3.14, 1.6
-attach_position_offset		= 0.14, 0.00, 0.09
-attach_bone_name			= bip01_head
-auto_attach					= false
+default_to_ruck 		= false
 
-night_vision				= on
-night_vision_texture		= wpn\wpn_night
-night_vision_effector		= postprocess_night
+position				= 0.35,0.25,0.0
+light_trace_bone		= cone_bone
+attach_angle_offset		= 0, -3.14, 1.6 	; фонарик советский
+attach_position_offset	= 0.12, 0.0, 0.08 	; фонарик советский
+attach_bone_name		= bip01_head		; фонарик советский
+auto_attach				= false
 
-snd_night_vision_on			= weapons\nv_start
-snd_night_vision_off		= weapons\nv_off
-snd_night_vision_idle		= weapons\nv_loop
-snd_night_vision_broken		= weapons\nv_off
+night_vision			= off ; Выключаем движковый ПНВ, чтобы избежать дублирования эффектов со скриптовым.
+night_vision_texture	= wpn\wpn_night
+night_vision_effector	= postprocess_night
 
-night_vision_recharge_time			= 6		;(c) время зарядки аккамулятора
-night_vision_recharge_time_min		= 2		;(c) мин. время зарядки аккамулятора, после которого уст-во уже может работать
-night_vision_discharge_time			= 20	;(c) время разрядки (работы) устройства после полной зарядки
-slot								= 9
-default_to_ruck 					= false
-disabled_maps						= ai_test,ai_test2, andy_test_
+snd_night_vision_on		= weapons\nv_start
+snd_night_vision_off	= weapons\nv_off
+snd_night_vision_idle	= weapons\nv_loop
+snd_night_vision_broken	= weapons\nv_off
+
+night_vision_recharge_time		= 6		;(c) время зарядки аккамулятора
+night_vision_recharge_time_min	= 2		;(c) мин. время зарядки аккамулятора, после которого уст-во уже может работать
+night_vision_discharge_time		= 20	;(c) время разрядки (работы) устройства после полной зарядки
+slot					= 9
+disabled_maps			= ai_test,ai_test2, andy_test_
 
 [detector_simple]:identity_immunities
 GroupControlSection		= spawn_group
@@ -268,43 +270,9 @@ inv_weight				= 0.6
 inv_grid_width			= 1
 inv_grid_height			= 1
 inv_grid_x				= 15
-inv_grid_y				= 7
+inv_grid_y				= 8
 cost					= 5000
 belt					= true
-
-[device_pda]:identity_immunities
-GroupControlSection	= spawn_group
-discovery_dependency=
-$spawn 				= "devices\pda"
-$prefetch 			= 16
-class				= D_PDA
-cform				= skeleton
-visual              = dynamics\devices\dev_pda\dev_pda.ogf
-description			= enc_equipment_devic_device-pda1
-radius				= 50
-slot				= 7
-default_to_ruck 	= false
-
-default_to_slot 		= true
-sprint_allowed			= true
-
-inv_name			= PDA
-inv_name_short		= PDA
-inv_weight			= 0.3	;0.2
-
-inv_grid_width		= 2
-inv_grid_height		= 1
-inv_grid_x			= 6
-inv_grid_y			= 13
-cost				= 20
-
-attach_angle_offset     = 1.5, 0.0, 1.5 ;устанавливается в радианах Angle*PI/180
-attach_position_offset  = 0.12000, -0.02, 0.000000
-attach_bone_name        = bip01_l_hand
-auto_attach             = false
-
-auto_attach				= false
-
 
 [binocular_a]:identity_immunities
 GroupControlSection		= spawn_group

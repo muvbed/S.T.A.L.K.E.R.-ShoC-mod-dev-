@@ -201,4 +201,14 @@
 	<quick_slot_3 x="772" y="718" width="30" height="30" stretch="1">
 		<texture>ui\ui_icon_equipment</texture>
 	</quick_slot_3>
+	
+	<static_anim x="430" y="720" width="150" height="10" stretch="1">
+		<text x="0" y="-24" font="arial_14" color="yellow" light_anim="ui_slow_blinking" la_cyclic="1" la_alpha="1" align="c"/>
+		<texture>ui_hud_shkala_anim</texture>
+		<anim_progress x="1" y="1" width="148" height="8" horz="1" min="0" max="100" pos="0">
+			<progress>
+				<texture>ui_hud_shk_anim</texture>
+			</progress>
+		</anim_progress>
+	</static_anim>
 </header>

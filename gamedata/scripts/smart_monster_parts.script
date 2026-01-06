@@ -22,9 +22,9 @@ local monsters = {
     { sect = "gigant",             bones = { 28, 55 },                                                                  part = "mutant_psevdogigant_hand" },
     { sect = "himera",             bones = { 7, 17 },                                                                   part = "mutant_chimera_talon" },
     { sect = "snork",              bones = { 52, 53, 56, 57 },                                                  		part = "mutant_snork_leg" },
-    { sect = "tushkan",            bones = { 25 },                                                                      part = "mutant_face_tushkano" },
+    { sect = "tushkan",            bones = { 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36 },                          part = "mutant_face_tushkano" },
     { sect = "zombi",              bones = { 20, 32 },                                                         			part = "mutant_zombie_hand" },
-    { sect = "polter",             bones = { 4 },                                                                       part = "mutant_poltergeist_glas" },
+    { sect = "polter",             bones = { 6, 7, 8, 9 },                                                              part = "mutant_poltergeist_glas" },
     { sect = "cat",                bones = { 27, 28, 29 },                                                              part = "mutant_tail_cat" }
 }
 

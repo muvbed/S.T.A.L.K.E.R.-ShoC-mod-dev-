@@ -17,6 +17,7 @@ mediks = {
 	["kolbasa"] = true,
 	["conserva"] = true,
 	["vodka"] = true,
+	["voda"] = true,
 	["energy_drink"] = true
 }
 grenades = {
@@ -24,7 +25,6 @@ grenades = {
 	["grenade_rgd5"] = true,
 	["ammo_m209"] = true,
 	["ammo_vog-25"] = true,
-	["ammo_vog-25p"] = true,
 	["ammo_og-7b"] = true
 }
 

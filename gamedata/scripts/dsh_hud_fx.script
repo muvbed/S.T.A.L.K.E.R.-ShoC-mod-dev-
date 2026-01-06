@@ -76,6 +76,7 @@ function nlc7_actor_heart()
 	if satiety <= 0.1 or thirst <= 0.1 then
 		if hunger_effector then
 			level.add_pp_effector("hunger.ppe", 7024, true)
+			level.set_pp_effector_factor(7024, 0.05)
 			hunger_effector = false
 		end
 	else

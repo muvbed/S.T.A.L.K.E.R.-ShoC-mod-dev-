@@ -224,7 +224,8 @@ local function validate_accessibility( npc, ppname )
     for i=0,pp:count()-1 do
 		--log3("--[%s] verifying point [%s] on path [%s] VTX [%s] for [%s]", script_name(), i, ppname, pp:level_vertex_id(i), npc:name())
 		-- ќчищаем патрульный путь от аномалий.--
-		local nearest_anoms = ogse_anomaly.get_all_nearest_anomalies_by_point_in_radius( pp:point(i), npc:radius() )
+		local npc_radius = npc:radius() * 1.5
+		local nearest_anoms = ogse_anomaly.get_all_nearest_anomalies_by_point_in_radius( pp:point(i), npc_radius )
 		for _, anom in ipairs( nearest_anoms ) do
 			local sobj = alife():object(anom.id)
 			if not ogse_anomaly.is_not_anomaly(sobj) and not ogse_anomaly.is_exclusion_anomaly(sobj) --[=[and not string.find(sobj:section_name(), "handmade_")--]=] then --¬сЄ таки аномалии, поставленные руками, тоже надо удал€ть, иначе получим вылет из за недоступности вертекса.

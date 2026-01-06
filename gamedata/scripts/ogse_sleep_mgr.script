@@ -130,7 +130,7 @@ function begin_sleep(desired_sleep_time)
 		end
 		prev_health = cur_health
 		
-		if i >= (sleep_counts / 3) or urgent_awakening then
+		if i >= (sleep_counts / 2) or urgent_awakening then
 			cmd( "g_god", "off" )
 		end
 		
@@ -148,7 +148,7 @@ function begin_sleep(desired_sleep_time)
 
 	-- сколько реально спали
 	awakening_time = game.get_game_time()
-	local real_sleep_time = awakening_time:diffSec(start_sleep_time)
+	local real_sleep_time = math.abs(awakening_time:diffSec(start_sleep_time))
 	-- пересчитываем потребность во сне
 	last_need_for_sleep = last_need_for_sleep - real_sleep_time * sleep_compensation_factor
 	if last_need_for_sleep < 0 then last_need_for_sleep = 0 end
@@ -177,6 +177,7 @@ function begin_sleep(desired_sleep_time)
 		snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 15.0)
 	end
 	-- привет мир
+	update_sleep_effects(true)
 	ogse_signals.get_mgr():call("on_sleep_finished")
 end
 
@@ -335,6 +336,10 @@ function use_stimulant(section)
 	local additional_awake_time = get_float(section, "sleep_suppression_time")
 	local additional_soporific = get_float(section, "sleep_soporific")
 	
+	if additional_soporific then
+		add_need_for_sleep(additional_soporific)
+		update_sleep_effects(true)
+	end
 	if additional_awake_time then -- вещества содержат в секции параметр влияния на сон
 		-- штраф за использование
 		if sleep_level > 0 then		
@@ -352,9 +357,6 @@ function use_stimulant(section)
 		end
 		update_sleep_effects(true)
 		return true
-	end
-	if additional_soporific then
-		add_need_for_sleep(additional_soporific)
 	end
 	return false
 end

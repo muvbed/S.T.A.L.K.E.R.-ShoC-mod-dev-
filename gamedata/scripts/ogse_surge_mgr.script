@@ -19,6 +19,7 @@ is_surge_raskolbas = false -- Находится ли выброс в смертельной стадии
 
 local debug_logging = false
 local fsurgelog = false
+local snd_pda_dead = sound_object('device\\pda\\pda_dead')
 
 local aux_counter = 0
 function surge_log(f,...)
@@ -44,6 +45,7 @@ local surge_postpone_time   = 10 -- [час.], время откладывания выброса в случае 
 local lname
 local is_indoor = false
 local actor_was_hit = false
+local anim_playing = false
 
 function on_actor_spawn()
 	this.surge_db_init()
@@ -620,6 +622,7 @@ function on_surge_end()
 	db.actor:disable_info_portion("pre_blowout2")
 	db.actor:give_info_portion("net_signal") -- связь восстановлена
 	set_pda_params(vector():set(0.1,0.0,1))
+	anim_playing = false
 	ogse_signals.get_mgr():call( "on_after_blowout" )
 end
 
@@ -909,6 +912,13 @@ end
 function pda_off()
 	set_pda_params(vector():set(0.5,0.2,0.0))
 	if db.actor:dont_has_info("no_net_signal") then return end
+	if db.actor:active_slot() == 7 and ogsr_actor_animation.allow_animation() and not anim_playing then
+		local pda_anm_time = game.play_hud_motion(2, "pda_hud", "anm_blowout", true, 1)
+		snd_pda_dead:play(db.actor,0,sound_object.s2d)
+		ogsr_actor_animation.animation_on()
+		dsh.timeout( pda_anm_time, ogsr_actor_animation.animation_off )
+		anim_playing = true
+	end
 end
 
 function update()

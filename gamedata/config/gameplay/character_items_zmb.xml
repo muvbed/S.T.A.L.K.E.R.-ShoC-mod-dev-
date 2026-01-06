@@ -11,6 +11,7 @@ bread_fake			= 1, prob = 0.25 \n
 kolbasa_fake		= 1, prob = 0.15 \n
 conserva			= 1, prob = 0.05 \n
 vodka 				= 1, prob = 0.05 \n
+voda				= 1, prob = 0.05 \n
 energy_drink 		= 1, prob = 0.05 \n
 
 af_medusa			= 1, prob = 0.03 \n

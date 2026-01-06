@@ -17,7 +17,7 @@ local jump_speed = get_float( "actor", "jump_speed" )
 
 walk_accel_factor = 1.0 -- Для воздействий из вне (Muvbed)
 local walk_accel = get_float("actor", "walk_accel")
-local min_walk_accel = walk_accel / 2
+local min_walk_accel = walk_accel / 1.5
 
 local cur_cam_inert = 0.1
 

@@ -672,12 +672,6 @@
 	<character id="aes_Monolit_specnaz_rg6">
 		<class>aes_Monolit_specnaz_rg6</class>
 	</character>
-	<character id="aes_x">
-		<class>aes_x</class>
-	</character>
-	<character id="aes_x_2">
-		<class>aes_x_2</class>
-	</character>
 	
 <!-- Sarcofag -->
 	<character id="sar_monolith_specnaz">
@@ -980,10 +974,6 @@
 	<character id="bar_arena_stalker_6_6">
 		<class>bar_arena_stalker_6_6</class>
 	</character>	
-			
-	<character id="bar_arena_stalker_7">
-		<class>bar_arena_stalker_7</class>
-	</character>
 	
 	<character id="bar_arena_stalker_8_1">
 		<class>bar_arena_stalker_8_1</class>

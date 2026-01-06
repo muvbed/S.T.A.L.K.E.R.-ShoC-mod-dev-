@@ -24,7 +24,7 @@
 		<supplies>
 			[spawn] \n
 			wpn_val_arena = 1 \n
-			ammo_9x39_sp5 = 1 \n
+			ammo_9x39_ap = 1 \n
 			device_torch
 		</supplies>
 		
@@ -49,8 +49,8 @@
 		<snd_config>characters_voice\human_02\military\</snd_config>
 		<supplies>
 			[spawn] \n	
-			wpn_groza_arena = 1 \n
-			ammo_9x39_sp5 = 1 \n
+			wpn_val_arena = 1 \n
+			ammo_9x39_ap = 1 \n
 			device_torch
 		</supplies>
 		
@@ -75,8 +75,8 @@
 		<snd_config>characters_voice\human_02\military\</snd_config>
 		<supplies>
 			[spawn] \n	
-			wpn_groza_arena = 1 \n
-			ammo_9x39_sp5 = 1 \n
+			wpn_val_arena = 1 \n
+			ammo_9x39_ap = 1 \n
 			device_torch
 		</supplies>
 		
@@ -102,7 +102,7 @@
 		<supplies>
 			[spawn] \n
 			wpn_val_arena = 1 \n
-			ammo_9x39_sp5 = 1 \n
+			ammo_9x39_ap = 1 \n
 			device_torch
 		</supplies>
 		
@@ -127,8 +127,8 @@
 		<snd_config>characters_voice\human_01\military\</snd_config>	
 		<supplies>
 			[spawn] \n
-			wpn_groza_arena = 1 \n
-			ammo_9x39_sp5 = 1 \n
+			wpn_val_arena = 1 \n
+			ammo_9x39_ap = 1 \n
 			device_torch
 		</supplies>
 		
@@ -153,8 +153,8 @@
 		<snd_config>characters_voice\human_01\military\</snd_config>		
 		<supplies>
 			[spawn] \n
-			wpn_groza_arena = 1 \n
-			ammo_9x39_sp5 = 1 \n
+			wpn_val_arena = 1 \n
+			ammo_9x39_ap = 1 \n
 			device_torch
 		</supplies>
 		
@@ -183,7 +183,7 @@
 		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_fn2000_arena = 1 \n
+			wpn_sig550_arena = 1 \n
 			ammo_5.56x45_ap = 1 \n
 			device_torch
 		</supplies>
@@ -210,7 +210,7 @@
 		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_fn2000_arena = 1 \n
+			wpn_sig550_arena = 1 \n
 			ammo_5.56x45_ap = 1 \n
 			device_torch
 		</supplies>
@@ -237,7 +237,7 @@
 		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_spas12_arena = 1 \n
+			wpn_saiga12_arena = 1 \n
 			ammo_12x70_buck = 1 \n
 			device_torch
 		</supplies>
@@ -264,7 +264,7 @@
 		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_fn2000_arena = 1 \n
+			wpn_sig550_arena = 1 \n
 			ammo_5.56x45_ap = 1 \n
 			device_torch
 		</supplies>
@@ -290,7 +290,7 @@
 		<snd_config>characters_voice\human_03\killer\</snd_config>
 		<supplies>	
 			[spawn] \n	
-			wpn_g36_arena = 1 \n
+			wpn_sig550_arena = 1 \n
 			ammo_5.56x45_ap = 1 \n
 			device_torch
 		</supplies>
@@ -316,7 +316,7 @@
 		<snd_config>characters_voice\human_01\killer\</snd_config>
 		<supplies>	
 			[spawn] \n	
-			wpn_g36_arena = 1 \n
+			wpn_sig550_arena = 1 \n
 			ammo_5.56x45_ap = 1 \n
 			device_torch
 		</supplies>
@@ -346,7 +346,7 @@
 		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_fn2000_arena = 1 \n
+			wpn_sig550_arena = 1 \n
 			ammo_5.56x45_ap = 1 \n
 			device_torch
 		</supplies>
@@ -372,7 +372,7 @@
 		<snd_config>characters_voice\human_03\freedom\</snd_config>
 		<supplies>
 			[spawn] \n	
-			wpn_fn2000_arena = 1 \n
+			wpn_sig550_arena = 1 \n
 			ammo_5.56x45_ap = 1 \n
 			device_torch
 		</supplies>
@@ -398,7 +398,7 @@
 		<snd_config>characters_voice\human_03\freedom\</snd_config>
 		<supplies>
 			[spawn] \n	
-			wpn_g36_arena = 1 \n
+			wpn_sig550_arena = 1 \n
 			ammo_5.56x45_ap = 1 \n
 			device_torch
 		</supplies>
@@ -425,7 +425,7 @@
 		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_spas12_arena = 1 \n
+			wpn_saiga12_arena = 1 \n
 			ammo_12x70_buck = 1 \n
 			device_torch
 		</supplies>
@@ -451,7 +451,7 @@
 		<snd_config>characters_voice\human_03\freedom\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_g36_arena = 1 \n
+			wpn_sig550_arena = 1 \n
 			ammo_5.56x45_ap = 1 \n
 			device_torch
 		</supplies>
@@ -477,7 +477,7 @@
 		<snd_config>characters_voice\human_03\freedom\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_fn2000_arena = 1 \n
+			wpn_sig550_arena = 1 \n
 			ammo_5.56x45_ap = 1 \n
 			device_torch
 		</supplies>
@@ -504,7 +504,7 @@
 		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_fn2000_arena = 1 \n
+			wpn_sig550_arena = 1 \n
 			ammo_5.56x45_ap = 1 \n
 			device_torch
 		</supplies>
@@ -533,8 +533,8 @@
 		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_groza_arena = 1 \n
-			ammo_9x39_sp5 = 1 \n
+			wpn_val_arena = 1 \n
+			ammo_9x39_ap = 1 \n
 			device_torch
 		</supplies>
 		
@@ -559,7 +559,7 @@
 		<snd_config>characters_voice\human_01\dolg\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_groza_arena = 1 \n
+			wpn_val_arena = 1 \n
 			ammo_9x39_ap = 1 \n
 			device_torch
 		</supplies>
@@ -612,7 +612,7 @@
 		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_groza_arena = 1 \n
+			wpn_val_arena = 1 \n
 			ammo_9x39_ap = 1 \n
 			device_torch
 		</supplies>
@@ -664,7 +664,7 @@
 		<snd_config>characters_voice\human_03\dolg\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_groza_arena = 1 \n
+			wpn_val_arena = 1 \n
 			ammo_9x39_ap = 1 \n
 			device_torch
 		</supplies>
@@ -691,8 +691,8 @@
 		<snd_config>characters_voice\human_03\dolg\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_groza_arena \n
-			ammo_9x39_sp5 \n
+			wpn_val_arena \n
+			ammo_9x39_ap \n
 			device_torch
 		</supplies>
 		
@@ -722,7 +722,7 @@
 		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_fn2000_arena = 1 \n
+			wpn_sig550_arena = 1 \n
 			ammo_5.56x45_ap = 1 \n
 			device_torch
 		</supplies>
@@ -748,7 +748,7 @@
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_groza_arena = 1 \n
+			wpn_val_arena = 1 \n
 			ammo_9x39_ap = 1 \n
 			device_torch
 		</supplies>
@@ -774,7 +774,7 @@
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_groza_arena = 1 \n
+			wpn_val_arena = 1 \n
 			ammo_9x39_ap = 1 \n
 			device_torch
 		</supplies>
@@ -801,7 +801,7 @@
 		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_g36_arena = 1 \n
+			wpn_sig550_arena = 1 \n
 			ammo_5.56x45_ap = 1 \n
 			device_torch
 		</supplies>
@@ -827,7 +827,7 @@
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_spas12_arena = 1 \n
+			wpn_saiga12_arena = 1 \n
 			ammo_12x70_buck = 1 \n
 			device_torch
 		</supplies>
@@ -853,7 +853,7 @@
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_groza_arena = 1 \n
+			wpn_val_arena = 1 \n
 			ammo_9x39_ap = 1 \n
 			device_torch
 		</supplies>
@@ -878,7 +878,7 @@
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_groza_arena \n
+			wpn_val_arena \n
 			ammo_9x39_ap \n
 			device_torch
 		</supplies>
@@ -907,7 +907,7 @@
 		<crouch_type>1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_g36_arena \n
+			wpn_sig550_arena \n
 			ammo_5.56x45_ap \n
 			device_torch
 		</supplies>
@@ -932,7 +932,7 @@
 		<visual>actors\bandit\stalker_bandit_3</visual>
 		<supplies>
 			[spawn] \n
-			wpn_groza_arena \n
+			wpn_val_arena \n
 			ammo_9x39_ap \n
 			device_torch
 		</supplies>
@@ -957,7 +957,7 @@
 		<visual>actors\bandit\stalker_bandit_3</visual>
 		<supplies>
 			[spawn] \n
-			wpn_g36_arena \n
+			wpn_sig550_arena \n
 			ammo_5.56x45_ap \n
 			device_torch
 		</supplies>
@@ -982,7 +982,7 @@
 		<crouch_type>1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_g36_arena \n
+			wpn_sig550_arena \n
 			ammo_5.56x45_ap \n
 			device_torch
 		</supplies>
@@ -1007,7 +1007,7 @@
 		<crouch_type>1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_groza_arena \n
+			wpn_val_arena \n
 			ammo_9x39_ap \n
 			device_torch
 		</supplies>
@@ -1032,7 +1032,7 @@
 		<crouch_type>1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_groza_arena \n
+			wpn_val_arena \n
 			ammo_9x39_ap \n
 			device_torch
 		</supplies>
@@ -1063,7 +1063,7 @@
 		<supplies>
 			[spawn] \n
 			wpn_val = 1 \n
-			ammo_9x39_sp5 = 1 \n
+			ammo_9x39_ap = 1 \n
 			device_torch
 		</supplies>
 
@@ -1094,8 +1094,8 @@
 
 		<supplies>
 			[spawn] \n
-			wpn_groza = 1 \n
-			ammo_9x39_sp5 = 1 \n
+			wpn_vintorez = 1 \n
+			ammo_9x39_ap = 1 \n
 			device_torch
 		</supplies>
 
@@ -1126,7 +1126,7 @@
 
 		<supplies>
 			[spawn] \n
-			wpn_abakan = 1 \n
+			wpn_ak74 = 1 \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch
 		</supplies>
@@ -1222,7 +1222,7 @@
 
 		<supplies>
 			[spawn] \n
-			wpn_lr300 = 1 \n
+			wpn_m4 = 1 \n
 			ammo_5.56x45_ap = 1 \n
 			device_torch
 		</supplies>

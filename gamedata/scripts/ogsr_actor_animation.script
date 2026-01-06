@@ -43,13 +43,18 @@ function on_key_down(key, bind)
     if level.main_input_receiver()
     or not db.actor:alive()
     or not allow_animation() then return end
-
-	local torch = db.actor:item_in_slot( 9 )
-	if bind == key_bindings.kSWIPE_MASK then
+    
+    if bind == key_bindings.kSWIPE_MASK then
 		if get_actor_obj():IsDetectorActive() or get_con_string("r2_rain_drops_control") == "off" then return end
     	swipe_mask()
-	elseif torch and bind == key_bindings.kTORCH and not db.actor:active_item() then
+    	return
+	end
+
+	local torch = db.actor:item_in_slot( 9 )
+	
+	if torch and bind == key_bindings.kTORCH and not db.actor:active_item() then
     	torch_switcher()
+    	return
 	end
 end
 
@@ -93,13 +98,8 @@ end
 
 -- EMULATION TORCH SWITCH
 function torch_switcher()
-	local detector = db.actor:item_in_slot( 8 )
 	local torch_anm_sec = "anim_headlamp"
 	local anim = "anm_headflash"
-	if detector and get_actor_obj():IsDetectorActive() then
-		torch_anm_sec = "anim_headlamp_detector"
-		anim = "anm_" .. detector:section()
-	end
 	local torch_anm_time_1 = game.get_motion_length(torch_anm_sec, anim, 1)
 	animation_on()
 	torch_switch()
@@ -113,13 +113,8 @@ function torch_switcher()
 end
 
 function nv_switcher(functor_on_switch)
-	local detector = db.actor:item_in_slot( 8 )
 	local torch_anm_sec = "anim_headlamp"
 	local anim = "anm_headflash"
-	if detector and get_actor_obj():IsDetectorActive() then
-		torch_anm_sec = "anim_headlamp_detector"
-		anim = "anm_" .. detector:section()
-	end
 	local torch_anm_time_1 = game.get_motion_length(torch_anm_sec, anim, 1)
 	animation_on()
 	game.play_hud_motion(db.actor:active_item() and 1 or 2, torch_anm_sec, anim, false, 1)
@@ -157,104 +152,3 @@ function rain_drops_restart()
 	cmd("r2_rain_drops_control off")
 	dsh.timeout( 10, function() cmd("r2_rain_drops_control on") end )
 end
-
-
-
--------------------------------[Код для анимации подбора]------------------------------------
-local pickup_anm_sect = "anim_pickup"
-local pickup_anm_name = "anm_take"
-local blend_anm_name = "camera_effects\\weapon\\two_handed_weapon_effect.anm"
-local snd_pickup = xr_sound.get_safe_sound_object('weapons\\pickup')
-
-local pickup_anim_plays = false
-local force_crouch_subscribed = false
-
-local transfered = false --костыль чтоб при поднятии по нескольку раз подряд не срабатывали take/drop каллбеки предмета из-за нескольких вызовов transfer_item подряд для одного и того же предмета.
-local function multipickup(dist, radius)
-	local pos = device().cam_pos
-	local dir = device().cam_dir
-	pos = pos:add(dir:mul(dist))
-	level.iterate_nearest(pos, dist, function(obj)
-		if not transfered[obj:id()] and obj:get_inventory_item() and obj:actor_can_take() and pos:distance_to(obj:position()) <= radius then
-			db.actor:transfer_item(obj, db.actor)
-			transfered[obj:id()] = true
-		end
-	end)
-end
-
-local function take_delay(obj_id)
-	transfered = {}
-	local obj = level.object_by_id(obj_id)
-	if obj then
-		db.actor:transfer_item(obj, db.actor)
-		transfered[obj_id] = true
-	end
-	multipickup(1.5, 0.75)
-	multipickup(1, 0.5)
-	multipickup(0.5, 0.25)
-	transfered = false
-
-	snd_pickup:play(db.actor, 0, sound_object.s2d)
-	animation_off()
-	pickup_anim_plays = false
-end
-
-local function toggle_force_crouch()
-    if force_crouch_subscribed then
-        ogse_signals.get_mgr():unsubscribe( force_crouch_subscribed )
-        force_crouch_subscribed = false
-        get_actor_obj():release_action(key_bindings.kCROUCH)
-    else
-        get_actor_obj():press_action(key_bindings.kCROUCH)
-        force_crouch_subscribed = {
-            signal = "on_update", fun = function() get_actor_obj():hold_action(key_bindings.kCROUCH) end
-        }
-        ogse_signals.get_mgr():subscribe( force_crouch_subscribed )
-    end
-end
-
--- каллбек биндится в конфигах в секции [engine_callbacks]
-function on_item_before_pickup(obj)
-	if not pickup_anim_plays and allow_animation() then
-		--Костыль для ситуации когда в руках есть детектор и какой-то предмет в правой руке, анимации в правой руке колбасит. Поэтому детектор будем прятать. Решение так себе, но пока пусть так будет, потому что причина такого поведения не ясна.
-		local bugfix_detector = false
-		local det = db.actor:item_in_slot(8)
-		local act_it = db.actor:active_item()
-		local long_weapon = false
-		if act_it and get_actor_obj():IsDetectorActive() then
-			if det then
-				local act_it_slot = get_u32(act_it:section(), "slot", 0)
-				long_weapon = act_it_slot ~= 0 and act_it_slot ~= 1 and act_it_slot ~= 5
-				db.actor:move_to_ruck(det)
-				bugfix_detector = true
-			end
-		end
-
-		animation_on()
-		local pickup_anm_time = game.play_hud_motion(1, pickup_anm_sect, pickup_anm_name, true, 1.4)
-		game.play_hud_anm(blend_anm_name, 0, 1.4, 1, false)
-
-		local cam_pos = device().cam_pos
-		local cam_pos_y = cam_pos.y - 0.7
-		local obj_pos = obj:position()
-		if obj_pos.y <= cam_pos_y then
-			toggle_force_crouch()
-			dsh.timeout( pickup_anm_time - 100, toggle_force_crouch )
-		end
-
-		dsh.timeout( pickup_anm_time - 300, take_delay, obj:id() )
-
-		if bugfix_detector then --возвращаем детектор обратно
-			dsh.timeout(pickup_anm_time + 500, function()
-				db.actor:move_to_slot(det)
-				if not long_weapon then --если в руках большое оружие, не надо возвращать детектор, т.к. в этом случае оружие уберется. Детектор вообще запрещено с таким оружием юзать, но есть способ обойти этот запрет, поэтому такую ситуацию надо тут учитывать.
-					get_actor_obj():press_action(key_bindings.kWPN_8)
-				end
-			end)
-		end
-		pickup_anim_plays = true
-	end
-
-	return false
-end
-----------------------------------------------------------------------------------------------

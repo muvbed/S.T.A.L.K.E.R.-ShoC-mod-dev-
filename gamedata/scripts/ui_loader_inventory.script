@@ -68,17 +68,11 @@ function on_info(info_id)
 		end
 		if not rec_wnd.stat:IsShown() then 
 			rec_wnd:ShowWnd() 
-		end
-		
-		db.actor:hide_weapon()
+		end	
 	elseif info_id == "ui_inventory_hide" then
 		if rec_wnd then 
 			rec_wnd:DetachWnd() 
 		end
-
-		dsh.timeout(1, function() 
-			db.actor:restore_weapon()
-		end)
 	end
 end
 

@@ -25,11 +25,9 @@ remove_this_shit_immediately = { -- Таблица с секциями предметов, которые надо у
 	["gl_test_shell"] 					= true,
 	["wpn_fake_missile"] 				= true,
 	["gl_test_shell_ammo_vog-25"] 		= true,
-	["gl_test_shell_ammo_vog-25p"] 		= true,
 	["gl_test_shell_ammo_m209"] 		= true,
 	["gl_fake_missile"] 				= true,
 	["gl_fake_missile_ammo_vog-25"] 	= true,
-	["gl_fake_missile_ammo_vog-25p"] 	= true,
 	["gl_fake_missile_ammo_m209"] 		= true,
 	["device_pda"] 						= true,
 	["device_torch"] 					= true,
@@ -72,9 +70,7 @@ local forbidden_npc_names = { -- Таблица трупов, с которых запрещено снимать кос
 --' Предметы, которые нельзя сильно портить
 rare_item = {
 	["wpn_gauss"] 						= true,
-	["wpn_rpg7"] 						= true,
-	["wpn_rg-6"] 						= true,
-	["wpn_rg6_m1"] 						= true
+	["wpn_rpg7"] 						= true
 }
 
 --' Нижний/Верхний уровень износа редких стволов
@@ -244,7 +240,7 @@ function create_items(npc, section, number, rnd)
 	local obj
     for i=1,number do
   	--' Проверяем вероятность появить каждый объект в отдельности
-        if math.random(100) <= rnd then
+        if math.random(0, 100) <= rnd then
 			obj = alife():create(
             	section, 
             	npc:position(), 

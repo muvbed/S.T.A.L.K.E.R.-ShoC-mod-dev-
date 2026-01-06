@@ -527,7 +527,7 @@
     <texture id="ui_icons_PDA_tooltips_r"			x="815" y="320" width="8" height="8"/>		<!-- кпк: всплывающая подсказка right -->
     <texture id="ui_icons_PDA_tooltips_rb"			x="815" y="336" width="8" height="8"/>		<!-- кпк: всплывающая подсказка right bottom -->
     <texture id="ui_icons_PDA_tooltips_rt"			x="815" y="250" width="8" height="8"/>		<!-- кпк: всплывающая подсказка right top -->
-    <texture id="ui_icons_PDA_tooltips_t"			x="762" y="252" width="8" height="8"/>		<!-- кпк: всплывающая подсказка top -->
+    <texture id="ui_icons_PDA_tooltips_t"			x="762" y="250" width="8" height="8"/>		<!-- кпк: всплывающая подсказка top -->
     <texture id="ui_icons_PDA_dialog_b"				x="858" y="316" width="32" height="32"/>	<!-- кпк: диалоговое окно bottom -->
     <texture id="ui_icons_PDA_dialog_back"			x="858" y="284" width="32" height="32"/>	<!-- кпк: диалоговое окно body -->
     <texture id="ui_icons_PDA_dialog_l"				x="826" y="284" width="32" height="32"/>	<!-- кпк: диалоговое окно left -->

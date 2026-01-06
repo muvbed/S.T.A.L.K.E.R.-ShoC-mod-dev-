@@ -21,7 +21,8 @@ kolbasa_fake		= 1, prob = 0.10 \n
 conserva			= 1, prob = 0.15 \n
 vodka 				= 1, prob = 0.10 \n
 vodka_a 			= 1, prob = 0.10 \n
-energy_drink 		= 1, prob = 0.15 \n
+voda				= 1, prob = 0.10 \n
+energy_drink 		= 1, prob = 0.10 \n
 
 af_medusa			= 1, prob = 0.03 \n
 af_vyvert			= 1, prob = 0.03 \n

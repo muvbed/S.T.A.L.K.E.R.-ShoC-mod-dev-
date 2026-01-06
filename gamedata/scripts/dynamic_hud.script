@@ -7,7 +7,6 @@
 function attach(sm)
 	sm:subscribe({ signal = "on_spawn", fun = this.init })
 	sm:subscribe({ signal = "on_update", fun = this.update })
-	sm:subscribe({ signal = "on_actor_before_use", fun = this.before_use })
 end
 
 -- Ёффекты при сн€тии/надевании шлема
@@ -116,6 +115,7 @@ function check_item_able(section)
 		section == "kolbasa" or 
 		section == "conserva" or 
 		section == "vodka" or 
+		section == "voda" or 
 		section == "energy_drink"
 	  )
 	then
@@ -128,25 +128,5 @@ function check_item_able(section)
 		return false
 	else
 		return true
-	end
-end
-
--- «апрет на использование предмета
-function before_use(item)
-	if not check_item_able(item:section()) then
-		item:zero_effects()
-	
-		local item_cond = item:condition()
-		local new_sobj = alife():create( 
-			item:section(), 
-			db.actor:position(), 
-			db.actor:level_vertex_id(), 
-			db.actor:game_vertex_id(), 
-			db.actor:id() 
-		)
-		
-		level.client_spawn_manager():add( new_sobj.id, -1, function(id, obj)
-			obj:set_condition( item_cond )
-		end )
 	end
 end

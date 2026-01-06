@@ -218,4 +218,7 @@
     <texture id="ui_btn_sniper_e"						x="0" y="0" width="1" height="1"/>
     <texture id="ui_btn_heavy_e"						x="0" y="0" width="1" height="1"/>
     <texture id="ui_btn_assault_e"						x="0" y="0" width="1" height="1"/>
+    
+    <texture id="ui_hud_shkala_anim" 					x="135" y="430" width="200" height="20" />
+    <texture id="ui_hud_shk_anim" 						x="135" y="450" width="200" height="20" />
 </ui_texture>

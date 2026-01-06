@@ -1,0 +1,157 @@
+-- created by wepl
+-- contact (discord): wepl#1549
+
+-- UPD Muvbed (05.01.2026)
+
+local monsters_head_bones = {
+    { sect = "sucker",             bones = { 14, 15, 16 },           								},
+    { sect = "boar",               bones = { 20, 22, 24, 26 },                  					},
+    { sect = "flesh",              bones = { 15 },                                          		},
+    { sect = "burer",              bones = { 13, 14 },                                      		},
+    { sect = "controller",         bones = { 14, 15, 16, 17, 18, 20, 21 },                          },
+    { sect = "pseudodog",          bones = { 15, 16, 17, 18 },                                      },
+    { sect = "psy_dog",            bones = { 15, 16, 17, 18 },                                      },
+    { sect = "dog",                bones = { 15, 16 },                                              },
+    { sect = "gigant",             bones = { 4, 5 },                                                },
+    { sect = "himera",             bones = { 30, 31 },                          					},
+    { sect = "snork",              bones = { 4, 5 },                                                },
+    { sect = "tushkan",            bones = { 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36 },      },
+    { sect = "zombi",              bones = { 12, 13, 14, 15, 16 },                        			},
+    { sect = "polter",             bones = { 4, 5, 6, 7, 8, 9 },                                    },
+    { sect = "cat",                bones = { 13, 14, 15, 16, 17, 18 },                              }
+}
+
+function attach(sm) -- для менеджера сигналов
+	sm:subscribe({signal = "on_actor_before_hit", fun = this.actor_on_before_hit})
+	sm:subscribe({signal = "on_npc_before_hit", fun = this.npc_on_before_hit})
+	sm:subscribe({signal = "on_monster_before_hit", fun = this.monster_on_before_hit})
+end
+
+function get_hit_type( bone_id )
+	return (bone_id >= 13 and bone_id <= 17) and "head" or "body"
+end
+
+function get_hit_effect( obj, type )
+  local vis = obj:get_visual_name()
+  
+  if string.find( vis, "exo" ) then
+    return "exo"
+  end
+  
+  if type == "head" then
+  	if vis == "soldier_antigas" 
+     or vis == "soldier_spetsnaz"
+     or string.find( vis, "stalker_militari" ) 
+    then
+      return "helmet"
+	elseif string.find( vis, "antigas" ) 
+	 or string.find( vis, "hood_9" ) 
+	 or string.find( vis, "bandit_8" ) 
+	then
+	  return "gasmask"
+	elseif string.find( vis, "nauchniy" ) 
+	 or string.find( vis, "ecolog" ) 
+	then
+	  return "glass"
+	end
+  else
+  	if vis == "soldier_antigas" 
+     or vis == "soldier_spetsnaz"
+     or vis == "soldier_mask"
+     or string.find( vis, "stalker_militari" ) 
+    then
+  	  return "heavy"
+  	elseif string.find( vis, "nauchniy" )
+  	 or vis == "stalker_ecolog_military"
+  	then
+  	  return "medium"
+  	elseif string.find( vis, "green" )
+  	 or string.find( vis, "bandit" )
+  	 or string.find( vis, "ecolog" )
+  	then
+  	  return "none"
+    elseif string.find( vis, "stalker" ) 
+	 or string.find( vis, "soldier" )
+	then
+	  return "light"
+	end
+  end
+  
+  return "none"
+end
+
+function actor_on_before_hit( obj, hit )	
+	if not ( obj and hit and hit.hit_type and hit.power and hit.bone_id ) then return end
+	if hit.power == 0 then return end
+	if not ( hit.hit_type == 5 or hit.hit_type == 6 or hit.hit_type == 7 or hit.hit_type == 8 ) then return end
+	
+	local ply = db.actor
+	if not ( ply and ply:alive() ) then return end
+	
+	local hitType = get_hit_type(hit.bone_id)
+	local hitEffect	= get_hit_effect(obj, hitType)
+	
+	if hitType == "head" then
+		local helmet = db.actor:item_in_slot(10)
+	
+		if not helmet then
+			hitEffect = "none"
+		elseif hitEffect == "none" then
+			hitEffect = "gasmask"
+		end
+	end
+	
+	local hitSound = xr_sound.get_safe_sound_object( "wepl\\hit_effect\\" .. hitType .. "\\hit_" .. hitEffect .. "_" .. math.random(20) )
+	
+	if hitSound then
+		hitSound:play_no_feedback( ply, sound_object.s2d, 0, vector(), 1.0 )
+	end	
+end
+
+function npc_on_before_hit( obj, hit )
+	if not ( obj and hit and hit.hit_type and hit.power and hit.bone_id ) then return end
+	if hit.power == 0 then return end
+	if not ( hit.hit_type == 5 or hit.hit_type == 6 or hit.hit_type == 7 or hit.hit_type == 8 ) then return end
+	
+	local ply = db.actor
+	if not ( ply and ply:alive() ) then return end
+
+	local hitType = get_hit_type(hit.bone_id)
+	local hitEffect	= get_hit_effect(obj, hitType)
+	
+	local hitSound = xr_sound.get_safe_sound_object( "wepl\\hit_effect\\" .. hitType .. "\\hit_" .. hitEffect .. "_" .. math.random(20) )
+	
+	if hitSound then
+		hitSound:play_at_pos( ply, obj:position() )
+	end
+end
+
+function monster_on_before_hit( obj, hit )
+	if not ( obj and hit and hit.hit_type and hit.power and hit.bone_id ) then return end
+	if hit.power == 0 then return end
+	if not ( hit.hit_type == 5 or hit.hit_type == 6 or hit.hit_type == 7 or hit.hit_type == 8 ) then return end
+	
+	local ply = db.actor
+	if not ( ply and ply:alive() ) then return end
+
+	local hitType = "body"
+	local sect = obj:section()
+	
+	for i, v in ipairs(monsters_head_bones) do
+        if string.find(sect, v.sect) then
+            for ii, vv in ipairs(v.bones) do
+                if vv == hit.bone_id then
+                    hitType = "head"
+                    break
+                end
+            end
+            break
+        end
+    end
+	
+	local hitSound = xr_sound.get_safe_sound_object( "wepl\\hit_effect\\" .. hitType .. "\\hit_" .. "none" .. "_" .. math.random(20) )
+	
+	if hitSound then
+		hitSound:play_at_pos( ply, obj:position() )
+	end
+end

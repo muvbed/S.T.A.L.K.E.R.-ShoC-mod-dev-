@@ -91,16 +91,10 @@ function on_info(info_id)
 		if not rec_wnd.stat:IsShown() then 
 			rec_wnd:ShowWnd() 
 		end
-		
-		db.actor:hide_weapon()
 	elseif info_id == "ui_car_body_hide" then
 		if rec_wnd then 
 			rec_wnd:DetachWnd() 
 		end
-
-		dsh.timeout(1, function() 
-			db.actor:restore_weapon()
-		end)
 	end
 end
 

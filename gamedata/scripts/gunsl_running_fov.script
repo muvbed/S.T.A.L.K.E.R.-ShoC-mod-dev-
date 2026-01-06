@@ -1,0 +1,32 @@
+local running_fov = 0;
+function running_fov_func()
+ local is_running = get_actor_obj():is_actor_sprinting()	
+  if is_running then
+    if running_fov == 0 then
+      running_fov = db.actor:get_camera_fov()
+      db.actor:set_camera_fov( running_fov + 3 )
+	  amk.save_variable("rnng_fov", running_fov)
+    end
+  else
+    if running_fov > 0 then
+      db.actor:set_camera_fov( running_fov )
+      running_fov = 0
+    end
+  end
+end
+
+function on_first_update()
+  local rnng_fov = amk.load_variable("rnng_fov", 0)
+  
+  if rnng_fov ~= 0 then
+  	db.actor:set_camera_fov( rnng_fov )
+  end
+end
+
+
+
+
+function attach( sm )
+   sm:subscribe({ signal = "on_update", fun = this.running_fov_func })
+   sm:subscribe({ signal = "on_first_update", fun = this.on_first_update })
+end

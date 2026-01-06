@@ -4,7 +4,7 @@ active = heli_move@idle
 [heli_move@idle]
 path_move = heli_idle_move
 engine_sound = false
-combat_use_rocket = true
+combat_use_rocket = false
 combat_use_mgun = true
 on_info = {+esc_heli_go -blowout} heli_move@fly
 on_info2 = {+blowout} heli_move@sleep
@@ -13,7 +13,7 @@ combat_safe_altitude = -80
 
 [heli_move@fly]
 path_move = heli_fly
-combat_use_rocket = true
+combat_use_rocket = false
 combat_use_mgun = true
 on_signal = heli_radio| heli_move@fight %+esc_heli_direct%
 on_signal2 = fly_end| heli_move@patrol
@@ -23,7 +23,7 @@ combat_safe_altitude = -80
 
 [heli_move@fight]
 path_move = heli_fly
-combat_use_rocket = true
+combat_use_rocket = false
 combat_use_mgun = true
 on_signal = fly_end| heli_move@patrol
 on_info = {+blowout} heli_move@sleep
@@ -47,7 +47,7 @@ combat_safe_altitude = -80
 [heli_move@blockpost_assist]
 path_move = esc_heli_blockpost_assist
 combat_enemy = area(-157,-250,100,all), area(-157,-350,150,all)
-combat_use_rocket = true
+combat_use_rocket = false
 combat_use_mgun = true
 on_game_timer = 30000 | heli_move@fight
 on_info = {+blowout} heli_move@patrol

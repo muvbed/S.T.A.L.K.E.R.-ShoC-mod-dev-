@@ -2,11 +2,11 @@
 -- Общие функции
 -- ----------------------------------------------------------------------------------------------------
 function pda_on()
-	--cmd("g_3d_pda", "on")
+	cmd("g_3d_pda", "on")
 end
 
 function pda_off()
-	--cmd("g_3d_pda", "off")
+	cmd("g_3d_pda", "off")
 end
 
 function disable_ui_elements(actor, npc, p)
@@ -205,7 +205,6 @@ function monster_berserk(actor, npc)
 end
 
 function activate_bolt(actor, npc)
-	db.actor:activate_slot(5)
 end
 
 --[[
@@ -1001,7 +1000,7 @@ function bar_arena_teleport ( actor, npc)
 		table.insert(spawn_items, "killer_outfit")	
 		table.insert(spawn_items, "wpn_knife")		
 	elseif	has_alife_info("bar_arena_fight_3") then
-		table.insert(spawn_items, "wpn_toz34")
+		table.insert(spawn_items, "wpn_bm16_full")
 		table.insert(spawn_items, "ammo_12x70_buck")
 		table.insert(spawn_items, "ammo_12x76_zhekan")
 		table.insert(spawn_items, "bandit_outfit")
@@ -1013,7 +1012,7 @@ function bar_arena_teleport ( actor, npc)
 		table.insert(spawn_items, "soldier_outfit")
 		table.insert(spawn_items, "wpn_knife")
 	elseif	has_alife_info("bar_arena_fight_5") then	
-		table.insert(spawn_items, "wpn_l85")
+		table.insert(spawn_items, "wpn_sig550")
 		table.insert(spawn_items, "ammo_5.56x45_ss190")
 		table.insert(spawn_items, "ammo_5.56x45_ap")
 		table.insert(spawn_items, "bandage")
@@ -1022,24 +1021,13 @@ function bar_arena_teleport ( actor, npc)
 		table.insert(spawn_items, "svoboda_light_outfit")
 		table.insert(spawn_items, "wpn_knife")
 	elseif	has_alife_info("bar_arena_fight_6") then
-		table.insert(spawn_items, "wpn_abakan")
+		table.insert(spawn_items, "wpn_ak74")
 		table.insert(spawn_items, "ammo_5.45x39_fmj")
 		table.insert(spawn_items, "ammo_5.45x39_ap")
 		table.insert(spawn_items, "dolg_outfit")
 		table.insert(spawn_items, "wpn_knife")
-	elseif	has_alife_info("bar_arena_fight_7") then
-		table.insert(spawn_items, "grenade_f1")
-		table.insert(spawn_items, "grenade_rgd5")
-		table.insert(spawn_items, "grenade_rgd5")
-		table.insert(spawn_items, "grenade_rgd5")
-		table.insert(spawn_items, "bandage")
-		table.insert(spawn_items, "bandage")
-		table.insert(spawn_items, "bandage")
-		table.insert(spawn_items, "medkit")
-		table.insert(spawn_items, "medkit")
-		table.insert(spawn_items, "wpn_knife")
 	elseif	has_alife_info("bar_arena_fight_8") then
-		table.insert(spawn_items, "wpn_g36")
+		table.insert(spawn_items, "wpn_sig550")
 		table.insert(spawn_items, "ammo_5.56x45_ss190")
 		table.insert(spawn_items, "ammo_5.56x45_ap")
 		table.insert(spawn_items, "exo_outfit")
@@ -1059,11 +1047,6 @@ function bar_arena_teleport ( actor, npc)
 end
 
 function bar_arena_weapon_slot ()
-	if	has_alife_info("bar_arena_fight_1") then  
-		db.actor:activate_slot(1)
-	else 
-		db.actor:activate_slot(2)
-	end
 end
 
 function bar_arena_teleport_2 ( actor, npc)		
@@ -1419,10 +1402,6 @@ function agr_cam_effect ()
 end
 
 function agr_weapon(actor, npc)
-	local actor = db.actor	
-	if 	actor ~= nil then 
-		actor:activate_slot(2)
-	end
 end
 
 function agr_hold_enemy(actor, npc)

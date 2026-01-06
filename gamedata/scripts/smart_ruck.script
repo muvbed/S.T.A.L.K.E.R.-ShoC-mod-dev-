@@ -9,16 +9,29 @@ function attach( sm )
   sm:subscribe({ signal = "on_use",          		fun = this.use_item                 })
   sm:subscribe({ signal = "on_use_box",				fun = this.use_ruck                 })
   sm:subscribe({ signal = "on_update",        		fun = this.update              		})
+  sm:subscribe({ signal = "actor_on_land",			fun = this.on_land                  })
+  sm:subscribe({ signal = "actor_on_jump",        	fun = this.on_jump              	})
 end
 
 local inv_ruck_id = nil
 local current_ruck = nil
+local is_landed = true
 
 local mark_for_belt = {}
 local mark_for_slot = {}
 local mark_for_drop = {}
 
+function on_land()
+	is_landed = true
+end
+
+function on_jump()
+	is_landed = false
+end
+
 function on_key()
+	if not is_landed then return end
+	
 	if ogse.load_var("ruck_dropped", 0) == 0 then
 		local ruck = alife():create("active_ruck", db.actor:position(), db.actor:level_vertex_id(), db.actor:game_vertex_id()) 	
 		alife():use_ai_locations(ruck, false)

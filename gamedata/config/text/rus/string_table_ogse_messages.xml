@@ -1,3 +1,21 @@
+	<string id="ogse_healing_first_intoxication_warning_text">
+		<text>Ёффективность аптечек снижена!</text>
+	</string>
+	<string id="ogse_healing_second_intoxication_warning_text">
+		<text>Ёффективность аптечек снижена до среднего уровн€!</text>
+	</string>
+	<string id="ogse_healing_third_intoxication_warning_text">
+		<text>Ёффективность аптечек снижена до критического уровн€!</text>
+	</string>
+	<string id="ogse_healing_forth_intoxication_warning_text">
+		<text>»нтоксикаци€ превышает критический уровень!</text>
+	</string>
+	<string id="ogse_healing_text_using_voda_text">
+		<text>Ёффективность аптечки восстановлена полностью.</text>
+	</string>
+	<string id="ogse_healing_text_already_using_text">
+		<text>Ќевозможно повторно использовать аптечку!</text>
+	</string>
 	<string id="ogse_sleep_mgr_warn_1_text">
 	    <text>¬ы не можете спать во врем€ ¬ыброса</text>
 	</string>

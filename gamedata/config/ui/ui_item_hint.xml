@@ -37,6 +37,15 @@
 			</background>
 		</condition>
 	</description>
+	
+	<padding x="0" y="0" width="290" height="4" complex_mode="1">
+	</padding>
+	
+	<padding_line x="0" y="0" width="290" height="8" complex_mode="1">
+		<line x="0" y="4">
+			<texture color="white_2">ui_item_line</texture>
+		</line>
+	</padding_line>
 
 	<properties x="0" y="0" width="290" height="19" complex_mode="1">
 		<line x="0" y="4">

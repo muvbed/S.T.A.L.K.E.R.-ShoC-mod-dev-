@@ -340,7 +340,7 @@ function transfer_items_from_box(box_sid)
 end
 
 function is_developer_mode()
-	return true
+	return false
 end
 
 function on_spawn()
@@ -372,7 +372,7 @@ function on_spawn()
         for _, k in ipairs(
             {
             	"save",
-                "time_factor",
+                --"time_factor",
                 "ph_timefactor",
                 "hud_info",
                 "g_god",

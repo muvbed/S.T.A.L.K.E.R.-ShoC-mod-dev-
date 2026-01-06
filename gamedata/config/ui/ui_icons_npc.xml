@@ -17,7 +17,6 @@
     <texture id="npc_icon_ecolog_outfit"						x="896" y="384" width="128" height="320" />
     <texture id="npc_icon_protection_outfit"					x="768" y="384" width="128" height="320" />
     <texture id="npc_icon_stalker_killer_exoskeleton"			x="128" y="704" width="128" height="320" />
-	<texture id="npc_icon_broken_exo_outfit"					x="1408" y="384" width="128" height="320" />
 	<texture id="npc_icon_monolit_exo_outfit"					x="1536" y="384" width="128" height="320" />
 	<texture id="npc_icon_dolg_exo_outfit"						x="1664" y="384" width="128" height="320" />
 	<texture id="npc_icon_svoboda_exo_outfit"					x="1792" y="384" width="128" height="320" />

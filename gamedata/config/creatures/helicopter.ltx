@@ -109,14 +109,14 @@ immunities_sect				= sect_heli_immunities
 
 [sect_heli_immunities]
 burn_immunity				= 0.1	
-strike_immunity				= 1.0
-shock_immunity				= 0.1
-wound_immunity				= 0.0
+strike_immunity				= 0.1
+shock_immunity				= 1.0
+wound_immunity				= 0.1
 radiation_immunity			= 0.0
 telepatic_immunity			= 0.0
 chemical_burn_immunity		= 0.0
 fire_wound_immunity			= 0.001
-explosion_immunity			= 0.2
+explosion_immunity			= 0.5
 
 [helicopter_missile]
 GroupControlSection			= spawn_group
@@ -250,36 +250,3 @@ trail_light_color       	= 0.7,0.6,0.3
 trail_light_range       	= 20.0
 engine_particles        	= weapons\rpg_trail_01
 force_explode_time			= 10000
-
-[ammo_12x76_zhekan_heli]:identity_immunities
-GroupControlSection			= spawn_group
-discovery_dependency 		= 
-$spawn						= "weapons\ammo\ammo_12x76_zhekan_heli" ; option for Level Editor
-class						= AMMO
-cform                   	= skeleton
-visual                  	= weapons\ammo\ammo_12x76_zhekan.ogf
-description					= enc_weapons1_ammo_ammo-12x76-zhekan
-$prefetch 					= 64
-
-cost						= 216
-box_size					= 12
-
-inv_name					= ammo-12x76-zhekan
-inv_name_short				= ammo-12x76-zhekan_s
-inv_weight					= .6
-
-inv_grid_width				= 2
-inv_grid_height				= 1
-inv_grid_x					= 11
-inv_grid_y					= 10
-
-k_dist						= 1
-k_disp						= 12.7
-k_hit						= 11.9
-k_impulse					= 1
-k_pierce					= 1.5
-impair						= 1.15
-buck_shot					= 4
-tracer						= off
-wm_size         			= 0.127
-explosive					= off

@@ -1,0 +1,127 @@
+
+[wpn_addon_scope]:identity_immunities
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\addons\scope" ; option for Level Editor
+class			= WP_SCOPE
+cform           = skeleton
+visual          = weapons\upgrade\wpn_scope
+description		= gunsl_addon_scope_pso1m2_descr
+cost			= 2000
+$prefetch 		= 32
+
+
+holder_range_modifier	= 1.2
+holder_fov_modifier		= 1.0
+
+inv_name		= gunsl_addon_scope_pso1m2
+inv_name_short	= gunsl_addon_scope_pso1m2
+inv_weight		= .62
+
+inv_grid_width		= 2
+inv_grid_height		= 1
+inv_grid_x			= 4
+inv_grid_y			= 22
+
+scope_texture		= crosshair2d\crosshairs_ui_pso1sn
+
+scope_zoom_factor	= 20
+scope_zoom_factor_descr	= 6
+
+scope_inertion_factor   = 8
+
+scope_lense_fov_factor	= 15
+scope_dynamic_zoom 	= true
+scope_lense_hud_fov = 0.25
+
+
+[wpn_addon_scope_cobra]:identity_immunities
+GroupControlSection	= spawn_group
+discovery_dependency = 
+cform           = skeleton
+$prefetch 		= 32
+$spawn			= "weapons\addons\scope_cobra" ; option for Level Editor
+class			= WP_SCOPE
+visual          = weapons\upgrade\wpn_scope_cobra
+description		= gunsl_addon_scope_cobra_descr
+cost			= 1300
+
+holder_range_modifier	= 1.2
+holder_fov_modifier		= 1.0
+
+inv_name		= gunsl_addon_scope_cobra
+inv_name_short	        = gunsl_addon_scope_cobra
+inv_weight		= .41
+
+inv_grid_width		= 2
+inv_grid_height		= 1
+inv_grid_x		= 4
+inv_grid_y		= 23
+scope_zoom_factor_descr	= 1.0
+scope_zoom_factor	= 1.2
+scope_zoom_hud_fov = 0.55
+
+
+[wpn_addon_scope_eotech]:identity_immunities
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\addons\scope_susat" ; option for Level Editor
+class			= WP_SCOPE
+cform           = skeleton
+visual          = weapons\upgrade\wpn_scope_eotech
+description		= gunsl_addon_scope_eotech_descr
+cost			= 2600
+
+;$prefetch 		= 64
+
+
+holder_range_modifier	= 1.2
+holder_fov_modifier		= 1.0
+
+inv_name		= gunsl_addon_scope_eotech
+inv_name_short	        = gunsl_addon_scope_eotech
+inv_weight		= .255
+
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x		= 6
+inv_grid_y		= 22
+scope_zoom_factor	= 1.2
+scope_zoom_factor_descr	= 1.0
+scope_zoom_hud_fov = 0.55
+
+[wpn_addon_scope_elcan]:identity_immunities
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\addons\scope_susat" ; option for Level Editor
+class			= WP_SCOPE
+cform           = skeleton
+visual          = weapons\upgrade\wpn_scope_elcan
+description		= gunsl_addon_scope_elcan_descr
+cost			= 4000
+
+;$prefetch 		= 64
+
+
+holder_range_modifier	= 1.2
+holder_fov_modifier		= 1.0
+
+inv_name		= gunsl_addon_scope_elcan
+inv_name_short	        = gunsl_addon_scope_elcan
+inv_weight		= .66
+
+
+inv_grid_width		= 2
+inv_grid_height		= 1
+inv_grid_x			= 6
+inv_grid_y			= 23
+scope_texture		= crosshair2d\crosshairs_ui_elcan
+scope_zoom_factor	= 20
+scope_zoom_factor_descr	= 6.0
+
+scope_inertion_factor   = 8
+
+scope_lense_fov_factor	= 15
+scope_dynamic_zoom 	= true
+scope_lense_hud_fov = 0.48

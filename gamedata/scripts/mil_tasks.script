@@ -56,19 +56,15 @@ end
 
 -- test !!!
 function mil_test_task_rg6_have ()
-    return db.actor:object ("wpn_rg-6") ~= nil
-end
-
-function mil_test_task_l85_have ()
-    return db.actor:object ("wpn_l85") ~= nil
-end    
+    return db.actor:object ("wpn_pk") ~= nil
+end  
 
 function mil_test_task_lr300_have ()
-    return db.actor:object ("wpn_lr300") ~= nil
+    return db.actor:object ("wpn_m4") ~= nil
 end    
 
 function mil_task_rg6_have(task_id, subtask)
-	local obj = db.actor:object("wpn_rg-6")
+	local obj = db.actor:object("wpn_pk")
     if obj ~= nil then
 		return true
 	end

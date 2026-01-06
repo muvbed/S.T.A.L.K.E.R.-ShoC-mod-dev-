@@ -50,7 +50,8 @@ local function eat_qs_item(slot)
 	if 
 	  item_in_slot 
 	  and item_in_slot:section()
-	  and dynamic_hud.check_item_able(item_in_slot:section()) 
+	  and dynamic_hud.check_item_able(item_in_slot:section())
+	  and ogse_healing.can_use_medkit(item_in_slot) 
 	then
 		db.actor:eat(item_in_slot)
 	end				

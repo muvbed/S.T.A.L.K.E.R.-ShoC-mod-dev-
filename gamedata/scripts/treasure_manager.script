@@ -2,16 +2,14 @@
 
 
 function attach( sm )
-	sm:subscribe({ signal = "on_take_from_box", fun = this.on_take_from_box })
+	sm:subscribe({ signal = "on_use_box", fun = this.on_use_obj })
 	sm:subscribe({ signal = "on_save", fun = this.save })
 	sm:subscribe({ signal = "on_load", fun = this.load })
 	sm:subscribe({ signal = "on_npc_use", fun = this.on_npc_use })
 end
 
-function on_take_from_box( box )
-	if box:is_inv_box_empty() then
-		get_treasure_manager():treasure_empty( box, box:story_id() )
-	end
+function on_use_obj( obj, who )
+	get_treasure_manager():treasure_empty( obj, obj:story_id() )
 end
 
 function on_npc_use( obj )
