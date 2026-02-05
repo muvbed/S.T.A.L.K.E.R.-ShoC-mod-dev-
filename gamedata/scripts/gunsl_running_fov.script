@@ -4,7 +4,7 @@ function running_fov_func()
   if is_running then
     if running_fov == 0 then
       running_fov = db.actor:get_camera_fov()
-      db.actor:set_camera_fov( running_fov + 3 )
+      db.actor:set_camera_fov( running_fov - 3 )
 	  amk.save_variable("rnng_fov", running_fov)
     end
   else

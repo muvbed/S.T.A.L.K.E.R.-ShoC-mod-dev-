@@ -1,4 +1,4 @@
--- From NS OGSR. Refactor by Muvbed: 02.10.24
+-- From NS OGSR. Refactored by Muvbed: 02.10.24
 
 function attach(sm) -- для менеджера сигналов
     sm:subscribe({signal = "on_update", fun = this.on_update})

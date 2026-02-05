@@ -7,7 +7,6 @@ $prefetch 					= 8
 scheduled            		= off              ; option for ALife Simulator
 cform                    	= skeleton
 class                    	= WP_PM
-crosshair_class = pistol
 min_radius               	= 5
 max_radius               	= 30
 description					= gunsl_wpn_colt1911_descr
@@ -20,7 +19,7 @@ holder_range_modifier	= 1.0               ; во сколько раз увеличивается eye_ran
 holder_fov_modifier		= 1.0              ; во сколько раз увеличивается eye_fov
 ;-----------------------------------------------------------------------------------
 
-hidden_bones = barrel_silencer, barrel_compensator, sight
+hidden_bones = barrel, barrel_compensator, sight
 cost					 	= 1300
 
 ammo_limit		 			= 120
@@ -143,7 +142,7 @@ ph_mass			 			= 1
 
 ;addons
 scope_status				= 0
-silencer_status				= 0
+silencer_status				= 2
 grenade_launcher_status		= 0
 
 zoom_enabled				= true
@@ -159,37 +158,19 @@ snd_reload		= weapons\m1911\colt1911_reload
 snd_reload_empty        = weapons\m1911\colt1911_reload_full
 snd_reload_jammed       = weapons\glock17\glock17_revival
 snd_reload_jammed_last  = weapons\glock17\glock17_revival_last
-snd_changecartridgetype = weapons\m1911\colt1911_reload
 snd_close		= $silent
-snd_jamned              = weapons\glock17\glock17_revival
-snd_jamned_last         = weapons\glock17\glock17_revival_last
-snd_prepare_detector    = weapons\detector_prepare
-snd_finish_detector     = weapons\pistol_hand_draw
 snd_aim_start           = weapons\aimin\aim_in_10, 0.3
 snd_aim_end             = weapons\aimout\aim_out_10, 0.3
-snd_sprint_start        = weapons\detector_prepare, 0.8
-snd_sprint_end          = weapons\pistol_sprint_end, 0.4
-snd_attach_sil		= weapons\m1911\colt1911_reload
-snd_detach_sil		= weapons\m1911\colt1911_reload
-snd_fakeshoot_first	= weapons\pistol_empty
 snd_fire_modes	= weapons\m1911\colt1911_reload
-snd_reload_jammed_detector               = weapons\glock17\glock17_revival_det
-snd_reload_jammed_last_detector          = weapons\glock17\glock17_revival_det
-snd_light_misfire                        = weapons\pistol_light_misfire
-snd_headlamp_on         = weapons\headflash_on
-snd_headlamp_off        = weapons\headflash_off
-snd_nv_on               = weapons\nv_act
-snd_nv_off              = weapons\nv_deact
-
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; silencer
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-silencer_name  				= wpn_addon_silencer		; section name for the attachable silencer
-silencer_x 				= 69						; offset in inventory icon
-silencer_y 				= -15				
+silencer_name  				= wpn_colt_p220_silencer		; section name for the attachable silencer
+silencer_x 				= 65						; offset in inventory icon
+silencer_y 				= 12				
 
 ;params when silencer is attached 
 ;similar to corresponding params without prefix silencer_

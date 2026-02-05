@@ -3,26 +3,6 @@ zoom_hide_crosshair        = true
 attach_place_idx           = 0
 item_visual                = dynamics\weapons\wpn_saiga12\wpn_saiga12_hud.ogf
 
-zoom_dof_near = 0.25
-zoom_dof_focus = 0.5
- ;аналогичный параметр работает и с прицелами
-
-;движение вперед
-hud_move_forward_offset_pos = 0,0,0.0
-hud_move_forward_offset_rot = 0,0,0
-
-hud_move_forward_offset_pos_16x9 = 0,0,0.0
-hud_move_forward_offset_rot_16x9 = 0,0,0
-
-inertion_pitch_offset_r = -0.008
-inertion_pitch_offset_n = -0.006
-inertion_pitch_offset_d = -0.001
-inertion_origin_offset = -0.06
-
-inertion_aim_origin_offset = 0.015
-inertion_aim_speed = 10
-
-
 hands_position				= 0.02,-0.02,0.02
 hands_orientation			= 0.0,0.0,0.0
 
@@ -37,12 +17,6 @@ aim_hud_offset_rot = -0.0030000,0.000000,0.000000
 
 aim_hud_offset_pos_16x9 = -0.001,0.042000,0.0
 aim_hud_offset_rot_16x9 = -0.0030000,0.000000,0.000000
-
-aim_hud_offset_alt_pos = -0.001,0.042000,0.0
-aim_hud_offset_alt_rot = -0.0030000,0.000000,0.000000
-
-aim_hud_offset_alt_pos_16x9 = -0.001,0.042000,0.0
-aim_hud_offset_alt_rot_16x9 = -0.0030000,0.000000,0.000000
 
 gl_hud_offset_pos               = 0,0,0;-0.053000,-0.059000,0.000000
 gl_hud_offset_rot               = 0,0,0;-0.145000,0.000000,0.000000
@@ -63,24 +37,12 @@ fire_bone                       = wpn_body
 fire_point2                     = 0.0,0.005,1.108
 fire_bone2                      = wpn_body
 
-
 disable_bore = true                                            ;отключение анимации скуки
 
 mix_shoot_after_idle = true                                    ;микс первого выстрела с анимациями idle
 mix_shoot_after_shoot_in_queue = false                         ;микс между серией выстрелов
 
-use_advanced_ammo_bones = true
-ammo_params_toggle_shooting = true			; запретить обновлять косточки при выстрелах; для двустволок оставить false, для дробашей и остального выставить true
-ammo_params_changing_when_reload_starts = false 	; когда обновлять кости при перезарядке: если сразу после старта анимы, поставить true, если в середине, вместе со счетчиком - false (второе для дробашей)
-ammo_params_use_last_cartridge_type = true		; будет ли использоваться тип последнего патрона (true) или тип, которым оружие заряжено; ставим true и не паримся
-ammo_params_section_0 = wpn_saiga_ammo_bones_blue
-ammo_params_section_1 = wpn_saiga_ammo_bones_red
-
-minus_ammo_in_usual_reloads = true ; Хак для неправильно заанимированных моделей - из за того, что в анимациях они не учитывают наличие патрона в патроннике, нам надо отображать в магазине на один патрон МЕНЬШЕ!
-minus_ammo_in_bore = true          ; В противном случае, при наличии на счетчике одного патрона, у нас будет отображаться патрон в магазине при перезарядке, хотя по факту вытаскиваемый магазин должен быть пуст
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 ;Доставание///////////////////////////////////////////////////
 anm_show                   = aks74u_draw
@@ -282,7 +244,6 @@ anm_reload_empty                     = aks74u_reload_full
 lock_time_end_anm_reload_empty = 1.2
 lock_time_start_anm_reload_empty = 1.2
 
-
 anm_reload_jammed                    = aks74u_revival
 anm_reload_jammed_last               = aks74u_revival
 
@@ -293,7 +254,6 @@ lock_time_end_anm_reload_ammochange = 1.45
 anm_reload_empty_ammochange          = aks74u_reload_full
 lock_time_start_anm_reload_empty_ammochange = 1.2
 lock_time_end_anm_reload_empty_ammochange = 2.45
-
 
 ;Смена режима огня//////////////////////////////////////////////////////////////////////////
 use_firemode_change_anim = true
@@ -326,60 +286,6 @@ lock_time_anm_unload_mag_jammed = 0.8
 anm_unload_mag_jammed                        = aks74u_draw  
 lock_time_anm_unload_mag_empty = 0.8
 anm_unload_mag_empty                         = aks74u_draw
-
-;Включение ЛЦУ//////////////////////////////////////////////////////////////////////////
-anm_laser_on = aks74u_lam
-lock_time_start_anm_laser_on = 0.45
-lock_time_end_anm_laser_on = 0.65
-
-anm_laser_on_empty = aks74u_lam
-lock_time_start_anm_laser_on_empty = 0.45
-lock_time_end_anm_laser_on_empty = 0.65
-
-anm_laser_on_jammed = aks74u_lam, idle_jammed
-lock_time_start_anm_laser_on_jammed = 0.45
-lock_time_end_anm_laser_on_jammed = 0.65
-
-
-;Выключение ЛЦУ//////////////////////////////////////////////////////////////////////////
-anm_laser_off = aks74u_lam
-lock_time_start_anm_laser_off = 0.45
-lock_time_end_anm_laser_off = 0.65
-
-anm_laser_off_empty = aks74u_lam
-lock_time_start_anm_laser_off_empty = 0.45
-lock_time_end_anm_laser_off_empty = 0.65
-
-anm_laser_off_jammed = aks74u_lam, idle_jammed
-lock_time_start_anm_laser_off_jammed = 0.45
-lock_time_end_anm_laser_off_jammed = 0.65
-
-;Включение фонаря//////////////////////////////////////////////////////////////////////////
-anm_torch_on = aks74u_lam
-lock_time_start_anm_torch_on = 0.45
-lock_time_end_anm_torch_on = 0.65
-
-anm_torch_on_empty = aks74u_lam
-lock_time_start_anm_torch_on_empty = 0.45
-lock_time_end_anm_torch_on_empty = 0.65
-
-anm_torch_on_jammed = aks74u_lam, idle_jammed
-lock_time_start_anm_torch_on_jammed = 0.45
-lock_time_end_anm_torch_on_jammed = 0.65
-
-
-;Выключение фонаря//////////////////////////////////////////////////////////////////////////
-anm_torch_off = aks74u_lam
-lock_time_start_anm_torch_off = 0.45
-lock_time_end_anm_torch_off = 0.65
-
-anm_torch_off_empty = aks74u_lam
-lock_time_start_anm_torch_off_empty = 0.45
-lock_time_end_anm_torch_off_empty = 0.65
-
-anm_torch_off_jammed = aks74u_lam, idle_jammed
-lock_time_start_anm_torch_off_jammed = 0.45
-lock_time_end_anm_torch_off_jammed = 0.65
 
 
 ;включение налобника//////////////////////////////////////////////////////////////////////////

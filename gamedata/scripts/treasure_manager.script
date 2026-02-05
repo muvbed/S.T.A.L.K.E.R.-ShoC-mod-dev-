@@ -90,6 +90,7 @@ function CTreasure:__init()
 	ASSERT( sys_ini:section_exist("treasure_list"), "There is no section [treasure_list] in treasure_manager.ltx" )
 	local n = sys_ini:line_count("treasure_list")
 	local id, value = "",""
+	local treasures_for_trade = {}
 
 	self.treasure_info = {} --Начальная установка
 
@@ -107,8 +108,13 @@ function CTreasure:__init()
 		self.treasure_info[id].community = {}
 		for k,v in pairs(community) do
 			self.treasure_info[id].community[v] = true
+			
+			if v == "stranger" then
+				treasures_for_trade[id] = true
+			end
 		end
-
+		
+		ogse.save_var(script_name() .. ".treasures_for_trade", treasures_for_trade, "table")
 
 		if self.treasure_info[id].items == nil then
 			abort("cant find 'items' in %s", id)
@@ -204,6 +210,11 @@ end
 -- Выдача тайника
 function CTreasure:give_treasure(k)
 	local v = self.treasure_info[k]
+	
+	if v.active or v.done then
+		return
+	end
+	
 	local sobj = alife():story_object(v.target)
 	ASSERT(sobj, "!!Can't find treasure_box with story_id: [%s]", v.target)
 	local text = "%c[255,238,155,23]"..game.translate_string(v.name).."\\n".."%c[default]"..game.translate_string(v.description)
@@ -259,6 +270,44 @@ function CTreasure:load( p )
 		info.active = active
 		info.done   = done
 	end
+end
+
+function CTreasure:get_treasures_for_trade()
+	local treasures = ogse.load_var_safe(script_name() .. ".treasures_for_trade")
+	
+	if not treasures then
+		return nil
+	end
+	
+	local valid_treasures = {}
+	
+	for k, v in pairs(treasures) do
+		if v == true then
+			table.insert(valid_treasures, k)
+		end
+	end
+
+	if #valid_treasures > 0 then
+		return valid_treasures
+	end
+	
+	return nil
+end
+
+function CTreasure:use_treasure_for_trade()
+	local valid_treasures = self.get_treasures_for_trade()
+	
+	if not valid_treasures then return end
+	
+	local treasures = ogse.load_var_safe(script_name() .. ".treasures_for_trade")
+	local random_index = math.random(#valid_treasures)
+	local selected_key = valid_treasures[random_index]
+	
+	treasures[selected_key] = false
+	
+	ogse.save_var(script_name() .. ".treasures_for_trade", treasures, "table")
+
+	self:give_treasure(selected_key)
 end
 
 

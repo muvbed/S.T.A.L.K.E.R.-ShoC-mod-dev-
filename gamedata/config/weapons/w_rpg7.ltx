@@ -16,7 +16,6 @@ min_radius               	= 50
 max_radius               	= 150
 max_zoom_factor			 	= 5
 description					= enc_weapons1_wpn-rpg7
-crosshair_class 			= launcher
 default_to_ruck 			= false
 
 hidden_bones =  scope1
@@ -149,20 +148,11 @@ snd_reload              = weapons\rpg7\rpg7_reload
 snd_reload_empty        = weapons\rpg7\rpg7_reload
 snd_explode		= weapons\grenade\grenade_explosion2
 snd_fly_sound		= weapons\rocket_fly
-snd_changecartridgetype = weapons\rpg7\rpg7_reload
 snd_switch              = weapons\groza_switch, 1.0, 0.5
 snd_close		= $silent
-snd_unload_mag          = $silent
 snd_breechblock         = $silent
 snd_aim_start           = weapons\rpg7\rpg7_aim
 snd_aim_end             = weapons\aimout\aim_out_1, 0.3
-snd_headlamp_on         = weapons\headflash_on
-snd_headlamp_off        = weapons\headflash_off
-snd_nv_on               = weapons\nv_act
-snd_nv_off              = weapons\nv_deact
-snd_mag_shot									   = $silent
-snd_scope_brightness_plus = weapons\nv_intensity
-snd_scope_brightness_minus = weapons\nv_intensity
 
 grenade_bone				= grenade
 
@@ -182,20 +172,9 @@ sprint_allowed			= true
 attach_place_idx			= 0
 item_visual                   		= dynamics\weapons\wpn_rpg7\wpn_rpg7_hud
 
-zoom_dof_near = 0.25
-zoom_dof_focus = 0.5
-
 fire_point				= 0.0,0.0,0.066
+shoot_point				= 0.0,0.0,-0.7
 fire_bone                               = wpn_body
-
-hud_fov_factor = 0.90
-hud_fov_zoom_factor = 0.65 ;аналогичный параметр работает и с прицелами
-
-inertion_pitch_offset_r = 0.0
-inertion_pitch_offset_n = 0.0
-inertion_pitch_offset_d = 0.0
-
-inertion_aim_origin_offset = 0.015
 
 disable_bore = false                                           ;отключение анимации скуки
 
@@ -244,7 +223,6 @@ autoshoot_anm_idle_aim_start = true
 lock_time_anm_idle_aim_start = 0.25
 autoshoot_anm_idle_aim_start_empty = true
 lock_time_anm_idle_aim_start_empty = 0.25
-
 anm_idle_aim_start             = rpg7_aim_start
 anm_idle_aim_start_empty       = rpg7_aim_start, idle_empty
 
@@ -254,12 +232,11 @@ anm_idle_aim_empty             = rpg7_aim, idle_empty
 anm_idle_aim_scope             = rpg7_aim
 anm_idle_aim_scope_empty       = rpg7_aim, idle_empty
 
+
 autoshoot_anm_idle_aim_end = true
 lock_time_anm_idle_aim_end = 0.3
 autoshoot_anm_idle_aim_end_empty = true
 lock_time_anm_idle_aim_end_empty = 0.3
-
-
 anm_idle_aim_end               = rpg7_aim_end
 anm_idle_aim_end_empty         = rpg7_aim_end, idle_empty
 
@@ -329,7 +306,6 @@ anm_idle_aim_scope_moving_empty		                = rpg7_aim_walk_scope, ak74_aim
 anm_idle_aim_scope_moving_jammed	                = rpg7_aim_walk_scope, ak74_aim_jammed
 
 
-
 ;Бег//////////////////////////////////////////////////////////////////
 lock_time_anm_idle_sprint_start = 0.15
 lock_time_anm_idle_sprint_start_empty = 0.15
@@ -367,11 +343,8 @@ anm_fakeshoot_empty      = rpg7_dry, idle_empty
 lock_time_anm_fakeshoot_aim_empty = 0.20
 anm_fakeshoot_aim_empty      = rpg7_aim_dry, idle_empty
 lock_time_anm_fakeshoot_jammed = 1.0
-
 anm_reload			= rpg7_reload
 anm_reload_empty		= rpg7_reload
-anm_changecartridgetype         = rpg7_reload
-
 
 ;Разрядка//////////////////////////////////////////////////////////////////////////
 use_unloadmag_anim = true
@@ -379,7 +352,6 @@ lock_time_anm_unload_mag = 0.8
 anm_unload_mag                               = rpg7_draw, idle_empty  
 lock_time_anm_unload_mag_empty = 0.8
 anm_unload_mag_empty                         = rpg7_draw, idle_empty
-
 
 ;включение налобника//////////////////////////////////////////////////////////////////////////
 anm_headlamp_on = rpg7_headflash

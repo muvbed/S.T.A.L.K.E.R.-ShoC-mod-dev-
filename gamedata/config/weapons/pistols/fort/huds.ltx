@@ -1,8 +1,5 @@
 [wpn_fort_hud]:hud_base
 zoom_hide_crosshair			= true
-zoom_dof_near = 0.48
-zoom_dof_focus = 0.53
-
 
 hands_position				= 0.0,-0.13,0.03
 hands_orientation			= 0.0,0.0,0.0
@@ -29,19 +26,7 @@ fire_point			= -0.015,0.10,0.37
 fire_bone               	= wpn_body
 
 disable_bore = true
-allow_halfaimstate = false          ;если отпустить прицеливание продолжа€ стрел€ть оружие опускаетс€ чуть ниже, скорость передвижени€ увеличиваетс€.
 mix_shoot_after_idle = true         ;микс первого выстрела с анимаци€ми idle
-
-immediate_unhide_anm_reload_jammed_detector = true
-immediate_unhide_anm_reload_jammed_last_detector = true
-
-immediate_unhide_anm_reload_detector = true
-immediate_unhide_anm_reload_empty_detector = true
-
-immediate_unhide_anm_reload_ammochange_detector = true
-immediate_unhide_anm_reload_empty_ammochange_detector = true
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;ƒоставание///////////////////////////////////////////////////
 anm_show                   = fort12_draw
@@ -206,11 +191,6 @@ anm_shoot_aim_last       = fort12_aim_shoot_empty
 anm_shoot_aim_last_sil   = fort12_aim_shoot_empty
 
 ;ќсечка//////////////////////////////////////////////////
-lock_time_anm_shoot_lightmisfire = 1.0
-anm_shoot_lightmisfire = fort12_misfire
-lock_time_anm_shoot_lightmisfire_aim = 1.0
-anm_shoot_lightmisfire_aim = fort12_aim_misfire
-
 lock_time_anm_fakeshoot_empty = 0.20
 anm_fakeshoot_empty      = fort12_dry_empty, idle_empty
 lock_time_anm_fakeshoot_aim_empty = 0.20
@@ -232,53 +212,10 @@ anm_unload_mag_empty                         = fort12_draw, idle_empty
 ;ѕерезар€дка/////////////////////////////////////////////////////////////////////
 anm_reload                       = fort12_reload
 anm_reload_empty                 = fort12_reload_full
-anm_reload_detector                       = fort12_det_reload, fort12_reload
-anm_reload_empty_detector                 = fort12_det_reload_full, fort12_reload_full
 anm_reload_jammed                = fort12_revival
 anm_reload_jammed_last           = fort12_revival_last
 anm_reload_ammochange            = fort12_reload
 anm_reload_empty_ammochange      = fort12_reload_full
-anm_reload_ammochange_detector            = fort12_det_reload, fort12_reload
-anm_reload_empty_ammochange_detector      = fort12_det_reload_full, fort12_reload_full
-
-anm_reload_jammed_detector                = fort12_det_revival
-use_jammed_detector_snd = true
-anm_reload_jammed_last_detector           = fort12_det_revival_last
-use_jammed_last_detector_snd = true
-
-lock_time_anm_reload_detector = 2.75        ;Ѕлокировка дл€ правильной работы детектора в паре. «адавать врем€ блока больше на 0.08 времени самой анимации. ≈сли врем€ анимации - 1.01 то врем€ блока - 1.09
-lock_time_anm_reload_empty_detector = 2.91
-lock_time_anm_reload_jammed_detector = 2.18
-lock_time_anm_reload_jammed_last_detector = 2.18
-lock_time_anm_reload_ammochange_detector = 2.75
-lock_time_anm_reload_empty_ammochange_detector = 2.91
-
-;ƒоставание детектора//////////////////////////////////////////////////////////////////////////
-use_prepare_detector_anim = true
-anm_prepare_detector                             = fort12_hand_hide
-lock_time_anm_prepare_detector = 0.5
-anm_prepare_detector_jammed                      = fort12_hand_hide, idle_jammed
-lock_time_anm_prepare_detector_jammed = 0.5
-anm_prepare_detector_empty                       = fort12_hand_hide, idle_empty
-lock_time_anm_prepare_detector_empty = 0.5
-
-anm_draw_detector                                = fort12_hand_hide_end
-lock_time_anm_draw_detector = 0.40
-anm_draw_detector_jammed                         = fort12_hand_hide_end, idle_jammed
-lock_time_anm_draw_detector_jammed = 0.40
-anm_draw_detector_empty                          = fort12_hand_hide_end, idle_empty
-lock_time_anm_draw_detector_empty = 0.40
-
-;”бирание детектора//////////////////////////////////////////////////////////////////////////
-use_finish_detector_anim = true
-anm_finish_detector                             = fort12_hand_draw
-lock_time_anm_finish_detector = 0.60
-anm_finish_detector_jammed                      = fort12_hand_draw, idle_jammed
-lock_time_anm_finish_detector_jammed = 0.60
-anm_finish_detector_empty                       = fort12_hand_draw, idle_empty
-lock_time_anm_finish_detector_empty = 0.60
-
-
 
 ;включение налобника//////////////////////////////////////////////////////////////////////////
 anm_headlamp_on = fort12_headflash
@@ -318,4 +255,3 @@ anm_nv_on_jammed = fort12_nv_on, idle_jammed
 anm_nv_off = fort12_nv_off
 anm_nv_off_empty = fort12_nv_off, idle_empty
 anm_nv_off_jammed = fort12_nv_off, idle_jammed
-

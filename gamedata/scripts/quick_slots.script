@@ -1,4 +1,8 @@
--- Author: Muvbed 12.07.2025 
+--[[-----------------------------------------------------------------------------------------------
+ File			: quick_slots.script
+ Description 	: Слоты для быстрого использования медикаментов
+ Author  		: Muvbed, материалы взяты из OGSR
+--]]-----------------------------------------------------------------------------------------------
 
 function update_hud(prop_item)
 	local hud = get_hud()
@@ -64,7 +68,11 @@ local binds_table = {
 }
 
 local function on_key_down(key, bind)
-	if level.main_input_receiver() or not db.actor:alive() or device().precache_frame > 1 then 
+	if level.main_input_receiver() 
+	  or not db.actor:alive() 
+	  or not ogsr_actor_animation.allow_animation() 
+	  or device().precache_frame > 1 
+	then 
 		return 
 	end
 
@@ -82,4 +90,3 @@ function attach(sm)
 	sm:subscribe({ signal = "on_item_to_ruck",	 fun = update_hud     })
 	sm:subscribe({ signal = "on_drop",           fun = update_hud     })
 end
-

@@ -6,9 +6,6 @@
 	<string id="dm_general_cool_info">
 		<text>Что интересного можешь рассказать?</text>
 	</string>
-	<string id="dm_general_sleep_request">
-		<text>Слушай, вымотался я вконец. Ноги не держат совсем. Поспать бы мне...</text>
-	</string>
 	<string id="dm_general_sleep_1">
 		<text>(Поспать 1 час)</text>
 	</string>

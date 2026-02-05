@@ -16,13 +16,13 @@
 		<text>На карту Зоны</text>
 	</string>
 	<string id="level_changer_invitation">
-		<text>переход свободен.</text>
+		<text>переход возможен.</text>
 	</string>
 	<string id="level_changer_refusal">
-		<text>переход на данный момент недоступен.</text>
+		<text>переход на данный момент невозможен.</text>
 	</string>
 	<string id="level_changer_blowout">
-		<text>переход во время Выброса недоступен.</text>
+		<text>переход во время Выброса невозможен.</text>
 	</string>
 	<string id="level_changer_yes">
 		<text>Перейти</text>

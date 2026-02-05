@@ -1,14 +1,13 @@
 -- created by wepl
 -- contact (discord): wepl#1549
-
 -- UPD Muvbed (05.01.2026)
 
 local monsters_head_bones = {
     { sect = "sucker",             bones = { 14, 15, 16 },           								},
-    { sect = "boar",               bones = { 20, 22, 24, 26 },                  					},
+    { sect = "boar",               bones = { 20, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31 },          },
     { sect = "flesh",              bones = { 15 },                                          		},
-    { sect = "burer",              bones = { 13, 14 },                                      		},
-    { sect = "controller",         bones = { 14, 15, 16, 17, 18, 20, 21 },                          },
+    { sect = "burer",              bones = { 39, 40, 41, 42, 43, 44, 45, 46, 47, 48 },              },
+    { sect = "controller",         bones = { 31, 32, 33, 34, 35, 36, 37, 38 },                      },
     { sect = "pseudodog",          bones = { 15, 16, 17, 18 },                                      },
     { sect = "psy_dog",            bones = { 15, 16, 17, 18 },                                      },
     { sect = "dog",                bones = { 15, 16 },                                              },
@@ -80,10 +79,10 @@ function get_hit_effect( obj, type )
   return "none"
 end
 
-function actor_on_before_hit( obj, hit )	
+function actor_on_before_hit( obj, hit )
 	if not ( obj and hit and hit.hit_type and hit.power and hit.bone_id ) then return end
 	if hit.power == 0 then return end
-	if not ( hit.hit_type == 5 or hit.hit_type == 6 or hit.hit_type == 7 or hit.hit_type == 8 ) then return end
+	if not ( hit.hit_type == 2 or hit.hit_type == 6 or hit.hit_type == 7 or hit.hit_type == 8 ) then return end
 	
 	local ply = db.actor
 	if not ( ply and ply:alive() ) then return end
@@ -109,12 +108,13 @@ function actor_on_before_hit( obj, hit )
 end
 
 function npc_on_before_hit( obj, hit )
-	if not ( obj and hit and hit.hit_type and hit.power and hit.bone_id ) then return end
+	if not ( obj and hit and hit.who and hit.hit_type and hit.power and hit.bone_id ) then return end
 	if hit.power == 0 then return end
-	if not ( hit.hit_type == 5 or hit.hit_type == 6 or hit.hit_type == 7 or hit.hit_type == 8 ) then return end
+	if not ( hit.hit_type == 2 or hit.hit_type == 6 or hit.hit_type == 7 or hit.hit_type == 8 ) then return end
 	
 	local ply = db.actor
 	if not ( ply and ply:alive() ) then return end
+	if not hit.who:is_actor() then return end
 
 	local hitType = get_hit_type(hit.bone_id)
 	local hitEffect	= get_hit_effect(obj, hitType)
@@ -127,12 +127,13 @@ function npc_on_before_hit( obj, hit )
 end
 
 function monster_on_before_hit( obj, hit )
-	if not ( obj and hit and hit.hit_type and hit.power and hit.bone_id ) then return end
+	if not ( obj and hit and hit.who and hit.hit_type and hit.power and hit.bone_id ) then return end
 	if hit.power == 0 then return end
-	if not ( hit.hit_type == 5 or hit.hit_type == 6 or hit.hit_type == 7 or hit.hit_type == 8 ) then return end
+	if not ( hit.hit_type == 2 or hit.hit_type == 6 or hit.hit_type == 7 or hit.hit_type == 8 ) then return end
 	
 	local ply = db.actor
 	if not ( ply and ply:alive() ) then return end
+	if not hit.who:is_actor() then return end
 
 	local hitType = "body"
 	local sect = obj:section()

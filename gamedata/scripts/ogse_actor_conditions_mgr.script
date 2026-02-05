@@ -13,6 +13,7 @@ local satiety_light_limit = get_float("actor_condition", "satiety_light_limit")
 local thirst_critical_limit = get_float("actor_condition", "thirst_critical_limit")
 local satiety_critical = get_float("actor_condition", "satiety_critical")
 local def_jump_power = get_float( "actor_condition", "jump_power" )
+local def_stand_power = get_float( "actor_condition", "stand_power" )
 local jump_speed = get_float( "actor", "jump_speed" )
 
 walk_accel_factor = 1.0 -- Для воздействий из вне (Muvbed)
@@ -61,7 +62,7 @@ function update_artefacts_on_belt(dt)
         cur_walk_accel = cur_walk_accel * (power_factor / health_power_limit)
     end
 
-    if not sleep_supressed and sleep_level > 0 then
+    if not sleep_supressed and sleep_level > 1 then
         local sleep_factor = 1 - sleep_level / 10
 
 		stand_power_factor = stand_power_factor * (1 - sleep_level / 10)
@@ -102,15 +103,15 @@ function update_artefacts_on_belt(dt)
 		aobj.jump_speed = jump_speed
 	end
     
-    if stand_power_factor < 0.1 then
-    	stand_power_factor = 0.1
+    if stand_power_factor < 0.3 then
+    	stand_power_factor = 0.3
     end
     
     if act:zoom_mode() then
-		stand_power_factor = stand_power_factor - 1.25
+		stand_power_factor = stand_power_factor * 0.5
 	end
 
-	act.power = (1 - stand_power_factor) * -0.001
+	act.power = (1 - stand_power_factor) * def_stand_power * dt
 	
     aobj.walk_accel = (min_walk_accel + cur_walk_accel) * walk_accel_factor
     

@@ -91,7 +91,19 @@ ph_snd_themes = {
         "characters_voice\\scenario\\escape\\megafon_1",
         "characters_voice\\scenario\\escape\\megafon_2",
         "characters_voice\\scenario\\escape\\megafon_3",
-        "characters_voice\\scenario\\escape\\megafon_4"
+        "characters_voice\\scenario\\escape\\megafon_4",
+        "characters_voice\\scenario\\escape\\megafon_5",
+        "characters_voice\\scenario\\escape\\megafon_6",
+        "characters_voice\\scenario\\escape\\megafon_7",
+        "characters_voice\\scenario\\escape\\megafon_8",
+        "characters_voice\\scenario\\escape\\megafon_9",
+        "characters_voice\\scenario\\escape\\megafon_10",
+        "characters_voice\\scenario\\escape\\megafon_11",
+        "characters_voice\\scenario\\escape\\megafon_12",
+        "characters_voice\\scenario\\escape\\megafon_13",
+        "characters_voice\\scenario\\escape\\megafon_14",
+        "characters_voice\\scenario\\escape\\megafon_15",
+        "characters_voice\\scenario\\escape\\megafon_16"
     },
     alarm1 = {
         "characters_voice\\scenario\\megafon\\megafon_alarm_1",

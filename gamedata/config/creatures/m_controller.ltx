@@ -39,6 +39,11 @@ weapon_usage                   = 0
 Spawn_Inventory_Item_Section   = mutant_hand_kontroler
 Spawn_Inventory_Item_Probability = 0.5
 
+stamina_hit						=	0.2;
+
+;------------------------------------------------------------------------
+; Influences
+;------------------------------------------------------------------------
 psy_linear_factor    		   = 0.50
 psy_quadratic_factor 		   = 0
 psy_max_distance     		   = 33.0
@@ -68,9 +73,9 @@ ph_after_death_velocity_factor = 0.75
 ph_skel_shot_up_factor         = 0.25
 
 Velocity_Stand				   = 0,			2.4,			2.4,		1,		1
-Velocity_WalkFwdNormal		   = 0.8,		6.0,			6.0,		0.02,	2.0
+Velocity_WalkFwdNormal		   = 1.5,		6.0,			6.0,		0.02,	2.0
 Velocity_RunFwdNormal		   = 6.0,		4.6,			4.6,		0.25,	1	
-Velocity_WalkFwdDamaged		   = 0.8,		6.0,			6.0,		0.5,	2.0
+Velocity_WalkFwdDamaged		   = 1.5,		6.0,			6.0,		0.5,	2.0
 Velocity_RunFwdDamaged		   = 4.0,  		4.0,			4.0,		0.2,	1
 Velocity_Drag				   = -5.0,		0.01,			0.01,		1,		1
 Velocity_Steal				   = 0.7,		1.3,			1.3,		1,		1
@@ -196,10 +201,13 @@ step_params                    = m_controller_step_params
 LegsCount                      = 2
 damage                         = m_controller_damage
 
-psy_hit_damage				   = 0.15
-tube_damage                    = 0.25
-tube_at_once                   = false
-tube_min_dist				   = 2
+;---------- FIRE---------;
+tube_damage		    			= 0.25
+tube_condition_see_duration 	= 10	;50
+tube_condition_min_delay    	= 2000 ;10000
+tube_condition_min_distance 	= 5
+tube_at_once			    	= false ; true for test-mode
+
 
 control_fx_texture             = act\act_controller_hit
 control_fx_texture2            = act\act_controller_hit1
@@ -319,8 +327,8 @@ color_gray                     = 0.33,0.330,0.33
 color_add                      = 0.00,0.00,0.015
 
 [m_controller_attack_params]
-stand_attack_0 				   = 0.45,		0.25,	  80,         0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,				  2.2
-stand_attack_1 				   = 0.25,		0.30,	  100,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,				  2.2
+stand_attack_0 				   = 0.45,		0.25,	  80,         2.0, 0.4, 0.5,		 -1.6, 1.6, -1.6, 1.6,				  2.2
+stand_attack_1 				   = 0.25,		0.30,	  100,        2.0, 0.4, 0.5,		 -1.6, 1.6, -1.6, 1.6,				  2.2
 
 [controller_terrain]
 	255,000,255,255
@@ -329,10 +337,9 @@ stand_attack_1 				   = 0.25,		0.30,	  100,        0.0, 1.0, 0.0,		 -1.6, 1.6, -
 default									= 0.01, -1, 0.1
 
 bip01_pelvis							= 0.30, -1, 0.4
+stomach 								= 0.65, -1, 0.7
 bip01_spine 							= 0.45, -1, 0.5
 bip01_spine1 							= 0.55, -1, 0.6
-bip01_spine2 							= 0.65, -1, 0.7
-bip01_spine3 							= 0.65, -1, 0.7
 
 bip01_l_thigh							= 0.20, -1, 0.3
 bip01_l_calf							= 0.15, -1, 0.2
@@ -345,16 +352,19 @@ bip01_r_foot							= 0.05, -1, 0.1
 bip01_l_clavicle						= 0.25, -1, 0.3
 bip01_l_upperarm						= 0.15, -1, 0.2
 bip01_l_forearm							= 0.10, -1, 0.1
+lefthandtwist							= 0.10, -1, 0.1
 
 bip01_r_clavicle						= 0.25, -1, 0.3
 bip01_r_upperarm						= 0.15, -1, 0.2
 bip01_r_forearm							= 0.10, -1, 0.1
+righthandtwist							= 0.10, -1, 0.1
 
 bip01_neck 								= 0.80, -1, 0.7
 
 bip01_head 								= 0.95, -1, 0.8, 10
 bone01 									= 0.95, -1, 0.8, 10
 bone03 									= 0.95, -1, 0.8, 10
+bone05 									= 0.95, -1, 0.8, 10
 bone07 									= 0.95, -1, 0.8, 10
 bone09 									= 0.95, -1, 0.8, 10
 bip01_ponytail1							= 1.00, -1, 0.9, 10
@@ -366,15 +376,12 @@ $spawn                         = "monsters\old\controller_normal"
 
 [m_controller_normal_fat]:m_controller_normal
 $spawn                         = "monsters\old\controller_normal_fat"
-visual						   = monsters\kontroler\kontroler_5
 
 [m_controller_old]:m_controller_normal
 $spawn                         = "monsters\old\controller_old"
-visual						   = monsters\kontroler\kontroler_3
 
 [m_controller_old_fat]:m_controller_old
 $spawn                         = "monsters\old\controller_old_fat"
-visual						   = monsters\kontroler\kontroler_4
 
 [controller_tubeman]:m_controller_normal
 $spawn                         = "monsters\controllers\controller_tubeman"

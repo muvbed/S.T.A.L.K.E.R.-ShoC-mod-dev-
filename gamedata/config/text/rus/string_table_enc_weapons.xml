@@ -336,7 +336,14 @@
 		<text>ПБС пистолетный 9х19 мм</text>
 	</string>
 	<string id="gunsl_addon_silencer_9x19_descr">
-		<text>Универсальный глушитель для пистолетов и ПП калибра 9х19 мм.</text>
+		<text>Универсальный глушитель для пистолетов калибра 9х19 мм.</text>
+	</string>
+	
+	<string id="gunsl_addon_colt_p220_silencer">
+		<text>ПБС пистолетный .45ACP</text>
+	</string>
+	<string id="gunsl_addon_colt_p220_silencer_descr">
+		<text>Универсальный глушитель для пистолетов калибра .45.</text>
 	</string>
 
 <!-- GRENADE LAUNCHERS -->
@@ -361,6 +368,9 @@
 	<string id="gunsl_wpn_fort12">
 		<text>Форт 12</text>
 	</string>
+	<string id="gunsl_wpn_stechkin">
+		<text>АПС</text>
+	</string>
 	
 	<string id="gunsl_wpn_beretta">
 		<text>Beretta 92</text>
@@ -371,6 +381,9 @@
 	
 	<string id="gunsl_wpn_colt1911">
 		<text>Colt M1911</text>
+	</string>
+	<string id="gunsl_wpn_usp">
+		<text>HK USP</text>
 	</string>
 	<string id="gunsl_wpn_eagle">
 		<text>Desert Eagle</text>

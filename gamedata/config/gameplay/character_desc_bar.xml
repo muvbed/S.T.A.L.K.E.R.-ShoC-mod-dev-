@@ -15,7 +15,7 @@
 		<rank>700</rank>
 		<reputation>50</reputation>
 		<visual>actors\barman\barman</visual>
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_04\stalker\</snd_config>
 		<crouch_type>-1</crouch_type>
 		
 		<supplies>
@@ -336,7 +336,7 @@
 		<reputation>0</reputation>
  
 		<visual>actors\neytral\stalker_bar_security</visual>
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_04\stalker\</snd_config>
 		<crouch_type>-1</crouch_type>
 
 		<supplies>
@@ -363,7 +363,7 @@
 		<reputation>0</reputation>
  
 		<visual>actors\neytral\stalker_bar_security</visual>
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_04\stalker\</snd_config>
 		<crouch_type>-1</crouch_type>
 
 		<supplies>
@@ -406,6 +406,8 @@
 		<actor_dialog>bar_bar_osvedomitel_trade_info</actor_dialog>
 		<actor_dialog>tm_mercenary_dialog</actor_dialog>
 		<actor_dialog>tm_mercenary_reward</actor_dialog>
+		<actor_dialog>treasures_informator_info_introduce</actor_dialog>
+		<actor_dialog>treasures_informator_info</actor_dialog>
 		<actor_dialog>arts_informator_info</actor_dialog>
 
 #include "gameplay\character_dialogs.xml"				
@@ -607,7 +609,7 @@
 		<reputation>0</reputation>
  
 		<visual>actors\neytral\stalker_bar_security</visual>
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_04\stalker\</snd_config>
 		<crouch_type>-1</crouch_type>
 
 		<supplies>

@@ -1,12 +1,11 @@
-
+local phrase_ini = sys_ini
 
 local intro_id = 100
 
 phrase = {
 	intro = {},
 	cool_info = {},
-	help_thanks = {},
-	sleep_request = {}
+	help_thanks = {}
 	}
 
 function gen_phrase_id_str()
@@ -17,63 +16,63 @@ end
 --' Необходимо сформировать набор предикатов  table[string_id] = predicate()
 function fill_phrase_table()
 	--' Итерируемся по всем настройкам фраз
-	if not sys_ini:section_exist("dialog_list") then
+	if not phrase_ini:section_exist("dialog_list") then
 		abort("There is no section [dialog_list] in dialog_manager.ltx")
 	end
-	local n = sys_ini:line_count("dialog_list")
+	local n = phrase_ini:line_count("dialog_list")
 	local id, value = "",""
 	local category = ""
 	
 	for i=0,n-1 do
-		result, id, value	= sys_ini:r_line("dialog_list",i)
+		result, id, value	= phrase_ini:r_line("dialog_list",i)
 		
-		if not sys_ini:section_exist(id) then
+		if not phrase_ini:section_exist(id) then
 			abort("There is no section [%s] in dialog_manager.ltx", id)
 		end		
 		--' 2. Необходимо сформировать набор предикатов  table[string_id] = predicate()
-		if not sys_ini:line_exist(id, "category") then
+		if not phrase_ini:line_exist(id, "category") then
 			abort("Dialog manager error: not categoried section [%s]", id)
 		end
-		category = sys_ini:r_string(id, "category")
+		category = phrase_ini:r_string(id, "category")
 		local tt = {}
 		tt.name = id
-		if sys_ini:line_exist(id, "community") then
-			tt.community = sys_ini:r_string(id, "community")
+		if phrase_ini:line_exist(id, "community") then
+			tt.community = phrase_ini:r_string(id, "community")
 		end
-		if sys_ini:line_exist(id, "npc_community") then
-			tt.npc_community = sys_ini:r_string(id, "npc_community")
+		if phrase_ini:line_exist(id, "npc_community") then
+			tt.npc_community = phrase_ini:r_string(id, "npc_community")
 		end
-		if sys_ini:line_exist(id, "relation") then
-			tt.relation = sys_ini:r_string(id, "relation")
+		if phrase_ini:line_exist(id, "relation") then
+			tt.relation = phrase_ini:r_string(id, "relation")
 		end
-		if sys_ini:line_exist(id, "npc_rank") then
-			tt.npc_rank = sys_ini:r_u32(id, "npc_rank")
+		if phrase_ini:line_exist(id, "npc_rank") then
+			tt.npc_rank = phrase_ini:r_u32(id, "npc_rank")
 		end
 		-- Добавил Mixser, возможность проверки на ранг актора
 		-- Если ранг выше указанного в фразе, то фраза блочится
-		if sys_ini:line_exist(id, "actor_rank") then
-			tt.actor_rank = sys_ini:r_string(id, "actor_rank")
+		if phrase_ini:line_exist(id, "actor_rank") then
+			tt.actor_rank = phrase_ini:r_string(id, "actor_rank")
 		end
-		if sys_ini:line_exist(id, "level") then
-			tt.level = sys_ini:r_string(id, "level")
+		if phrase_ini:line_exist(id, "level") then
+			tt.level = phrase_ini:r_string(id, "level")
 		end
-		if sys_ini:line_exist(id, "condlist") then
-			tt.condlist = xr_logic.parse_condlist(db.actor, "dialog_manager", "condlist", sys_ini:r_string(id, "condlist"))
+		if phrase_ini:line_exist(id, "condlist") then
+			tt.condlist = xr_logic.parse_condlist(db.actor, "dialog_manager", "condlist", phrase_ini:r_string(id, "condlist"))
 		end
-		if sys_ini:line_exist(id, "smart_terrain") then
-			tt.smart_terrain = sys_ini:r_string(id, "smart_terrain")
+		if phrase_ini:line_exist(id, "smart_terrain") then
+			tt.smart_terrain = phrase_ini:r_string(id, "smart_terrain")
 		end					
-		if sys_ini:line_exist(id, "cost") then
-			tt.price = sys_ini:r_u32(id, "cost")
+		if phrase_ini:line_exist(id, "cost") then
+			tt.price = phrase_ini:r_u32(id, "cost")
 		end					
-		if sys_ini:line_exist(id, "article_info") then
-			tt.article_info = parse_names(sys_ini:r_string(id, "article_info"))
+		if phrase_ini:line_exist(id, "article_info") then
+			tt.article_info = parse_names(phrase_ini:r_string(id, "article_info"))
 		end					
-		if sys_ini:line_exist(id, "treasure") then
-			tt.treasure = sys_ini:r_string(id, "treasure")
+		if phrase_ini:line_exist(id, "treasure") then
+			tt.treasure = phrase_ini:r_string(id, "treasure")
 		end					
-		if sys_ini:line_exist(id, "wounded") then
-			tt.wounded = sys_ini:r_string(id, "wounded")
+		if phrase_ini:line_exist(id, "wounded") then
+			tt.wounded = phrase_ini:r_string(id, "wounded")
 		else
 			tt.wounded = "false"
 		end
@@ -107,7 +106,6 @@ end
 
 -- Необходимо создать диалог актера, с разветвлением на втором уровне, где каждая фраза будет иметь
 -- одну и ту же функцию в прекондишне.
--- *ModDed*
 function init_cool_info_dialog(dlg)
 	local phr = dlg:AddPhrase("dm_general_cool_info","0","",-10000)
 	
@@ -159,8 +157,7 @@ local show_tbl = {}
 selected_phrase_by_id = {
 	intro = {},
 	cool_info = {},
-	action_info = {},
-	sleep_request = {}
+	action_info = {}
 }
 
 function phrase_action_intro(npc, actor, p1, p2)
@@ -213,13 +210,6 @@ end
 function precondition_help_thanks(npc, actor, p1, p2, p3)
 	return precondition(npc, actor, phrase.help_thanks, nil, p1, p2, p3)
 end
-function precondition_sleep_request(npc, actor, p1, p2, p3)
-	return true
-end
-function precondition_sleep_unlim(npc, actor, p1, p2, p3)
-	if db.actor.health <= 0.9 then return true end
-	return false
-end
 
 function get_t_size(t)
 
@@ -240,8 +230,6 @@ function precondition(npc, actor, tbl, sel_tbl, p1, p2, p3)
 	if ( (sel_tbl ~= nil) and (sel_tbl[npc:id()] ~= nil) ) then
 		
 		local lll = sel_tbl[npc:id()]
-		if (lll==nil) then
-		end
 		local ttt = tbl[lll.phrase]
 
 		if (ttt==nil) then

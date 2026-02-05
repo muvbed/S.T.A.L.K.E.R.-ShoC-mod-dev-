@@ -6,13 +6,12 @@ discovery_dependency	=
 $spawn 					= "weapons\grenades\f1"
 $prefetch				= 128
 class					= G_F1
-crosshair_class = pistol
 cform					= skeleton
 visual                      = weapons\grenade\wpn_f_1
-inv_name				= gunsl_wpn_grenade_f1
-inv_name_short			= gunsl_wpn_grenade_f1_s
+inv_name				= grenade-f1
+inv_name_short			= grenade-f1
 inv_weight				= 0.63	;.1
-description				= gunsl_wpn_grenade_f1_descr
+description				= enc_weapons1_grenade-f1
 belt					= true
 ef_weapon_type			= 10
 default_to_ruck			= false
@@ -75,8 +74,6 @@ fragment_speed				= 50
 explode_duration			= 3		;подолжительность взрыва (с)
 
 ;звуки
-snd_sprint_start								   = weapons\sprint_start, 0.4
-snd_sprint_end								   	   = weapons\sprint_end, 0.4
 snd_explode             = weapons\grenade\grenade_explosion6
 snd_checkout = weapons\grenade\grenade_throw_start
 snd_throw_begin         = $silent

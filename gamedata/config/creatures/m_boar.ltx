@@ -25,6 +25,27 @@ ogse_anomaly_evader.disable             = true
 Spawn_Inventory_Item_Section            = mutant_boar_leg
 Spawn_Inventory_Item_Probability        = 0.4
 
+;------------------------------------------------------------------------
+; Influences
+;------------------------------------------------------------------------
+
+fire_max_distance						=	0
+fire_max_power							=	5
+fire_linear_factor						=	0
+fire_quadratic_factor					=	0.025
+
+psy_max_distance						=	0
+psy_max_power							=	5
+psy_linear_factor						=	0.05
+psy_quadratic_factor					=	0
+
+radiation_max_distance					=	0
+radiation_max_power						=	0.01
+radiation_linear_factor					=	1
+radiation_quadratic_factor				=	1
+radiation_pp_effector_name				= 	postprocess_rad
+radiation_pp_highest_at					= 	0.02
+
 ph_box0_center                          = 0.0,0.6,0.0
 ph_box0_size                            = 0.55,0.6,0.55
 ph_box1_center                          = 0.0,0.6,0.0
@@ -51,8 +72,8 @@ Velocity_Stand							= 0,		1.4,			1.4,		1,		1
 Velocity_RunFwdNormal					= 5.9,		3.5,			3.5,		0.4,	1	
 Velocity_RunFwdDamaged					= 3.9,		3.0,			3.0,		0.2,	1
 Velocity_WalkFwdDamaged					= 1.3,		2.5,			2.5,		0.2,	2.0	
-Velocity_WalkFwdNormal					= 2.3,		2.5,			2.5,		0.02,	3.0	
-Velocity_Drag							= -1.0,		1.0,			1.0,		1,		1
+Velocity_WalkFwdNormal					= 1.7,		2.5,			2.5,		0.02,	3.0	
+Velocity_Drag							= -1.3,		1.0,			1.0,		1,		1
 Velocity_Steal							= 1.5,		3.0,			3.0,		1,		1
 
 Accel_Generic                           = 1.5
@@ -224,10 +245,13 @@ transparency_threshold                  = 0.3
 still_visible_time                      = 0
 
 [m_boar_attack_params]
-stand_attack_0                          = 0.30,   0.5,     50,    0.0,   0.5,   0.5,   -1.0,   1.0,   -1.0,   1.0,   2.7
-stand_attack_1                          = 0.30,   0.5,     50,    0.0,   0.5,   0.5,   -1.0,   1.0,   -1.0,   1.0,   2.7
-stand_attack_2                          = 0.30,   0.5,     50,    0.0,   1.0,   2.0,   -0.8,   0.8,   -1.0,   1.0,   2.7
-stand_attack_run_0                      = 0.50,   0.8,    500,    0.0,   1.0,   2.0,   -1.0,   1.0,   -1.0,   1.0,   2.7
+stand_attack_0                          = 0.30,   0.5,     50,    0.0,   0.5,   0.5,   -0.6, 0.6, -0.6, 0.6,   2.7
+stand_attack_1                          = 0.30,   0.5,     50,    0.0,   0.5,   0.5,   -0.6, 0.6, -0.6, 0.6,   2.7
+stand_attack_2                          = 0.30,   0.5,     50,    0.0,   1.0,   2.0,   -0.6, 0.6, -0.6, 0.6,   2.7
+stand_attack_run_0                      = 0.40,   0.8,    500,    0.0,   1.0,   2.0,   -1.0, 1.0, -1.0, 1.0,   2.7
+
+stand_attack_run_left_0  				= 0.40,	  0.65,	  900,    0.0,   1.0,   2.0,   -1.4, 1.4, -1.4, 1.4,   2.7
+stand_attack_run_right_0 				= 0.40,	  0.65,	  900,    0.0,   1.0,   2.0,   -1.4, 1.4, -1.4, 1.4,   2.7
 
 [m_boar_attack_effector]
 duality_h                               = 0.05
@@ -255,6 +279,8 @@ default									= 0.01, -1, 0.1
 bip01_pelvis							= 0.25, -1, 0.4
 bip01_spine								= 0.45, -1, 0.5
 bip01_spine1							= 0.55, -1, 0.6
+bone16									= 0.55, -1, 0.6
+bone19									= 0.55, -1, 0.6
 bip01_spine2							= 0.65, -1, 0.7
 
 bip01_l_thigh							= 0.20, -1, 0.3
@@ -274,17 +300,18 @@ bip01_r_upperarm						= 0.15, -1, 0.2
 bip01_r_forearm							= 0.10, -1, 0.1
 
 bip01_neck								= 0.70, -1, 0.7
-bone01									= 0.70, -1, 0.7
 
+bone01									= 0.80, -1, 0.6
 bip01_head								= 0.80, -1, 0.6
 bip01_ponytail1							= 0.80, -1, 0.6
 bip01_ponytail2							= 0.80, -1, 0.6
-bone12									= 0.80, -1, 0.6
-bone14									= 0.80, -1, 0.6
+leftlowear								= 0.80, -1, 0.6
+rightlowear								= 0.80, -1, 0.6
+snout									= 0.80, -1, 0.6
 
-bone04									= 1.00, -1, 0.8, 10
-bone06									= 1.00, -1, 0.8, 10
-bone08									= 1.00, -1, 0.8, 10
+bone4									= 1.00, -1, 0.8, 10
+bone6									= 1.00, -1, 0.8, 10
+bone8									= 1.00, -1, 0.8, 10
 bone10									= 1.00, -1, 0.8, 10
 
 [boar_critical_wound_bones_head]
@@ -338,7 +365,6 @@ bip01_tail
 bip01_tail1
 
 [boar_critical_wound_bones_torso]
-
 [boar_critical_wound_bones_legs]
 
 [boar_terrain]
@@ -346,7 +372,7 @@ bip01_tail1
 
 [m_boar_step_params]
 stand_walk_fwd_0  						= 5,  0.01,   1,       0.5,     0.7,    0.15,   1.0,     0.5,   1.0
-stand_walk_dmg_0  						= 4,  0.2,    1,       0.25,    0.7,    0.5,    1.0,     0.7,   1.0
+stand_walk_fwd_dmg_0  					= 4,  0.2,    1,       0.25,    0.7,    0.5,    1.0,     0.7,   1.0
 stand_run_fwd_0   						= 1,  0.01,   1,       0.05,    0.7,    0.2,    1.0,     0.2,   0.2
 stand_run_dmg_0   						= 4,  0.2,    1,       0.25,    0.7,    0.7,    1.0,     0.7,   1.0
 stand_steal_0   						= 1,  0.2,    1,       0.25,    0.7,    0.7,    1.0,     0.7,   1.0
@@ -375,10 +401,13 @@ spec_rank                               = normal
 attack_params                           = boar_attack_params_normal
 
 [boar_attack_params_normal]
-stand_attack_0                          = 0.30,   0.6,     50,    0.0,   0.5,   0.5,   -1.0,   1.0,   -1.0,   1.0,   2.7
-stand_attack_1                          = 0.30,   0.6,     50,    0.0,   0.5,   0.5,   -1.0,   1.0,   -1.0,   1.0,   2.7
-stand_attack_2                          = 0.30,   0.6,     50,    0.0,   1.0,   2.0,   -0.8,   0.8,   -1.0,   1.0,   2.7
-stand_attack_run_0                      = 0.50,   0.9,    500,    0.0,   1.0,   2.0,   -1.0,   1.0,   -1.0,   1.0,   2.7
+stand_attack_0                          = 0.30,   0.6,     50,    0.0,   0.5,   0.5,   -0.6, 0.6, -0.6, 0.6,   2.7
+stand_attack_1                          = 0.30,   0.6,     50,    0.0,   0.5,   0.5,   -0.6, 0.6, -0.6, 0.6,   2.7
+stand_attack_2                          = 0.30,   0.6,     50,    0.0,   1.0,   2.0,   -0.6, 0.6, -0.6, 0.6,   2.7
+stand_attack_run_0                      = 0.40,   0.9,    500,    0.0,   1.0,   2.0,   -1.0, 1.0, -1.0, 1.0,   2.7
+
+stand_attack_run_left_0  				= 0.40,	  0.75,	  900,    0.0,   1.0,   2.0,   -1.4, 1.4, -1.4, 1.4,   2.7
+stand_attack_run_right_0 				= 0.40,	  0.75,	  900,    0.0,   1.0,   2.0,   -1.4, 1.4, -1.4, 1.4,   2.7
 
 [boar_strong]:boar_normal
 $spawn                                  = "monsters\boars\boar_03_strong"
@@ -391,7 +420,11 @@ spec_rank                               = strong
 attack_params                           = boar_attack_params_strong
 
 [boar_attack_params_strong]
-stand_attack_0                          = 0.30,   0.7,     50,    0.0,   0.5,   0.5,   -1.0,   1.0,   -1.0,   1.0,   2.7
-stand_attack_1                          = 0.30,   0.7,     50,    0.0,   0.5,   0.5,   -1.0,   1.0,   -1.0,   1.0,   2.7
-stand_attack_2                          = 0.30,   0.7,     50,    0.0,   1.0,   2.0,   -0.8,   0.8,   -1.0,   1.0,   2.7
-stand_attack_run_0                      = 0.50,   1.0,    500,    0.0,   1.0,   2.0,   -1.0,   1.0,   -1.0,   1.0,   2.7
+stand_attack_0                          = 0.30,   0.7,     50,    0.0,   0.5,   0.5,   -0.6, 0.6, -0.6, 0.6,   2.7
+stand_attack_1                          = 0.30,   0.7,     50,    0.0,   0.5,   0.5,   -0.6, 0.6, -0.6, 0.6,   2.7
+stand_attack_2                          = 0.30,   0.7,     50,    0.0,   1.0,   2.0,   -0.6, 0.6, -0.6, 0.6,   2.7
+stand_attack_run_0                      = 0.40,   1.0,    500,    0.0,   1.0,   2.0,   -1.0, 1.0, -1.0, 1.0,   2.7
+
+stand_attack_run_left_0  				= 0.40,	  0.85,	  900,    0.0,   1.0,   2.0,   -1.4, 1.4, -1.4, 1.4,   2.7
+stand_attack_run_right_0 				= 0.40,	  0.85,	  900,    0.0,   1.0,   2.0,   -1.4, 1.4, -1.4, 1.4,   2.7
+

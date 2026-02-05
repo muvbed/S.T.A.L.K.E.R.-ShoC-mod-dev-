@@ -157,24 +157,18 @@
 	</hud_shelter>
 	
 	<!-- Вес -->
-	<inv_weight_static_green x="860" y="12" width="30" height="40" stretch="1">
+	<inv_weight_static_green x="925" y="12" width="36" height="48" stretch="1">
 		<texture color="green">ui_hud_hazard_cant_walk_weight</texture>
 	</inv_weight_static_green>
-	<inv_weight_static_yellow x="860" y="12" width="30" height="40" stretch="1">
+	<inv_weight_static_yellow x="925" y="12" width="36" height="48" stretch="1">
 		<texture color="yellow">ui_hud_hazard_cant_walk_weight</texture>
 	</inv_weight_static_yellow>
-	<inv_weight_static_red x="860" y="12" width="30" height="40" stretch="1">
+	<inv_weight_static_red x="925" y="12" width="36" height="48" stretch="1">
 		<texture color="red">ui_hud_hazard_cant_walk_weight</texture>
 	</inv_weight_static_red>
 	
 	<!-- Яд -->
-	<inv_poison_static_green x="825" y="12" width="30" height="40" stretch="1">
-		<texture color="green">ui_hud_hazard_chemical_area</texture>
-	</inv_poison_static_green>
-	<inv_poison_static_yellow x="825" y="12" width="30" height="40" stretch="1">
-		<texture color="yellow">ui_hud_hazard_chemical_area</texture>
-	</inv_poison_static_yellow>
-	<inv_poison_static_red x="825" y="12" width="30" height="40" stretch="1">
+	<inv_poison_static_red x="880" y="12" width="36" height="48" stretch="1">
 		<texture color="red">ui_hud_hazard_chemical_area</texture>
 	</inv_poison_static_red>
 	

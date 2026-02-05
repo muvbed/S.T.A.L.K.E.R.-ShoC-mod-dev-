@@ -57,6 +57,8 @@
 	<info_portion id="bar_bar_osvedomitel_info_05"></info_portion>
 	
 	<info_portion id="arts_informator_info_asked"></info_portion>
+	
+	<info_portion id="treasures_informator_info_asked"></info_portion>
 
 	<!-- BAR HUNTER QUEST -->
 	<info_portion id="bar_bar_hunter_quest_start">

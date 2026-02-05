@@ -3,16 +3,6 @@ zoom_hide_crosshair		= true
 attach_place_idx		= 0
 item_visual             = dynamics\weapons\wpn_svu\wpn_svu_hud
 
-zoom_dof_near = 0.25
-zoom_dof_focus = 0.5
-
-hud_fov_zoom_factor = 0.7 ;аналогичный параметр работает и с прицелами
-
-inertion_aim_origin_offset = 0.007
-inertion_aim_speed = 10
-
-inertion_origin_offset = -0.03
-
 hands_position				= 0.0,0.0,-0.15
 hands_orientation			= 0.0,0.0,0.0
 
@@ -24,12 +14,6 @@ aim_hud_offset_rot = 0.0,0.0,0.0
 
 aim_hud_offset_pos_16x9 = 0.0,-0.003,-0.01
 aim_hud_offset_rot_16x9 = 0.0,0.0,0.0
-
-aim_hud_offset_alt_pos = -0.012,0.025,-0.05
-aim_hud_offset_alt_rot = 0.0,0.0,0.0
-
-aim_hud_offset_alt_pos_16x9 = -0.012,0.025,-0.1
-aim_hud_offset_alt_rot_16x9 = 0.0,0.0,0.0
 
 item_position				= 0,0,0
 item_orientation			= 0,0,0
@@ -91,7 +75,6 @@ autoshoot_anm_idle_aim_start_empty = true
 lock_time_anm_idle_aim_start_empty = 0.2
 autoshoot_anm_idle_aim_start_jammed = true
 lock_time_anm_idle_aim_start_jammed = 0.2
-
 anm_idle_aim_start             = svu_aim_start
 anm_idle_aim_start_empty       = svu_aim_start, svu_aim_start_empty
 anm_idle_aim_start_jammed      = svu_aim_start, svu_aim_start_jammed
@@ -103,14 +86,12 @@ anm_idle_aim_scope             = svu_aim, idle_aim
 anm_idle_aim_scope_empty       = svu_aim, idle_aim_empty
 anm_idle_aim_scope_jammed      = svu_aim, idle_aim_jammed
 
-
 autoshoot_anm_idle_aim_end = true
 lock_time_anm_idle_aim_end = 0.25
 autoshoot_anm_idle_aim_end_empty = true
 lock_time_anm_idle_aim_end_empty = 0.25
 autoshoot_anm_idle_aim_end_jammed = true
 lock_time_anm_idle_aim_end_jammed = 0.25
-
 anm_idle_aim_end               = svu_aim_end
 anm_idle_aim_end_empty         = svu_aim_end, svu_aim_end_empty
 anm_idle_aim_end_jammed        = svu_aim_end, svu_aim_end_jammed
@@ -265,7 +246,6 @@ lock_time_anm_unload_mag_jammed = 0.8
 anm_unload_mag_jammed                        = svu_draw, idle_jammed
 lock_time_anm_unload_mag_empty = 0.8
 anm_unload_mag_empty                         = svu_draw, idle_empty
-
 
 ;включение налобника//////////////////////////////////////////////////////////////////////////
 anm_headlamp_on = svu_headflash

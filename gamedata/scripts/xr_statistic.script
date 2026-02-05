@@ -30,7 +30,7 @@ local killCountProps = {
 	pseudodog_weak 		= 7, 	pseudodog_normal 		= 7, 	pseudodog_strong 		= 8,    psy_dog 		= 10,
 	zombie_weak 		= 4, 	zombie_strong 			= 5,
 	snork_weak 			= 5, 	snork_normal 			= 5, 	snork_strong 			= 6,
-	burer_weak 			= 11, 	burer_strong 			= 13,
+	burer_weak 			= 11, 
 	bloodsucker_weak 	= 12, 	bloodsucker_normal 		= 12, 	bloodsucker_strong 		= 13,
 	chimera_weak 		= 13, 
 	pseudo_gigant_weak 	= 15,

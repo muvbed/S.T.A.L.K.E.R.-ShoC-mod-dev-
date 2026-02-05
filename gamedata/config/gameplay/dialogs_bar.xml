@@ -4992,6 +4992,76 @@
             </phrase>
         </phrase_list>
     </dialog>
+    <dialog id="treasures_informator_info_introduce">
+    	<dont_has_info>treasures_informator_info_asked</dont_has_info>
+        <phrase_list>
+            <phrase id="0">
+                <text>treasures_informator_info_start</text>
+                <next>1</next>
+            </phrase>
+          	<phrase id="1">
+                <text>treasures_informator_info_1</text>
+                <give_info>treasures_informator_info_asked</give_info>
+                <next>11</next>
+                <next>9</next>
+            </phrase>
+            <phrase id="11">
+                <text>treasures_informator_info_11</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>treasures_informator_info_2</text>
+                <next>21</next>
+                <next>9</next>
+            </phrase>
+            <phrase id="21">
+            	<precondition>bar_dialogs.treasures_informator_has_money</precondition>
+                <text>treasures_informator_info_21</text>
+                <next>3</next>
+            </phrase>
+            <phrase id="9">
+                <text>treasures_informator_info_reject</text>
+            </phrase>
+            <phrase id="3">
+                <text>treasures_informator_info_3</text>
+                <action>bar_dialogs.treasures_informator_give_money</action>
+                <action>bar_dialogs.treasures_informator_give_target</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="treasures_informator_info">
+    	<has_info>treasures_informator_info_asked</has_info>
+        <phrase_list>
+            <phrase id="0">
+                <text>treasures_informator_info_0</text>
+                <next>1</next>
+                <next>2</next>
+            </phrase>
+            <phrase id="1">
+            	<precondition>bar_dialogs.treasures_informator_target_not_exist</precondition>
+                <text>treasures_informator_info_empty</text>
+            </phrase>
+            <phrase id="2">
+            	<precondition>bar_dialogs.treasures_informator_target_exist</precondition>
+                <text>treasures_informator_info_2</text>
+                <next>21</next>
+                <next>9</next>
+            </phrase>
+            <phrase id="21">
+            	<precondition>bar_dialogs.treasures_informator_has_money</precondition>
+                <text>treasures_informator_info_21</text>
+                <next>3</next>
+            </phrase>
+            <phrase id="9">
+                <text>treasures_informator_info_reject</text>
+            </phrase>
+            <phrase id="3">
+                <text>treasures_informator_info_3</text>
+                <action>bar_dialogs.treasures_informator_give_money</action>
+                <action>bar_dialogs.treasures_informator_give_target</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
 	<dialog id="arts_informator_info">
     	<precondition>bar_dialogs.arts_informator_has_infos</precondition>
         <phrase_list>

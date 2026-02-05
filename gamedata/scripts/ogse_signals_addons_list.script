@@ -12,6 +12,7 @@ addons = {
 	"ogse",
 	"ogse_actor_conditions_mgr",
 	"ogse_sleep_mgr",
+	"toxic_area",
 	"dsh_cop_weather",
 	"amk_offline_alife",
 	"ogse_surge_mgr",

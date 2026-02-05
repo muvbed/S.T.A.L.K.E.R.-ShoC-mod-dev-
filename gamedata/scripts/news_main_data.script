@@ -23,7 +23,7 @@ local ft = {}
 --Главная функция
 
 function show_news_main()
-    if isIndoor(level.name()) or chk_Vibros() or ogse.var_exists("need_shutdown_stalker_news") then
+    if isIndoor(level.name()) or chk_Vibros() then
         return
     end
     local t_duwn = 60000 -- стандартный диапазон времени выдачи сообщений
@@ -44,24 +44,16 @@ function show_news_main()
             prob9,
             prob10
         }
-    elseif (has_alife_info("pre_blowout") and not has_alife_info("pre_blowout2")) or (has_alife_info("blowout")) then
+    elseif (has_alife_info("pre_blowout") and not has_alife_info("pre_blowout2")) or has_alife_info("blowout") then
         ft = {
             prob7,
             prob10
         }
     elseif ogse_surge_mgr.actor_in_hideout then
         ft = {
-            prob7,
-            prob7,
-            prob7,
-            prob7,
-            prob7,
-            prob7,
-            prob11,
-            prob7,
             prob7
         }
-    else
+    elseif not has_alife_info("pre_blowout") and not has_alife_info("pre_blowout2") and not has_alife_info("blowout") then
         ft = {
             prob11
         }

@@ -85,7 +85,7 @@ local function actor_on_footstep()
 		variation = math.random(0.0, ssfx_rf_vol_variation * 100) / 100
 
 		Footstep_Snd[rand]:play(db.actor, 0, sound_object.s2d)
-		Footstep_Snd[rand].volume = (math.clamp(Base_Vol * (ssfx_rf_vol + variation) * Vol_Mod, 0.0, 1.0)) / 5;
+		Footstep_Snd[rand].volume = (math.clamp(Base_Vol * (ssfx_rf_vol + variation) * Vol_Mod, 0.0, 1.0)) / 2;
 
 		--log3("* RAIN - FOOTSTEP : [%s] vol:%s base:%s", rand, Footstep_Snd[rand].volume, Base_Vol)
 	end

@@ -2,17 +2,6 @@
 zoom_hide_crosshair	= true
 attach_place_idx	= 0
 item_visual		= dynamics\weapons\wpn_vintorez\wpn_vintorez_hud.ogf
-hud_fov_factor = 0.85
-hud_fov_zoom_factor = 0.65 ;аналогичный параметр работает и с прицелами
-hud_recalc_koef = 1.6
-
-inertion_pitch_offset_r = 0
-inertion_pitch_offset_n = 0
-inertion_pitch_offset_d = 0
-inertion_origin_offset = -0.05
-
-inertion_aim_origin_offset = 0.005
-inertion_aim_speed = 10
 
 hands_position				= 0.0,-0.0225,-0.07
 hands_orientation			= 0.0,0.0,0.0
@@ -25,12 +14,6 @@ aim_hud_offset_rot = -0.00350000,0.000000,0.0
 
 aim_hud_offset_pos_16x9 = -0.000100,0.018500,-0.020000
 aim_hud_offset_rot_16x9 = -0.003500,0.000000,0.000000
-
-aim_hud_offset_alt_pos = 0.000600,0.0185000,-0.02
-aim_hud_offset_alt_rot = -0.00350000,0.000000,0.0
-
-aim_hud_offset_alt_pos_16x9 = -0.000100,0.018500,-0.020000
-aim_hud_offset_alt_rot_16x9 = -0.003500,0.000000,0.000000
 
 item_position		= 0.0,0.0,0.0
 item_orientation	= 0.0,0.0,0.0
@@ -49,15 +32,10 @@ shell_dir               = 0.0, 0.0, 0.0
 shell_bone		= bolt
 
 fire_point		= 0.0,-0.01,0.532
+shoot_point		= 0.0,-0.01,-0.7
 fire_bone      	        = wpn_body
 fire_point2		= 0.0,-0.01,0.532
 fire_bone2		= wpn_body
-
-
-
-mask_firemode_1 = 
-mask_firemode_a = _auto
-
 
 disable_bore = true                                            ;отключение анимации скуки
 
@@ -65,7 +43,6 @@ mix_shoot_after_idle = true                                    ;микс первого выс
 mix_shoot_after_shoot_in_queue = true                          ;микс между серией выстрелов
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 ;Доставание///////////////////////////////////////////////////
 anm_show                   = vss_draw
@@ -99,7 +76,6 @@ autoshoot_anm_idle_aim_start_empty = true
 lock_time_anm_idle_aim_start_empty = 0.2
 autoshoot_anm_idle_aim_start_jammed = true
 lock_time_anm_idle_aim_start_jammed = 0.2
-
 anm_idle_aim_start             = vss_aim_start
 anm_idle_aim_start_empty       = vss_aim_start
 anm_idle_aim_start_jammed      = vss_aim_start
@@ -111,14 +87,12 @@ anm_idle_aim_scope             = vss_aim, idle_aim
 anm_idle_aim_scope_empty       = vss_aim, idle_aim
 anm_idle_aim_scope_jammed      = vss_aim, idle_aim
 
-
 autoshoot_anm_idle_aim_end = true
 lock_time_anm_idle_aim_end = 0.25
 autoshoot_anm_idle_aim_end_empty = true
 lock_time_anm_idle_aim_end_empty = 0.25
 autoshoot_anm_idle_aim_end_jammed = true
 lock_time_anm_idle_aim_end_jammed = 0.25
-
 anm_idle_aim_end               = vss_aim_end
 anm_idle_aim_end_empty         = vss_aim_end
 anm_idle_aim_end_jammed        = vss_aim_end
@@ -265,7 +239,6 @@ anm_reload_jammed_last               = vss_revival
 anm_reload_ammochange                = vss_reload
 anm_reload_empty_ammochange          = vss_reload_full
 
-
 ;Смена режима огня//////////////////////////////////////////////////////////////////////////
 use_firemode_change_anim = true
 
@@ -290,60 +263,6 @@ lock_time_anm_unload_mag_jammed = 0.8
 anm_unload_mag_jammed                        = vss_draw  
 lock_time_anm_unload_mag_empty = 0.8
 anm_unload_mag_empty                         = vss_draw
-
-;Включение ЛЦУ//////////////////////////////////////////////////////////////////////////
-anm_laser_on = vss_lam
-lock_time_start_anm_laser_on = 0.45
-lock_time_end_anm_laser_on = 0.65
-
-anm_laser_on_empty = vss_lam
-lock_time_start_anm_laser_on_empty = 0.45
-lock_time_end_anm_laser_on_empty = 0.65
-
-anm_laser_on_jammed = vss_lam, idle_jammed
-lock_time_start_anm_laser_on_jammed = 0.45
-lock_time_end_anm_laser_on_jammed = 0.65
-
-
-;Выключение ЛЦУ//////////////////////////////////////////////////////////////////////////
-anm_laser_off = vss_lam
-lock_time_start_anm_laser_off = 0.45
-lock_time_end_anm_laser_off = 0.65
-
-anm_laser_off_empty = vss_lam
-lock_time_start_anm_laser_off_empty = 0.45
-lock_time_end_anm_laser_off_empty = 0.65
-
-anm_laser_off_jammed = vss_lam, idle_jammed
-lock_time_start_anm_laser_off_jammed = 0.45
-lock_time_end_anm_laser_off_jammed = 0.65
-
-;Включение фонаря//////////////////////////////////////////////////////////////////////////
-anm_torch_on = vss_flash
-lock_time_start_anm_torch_on = 0.45
-lock_time_end_anm_torch_on = 0.65
-
-anm_torch_on_empty = vss_flash
-lock_time_start_anm_torch_on_empty = 0.45
-lock_time_end_anm_torch_on_empty = 0.65
-
-anm_torch_on_jammed = vss_flash, idle_jammed
-lock_time_start_anm_torch_on_jammed = 0.45
-lock_time_end_anm_torch_on_jammed = 0.65
-
-
-;Выключение фонаря//////////////////////////////////////////////////////////////////////////
-anm_torch_off = vss_flash
-lock_time_start_anm_torch_off = 0.45
-lock_time_end_anm_torch_off = 0.65
-
-anm_torch_off_empty = vss_flash
-lock_time_start_anm_torch_off_empty = 0.45
-lock_time_end_anm_torch_off_empty = 0.65
-
-anm_torch_off_jammed = vss_flash, idle_jammed
-lock_time_start_anm_torch_off_jammed = 0.45
-lock_time_end_anm_torch_off_jammed = 0.65
 
 
 ;включение налобника//////////////////////////////////////////////////////////////////////////

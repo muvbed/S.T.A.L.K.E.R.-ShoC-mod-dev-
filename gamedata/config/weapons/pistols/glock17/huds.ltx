@@ -1,8 +1,5 @@
 [wpn_glock17_hud]:hud_base
 zoom_hide_crosshair			= true
-zoom_dof_near = 0.48
-zoom_dof_focus = 0.53
-
 
 hands_position				= 0.0,-0.13,0.03
 hands_orientation			= 0.0,0.0,0.0
@@ -27,41 +24,10 @@ shell_bone              	= wpn_body
 fire_point			= -0.010,0.10,0.37
 fire_bone               	= wpn_body
 
-mask_firemode_1 = 
-mask_firemode_a = _auto
-mask_firemode_3 = _auto
 
-disable_detector_anm_changefiremode_from_1_to_a_empty = true   ;детектор автоматически прячется при вызове обозначенной в команде анимации
-disable_detector_anm_changefiremode_from_a_to_1_empty = true
-disable_detector_anm_changefiremode_from_1_to_3_empty = true
-disable_detector_anm_changefiremode_from_3_to_1_empty = true
-
-disable_light_misfires_with_detector = true                    ;отключение вероятности легкой осечки в паре с детектором.
 disable_bore = true                                            ;отключение анимации скуки
-allow_halfaimstate = false                                     ;если отпустить прицеливание продолжая стрелять оружие опускается чуть ниже, скорость передвижения увеличивается.
 mix_shoot_after_idle = true                                    ;микс первого выстрела с анимациями idle
 mix_shoot_after_shoot_in_queue = true                          ;микс между серией выстрелов
-
-immediate_unhide_anm_reload_jammed_detector = true             ;детектор будет доставаться после обозначенной анимации без синхронных аним с пистолетом, т.е. отдельно.
-immediate_unhide_anm_reload_jammed_last_detector = true
-immediate_unhide_anm_reload_auto_jammed_detector = true
-immediate_unhide_anm_reload_auto_jammed_last_detector = true
-
-immediate_unhide_anm_reload_detector = true
-immediate_unhide_anm_reload_empty_detector = true
-immediate_unhide_anm_reload_auto_detector = true
-immediate_unhide_anm_reload_auto_empty_detector = true
-
-immediate_unhide_anm_reload_ammochange_detector = true
-immediate_unhide_anm_reload_empty_ammochange_detector = true
-immediate_unhide_anm_reload_auto_ammochange_detector = true
-immediate_unhide_anm_reload_auto_empty_ammochange_detector = true
-
-immediate_unhide_anm_changefiremode_from_1_to_a_empty_detector = true
-immediate_unhide_anm_changefiremode_from_1_to_3_empty_detector = true
-immediate_unhide_anm_changefiremode_from_a_to_1_empty_detector = true
-immediate_unhide_anm_changefiremode_from_3_to_1_empty_detector = true
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -102,7 +68,6 @@ autoshoot_anm_idle_aim_start_empty = true
 lock_time_anm_idle_aim_start_empty = 0.2
 autoshoot_anm_idle_aim_start_jammed = true
 lock_time_anm_idle_aim_start_jammed = 0.2
-
 anm_idle_aim_start             = glock17_aim_start
 anm_idle_aim_start_empty       = glock17_aim_start, idle_empty
 anm_idle_aim_start_jammed      = glock17_aim_start, idle_jammed
@@ -117,7 +82,6 @@ autoshoot_anm_idle_aim_end_empty = true
 lock_time_anm_idle_aim_end_empty = 0.25
 autoshoot_anm_idle_aim_end_jammed = true
 lock_time_anm_idle_aim_end_jammed = 0.25
-
 anm_idle_aim_end               = glock17_aim_end
 anm_idle_aim_end_empty         = glock17_aim_end, idle_empty
 anm_idle_aim_end_jammed        = glock17_aim_end, idle_jammed
@@ -225,13 +189,7 @@ anm_shoot_aim_jammed_sil = glock17_shoot_aim, idle_jammed
 anm_shoot_aim_last       = glock17_shoot_aim_empty
 anm_shoot_aim_last_sil   = glock17_shoot_aim_empty
 
-
 ;Осечка//////////////////////////////////////////////////
-lock_time_anm_shoot_lightmisfire = 1.55
-anm_shoot_lightmisfire = glock17_light_misfire
-lock_time_anm_shoot_lightmisfire_aim = 1.55
-anm_shoot_lightmisfire_aim = glock17_aim_light_misfire, glock17_light_misfire
-
 lock_time_anm_fakeshoot_empty = 0.20
 anm_fakeshoot_empty      = glock17_dry_empty, idle_empty
 lock_time_anm_fakeshoot_aim_empty = 0.20
@@ -244,26 +202,10 @@ anm_fakeshoot_aim_jammed     = glock17_dry_aim, idle_jammed
 ;Перезарядка/////////////////////////////////////////////////////////////////////
 anm_reload                           = glock17_reload
 anm_reload_empty                     = glock17_reload_full
-anm_reload_detector                  = glock17_det_reload, glock17_reload
-anm_reload_empty_detector            = glock17_det_reload_full, glock17_reload_full
 anm_reload_jammed                    = glock17_revival
 anm_reload_jammed_last               = glock17_revival_last
 anm_reload_ammochange                = glock17_reload
 anm_reload_empty_ammochange          = glock17_reload_full
-anm_reload_ammochange_detector       = glock17_det_reload, glock17_reload
-anm_reload_empty_ammochange_detector = glock17_det_reload_full, glock17_reload_full
-
-anm_reload_jammed_detector           = glock17_det_revival
-use_jammed_detector_snd = true
-anm_reload_jammed_last_detector      = glock17_det_revival_last
-use_jammed_last_detector_snd = true
-
-lock_time_anm_reload_detector = 2.81        ;Блокировка для правильной работы детектора в паре. Задавать время блока больше на 0.08 времени самой анимации. Если время анимации - 1.01 то время блока - 1.09
-lock_time_anm_reload_empty_detector = 3.71
-lock_time_anm_reload_jammed_detector = 2.21
-lock_time_anm_reload_jammed_last_detector = 2.05
-lock_time_anm_reload_ammochange_detector = 2.81
-lock_time_anm_reload_empty_ammochange_detector = 3.71
 
 ;Смена режима огня//////////////////////////////////////////////////////////////////////////
 use_firemode_change_anim = true
@@ -276,10 +218,6 @@ anm_changefiremode_from_1_to_a_jammed		     = glock17_firemode_1_to_a, idle_jamm
 lock_time_anm_changefiremode_from_1_to_a_empty = 1.53
 anm_changefiremode_from_1_to_a_empty		     = glock17_firemode_1_to_a_empty, idle_empty
 
-disable_detector_anm_changefiremode_from_1_to_a_empty_detector = true
-lock_time_anm_changefiremode_from_1_to_a_empty_detector = 1.65
-anm_changefiremode_from_1_to_a_empty_detector = glock17_det_firemode_1_to_a_empty, glock17_firemode_1_to_a_empty
-
 ;1-3
 lock_time_anm_changefiremode_from_1_to_3 = 1.1
 anm_changefiremode_from_1_to_3			     = glock17_firemode_1_to_a
@@ -287,10 +225,6 @@ lock_time_anm_changefiremode_from_1_to_3_jammed = 1.1
 anm_changefiremode_from_1_to_3_jammed		     = glock17_firemode_1_to_a, glock17_firemode_1_to_a_jammed
 lock_time_anm_changefiremode_from_1_to_3_empty = 1.53
 anm_changefiremode_from_1_to_3_empty		     = glock17_firemode_1_to_a_empty
-
-disable_detector_anm_changefiremode_from_1_to_3_empty_detector = true
-lock_time_anm_changefiremode_from_1_to_3_empty_detector = 1.65
-anm_changefiremode_from_1_to_3_empty_detector = glock17_det_firemode_1_to_a_empty, glock17_firemode_1_to_a_empty
 
 ;a-1
 lock_time_anm_changefiremode_from_a_to_1 = 1.1
@@ -300,10 +234,6 @@ anm_changefiremode_from_a_to_1_jammed		     = glock17_firemode_a_to_1, glock17_f
 lock_time_anm_changefiremode_from_a_to_1_empty = 1.53
 anm_changefiremode_from_a_to_1_empty		     = glock17_firemode_a_to_1_empty
 
-disable_detector_anm_changefiremode_from_a_to_1_empty_detector = true
-lock_time_anm_changefiremode_from_a_to_1_empty_detector = 1.65
-anm_changefiremode_from_a_to_1_empty_detector = glock17_det_firemode_a_to_1_empty, glock17_firemode_a_to_1_empty
-
 ;3-1
 lock_time_anm_changefiremode_from_3_to_1 = 1.1
 anm_changefiremode_from_3_to_1			     = glock17_firemode_a_to_1
@@ -311,11 +241,6 @@ lock_time_anm_changefiremode_from_3_to_1_jammed = 1.1
 anm_changefiremode_from_3_to_1_jammed		     = glock17_firemode_a_to_1, glock17_firemode_a_to_1_jammed
 lock_time_anm_changefiremode_from_3_to_1_empty = 1.53
 anm_changefiremode_from_3_to_1_empty		     = glock17_firemode_a_to_1_empty
-
-disable_detector_anm_changefiremode_from_3_to_1_empty_detector = true
-lock_time_anm_changefiremode_from_3_to_1_empty_detector = 1.65
-anm_changefiremode_from_3_to_1_empty_detector = glock17_det_firemode_a_to_1_empty, glock17_firemode_a_to_1_empty
-
 
 ;Разрядка//////////////////////////////////////////////////////////////////////////
 use_unloadmag_anim = true
@@ -325,104 +250,6 @@ lock_time_anm_unload_mag_jammed = 0.8
 anm_unload_mag_jammed                        = glock17_draw, idle_jammed    
 lock_time_anm_unload_mag_empty = 0.8
 anm_unload_mag_empty                         = glock17_draw, idle_empty
-
-;Установка глушителя//////////////////////////////////////////////////////////////////////////
-;use_silattach_anim = true
-lock_time_anm_attach_sil = 4
-anm_attach_sil 				     = glock17_reload
-lock_time_anm_attach_sil_jammed = 4
-anm_attach_sil_jammed			     = glock17_reload
-lock_time_anm_attach_sil_empty = 4
-anm_attach_sil_empty			     = glock17_reload
-
-;Снятие глушителя//////////////////////////////////////////////////////////////////////////
-;use_sildetach_anim = true
-lock_time_anm_detach_sil = 2.5
-anm_detach_sil 								= glock17_reload
-lock_time_anm_detach_sil_jammed = 2.5
-anm_detach_sil_jammed							= glock17_reload
-lock_time_anm_detach_sil_empty = 2.5
-anm_detach_sil_empty							= glock17_reload
-
-;Доставание детектора//////////////////////////////////////////////////////////////////////////
-use_prepare_detector_anim = true
-anm_prepare_detector                             = glock17_hand_hide
-lock_time_anm_prepare_detector = 0.5
-anm_prepare_detector_jammed                      = glock17_hand_hide, idle_jammed
-lock_time_anm_prepare_detector_jammed = 0.5
-anm_prepare_detector_empty                       = glock17_hand_hide, idle_empty
-lock_time_anm_prepare_detector_empty = 0.5
-
-anm_draw_detector                                = glock17_hand_hide_end
-lock_time_anm_draw_detector = 0.40
-anm_draw_detector_jammed                         = glock17_hand_hide_end, idle_jammed
-lock_time_anm_draw_detector_jammed = 0.40
-anm_draw_detector_empty                          = glock17_hand_hide_end, idle_empty
-lock_time_anm_draw_detector_empty = 0.40
-
-;Убирание детектора//////////////////////////////////////////////////////////////////////////
-use_finish_detector_anim = true
-anm_finish_detector                             = glock17_hand_draw
-lock_time_anm_finish_detector = 0.60
-anm_finish_detector_jammed                      = glock17_hand_draw, idle_jammed
-lock_time_anm_finish_detector_jammed = 0.60
-anm_finish_detector_empty                       = glock17_hand_draw, idle_empty
-lock_time_anm_finish_detector_empty = 0.60
-
-
-;Включение ЛЦУ//////////////////////////////////////////////////////////////////////////
-anm_laser_on = glock17_lam
-lock_time_start_anm_laser_on = 0.58
-lock_time_end_anm_laser_on = 0.5
-
-anm_laser_on_empty = glock17_lam, idle_empty
-lock_time_start_anm_laser_on_empty = 0.58
-lock_time_end_anm_laser_on_empty = 0.5
-
-anm_laser_on_jammed = glock17_lam, idle_jammed
-lock_time_start_anm_laser_on_jammed = 0.58
-lock_time_end_anm_laser_on_jammed = 0.5
-
-;Выключение ЛЦУ//////////////////////////////////////////////////////////////////////////
-anm_laser_off = glock17_lam
-lock_time_start_anm_laser_off = 0.58
-lock_time_end_anm_laser_off = 0.5
-
-anm_laser_off_empty = glock17_lam, idle_empty
-lock_time_start_anm_laser_off_empty = 0.58
-lock_time_end_anm_laser_off_empty = 0.5
-
-anm_laser_off_jammed = glock17_lam, idle_jammed
-lock_time_start_anm_laser_off_jammed = 0.58
-lock_time_end_anm_laser_off_jammed = 0.5
-
-;Включение фонаря//////////////////////////////////////////////////////////////////////////
-anm_torch_on = glock17_lam
-lock_time_start_anm_torch_on = 0.58
-lock_time_end_anm_torch_on = 0.5
-
-anm_torch_on_empty = glock17_lam, idle_empty
-lock_time_start_anm_torch_on_empty = 0.58
-lock_time_end_anm_torch_on_empty = 0.5
-
-anm_torch_on_jammed = glock17_lam, idle_jammed
-lock_time_start_anm_torch_on_jammed = 0.58
-lock_time_end_anm_torch_on_jammed = 0.5
-
-;Выключение фонаря//////////////////////////////////////////////////////////////////////////
-anm_torch_off = glock17_lam
-lock_time_start_anm_torch_off = 0.58
-lock_time_end_anm_torch_off = 0.5
-
-anm_torch_off_empty = glock17_lam, idle_empty
-lock_time_start_anm_torch_off_empty = 0.58
-lock_time_end_anm_torch_off_empty = 0.5
-
-anm_torch_off_jammed = glock17_lam, idle_jammed
-lock_time_start_anm_torch_off_jammed = 0.58
-lock_time_end_anm_torch_off_jammed = 0.5
-
-
 
 ;включение налобника//////////////////////////////////////////////////////////////////////////
 anm_headlamp_on = glock17_headflash

@@ -41,6 +41,7 @@ mute = true
 [heli_move@sleep]
 path_move = heli_sleep2
 on_info = {+esc_blockpost_alarm -blowout} heli_move@blockpost_assist
+on_info2 = {=is_heli_time -blowout} heli_move@fly
 engine_sound = false
 combat_safe_altitude = -80
 

@@ -1,45 +1,5 @@
 [wpn_bm16_hud]
 
-zoom_dof_near = 0.25
-zoom_dof_focus = 0.5
-
-inertion_pitch_offset_r = -0.008
-inertion_pitch_offset_n = -0.006
-inertion_pitch_offset_d = -0.001
-inertion_origin_offset = -0.06
-
-inertion_aim_origin_offset = 0.015
-inertion_aim_speed = 10
-
-;прыжок
-hud_move_jump_offset_pos = 0,0.0,0.03
-hud_move_jump_offset_pos_16x9 = 0,0.0,0.03
-
-;падение
-hud_move_fall_offset_pos = 0,0.0,0.06
-hud_move_fall_offset_pos_16x9 = 0,0.0,0.06
-
-;приземление - первая фаза
-hud_move_landing_offset_pos = 0,-0.2,0.03
-hud_move_landing_offset_pos_16x9 = 0,-0.15,0.03
-
-additional_ammo_bone_when_jammed = false
-
-
-
-
-hud_fov_factor = 1.0
-hud_fov_zoom_factor = 0.65 ;аналогичный параметр работает и с прицелами
-
-ammo_params_toggle_shooting = false			; запретить обновлять косточки при выстрелах; для двустволок оставить false, для дробашей и остального выставить true
-ammo_params_changing_when_reload_starts = false;	; когда обновлять кости при перезарядке: если сразу после старта анимы, поставить true, если в середине, вместе со счетчиком - false (второе для дробашей)
-ammo_params_use_last_cartridge_type = true;		; будет ли использоваться тип последнего патрона (true) или тип, которым оружие заряжено; ставим true и не паримся
-ammo_params_section_0 = wpn_toz66_ammo_bones_blue
-ammo_params_section_1 = wpn_toz66_ammo_bones_red
-
-inertion_aim_default_origin_offset = 0.025
-inertion_aim_default_speed = 8
-
 zoom_hide_crosshair				= true
 
 hands_position				= 0.01,-0.032,0.05
@@ -69,11 +29,6 @@ item_visual		      = dynamics\weapons\wpn_bm16\wpn_bm16_hud
 
 disable_bore = true                                            ;отключение анимации скуки
 mix_shoot_after_idle = true                                    ;микс первого выстрела с анимациями idle
-no_jam_fire = true                                             ;осечка без выстрела
-
-use_advanced_ammo_bones = true
-ammo_params_section = wpn_toz66_ammo_bones
-
 
 lock_time_start_anm_reload = 1.25
 lock_time_end_anm_reload = 3.75
@@ -149,7 +104,6 @@ anm_idle_crouch_slow_jammed_2 = toz66_idle, idle_1
 anm_idle_slow_jammed_2        = toz66_idle, idle_1
 
 
-
 autoshoot_anm_idle_aim_start_0 = true  
 autoshoot_anm_idle_aim_start_1 = true
 autoshoot_anm_idle_aim_start_2 = true
@@ -162,7 +116,6 @@ lock_time_anm_idle_aim_start_2 = 0.2
 lock_time_anm_idle_aim_start_jammed_0 = 0.2 
 lock_time_anm_idle_aim_start_jammed_1 = 0.2 
 lock_time_anm_idle_aim_start_jammed_2 = 0.2         
-
 anm_idle_aim_start_0	      = toz66_aim_start, idle_empty
 anm_idle_aim_start_1	      = toz66_aim_start, idle_1
 anm_idle_aim_start_2	      = toz66_aim_start
@@ -189,7 +142,6 @@ lock_time_anm_idle_aim_end_2 = 0.25
 lock_time_anm_idle_aim_end_jammed_0 = 0.25 
 lock_time_anm_idle_aim_end_jammed_1 = 0.25 
 lock_time_anm_idle_aim_end_jammed_2 = 0.25      
-
 anm_idle_aim_end_0	      = toz66_aim_end, idle_empty
 anm_idle_aim_end_1            = toz66_aim_end, idle_1
 anm_idle_aim_end_2	      = toz66_aim_end
@@ -338,8 +290,6 @@ lock_time_end_anm_reload_2 = 1.4 ;1.25
 
 anm_reload_jammed_1			= toz66_revival_last
 anm_reload_jammed_2			= toz66_revival
-
-
 anm_shoot_1				= toz66_shoot_last
 anm_shoot_2				= toz66_shoot
 anm_shoot_jammed_1		        = toz66_dry_empty, toz66_shoot_last
@@ -348,14 +298,11 @@ anm_shoot_aim_1				= toz66_aim_shoot, toz66_shoot_last
 anm_shoot_aim_2				= toz66_aim_shoot, toz66_shoot
 anm_shoot_aim_jammed_1		        = toz66_aim_dry, toz66_shoot_last
 anm_shoot_aim_jammed_2			= toz66_aim_dry, toz66_shoot
-
 anm_reload_ammochange_1			= toz66_ammochange
 anm_reload_ammochange_2			= toz66_ammochange_full
-
 anm_reload_ammochange_only_1			= toz66_ammochange_full, toz66_ammochange_only_one
 anm_reload_ammochange_only_2			= toz66_ammochange_full, toz66_ammochange_only_two
 anm_reload_only_ammochange_0			= toz66_ammochange_zero
-
 
 ;Разрядка//////////////////////////////////////////////////////////////////////////
 use_unloadmag_anim = true
@@ -476,81 +423,3 @@ lock_time_end_anm_nv_off_jammed_1 = 0.5
 anm_nv_off_jammed_2 = toz66_nv_off, idle_1
 lock_time_start_anm_nv_off_jammed_2 = 0.58
 lock_time_end_anm_nv_off_jammed_2 = 0.5
-
-
-;пнв и затемнение экрана при включении
-
-mark_anm_nv_on = 0.55
-
-use_ppe_effector_anm_nv_on_0 = true
-ppe_effector_anm_nv_on_0 = black.ppe
-ppe_start_anm_nv_on_0 = 0.35
-ppe_end_anm_nv_on_0 = 0.6
-lock_time_start_anm_nv_on_0 = 0.55
-lock_time_end_anm_nv_on_0 = 0.75
-
-use_ppe_effector_anm_nv_on_1 = true
-ppe_effector_anm_nv_on_1 = black.ppe
-ppe_start_anm_nv_on_1 = 0.35
-ppe_end_anm_nv_on_1 = 0.6
-lock_time_start_anm_nv_on_1 = 0.55
-lock_time_end_anm_nv_on_1 = 0.75
-
-use_ppe_effector_anm_nv_on_2 = true
-ppe_effector_anm_nv_on_2 = black.ppe
-ppe_start_anm_nv_on_2 = 0.35
-ppe_end_anm_nv_on_2 = 0.6
-lock_time_start_anm_nv_on_2 = 0.55
-lock_time_end_anm_nv_on_2 = 0.75
-
-use_ppe_effector_anm_nv_on_jammed_1 = true
-ppe_effector_anm_nv_on_jammed_1 = black.ppe
-ppe_start_anm_nv_on_jammed_1 = 0.35
-ppe_end_anm_nv_on_jammed_1 = 0.6
-lock_time_start_anm_nv_on_jammed_1 = 0.55
-lock_time_end_anm_nv_on_jammed_1 = 0.75
-
-use_ppe_effector_anm_nv_on_jammed_2 = true
-ppe_effector_anm_nv_on_jammed_2 = black.ppe
-ppe_start_anm_nv_on_jammed_2 = 0.35
-ppe_end_anm_nv_on_jammed_2 = 0.6
-lock_time_start_anm_nv_on_jammed_2 = 0.55
-lock_time_end_anm_nv_on_jammed_2 = 0.75
-
-mark_anm_nv_off = 0.3
-
-use_ppe_effector_anm_nv_off_0 = true
-ppe_effector_anm_nv_off_0 = black.ppe
-ppe_start_anm_nv_off_0 = 0.2
-ppe_end_anm_nv_off_0 = 0.5
-lock_time_start_anm_nv_off_0 = 0.3
-lock_time_end_anm_nv_off_0 = 1.0
-
-use_ppe_effector_anm_nv_off_1 = true
-ppe_effector_anm_nv_off_1 = black.ppe
-ppe_start_anm_nv_off_1 = 0.2
-ppe_end_anm_nv_off_1 = 0.5
-lock_time_start_anm_nv_off_1 = 0.3
-lock_time_end_anm_nv_off_1 = 1.0
-
-use_ppe_effector_anm_nv_off_2 = true
-ppe_effector_anm_nv_off_2 = black.ppe
-ppe_start_anm_nv_off_2 = 0.2
-ppe_end_anm_nv_off_2 = 0.5
-lock_time_start_anm_nv_off_2 = 0.3
-lock_time_end_anm_nv_off_2 = 1.0
-
-use_ppe_effector_anm_nv_off_jammed_1 = true
-ppe_effector_anm_nv_off_jammed_1 = black.ppe
-ppe_start_anm_nv_off_jammed_1 = 0.2
-ppe_end_anm_nv_off_jammed_1 = 0.5
-lock_time_start_anm_nv_off_jammed_1 = 0.3
-lock_time_end_anm_nv_off_jammed_1 = 1.0
-
-use_ppe_effector_anm_nv_off_jammed_2 = true
-ppe_effector_anm_nv_off_jammed_2 = black.ppe
-ppe_start_anm_nv_off_jammed_2 = 0.2
-ppe_end_anm_nv_off_jammed_2 = 0.5
-lock_time_start_anm_nv_off_jammed_2 = 0.3
-lock_time_end_anm_nv_off_jammed_2 = 1.0
-zoom_rotate_y		= -0.003900

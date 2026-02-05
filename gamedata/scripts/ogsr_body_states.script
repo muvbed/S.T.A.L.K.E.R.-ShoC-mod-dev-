@@ -42,8 +42,6 @@ local function on_key_press(key, bind)
         level.add_cam_effector("camera_effects\\actor_move\\lean_left.anm", 7212, false, "")
     elseif bind == key_bindings.kJUMP then
         level.add_cam_effector("camera_effects\\actor_move\\jump.anm", 7213, false, "")
-    elseif bind == key_bindings.kSPRINT_TOGGLE then
-        level.add_cam_effector("camera_effects\\actor_move\\sprint.anm", 7214, false, "")
     elseif bind == key_bindings.kCROUCH then
         level.add_cam_effector("camera_effects\\actor_move\\crouch_down.anm", 7215, false, "")
         crouch = true

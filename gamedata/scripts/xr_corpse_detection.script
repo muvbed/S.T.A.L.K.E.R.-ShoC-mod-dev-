@@ -625,7 +625,7 @@ function action_search_corpse:execute()
 	-- фикс застревания на месте (что-то мешает пройти)
 	local lvid = npc:level_vertex_id()
 	if lvid == self.last_vertex_id then
-		if self.last_vertex_time + (npc:movement_type() == move.stand and 1500 or 6000) < time_global() then
+		if self.last_vertex_time + (npc:movement_type() == move.stand and 250 or 1000) < time_global() then
 			if dist > 3 then
 				if npc:movement_type() ~= move.stand then
 					npc:enable_memory_object(target,false)

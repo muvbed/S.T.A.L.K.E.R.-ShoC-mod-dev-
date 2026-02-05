@@ -23,12 +23,6 @@
         <text>enc_mutant_burer_general</text>
     </article>
 
-    <article id="enc_psy_burer" name="psy-burer" group="Mutants">
-        <texture>ui_npc_monster_burer_strong</texture>
-        <text>enc_mutant_psyburer</text>
-    </article>
-
-
     <!-------------------------------- CAT ----------------------------->
 
     <article id="mutant_cat_general" name="Cat" group="Mutants">

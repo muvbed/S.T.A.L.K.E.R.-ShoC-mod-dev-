@@ -6,6 +6,7 @@ $prefetch                               = 16
 visual                                  = monsters\burer\burer
 corpse_visual                           = monsters\burer\burer
 icon                                    = ui_npc_monster_burer
+
 MaxHealthValue                          = 150
 
 Spawn_Inventory_Item_Section            = mutant_burer_hand
@@ -51,6 +52,13 @@ Velocity_Steal							= 1.5,		3.0,			3.0,		1,		1
 Accel_Generic                           = 1.5
 Accel_Calm                              = 1.5
 Accel_Aggressive                        = 200
+
+
+runaway_distance 						= 7
+normal_distance  						= 11
+max_runaway_time						= 6000
+run_animation_tl 						= stand_run_fwd_turn_left_
+run_animation_tr 						= stand_run_fwd_turn_right_
 
 MinAttackDist                           = 1.5
 MaxAttackDist                           = 2.5
@@ -132,34 +140,83 @@ Morale_Despondent_Speed                 = 0.1
 Morale_Stable_Speed                     = 0.1
 Morale_Despondent_Threashold            = 0.5 
 
-Gravi_Speed                             = 250
-Gravi_Step                              = 2
-Gravi_Time_To_Hold                      = 350
-Gravi_Radius                            = 5.0
-Gravi_Impulse_To_Objects                = 500.0
-Gravi_Impulse_To_Enemy                  = 1000.0
-Gravi_Hit_Power                         = 0.95
+;-------------------------------------------------------------------------
+; Shield Ability
+;-------------------------------------------------------------------------
+shield_cooldown							= 3000
+shield_time            					= 3000
+shield_keep_particle   					= anomaly2\burer_shield_01
+shield_keep_particle_period 			= 300
+Particle_Shield        					= anomaly2\burer_shield_01
+shield_animation_start 					= stand_shield_
+shield_animation_cont  					= stand_shield_idle_
 
-Tele_Max_Handled_Objects                = 5
-Tele_Time_To_Hold                       = 200
-Tele_Object_Min_Mass                    = 10.0
-Tele_Object_Max_Mass                    = 1000.0
-Tele_Find_Radius                        = 6.0
+;-------------------------------------------------------------------------
+; Anti-aim Ability
+;-------------------------------------------------------------------------
+anti_aim_timeout      					= 2       ;sec
+anti_aim_effectors    					= effector_monster_hit_1, effector_monster_hit_2, effector_monster_hit_3, effector_monster_hit_4
+anti_aim_animation    					= stand_stamina_attack_
+anti_aim_max_angle    					= 0.3
+anti_aim_detection_gain_speed  			= 10
+anti_aim_detection_loose_speed 			= 0.1
+weapon_drop_velocity  					= 8
+; IF player stamina < stamina_hit*inv_weight(weapon
+; param)*weapon_drop_stamina_k THEN weapon is dropped
+weapon_drop_stamina_k 					= 0.6
+weight_to_stamina_hit 					= 0.11    ;kg to stamina %
 
-sound_tele_hold                         = monsters\burer\burer_tele_hold
-sound_tele_throw                        = monsters\burer\burer_tele_throw
+;-------------------------------------------------------------------------
+; Gravi Ability
+;-------------------------------------------------------------------------
+Gravi_Cooldown           				= 6840 ;milisec
+Gravi_MinDist            				= 1    ;meter
+Gravi_MaxDist            				= 18   ;meter
+Gravi_Speed              				= 250  ;meter/sec
+Gravi_Step               				= 2    ;meter
+Gravi_Time_To_Hold       				= 350  ;milisec
+Gravi_Radius            			 	= 5.0
+Gravi_Impulse_To_Objects 				= 500.0
+Gravi_Impulse_To_Enemy   				= 1000.0
+Gravi_Hit_Power          				= 0.55
+gravi_animation_fire     				= stand_power_attack_
 
-scan_critical_value                     = 25.0
-scan_radius                             = 60.0
-scan_velocity_threshold                 = 3.0
-scan_decrease_value                     = 0.3
-scan_trace_time_freq                    = 2
 
-scan_sound                              = monsters\burer\burer_scan_affect_0
-scan_effector_section                   = m_burer_scan_effector
+;-------------------------------------------------------------------------
+; Tele Ability
+;-------------------------------------------------------------------------
+Tele_Max_Handled_Objects 				= 5
+Tele_Max_Time            				= 6200 ; (s) max time to be in telekinesis
+Tele_Time_To_Hold        				= 200
+Tele_Object_Min_Mass     				= 10.0
+Tele_Object_Max_Mass     				= 1000.0
+Tele_Find_Radius         				= 25.0
+Tele_Min_Distance        				= 5
+Tele_Max_Distance        				= 60
+Tele_Raise_Speed         				= 7
+Tele_Fly_Velocity        				= 50
+Tele_Object_Height       				= 3
+
+sound_tele_hold  						= monsters\burer\burer_tele_hold
+sound_tele_throw 						= monsters\burer\burer_tele_throw
+
+tele_animation_fire 					= stand_power_attack_
+tele_animation_tele 					= telekinesis_
+
+;-------------------------------------------------------------------------
+; Scanner
+;-------------------------------------------------------------------------
+scan_critical_value						= 25.0	; граничное значение
+scan_radius								= 50.0  ; радиус сканирования
+scan_velocity_threshold					= 3.0	; граничная скорость, до которой движение актера игнорируется
+scan_decrease_value						= 0.3	; уменьшение текущей суммы в секунду
+scan_trace_time_freq					= 2		; частота трейса скорости (for programmer only) (1 = 2 раза в сек)
+
+scan_sound								= monsters\burer\burer_scan_affect_0
+scan_effector_section					= m_burer_scan_effector
 
 Particle_Tele_Object                    = static\fire_distort
-Particle_Gravi_Wave                     = anomaly2\burer_wave
+Particle_Gravi_Wave                     = ogsm\ogsm_burer_wave
 Particle_Gravi_Prepare                  = anomaly2\burer_prepare
 Particle_Shield							= anomaly2\burer_shield_01
 
@@ -176,11 +233,12 @@ class                                   = SM_BURER
 
 script_binding                          = bind_monster.bind
 
-bone_torso								= bip01_spine1 
-bone_head								= bip01_head
-bone_fire								= bip01_head
+bone_torso								= chest 
+bone_head								= head
+bone_fire								= head
 weapon_usage                            = 0
 actor_restrictor                        = medium_monster
+
 
 distance_to_corpse                      = 1.2
 
@@ -188,7 +246,7 @@ selector_approach                       = 20.0,            1.0,                 
 terrain                                 = burer_terrain
 hit_type                                = wound
 
-DamagedThreshold                        = 0.3
+DamagedThreshold                        = 0.5
 
 material                                = creatures\large
 step_params                             = m_burer_step_params
@@ -232,7 +290,8 @@ luminocity_factor                       = 0.6
 transparency_threshold                  = 0.66
 
 [m_burer_attack_params]
-stand_attack_0 							= 0.5,		  0.20,	     80,        2.0, 1.0, 0.5,		 -1.6, 1.6, -1.6, 1.6,				  2.5
+stand_attack_0 							= 0.4,		  0.20,	     100,        2.0, 1.0, 0.5,		 -1.6, 1.6, -1.6, 1.6,				  2.5
+stand_stamina_attack_0 	 				= 0.4,		  0.0,	     0,         2.0, 1.0, 0.5,		 -1.6, 1.6, -1.6, 1.6,				  2.5
 
 [m_burer_attack_effector]
 duality_h                               = 0.1
@@ -255,10 +314,8 @@ ce_period_number                        = 2.0
 ce_power                                = 1.0
 
 [m_burer_step_params]
-stand_walk_fwd_0 						= 1,	  0.4,    1,      0.9,    0.7   
-stand_walk_dmg_0 						= 1,	  0.4,    1,      0.9,    0.7  
-stand_run_fwd_0	 						= 1,	  0.4,    1,      0.9,    0.6   
-stand_run_dmg_0	    					= 1,	  0.4,    1,      0.9,    0.6 
+stand_walk_fwd_0 						= 1,	  0.4,    1,      0.9,    0.7,    
+stand_run_fwd_0	 						= 1,	  0.4,    1,      0.9,    0.6,    
 
 [burer_immunities]
 burn_immunity                           = 0.9
@@ -274,33 +331,47 @@ fire_wound_immunity                     = 0.4
 [m_Burer_damage]
 default									= 0.01, -1, 0.1
 
-bip01_pelvis							= 0.30, -1, 0.4
-bip01_spine								= 0.45, -1, 0.5
-bip01_spine1							= 0.55, -1, 0.6
+hip										= 0.30, -1, 0.4
+cloak									= 0.45, -1, 0.5
+left_cloak								= 0.45, -1, 0.5
+right_cloak								= 0.45, -1, 0.5
+spine									= 0.45, -1, 0.5
+chest									= 0.55, -1, 0.6
+chest_1									= 0.55, -1, 0.6
 
-bip01_l_thigh							= 0.20, -1, 0.3
-bip01_l_calf							= 0.15, -1, 0.2
-bip01_l_foot							= 0.05, -1, 0.1
+right_thing								= 0.20, -1, 0.3
+right_leg								= 0.15, -1, 0.2
+right_foot								= 0.05, -1, 0.1
 
-bip01_r_thigh							= 0.20, -1, 0.3
-bip01_r_calf							= 0.15, -1, 0.2
-bip01_r_foot							= 0.05, -1, 0.1
+left_thing								= 0.20, -1, 0.3
+left_leg								= 0.15, -1, 0.2
+left_foot								= 0.05, -1, 0.1
 
-bip01_l_clavicle						= 0.15, -1, 0.2
-bip01_l_upperarm						= 0.10, -1, 0.1
-bip01_l_forearm							= 0.05, -1, 0.1
+right_sholder							= 0.15, -1, 0.2				
+right_arm								= 0.10, -1, 0.1
+right_forearm							= 0.05, -1, 0.1
+right_sleeve							= 0.05, -1, 0.1
 
-bip01_r_clavicle						= 0.15, -1, 0.2
-bip01_r_upperarm						= 0.10, -1, 0.1
-bip01_r_forearm							= 0.05, -1, 0.1
+left_sholder							= 0.15, -1, 0.2
+left_arm								= 0.10, -1, 0.1
+left_forearm							= 0.05, -1, 0.1
+left_sleeve								= 0.05, -1, 0.1
 
-bip01_neck								= 0.80, -1, 0.7
+neck									= 0.80, -1, 0.7
 
-bip01_head								= 0.90, -1, 0.6
-bone01									= 0.90, -1, 0.6
+head									= 0.90, -1, 0.6
+brow									= 0.90, -1, 0.6
+hood									= 0.90, -1, 0.6
 
-bip01_ponytail1							= 1.00, -1, 0.8, 10
-bip01_ponytail2							= 1.00, -1, 0.8, 10
+jaw										= 0.90, -1, 0.7
+left_lip								= 0.90, -1, 0.7
+right_lip								= 0.90, -1, 0.7
+
+left_click								= 1.00, -1, 0.8, 10
+left_eye								= 1.00, -1, 0.8, 10
+right_click								= 1.00, -1, 0.8, 10
+right_eye								= 1.00, -1, 0.8, 10
+
 
 [m_burer_scan_effector]
 duality_h                               = 0.003
@@ -319,19 +390,11 @@ time_release                            = 0.85
 
 [burer_terrain]
 	255,000,255,255
+	255,008,255,255
+	255,009,255,255
 
 [burer_weak]:m_burer_e
 $spawn                                  = "monsters\burers\burer_weak"
-
-[burer_strong]:m_burer_e
-$spawn                                  = "monsters\burers\burer_strong"
-visual									= monsters\burer\burer_1
-rank                                    = 801
-spec_rank                               = strong
-Spawn_Inventory_Item_Probability        = 0.6
-panic_threshold                         = 0.15
-sound_gravi_wave                        = monsters\burer2\burer_gravi_wave_1
-Particle_Gravi_Wave                     = ogsm\ogsm_burer_wave
 
 [arena_burer_1]:burer_weak
 $spawn                                  = "monsters\burers\arena_burer_1"

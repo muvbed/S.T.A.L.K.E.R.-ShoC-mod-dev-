@@ -1,28 +1,7 @@
- [wpn_sig550_hud]:hud_base
+[wpn_sig550_hud]:hud_base
 zoom_hide_crosshair	= true
 attach_place_idx	= 0
 item_visual		= dynamics\weapons\wpn_sig550\wpn_sig550_hud
-
-firemode_bones_total = firemode_auto, firemode_single, firemode_triple
-firemode_bones_1 = firemode_single
-firemode_bones_3 = firemode_triple
-firemode_bones_a = firemode_auto
-
-use_advanced_ammo_bones = false
-ammo_params_section = wpn_sig550_ammo_bones
-
-zoom_dof_near = 0.25
-zoom_dof_focus = 0.5
-
-hud_fov_zoom_factor = 0.85
-
-;inertion_pitch_offset_r = 0
-;inertion_pitch_offset_n = 0
-;inertion_pitch_offset_d = 0
-;inertion_origin_offset = -0.05
-
-inertion_aim_origin_offset = 0.01
-inertion_aim_speed = 10
 
 hands_position		    = 0.0,0.01,-0.065
 hands_orientation	    = 0.0,0.0,0.0
@@ -57,15 +36,11 @@ fire_bone      	   = wpn_body
 fire_point2		   = 0,-0.034,0.586
 fire_bone2		   = wpn_body
 
-
 mix_shoot_after_idle = true                                    ;микс первого выстрела с анимациями idle
 mix_shoot_after_shoot_in_queue = true                          ;микс между серией выстрелов
-
-gl_ammo_params_section_0 = wpn_sig550_ammo_bones_m209
-gl_ammo_params_section_1 = wpn_sig550_ammo_bones_m397a1
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;Доставание///////////////////////////////////////////////////
+;ƒоставание///////////////////////////////////////////////////
 anm_show                   = sg550_draw
 anm_show_empty             = sg550_draw, idle_empty
 anm_show_jammed            = sg550_draw, idle_jammed
@@ -76,7 +51,7 @@ anm_show_g                 = sg550_glon_draw, sg550_glon_idle
 anm_show_empty_g           = sg550_glon_draw, sg550_glon_idle_empty
 anm_show_jammed_g          = sg550_glon_draw, sg550_glon_idle_jammed
 
-;Убирание/////////////////////////////////////////////////////
+;”бирание/////////////////////////////////////////////////////
 anm_hide                   = sg550_hide
 anm_hide_empty             = sg550_hide, idle_empty
 anm_hide_jammed            = sg550_hide, idle_jammed
@@ -87,7 +62,7 @@ anm_hide_g                 = sg550_glon_hide, sg550_glon_idle
 anm_hide_empty_g           = sg550_glon_hide, sg550_glon_idle_empty
 anm_hide_jammed_g          = sg550_glon_hide, sg550_glon_idle_jammed
 
-;Бездействие//////////////////////////////////////////////////
+;Ѕездействие//////////////////////////////////////////////////
 anm_idle                            = sg550_idle
 anm_idle_empty                      = sg550_idle, idle_empty
 anm_idle_jammed                     = sg550_idle, idle_jammed
@@ -127,7 +102,7 @@ anm_idle_crouch_slow_g                = sg550_glon_idle
 anm_idle_crouch_slow_empty_g          = sg550_glon_idle, sg550_glon_idle_empty
 anm_idle_crouch_slow_jammed_g         = sg550_glon_idle, sg550_glon_idle_jammed
 
-;Бездействие в прицеливании///////////////////////////////////
+;Ѕездействие в прицеливании///////////////////////////////////
 autoshoot_anm_idle_aim_start = true         ;команда заставляет произвести выстрел с задержкой на lock_time, если кнопка выстрела будет нажата раньше заданного времени в lock_time
 lock_time_anm_idle_aim_start = 0.2          ;команда блокирует все действия (кроме выбрасывания оружия) во время отыгрывания обозначенной анимации до окончания заданного времени
 autoshoot_anm_idle_aim_start_empty = true
@@ -220,7 +195,7 @@ anm_idle_aim_end_jammed_g      = sg550_glon_aim_end, sg550_glon_idle_jammed
 ;enable_directions_anm_idle = true
 enable_directions_anm_idle_aim = true
 
-;Ходьба ВПЕРЕД//////////////////////////////////////////////////////////////////////////
+;’одьба ¬ѕ≈–≈ƒ//////////////////////////////////////////////////////////////////////////
 anm_idle_moving 				        = sg550_walk
 anm_idle_moving_jammed 					= sg550_walk, idle_jammed
 anm_idle_moving_empty					= sg550_walk, idle_empty
@@ -233,7 +208,7 @@ anm_idle_moving_g 					= sg550_glon_walk, sg550_glon_idle
 anm_idle_moving_jammed_g 				= sg550_glon_walk, sg550_glon_idle_jammed
 anm_idle_moving_empty_g					= sg550_glon_walk, sg550_glon_idle_empty
 
-;Ходьба медленная (SHIFT) ВПЕРЕД//////////////////////////////////////////////////////////////////////////
+;’одьба медленна€ (SHIFT) ¬ѕ≈–≈ƒ//////////////////////////////////////////////////////////////////////////
 anm_idle_moving_slow 					= sg550_walk_slow
 anm_idle_moving_slow_jammed 			        = sg550_walk_slow, idle_jammed
 anm_idle_moving_slow_empty				= sg550_walk_slow, idle_empty
@@ -246,7 +221,7 @@ anm_idle_moving_slow_g 					= sg550_glon_walk_slow, sg550_glon_idle
 anm_idle_moving_slow_jammed_g 				= sg550_glon_walk_slow, sg550_glon_idle_jammed
 anm_idle_moving_slow_empty_g				= sg550_glon_walk_slow, sg550_glon_idle_empty
 
-;Ходьба в полуприсяди (CTRL) ВПЕРЕД//////////////////////////////////////////////////////////////////////////
+;’одьба в полуприс€ди (CTRL) ¬ѕ≈–≈ƒ//////////////////////////////////////////////////////////////////////////
 anm_idle_moving_crouch 					= sg550_walk_slow_down
 anm_idle_moving_crouch_jammed 				= sg550_walk_slow_down, idle_jammed
 anm_idle_moving_crouch_empty				= sg550_walk_slow_down, idle_empty
@@ -259,7 +234,7 @@ anm_idle_moving_crouch_g 				= sg550_glon_walk_slow_down, sg550_glon_idle
 anm_idle_moving_crouch_jammed_g 			= sg550_glon_walk_slow_down, sg550_glon_idle_jammed
 anm_idle_moving_crouch_empty_g				= sg550_glon_walk_slow_down, sg550_glon_idle_empty
 
-;Ходьба в присяде (CTRL+SHIFT) ВПЕРЕД/////////////////////////////////////////////////////////////////////////
+;’одьба в прис€де (CTRL+SHIFT) ¬ѕ≈–≈ƒ/////////////////////////////////////////////////////////////////////////
 anm_idle_moving_crouch_slow 				= sg550_walk_slow_super
 anm_idle_moving_crouch_slow_jammed 			= sg550_walk_slow_super, idle_jammed
 anm_idle_moving_crouch_slow_empty			= sg550_walk_slow_super, idle_empty
@@ -272,7 +247,7 @@ anm_idle_moving_crouch_slow_g 				= sg550_glon_walk_slow_super, sg550_glon_idle
 anm_idle_moving_crouch_slow_jammed_g 			= sg550_glon_walk_slow_super, sg550_glon_idle_jammed
 anm_idle_moving_crouch_slow_empty_g			= sg550_glon_walk_slow_super, sg550_glon_idle_empty
 
-;ходьба в прицеливании ВПЕРЕД//////////////////////////////////////////////////////////////////
+;ходьба в прицеливании ¬ѕ≈–≈ƒ//////////////////////////////////////////////////////////////////
 anm_idle_aim_moving_forward                             = sg550_aim_walk, sg550_aim
 anm_idle_aim_moving_forward_empty                       = sg550_aim_walk, sg550_aim_empty
 anm_idle_aim_moving_forward_jammed                      = sg550_aim_walk, sg550_aim_jammed
@@ -285,7 +260,7 @@ anm_idle_aim_moving_forward_g                           = sg550_glon_aim_walk, s
 anm_idle_aim_moving_forward_empty_g                     = sg550_glon_aim_walk, sg550_glon_idle_empty
 anm_idle_aim_moving_forward_jammed_g                    = sg550_glon_aim_walk, sg550_glon_idle_jammed
 
-;ходьба в прицеливании НАЗАД//////////////////////////////////////////////////////////////////
+;ходьба в прицеливании Ќј«јƒ//////////////////////////////////////////////////////////////////
 anm_idle_aim_moving_back                                = sg550_aim_walk, sg550_aim
 anm_idle_aim_moving_back_empty                          = sg550_aim_walk, sg550_aim_empty
 anm_idle_aim_moving_back_jammed                         = sg550_aim_walk, sg550_aim_jammed
@@ -298,7 +273,7 @@ anm_idle_aim_moving_back_g                              = sg550_glon_aim_walk, s
 anm_idle_aim_moving_back_empty_g                        = sg550_glon_aim_walk, sg550_glon_idle_empty
 anm_idle_aim_moving_back_jammed_g                       = sg550_glon_aim_walk, sg550_glon_idle_jammed
 
-;ходьба в прицеливании ВЛЕВО//////////////////////////////////////////////////////////////////
+;ходьба в прицеливании ¬Ћ≈¬ќ//////////////////////////////////////////////////////////////////
 anm_idle_aim_moving_left                                = sg550_aim_walk_left, sg550_aim
 anm_idle_aim_moving_left_empty                          = sg550_aim_walk_left, sg550_aim_empty
 anm_idle_aim_moving_left_jammed                         = sg550_aim_walk_left, sg550_aim_jammed
@@ -311,7 +286,7 @@ anm_idle_aim_moving_left_g                              = sg550_glon_aim_walk_le
 anm_idle_aim_moving_left_empty_g                        = sg550_glon_aim_walk_left, sg550_glon_idle_empty
 anm_idle_aim_moving_left_jammed_g                       = sg550_glon_aim_walk_left, sg550_glon_idle_jammed
 
-;ходьба в прицеливании ВПРАВО//////////////////////////////////////////////////////////////////
+;ходьба в прицеливании ¬ѕ–ј¬ќ//////////////////////////////////////////////////////////////////
 anm_idle_aim_moving_right                               = sg550_aim_walk_right, sg550_aim
 anm_idle_aim_moving_right_empty                         = sg550_aim_walk_right, sg550_aim_empty
 anm_idle_aim_moving_right_jammed                        = sg550_aim_walk_right, sg550_aim_jammed
@@ -324,7 +299,7 @@ anm_idle_aim_moving_right_g                             = sg550_glon_aim_walk_ri
 anm_idle_aim_moving_right_empty_g                       = sg550_glon_aim_walk_right, sg550_glon_idle_empty
 anm_idle_aim_moving_right_jammed_g                      = sg550_glon_aim_walk_right, sg550_glon_idle_jammed
 
-;ходьба в прицеливании ВПЕРЕД+ВЛЕВО////////////////////////////////////////////////////////////
+;ходьба в прицеливании ¬ѕ≈–≈ƒ+¬Ћ≈¬ќ////////////////////////////////////////////////////////////
 anm_idle_aim_moving_forward_left                        = sg550_aim_walk, sg550_aim
 anm_idle_aim_moving_forward_left_empty                  = sg550_aim_walk, sg550_aim_empty
 anm_idle_aim_moving_forward_left_jammed                 = sg550_aim_walk, sg550_aim_jammed
@@ -338,7 +313,7 @@ anm_idle_aim_moving_forward_left_empty_g                = sg550_glon_aim_walk, s
 anm_idle_aim_moving_forward_left_jammed_g               = sg550_glon_aim_walk, sg550_glon_idle_jammed
 
 
-;ходьба в прицеливании ВПЕРЕД+ВПРАВО///////////////////////////////////////////////////////////
+;ходьба в прицеливании ¬ѕ≈–≈ƒ+¬ѕ–ј¬ќ///////////////////////////////////////////////////////////
 anm_idle_aim_moving_forward_right                       = sg550_aim_walk, sg550_aim
 anm_idle_aim_moving_forward_right_empty                 = sg550_aim_walk, sg550_aim_empty
 anm_idle_aim_moving_forward_right_jammed                = sg550_aim_walk, sg550_aim_jammed
@@ -351,7 +326,7 @@ anm_idle_aim_moving_forward_right_g                     = sg550_glon_aim_walk, s
 anm_idle_aim_moving_forward_right_empty_g               = sg550_glon_aim_walk, sg550_glon_idle_empty
 anm_idle_aim_moving_forward_right_jammed_g              = sg550_glon_aim_walk, sg550_glon_idle_jammed
 
-;ходьба в прицеливании НАЗАД+ВЛЕВО/////////////////////////////////////////////////////////////
+;ходьба в прицеливании Ќј«јƒ+¬Ћ≈¬ќ/////////////////////////////////////////////////////////////
 anm_idle_aim_moving_back_left                           = sg550_aim_walk, sg550_aim
 anm_idle_aim_moving_back_left_empty                     = sg550_aim_walk, sg550_aim_empty
 anm_idle_aim_moving_back_left_jammed                    = sg550_aim_walk, sg550_aim_jammed
@@ -364,7 +339,7 @@ anm_idle_aim_moving_back_left_g                         = sg550_glon_aim_walk, s
 anm_idle_aim_moving_back_left_empty_g                   = sg550_glon_aim_walk, sg550_glon_idle_empty
 anm_idle_aim_moving_back_left_jammed_g                  = sg550_glon_aim_walk, sg550_glon_idle_jammed
 
-;ходьба в прицеливании НАЗАД+ВПРАВО////////////////////////////////////////////////////////////
+;ходьба в прицеливании Ќј«јƒ+¬ѕ–ј¬ќ////////////////////////////////////////////////////////////
 anm_idle_aim_moving_back_right                          = sg550_aim_walk, sg550_aim
 anm_idle_aim_moving_back_right_empty                    = sg550_aim_walk, sg550_aim_empty
 anm_idle_aim_moving_back_right_jammed                   = sg550_aim_walk, sg550_aim_jammed
@@ -391,7 +366,7 @@ anm_idle_aim_scope_moving_empty_g		        = sg550_glon_aim_walk, sg550_glon_idl
 anm_idle_aim_scope_moving_jammed_g	                = sg550_glon_aim_walk, sg550_glon_idle_jammed
 
 
-;Бег//////////////////////////////////////////////////////////////////
+;Ѕег//////////////////////////////////////////////////////////////////
 lock_time_anm_idle_sprint_start = 0.15
 lock_time_anm_idle_sprint_start_empty = 0.15
 lock_time_anm_idle_sprint_start_jammed = 0.15
@@ -452,7 +427,7 @@ anm_idle_sprint_end_g            = sg550_glon_sprint_end, sg550_glon_idle
 anm_idle_sprint_end_empty_g      = sg550_glon_sprint_end, sg550_glon_idle_empty
 anm_idle_sprint_end_jammed_g     = sg550_glon_sprint_end, sg550_glon_idle_jammed
 
-;Скука////////////////////////////////////////////////////////////////////
+;—кука////////////////////////////////////////////////////////////////////
 anm_bore                   = sg550_draw
 anm_bore_empty             = sg550_draw, idle_empty
 anm_bore_jammed            = sg550_draw, idle_jammed
@@ -463,7 +438,7 @@ anm_bore_g                 = sg550_glon_draw, sg550_glon_idle
 anm_bore_empty_g           = sg550_glon_draw, sg550_glon_idle_empty
 anm_bore_jammed_g          = sg550_glon_draw, sg550_glon_idle_jammed
 
-;Выстрелы обычными патронами/////////////////////////////////////////////////////////////////////
+;¬ыстрелы обычными патронами/////////////////////////////////////////////////////////////////////
 anm_shoot                      = sg550_shoot
 anm_shoot_sil                  = sg550_shoot
 anm_shoot_jammed	       = sg550_shoot, idle_jammed
@@ -510,7 +485,7 @@ anm_shoot_aim_g          = sg550_glon_aim_shoot, sg550_glon_idle
 anm_shoot_aim_empty_g    = sg550_glon_aim_shoot, sg550_glon_idle_empty
 anm_shoot_aim_jammed_g   = sg550_glon_aim_shoot, sg550_glon_idle_jammed
 
-;Перезарядка подствола///////////////////////////////////////////////////////////////////
+;ѕерезар€дка подствола///////////////////////////////////////////////////////////////////
 anm_reload_g                   = sg550_gl_reload
 anm_reload_empty_g             = sg550_gl_reload, sg550_gl_reload_empty
 anm_reload_jammed_g            = sg550_gl_reload, sg550_gl_reload_jammed
@@ -527,27 +502,18 @@ anm_reload_jammed_ammochange_g                  = sg550_gl_changegrenade, sg550_
 lock_time_start_anm_reload_jammed_ammochange_g  = 1.5
 lock_time_end_anm_reload_jammed_ammochange_g    = 2.15
 
-;Переключение на патроны/////////////////////////////////////////////////////////////////
+;ѕереключение на патроны/////////////////////////////////////////////////////////////////
 anm_switch                 = sg550_gl_deactivate
 anm_switch_w_gl            = sg550_gl_deactivate
 anm_switch_empty_w_gl      = sg550_gl_deactivate, sg550_gl_deactivate_empty
 anm_switch_jammed_w_gl     = sg550_gl_deactivate, sg550_gl_deactivate_jammed
 
-snd_anm_switch             = weapons\m203\m203_deactivate
-snd_anm_switch_w_gl        = weapons\m203\m203_deactivate
-snd_anm_switch_empty_w_gl  = weapons\m203\m203_deactivate
-snd_anm_switch_jammed_w_gl = weapons\m203\m203_deactivate
-
-;Переключение на гранаты/////////////////////////////////////////////////////////////////
+;ѕереключение на гранаты/////////////////////////////////////////////////////////////////
 anm_switch_g              = sg550_gl_activate
 anm_switch_empty_g        = sg550_gl_activate, sg550_gl_activate_empty
 anm_switch_jammed_g       = sg550_gl_activate, sg550_gl_activate_jammed
 
-snd_anm_switch_g          = weapons\m203\m203_activate
-snd_anm_switch_empty_g    = weapons\m203\m203_activate
-snd_anm_switch_jammed_g   = weapons\m203\m203_activate
-
-;Осечка//////////////////////////////////////////////////
+;ќсечка/////////////////////////////////////////////////////////////////////
 lock_time_anm_fakeshoot_empty      = 0.20
 anm_fakeshoot_empty                = sg550_dry_empty, idle_empty
 lock_time_anm_fakeshoot_aim_empty  = 0.20
@@ -581,20 +547,19 @@ anm_fakeshoot_empty_g               = sg550_glon_dry_empty, sg550_glon_idle_empt
 lock_time_anm_fakeshoot_aim_empty_g = 0.20
 anm_fakeshoot_aim_empty_g           = sg550_glon_aim_dry, sg550_glon_idle_empty
 
-;Перезарядка/////////////////////////////////////////////////////////////////////
+;ѕерезар€дка/////////////////////////////////////////////////////////////////////
 anm_reload                           = sg550_reload
 anm_reload_empty                     = sg550_reload_empty
 anm_reload_jammed                    = sg550_revival
 anm_reload_jammed_last               = sg550_revival_last
 anm_reload_ammochange                = sg550_reload
-
 anm_reload_w_gl                      = sg550_gloff_reload, sg550_reload
 anm_reload_empty_w_gl                = sg550_gloff_reload_empty, sg550_reload_empty
 anm_reload_jammed_w_gl               = sg550_gloff_revival, sg550_revival
 anm_reload_jammed_last_w_gl          = sg550_gloff_revival_last, sg550_revival_last
 anm_reload_ammochange_w_gl           = sg550_gloff_reload, sg550_reload
 
-;Смена режима огня//////////////////////////////////////////////////////////////////////////
+;—мена режима огн€//////////////////////////////////////////////////////////////////////////
 use_firemode_change_anim = true
 
 
@@ -622,8 +587,7 @@ anm_changefiremode_from_1_to_a_empty_g		             = sg550_glon_firemode_1_to_
 
 
 
-
-;Разрядка//////////////////////////////////////////////////////////////////////////
+;–азр€дка//////////////////////////////////////////////////////////////////////////
 use_unloadmag_anim = true
 lock_time_anm_unload_mag = 0.8
 anm_unload_mag                               = sg550_draw, idle_empty
@@ -645,117 +609,6 @@ lock_time_anm_unload_mag_jammed_g = 0.8
 anm_unload_mag_jammed_g                        = sg550_glon_draw, sg550_glon_idle_jammed
 lock_time_anm_unload_mag_empty_g = 0.8
 anm_unload_mag_empty_g                         = sg550_glon_draw, sg550_glon_idle_empty
-
-
-;Включение ЛЦУ//////////////////////////////////////////////////////////////////////////
-
-anm_laser_on_w_gl                           = sg550_gloff_lam
-lock_time_start_anm_laser_on_w_gl = 0.35
-lock_time_end_anm_laser_on_w_gl = 0.55
-
-anm_laser_on_empty_w_gl                     = sg550_gloff_lam, idle_empty
-lock_time_start_anm_laser_on_empty_w_gl = 0.35
-lock_time_end_anm_laser_on_empty_w_gl = 0.55
-
-anm_laser_on_jammed_w_gl                    = sg550_gloff_lam, idle_jammed
-lock_time_start_anm_laser_on_jammed_w_gl = 0.35
-lock_time_end_anm_laser_on_jammed_w_gl = 0.55
-
-
-anm_laser_on_g                           = sg550_glon_lam, sg550_glon_idle
-lock_time_start_anm_laser_on_g = 0.35
-lock_time_end_anm_laser_on_g = 0.55
-
-anm_laser_on_empty_g                     = sg550_glon_lam, sg550_glon_idle_empty
-lock_time_start_anm_laser_on_empty_g = 0.35
-lock_time_end_anm_laser_on_empty_g = 0.55
-
-anm_laser_on_jammed_g                    = sg550_glon_lam, sg550_glon_idle_jammed
-lock_time_start_anm_laser_on_jammed_g = 0.35
-lock_time_end_anm_laser_on_jammed_g = 0.55
-
-
-;Выключение ЛЦУ//////////////////////////////////////////////////////////////////////////
-
-anm_laser_off_w_gl                          = sg550_gloff_lam
-lock_time_start_anm_laser_off_w_gl = 0.35
-lock_time_end_anm_laser_off_w_gl = 0.55
-
-anm_laser_off_empty_w_gl                    = sg550_gloff_lam, idle_empty
-lock_time_start_anm_laser_off_empty_w_gl = 0.35
-lock_time_end_anm_laser_off_empty_w_gl = 0.55
-
-anm_laser_off_jammed_w_gl                   = sg550_gloff_lam, idle_jammed
-lock_time_start_anm_laser_off_jammed_w_gl = 0.35
-lock_time_end_anm_laser_off_jammed_w_gl = 0.55
-
-
-anm_laser_off_g                          = sg550_glon_lam, sg550_glon_idle
-lock_time_start_anm_laser_off_g = 0.35
-lock_time_end_anm_laser_off_g = 0.55
-
-anm_laser_off_empty_g                    = sg550_glon_lam, sg550_glon_idle_empty
-lock_time_start_anm_laser_off_empty_g = 0.35
-lock_time_end_anm_laser_off_empty_g = 0.55
-
-anm_laser_off_jammed_g                   = sg550_glon_lam, sg550_glon_idle_jammed
-lock_time_start_anm_laser_off_jammed_g = 0.35
-lock_time_end_anm_laser_off_jammed_g = 0.55
-
-;Включение фонаря//////////////////////////////////////////////////////////////////////////
-
-anm_torch_on_w_gl                           = sg550_gloff_lam
-lock_time_start_anm_torch_on_w_gl = 0.35
-lock_time_end_anm_torch_on_w_gl = 0.55
-
-anm_torch_on_empty_w_gl                     = sg550_gloff_lam, idle_empty
-lock_time_start_anm_torch_on_empty_w_gl = 0.35
-lock_time_end_anm_torch_on_empty_w_gl = 0.55
-
-anm_torch_on_jammed_w_gl                    = sg550_gloff_lam, idle_jammed
-lock_time_start_anm_torch_on_jammed_w_gl = 0.35
-lock_time_end_anm_torch_on_jammed_w_gl = 0.55
-
-
-anm_torch_on_g                           = sg550_glon_lam, sg550_glon_idle
-lock_time_start_anm_torch_on_g = 0.35
-lock_time_end_anm_torch_on_g = 0.55
-
-anm_torch_on_empty_g                     = sg550_glon_lam, sg550_glon_idle_empty
-lock_time_start_anm_torch_on_empty_g = 0.35
-lock_time_end_anm_torch_on_empty_g = 0.55
-
-anm_torch_on_jammed_g                    = sg550_glon_lam, sg550_glon_idle_jammed
-lock_time_start_anm_torch_on_jammed_g = 0.35
-lock_time_end_anm_torch_on_jammed_g = 0.55
-
-;Выключение фонаря//////////////////////////////////////////////////////////////////////////
-
-anm_torch_off_w_gl                          = sg550_gloff_lam
-lock_time_start_anm_torch_off_w_gl = 0.35
-lock_time_end_anm_torch_off_w_gl = 0.55
-
-anm_torch_off_empty_w_gl                    = sg550_gloff_lam, idle_empty
-lock_time_start_anm_torch_off_empty_w_gl = 0.35
-lock_time_end_anm_torch_off_empty_w_gl = 0.55
-
-anm_torch_off_jammed_w_gl                   = sg550_gloff_lam, idle_jammed
-lock_time_start_anm_torch_off_jammed_w_gl = 0.35
-lock_time_end_anm_torch_off_jammed_w_gl = 0.55
-
-
-anm_torch_off_g                          = sg550_glon_lam, sg550_glon_idle
-lock_time_start_anm_torch_off_g = 0.35
-lock_time_end_anm_torch_off_g = 0.55
-
-anm_torch_off_empty_g                    = sg550_glon_lam, sg550_glon_idle_empty
-lock_time_start_anm_torch_off_empty_g = 0.35
-lock_time_end_anm_torch_off_empty_g = 0.55
-
-anm_torch_off_jammed_g                   = sg550_glon_lam, sg550_glon_idle_jammed
-lock_time_start_anm_torch_off_jammed_g = 0.35
-lock_time_end_anm_torch_off_jammed_g = 0.55
-
 
 
 ;включение налобника//////////////////////////////////////////////////////////////////////////
@@ -862,39 +715,3 @@ anm_nv_off_jammed_w_gl                      = sg550_gloff_headflash, idle_jammed
 anm_nv_off_g                                = sg550_glon_headflash, sg550_glon_idle
 anm_nv_off_empty_g                          = sg550_glon_headflash, sg550_glon_idle_empty
 anm_nv_off_jammed_g                         = sg550_glon_headflash, sg550_glon_idle_jammed
-
-;штык-нож//////////////////////////////////////////////////////////////////////////
-anm_kick = sg550_bayonet
-anm_kick_empty = sg550_bayonet, idle_empty
-anm_kick_jammed = sg550_bayonet, idle_jammed
-
-anm_kick_w_gl = sg550_bayonet
-anm_kick_empty_w_gl = sg550_bayonet, idle_empty
-anm_kick_jammed_w_gl = sg550_bayonet, idle_jammed
-
-anm_kick_g = sg550_bayonet, sg550_glon_idle
-anm_kick_empty_g = sg550_bayonet, sg550_glon_idle_empty
-anm_kick_jammed_g = sg550_bayonet, sg550_glon_idle_jammed
-
-
-lock_time_start_anm_kick = 0.17
-lock_time_end_anm_kick = 1.0
-lock_time_start_anm_kick_empty = 0.17
-lock_time_end_anm_kick_empty = 1.0
-lock_time_start_anm_kick_jammed = 0.17
-lock_time_end_anm_kick_jammed = 1.0
-
-
-lock_time_start_anm_kick_w_gl = 0.17
-lock_time_end_anm_kick_w_gl = 1.0
-lock_time_start_anm_kick_empty_w_gl = 0.17
-lock_time_end_anm_kick_empty_w_gl = 1.0
-lock_time_start_anm_kick_jammed_w_gl = 0.17
-lock_time_end_anm_kick_jammed_w_gl = 1.0
-
-lock_time_start_anm_kick_g = 0.17
-lock_time_end_anm_kick_g = 1.0
-lock_time_start_anm_kick_empty_g = 0.17
-lock_time_end_anm_kick_empty_g = 1.0
-lock_time_start_anm_kick_jammed_g = 0.17
-lock_time_end_anm_kick_jammed_g = 1.0

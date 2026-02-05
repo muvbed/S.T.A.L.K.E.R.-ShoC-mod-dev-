@@ -748,7 +748,7 @@ function check_blowout_timer:action()
 end
 
 function check_blowout_timer:update()
-	ogse_signals.get_mgr():reschedule( 1000 )
+	ogse_signals.get_mgr():reschedule( 250 )
 
 	if deferred_actions then
 		local info_action = deferred_actions.on_info_deferred
@@ -766,6 +766,7 @@ function check_blowout_timer:update()
 			stop_vibros_effects()
 		end
 	else
+		actor_in_hideout = false
 		stop_vibros_effects()
 	end
 end
@@ -837,36 +838,31 @@ function deadly_blowout()
 end
 
 local surge_hit_db = {
-	l01_escape     = { power = 0.001,  type = hit.radiation},
-	l02_garbage    = { power = 0.0013, type = hit.radiation},
-	l03_agroprom   = { power = 0.0018, type = hit.radiation},
-	l04_darkvalley = { power = 0.0018, type = hit.radiation},
-	l05_bar        = { power = 0.0023, type = hit.radiation},
-	l06_rostok     = { power = 0.0023, type = hit.radiation},
-	l08_yantar     = {{power = 0.003,  type = hit.radiation}, {power = 0.0001, type = hit.shock}, },
-	l07_military   = {{power = 0.005,  type = hit.radiation}, {power = 0.0005, type = hit.shock}, },
-	l10_radar      = {{power = 0.008,  type = hit.radiation}, {power = 0.0007, type = hit.shock}, },
-	l11_pripyat    = {{power = 0.01,   type = hit.radiation}, {power = 0.001,  type = hit.shock}, },
+	l01_escape     = {{ power = 0.016, type = hit.radiation}, {power = 0.004, type = hit.telepatic}, },
+	l02_garbage    = {{ power = 0.020, type = hit.radiation}, {power = 0.006, type = hit.telepatic}, },
+	l03_agroprom   = {{ power = 0.024, type = hit.radiation}, {power = 0.008, type = hit.telepatic}, },
+	l04_darkvalley = {{ power = 0.024, type = hit.radiation}, {power = 0.008, type = hit.telepatic}, },
+	l05_bar        = {{ power = 0.028, type = hit.radiation}, {power = 0.010, type = hit.telepatic}, },
+	l06_rostok     = {{ power = 0.028, type = hit.radiation}, {power = 0.010, type = hit.telepatic}, },
+	l08_yantar     = {{ power = 0.032, type = hit.radiation}, {power = 0.012, type = hit.telepatic}, },
+	l07_military   = {{ power = 0.036, type = hit.radiation}, {power = 0.014, type = hit.telepatic}, },
+	l10_radar      = {{ power = 0.040, type = hit.radiation}, {power = 0.016, type = hit.telepatic}, },
+	l11_pripyat    = {{ power = 0.048, type = hit.radiation}, {power = 0.020, type = hit.telepatic}, },
 }
 -- Нанесение хита актору в смертельной стадии выброса
 function hit_actor()
 	local hit_data = surge_hit_db[lname]
 	if hit_data then
 		local psy_hit = hit()
+		psy_hit:bone("bip01_spine")
 		psy_hit.direction = vector():set(0,0,0)
 		psy_hit.impulse = 0
 		psy_hit.draftsman = db.actor
 		--
-		if hit_data.power and hit_data.type then
-			psy_hit.power = hit_data.power
-			psy_hit.type = hit_data.type
+		for _, hd in ipairs(hit_data) do
+			psy_hit.power = hd.power
+			psy_hit.type = hd.type
 			db.actor:hit(psy_hit)
-		else
-			for _,hd in ipairs(hit_data) do
-				psy_hit.power = hd.power
-				psy_hit.type = hd.type
-				db.actor:hit(psy_hit)
-			end
 		end
 	end
 end

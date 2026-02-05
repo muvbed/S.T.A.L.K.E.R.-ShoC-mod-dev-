@@ -115,14 +115,6 @@ function on_monster_spawn( obj, binder )
 		[ "queued" ] = true,
 		[ "__unsubscribe_on_death" ] = true,
 	  })
-      if obj:section() == "burer_strong" then
-		table.insert( subscribed, {
-		  [ "signal" ] = s_name,
-		  [ "fun"    ] = this.psy_burer,
-		  [ "queued" ] = true,
-		  [ "__unsubscribe_on_death" ] = true,
-	    })
-	  end
     end
   end
   if table.getn( subscribed ) > 0 then
@@ -536,76 +528,4 @@ function burer_attack(obj)
             npc:drop_item(aitem)
         end
     end
-end
-
--- Аура пси-бюрера
-function psy_burer(p_obj)
-	local actor = db.actor
-	
-	if actor and actor:alive() then
-		local dist = p_obj:position():distance_to(actor:position())
-	    local attack_dist = 20
-	
-	    ogse_signals.get_mgr():reschedule((dist < attack_dist and 3000) or (dist < attack_dist * 2 and 6000) or 9000)
-	
-	    if dist < attack_dist then
-	        local sound_obj_right = xr_sound.get_safe_sound_object([[ambient\random\rnd_moan1]])
-	        local sound_obj_left = xr_sound.get_safe_sound_object([[ambient\random\rnd_moan2]])
-	
-	        sound_obj_right.volume = 0.5
-	        sound_obj_left.volume = 0.5
-	
-	        local zh = hit()
-	
-	        zh.draftsman = actor
-	        zh.type = hit.telepatic
-	        zh.direction = p_obj:position():sub(actor:position())
-	        zh:bone(get_string(actor:section(), "bone_torso", "bip01_spine"))
-	        zh.power = 0.1
-	        actor:hit(zh)
-	
-	        if not sound_obj_left:playing() then
-	            local i = math.random(1, 4)
-	
-	            if i == 1 then
-	                sound_obj_left = xr_sound.get_safe_sound_object([[ambient\random\rnd_moan1]])
-	            elseif i == 2 then
-	                sound_obj_left = xr_sound.get_safe_sound_object([[ambient\random\rnd_moan2]])
-	            elseif i == 3 then
-	                sound_obj_left = xr_sound.get_safe_sound_object([[ambient\random\rnd_moan4]])
-	            elseif i == 4 then
-	                sound_obj_left = xr_sound.get_safe_sound_object([[ambient\random\rnd_moan5]])
-	            end
-	            if sound_obj_left then
-	                sound_obj_left:play_at_pos(actor, vector():set(1, 0, 1), 0, sound_object.s2d)
-	            end
-	        end
-	
-	        if not sound_obj_right:playing() then
-	            local j = math.random(1, 4)
-	
-	            if j == 1 then
-	                sound_obj_right = xr_sound.get_safe_sound_object([[ambient\random\rnd_moan1]])
-	            elseif j == 2 then
-	                sound_obj_right = xr_sound.get_safe_sound_object([[ambient\random\rnd_moan2]])
-	            elseif j == 3 then
-	                sound_obj_right = xr_sound.get_safe_sound_object([[ambient\random\rnd_moan4]])
-	            elseif j == 4 then
-	                sound_obj_right = xr_sound.get_safe_sound_object([[ambient\random\rnd_moan5]])
-	            end
-	            if sound_obj_right then
-	                sound_obj_right:play_at_pos(actor, vector():set(-1, 0, 1), 0, sound_object.s2d)
-	            end
-	        end
-	        
-	        level.add_pp_effector("dead_zone.ppe", 7111, true)
-	        
-	      	dsh.timeout(
-	      		4000,
-	      		function()
-	      			level.remove_pp_effector(7111)
-	      		end
-	      	)
-	    end
-	end
 end

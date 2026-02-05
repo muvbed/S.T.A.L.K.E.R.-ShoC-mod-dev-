@@ -11,7 +11,6 @@
     <texture id="ui_npc_monster_rat" x="825" y="540" width="165" height="108" />
 
     <texture id="ui_npc_monster_burer" x="165" y="324" width="165" height="108" />
-    <texture id="ui_npc_monster_burer_strong" x="330" y="540" width="165" height="108" />
 
     <texture id="ui_npc_monster_chimera" x="330" y="324" width="165" height="108" />
 

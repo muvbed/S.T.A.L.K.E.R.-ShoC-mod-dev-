@@ -708,6 +708,8 @@ function do_seen_monster()
                                     if m_where then
                                         text = string_gsub(text, "$where", m_where)
                                         where = m_where
+                                    else
+                                    	log3(tostring_all(m_where) .. " m_where")
                                     end
                                 end
 

@@ -405,16 +405,17 @@ function CUIDescriptionWnd:ShowDescription(item)
 	self.item_name:SetTextST(inv_name)
 
 	-- artefacts
-	if item:is_artefact() and string.find(self.section, "af_") then
-		if has_alife_info("encyclopedy_zone_artifact_" .. self.section) then
-			self:ShowAfParams()
-		else
-			description = game.translate_string("enc_zone_artifact_unknown")	
-		end
+	if item:is_artefact() 
+	  and string.find(self.section, "af_") 
+	  and not has_alife_info("encyclopedy_zone_artifact_" .. self.section) 
+	then
+		description = game.translate_string("enc_zone_artifact_unknown")
 	end
 	
-	if not isWeapon(item) or self.section == "wpn_binoc" then
+	if not isWeapon(item) or IsBinocular(item) then
 		self.descr:SetText(description)	
+	else
+		self.descr:SetText("")		
 	end
 	
 	self.descr:AdjustHeightToText()
@@ -435,6 +436,12 @@ function CUIDescriptionWnd:ShowDescription(item)
 	-- outfits
 	elseif item:is_outfit() then
 		self:ShowOutfitParams()
+	-- artefact
+	elseif item:is_artefact() 
+	  and string.find(self.section, "af_") 
+	  and has_alife_info("encyclopedy_zone_artifact_" .. self.section) 
+	then
+		self:ShowAfParams()
 	end
 
 	-- weight

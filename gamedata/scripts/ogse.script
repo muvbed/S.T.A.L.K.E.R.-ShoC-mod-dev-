@@ -340,7 +340,7 @@ function transfer_items_from_box(box_sid)
 end
 
 function is_developer_mode()
-	return false
+	return true
 end
 
 function on_spawn()

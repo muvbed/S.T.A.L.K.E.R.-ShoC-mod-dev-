@@ -377,6 +377,11 @@ function CRandomTask:action_give_task(actor, npc, p1, p2)
 		"mil_lair3",
 		"mil_village_lair"
 	}
+	local marked_items = {
+		"wpn_svu",
+		"outfit_specnaz_m1",
+		"outfit_bandit_m1"
+	}
 
 	if task_desc.type == "eliminate_lager" then
 		objective:set_map_hint(task_desc.description)
@@ -385,7 +390,7 @@ function CRandomTask:action_give_task(actor, npc, p1, p2)
 				objective:set_map_location("eliminate_lair_location")
 				break
 			else
-		objective:set_map_location("eliminate_lager_location")
+				objective:set_map_location("eliminate_lager_location")
 			end
 		end
 		objective:set_object_id(task_desc.selected_target) -- вроде как id целевого объекта, определяет координаты метки.
@@ -402,12 +407,16 @@ function CRandomTask:action_give_task(actor, npc, p1, p2)
 		objective:set_map_location("kill_stalker_location")
 		objective:set_object_id(task_desc.selected_target)
 	elseif task_desc.type == "find_item" then
-		objective:set_map_hint(task_desc.description)
-		objective:set_map_location("find_item_location")
-		objective:set_object_id(task_desc.selected_target)
+		for i=1, #marked_items, 1 do
+			if task_desc.target == marked_items[i] then
+				objective:set_map_hint(task_desc.description)
+				objective:set_map_location("find_item_location")
+				objective:set_object_id(task_desc.selected_target)
+			end
+		end
 		
 		--' Квест на пистолет Кузнецова
-		if task_desc.target == "wpn_fort" and not has_item_to_bring(task_desc) then
+		if task_desc.target == "wpn_aps" and not has_item_to_bring(task_desc) then
 			db.actor:give_info_portion("tm_find_item_1_proceed") 
 		end
 		--
@@ -508,7 +517,7 @@ function CRandomTask:task_complete(p1, p2)
 		
 		elseif string.find(p1, "artefact") or string.find(p1, "monster_part") or string.find(p1, "find_item") then
 			if db.actor:object(sel_task.target) ~= nil then
-				if sel_task.target == "wpn_fort" and has_alife_info("tm_find_item_1_proceed") then
+				if sel_task.target == "wpn_aps" and has_alife_info("tm_find_item_1_proceed") then
 					db.actor:disable_info_portion("tm_find_item_1_proceed")
 				end
 				self.task_info[self.active_task_by_type[p1]].status = "completed"

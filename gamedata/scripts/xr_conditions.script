@@ -33,6 +33,11 @@ end
 function is_day (actor, npc)
     return level.get_time_hours() >= 6 and level.get_time_hours() < 23
 end   
+
+-- ≈жедневка вертушки
+function is_heli_time()
+    return level.get_time_hours() == 12 and level.get_time_minutes() <= 5
+end  
   
 ---' distance ----------------------------------------------------------------------
 -- дистанци€ до актера <= заданной

@@ -77,6 +77,34 @@
 		<text>Выслал файл с описанием на твой КПК.</text>
 	</string>
 	
+	<string id="treasures_informator_info_start">
+		<text>Что интересного можешь предложить?</text>
+	</string>
+	<string id="treasures_informator_info_0">
+		<text>Я по поводу тайников.</text>
+	</string>
+	<string id="treasures_informator_info_1">
+		<text>Координаты тайников, брошенных экспедициями военных сталкеров. Хозяева за ними уже не вернутся — можешь быть спокоен. Что внутри и в каком оно состоянии — никто не проверял. Цена, соответственно, на каждый из них одна и та же.</text>
+	</string>
+	<string id="treasures_informator_info_empty">
+		<text>На данный момент на продажу ничего нет.</text>
+	</string>
+	<string id="treasures_informator_info_11">
+        <text>Интересует.</text>
+    </string>
+    <string id="treasures_informator_info_2">
+        <text>Цена за схрон, как обычно, — десять штук денег.</text>
+    </string>
+    <string id="treasures_informator_info_21">
+        <text>По рукам.</text>
+    </string>
+    <string id="treasures_informator_info_3">
+        <text>Выслал тебе координаты.</text>
+    </string>
+    <string id="treasures_informator_info_reject">
+        <text>В другой раз.</text>
+    </string>
+	
     <string id="bar_arena_man_job_0">
         <text>Продолжай.</text>
     </string>

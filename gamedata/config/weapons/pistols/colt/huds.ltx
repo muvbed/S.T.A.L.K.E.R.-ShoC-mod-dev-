@@ -1,8 +1,5 @@
 [wpn_colt1911_hud]:hud_base
 zoom_hide_crosshair			= true
-zoom_dof_near = 0.48
-zoom_dof_focus = 0.53
-
 
 hands_position				= 0.0,-0.13,0.03
 hands_orientation			= 0.0,0.0,0.0
@@ -28,18 +25,8 @@ shell_bone              = wpn_body
 fire_point		= -0.026,0.111,0.37
 fire_bone               = wpn_body
 
-allow_halfaimstate = false          ;если отпустить прицеливание продолжая стрелять оружие опускается чуть ниже, скорость передвижения увеличивается.
 disable_bore = true
 mix_shoot_after_idle = true         ;микс первого выстрела с анимациями idle
-
-immediate_unhide_anm_reload_jammed_detector = true
-immediate_unhide_anm_reload_jammed_last_detector = true
-
-immediate_unhide_anm_reload_detector = true
-immediate_unhide_anm_reload_empty_detector = true
-
-immediate_unhide_anm_reload_ammochange_detector = true
-immediate_unhide_anm_reload_empty_ammochange_detector = true
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -178,7 +165,6 @@ anm_idle_sprint_jammed            = coltm1911_sprint, idle_jammed
 lock_time_anm_idle_sprint_end        = 0.4
 lock_time_anm_idle_sprint_end_empty  = 0.4
 lock_time_anm_idle_sprint_end_jammed = 0.4
-
 anm_idle_sprint_end             = coltm1911_sprint_end
 anm_idle_sprint_end_empty       = coltm1911_sprint_end, idle_empty
 anm_idle_sprint_end_jammed      = coltm1911_sprint_end, idle_jammed
@@ -210,11 +196,6 @@ anm_shoot_queue_sil      = coltm1911_shoot
 
 
 ;Осечка//////////////////////////////////////////////////
-lock_time_anm_shoot_lightmisfire = 1.0
-anm_shoot_lightmisfire = coltm1911_misfire
-lock_time_anm_shoot_lightmisfire_aim = 1.0
-anm_shoot_lightmisfire_aim = coltm1911_aim_misfire
-
 lock_time_anm_fakeshoot_empty = 0.20
 anm_fakeshoot_empty      = coltm1911_dry_empty, idle_empty
 lock_time_anm_fakeshoot_aim_empty = 0.20
@@ -236,62 +217,10 @@ anm_unload_mag_empty                         = coltm1911_draw, idle_empty
 ;Перезарядка/////////////////////////////////////////////////////////////////////
 anm_reload                       = coltm1911_reload
 anm_reload_empty                 = coltm1911_reload_full
-anm_reload_detector                       = coltm1911_det_reload, coltm1911_reload
-anm_reload_empty_detector                 = coltm1911_det_reload_full, coltm1911_reload_full
 anm_reload_jammed                = coltm1911_revival
 anm_reload_jammed_last           = coltm1911_revival_last
 anm_reload_ammochange            = coltm1911_reload
 anm_reload_empty_ammochange      = coltm1911_reload_full
-anm_reload_ammochange_detector            = coltm1911_det_reload, coltm1911_reload
-anm_reload_empty_ammochange_detector      = coltm1911_det_reload_full, coltm1911_reload_full
-
-anm_reload_jammed_detector                = coltm1911_det_revival
-use_jammed_detector_snd = true
-anm_reload_jammed_last_detector           = coltm1911_det_revival_last
-use_jammed_last_detector_snd = true
-
-lock_time_anm_reload_detector = 2.75        ;Блокировка для правильной работы детектора в паре. Задавать время блока больше на 0.08 времени самой анимации. Если время анимации - 1.01 то время блока - 1.09
-lock_time_anm_reload_empty_detector = 2.45
-lock_time_anm_reload_jammed_detector = 2.21
-lock_time_anm_reload_jammed_last_detector = 2.05
-lock_time_anm_reload_ammochange_detector = 2.75
-lock_time_anm_reload_empty_ammochange_detector = 2.45
-
-
-;Доставание детектора//////////////////////////////////////////////////////////////////////////
-use_prepare_detector_anim = true
-anm_prepare_detector                             = coltm1911_hand_hide
-lock_time_anm_prepare_detector = 0.5
-anm_prepare_detector_jammed                      = coltm1911_hand_hide, idle_jammed
-lock_time_anm_prepare_detector_jammed = 0.5
-anm_prepare_detector_empty                       = coltm1911_hand_hide, idle_empty
-lock_time_anm_prepare_detector_empty = 0.5
-
-anm_draw_detector                                = coltm1911_hand_hide_end
-lock_time_anm_draw_detector = 0.40
-anm_draw_detector_jammed                         = coltm1911_hand_hide_end, idle_jammed
-lock_time_anm_draw_detector_jammed = 0.40
-anm_draw_detector_empty                          = coltm1911_hand_hide_end, idle_empty
-lock_time_anm_draw_detector_empty = 0.40
-
-;Убирание детектора//////////////////////////////////////////////////////////////////////////
-use_finish_detector_anim = true
-anm_finish_detector                             = coltm1911_hand_draw
-lock_time_anm_finish_detector = 0.60
-anm_finish_detector_jammed                      = coltm1911_hand_draw, idle_jammed
-lock_time_anm_finish_detector_jammed = 0.60
-anm_finish_detector_empty                       = coltm1911_hand_draw, idle_empty
-lock_time_anm_finish_detector_empty = 0.60
-
-
-;use_silattach_anim = true
-anm_attach_sil = coltm1911_draw
-lock_time_anm_attach_sil = 2
-
-;use_sildetach_anim = true
-anm_detach_sil = coltm1911_draw
-lock_time_anm_detach_sil = 3
-
 
 ;включение налобника//////////////////////////////////////////////////////////////////////////
 anm_headlamp_on = coltm1911_headflash
@@ -331,61 +260,3 @@ anm_nv_on_jammed = coltm1911_nv_on, idle_jammed
 anm_nv_off = coltm1911_nv_off
 anm_nv_off_empty = coltm1911_nv_off, idle_empty
 anm_nv_off_jammed = coltm1911_nv_off, idle_jammed
-
-
-
-
-;Включение ЛЦУ//////////////////////////////////////////////////////////////////////////
-anm_laser_on = coltm1911_lam
-lock_time_start_anm_laser_on = 0.58
-lock_time_end_anm_laser_on = 0.5
-
-anm_laser_on_empty = coltm1911_lam, idle_empty
-lock_time_start_anm_laser_on_empty = 0.58
-lock_time_end_anm_laser_on_empty = 0.5
-
-anm_laser_on_jammed = coltm1911_lam, idle_jammed
-lock_time_start_anm_laser_on_jammed = 0.58
-lock_time_end_anm_laser_on_jammed = 0.5
-
-
-;Выключение ЛЦУ//////////////////////////////////////////////////////////////////////////
-anm_laser_off = coltm1911_lam
-lock_time_start_anm_laser_off = 0.58
-lock_time_end_anm_laser_off = 0.5
-
-anm_laser_off_empty = coltm1911_lam, idle_empty
-lock_time_start_anm_laser_off_empty = 0.58
-lock_time_end_anm_laser_off_empty = 0.5
-
-anm_laser_off_jammed = coltm1911_lam, idle_jammed
-lock_time_start_anm_laser_off_jammed = 0.58
-lock_time_end_anm_laser_off_jammed = 0.5
-
-
-;Включение фонаря//////////////////////////////////////////////////////////////////////////
-anm_torch_on = coltm1911_lam
-lock_time_start_anm_torch_on = 0.58
-lock_time_end_anm_torch_on = 0.5
-
-anm_torch_on_empty = coltm1911_lam, idle_empty
-lock_time_start_anm_torch_on_empty = 0.58
-lock_time_end_anm_torch_on_empty = 0.5
-
-anm_torch_on_jammed = coltm1911_lam, idle_jammed
-lock_time_start_anm_torch_on_jammed = 0.58
-lock_time_end_anm_torch_on_jammed = 0.5
-
-
-;Выключение фонаря//////////////////////////////////////////////////////////////////////////
-anm_torch_off = coltm1911_lam
-lock_time_start_anm_torch_off = 0.58
-lock_time_end_anm_torch_off = 0.5
-
-anm_torch_off_empty = coltm1911_lam, idle_empty
-lock_time_start_anm_torch_off_empty = 0.58
-lock_time_end_anm_torch_off_empty = 0.5
-
-anm_torch_off_jammed = coltm1911_lam, idle_jammed
-lock_time_start_anm_torch_off_jammed = 0.58
-lock_time_end_anm_torch_off_jammed = 0.5

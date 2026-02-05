@@ -1,4 +1,8 @@
--- Author: Muvbed
+--[[-----------------------------------------------------------------------------------------------
+ File			: ammo_repacker.script
+ Description 	: Перепаковщик патронов при перетаскивании
+ Author  		: Muvbed
+--]]-----------------------------------------------------------------------------------------------
 
 function attach(sm)
 	sm:subscribe({signal = "on_drag_drop", fun = this.on_drag_drop})
@@ -65,7 +69,7 @@ function on_drag_drop(obj, drop_on_obj)
 				end )
 			end
 			
-			ogse_signals.get_mgr():call( "on_inventory_reset" )
+			--ogse_signals.get_mgr():call( "on_inventory_reset" )
 		end)
 	end
 end

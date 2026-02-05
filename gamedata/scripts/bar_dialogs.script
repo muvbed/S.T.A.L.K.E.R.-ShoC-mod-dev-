@@ -214,7 +214,6 @@ function barman_give_outfit(first_speaker, second_speaker)
 	dialogs.relocate_item_section(second_speaker, "stalker_outfit", "in")
 end
 
-
 function professor_for_resque(npc, actor)
 	-- nv140420
 	if not has_alife_info("bar_ecolog_research_normal") then
@@ -398,6 +397,28 @@ function is_barman_info()
 	end
 	return true 
 end
+
+
+function treasures_informator_has_money(actor, npc)
+	return actor:money() >= 10000
+end
+
+function treasures_informator_give_money(actor, npc)
+	dialogs.relocate_money(npc, 10000, "out")
+end
+
+function treasures_informator_target_not_exist()
+    return not treasure_manager.get_treasure_manager():get_treasures_for_trade()
+end
+
+function treasures_informator_target_exist()
+    return not treasures_informator_target_not_exist()
+end
+
+function treasures_informator_give_target()
+    treasure_manager.get_treasure_manager():use_treasure_for_trade()
+end
+
 
 function arts_barman_has_money(actor, npc)
     return actor:money() >= 700

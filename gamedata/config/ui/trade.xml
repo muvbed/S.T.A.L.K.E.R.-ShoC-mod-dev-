@@ -93,14 +93,14 @@
 	<desc_static/>
 
 	<!-- Торговать -->	
-	<button x="702" y="735" width="121" height="29" accel="kT">
+	<button x="200" y="735" width="121" height="29" accel="kT">
 		<texture>ui_button_ordinary</texture>
 		<sound_t>interface\inv_money</sound_t>
 		<text align="c" font="letterica16" color="white_1">ui_st_trade</text>
     </button>
 
 	<!-- Уйти -->    
-    <button x="200" y="735" width="121" height="29" accel="kQ">
+    <button x="702" y="735" width="121" height="29" accel="kQ">
 		<texture>ui_button_ordinary</texture>
 		<text align="c" font="letterica16" color="white_1">ui_st_leave</text>
     </button>

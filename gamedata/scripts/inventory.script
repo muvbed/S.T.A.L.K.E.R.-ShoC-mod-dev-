@@ -1,4 +1,4 @@
--- UPD by Muvbed: сброс всех предметов с пояса при смене костюма, эффекты при смене костюма.
+-- UPD by Muvbed
 
 function attach(sm)
 	sm:subscribe({signal = "on_info", fun = this.on_inventory_info})

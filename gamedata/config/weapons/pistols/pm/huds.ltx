@@ -1,15 +1,5 @@
 [wpn_pm_hud]:hud_base
 zoom_hide_crosshair			= true
-zoom_dof_near = 0.48
-zoom_dof_focus = 0.53
-
-inertion_pitch_offset_r = -0.008
-inertion_pitch_offset_n = -0.006
-inertion_pitch_offset_d = -0.001
-inertion_origin_offset = -0.06
-
-inertion_aim_origin_offset = 0.015
-inertion_aim_speed = 10
 
 hands_position				= 0.0,-0.13,0.03
 hands_orientation			= 0.0,0.0,0.0
@@ -34,15 +24,8 @@ shell_bone              	= wpn_body
 fire_point			= -0.010,0.11,0.37
 fire_bone               	= wpn_body
 
-allow_halfaimstate = false          ;если отпустить прицеливание продолжая стрелять оружие опускается чуть ниже, скорость передвижения увеличивается.
 mix_shoot_after_idle = true         ;микс первого выстрела с анимациями idle
 disable_bore = false
-
-use_advanced_ammo_bones = true
-ammo_params_section = wpn_pm_ammo_bones
-
-minus_ammo_in_usual_reloads = true ; Хак для неправильно заанимированных моделей - из за того, что в анимациях они не учитывают наличие патрона в патроннике, нам надо отображать в магазине на один патрон МЕНЬШЕ!
-minus_ammo_in_bore = true          ; В противном случае, при наличии на счетчике одного патрона, у нас будет отображаться патрон в магазине при перезарядке, хотя по факту вытаскиваемый магазин должен быть пуст
 
 lock_time_start_anm_reload = 1.5
 lock_time_end_anm_reload = 1.5
@@ -50,32 +33,12 @@ lock_time_end_anm_reload = 1.5
 lock_time_start_anm_reload_empty = 1.5
 lock_time_end_anm_reload_empty = 2.1
 
-lock_time_start_anm_reload_detector = 1.5
-lock_time_end_anm_reload_detector = 1.58
-
-lock_time_start_anm_reload_empty_detector = 1.5
-lock_time_end_anm_reload_empty_detector = 2.18
-
 lock_time_start_anm_reload_ammochange = 1.5
 lock_time_end_anm_reload_ammochange = 1.5
 
 lock_time_start_anm_reload_empty_ammochange = 1.5
 lock_time_end_anm_reload_empty_ammochange = 2.1
 
-lock_time_start_anm_reload_ammochange_detector = 1.5
-lock_time_end_anm_reload_ammochange_detector = 1.58
-
-lock_time_start_anm_reload_empty_ammochange_detector = 1.5
-lock_time_end_anm_reload_empty_ammochange_detector = 2.18
-
-immediate_unhide_anm_reload_jammed_detector = true
-immediate_unhide_anm_reload_jammed_last_detector = true
-
-immediate_unhide_anm_reload_detector = true
-immediate_unhide_anm_reload_empty_detector = true
-
-immediate_unhide_anm_reload_ammochange_detector = true
-immediate_unhide_anm_reload_empty_ammochange_detector = true
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -111,16 +74,13 @@ autoshoot_anm_idle_aim_start_empty = true
 lock_time_anm_idle_aim_start_empty = 0.25
 autoshoot_anm_idle_aim_start_jammed = true
 lock_time_anm_idle_aim_start_jammed = 0.25
-
 anm_idle_aim_start             = pm_aim_start
 anm_idle_aim_start_empty       = pm_aim_start, idle_empty
 anm_idle_aim_start_jammed      = pm_aim_start, idle_jammed
 
-
 anm_idle_aim                   = pm_aim
 anm_idle_aim_empty             = pm_aim, idle_empty
 anm_idle_aim_jammed            = pm_aim, idle_jammed
-
 
 autoshoot_anm_idle_aim_end = true
 lock_time_anm_idle_aim_end = 0.3
@@ -128,7 +88,6 @@ autoshoot_anm_idle_aim_end_empty = true
 lock_time_anm_idle_aim_end_empty = 0.3
 autoshoot_anm_idle_aim_end_jammed = true
 lock_time_anm_idle_aim_end_jammed = 0.3
-
 anm_idle_aim_end               = pm_aim_end
 anm_idle_aim_end_empty         = pm_aim_end, idle_empty
 anm_idle_aim_end_jammed        = pm_aim_end, idle_jammed
@@ -205,7 +164,6 @@ anm_idle_aim_moving_back_right_empty             = pm_slow_aim_right, idle_empty
 anm_idle_aim_moving_back_right_jammed            = pm_slow_aim_right, idle_jammed
 
 
-
 ;Бег//////////////////////////////////////////////////////////////////
 lock_time_anm_idle_sprint_start = 0.15
 lock_time_anm_idle_sprint_start_empty = 0.15
@@ -247,13 +205,7 @@ anm_shoot_aim_jammed_sil = pm_aim_shoot, idle_jammed
 anm_shoot_aim_last       = pm_aim_shoot_empty
 anm_shoot_aim_last_sil   = pm_aim_shoot_empty
 
-
 ;Осечка//////////////////////////////////////////////////
-lock_time_anm_shoot_lightmisfire = 1.0
-anm_shoot_lightmisfire = pm_misfire
-lock_time_anm_shoot_lightmisfire_aim = 1.0
-anm_shoot_lightmisfire_aim = pm_aim_misfire
-
 lock_time_anm_fakeshoot_empty = 0.20
 anm_fakeshoot_empty      = pm_dry_empty, idle_empty
 lock_time_anm_fakeshoot_aim_empty = 0.20
@@ -267,24 +219,10 @@ anm_fakeshoot_aim_jammed     = pm_aim_dry, idle_jammed
 ;Перезарядка/////////////////////////////////////////////////////////////////////
 anm_reload                       = pm_reload
 anm_reload_empty                 = pm_reload_full
-anm_reload_detector                       = pm_det_reload, pm_reload
-anm_reload_empty_detector                 = pm_det_reload_full, pm_reload_full
 anm_reload_jammed                = pm_revival
 anm_reload_jammed_last           = pm_revival_last
 anm_reload_ammochange            = pm_reload
 anm_reload_empty_ammochange      = pm_reload_full
-anm_reload_ammochange_detector            = pm_det_reload, pm_reload
-anm_reload_empty_ammochange_detector      = pm_det_reload_full, pm_reload_full
-
-
-anm_reload_jammed_detector                = pm_det_revival
-use_jammed_detector_snd = true
-anm_reload_jammed_last_detector           = pm_det_revival_last
-use_jammed_last_detector_snd = true
-
-
-lock_time_anm_reload_jammed_detector = 2.21              ;Блокировка для правильной работы детектора в паре. Задавать время блока больше на 0.08 времени самой анимации. Если время анимации - 1.01 то время блока - 1.09
-lock_time_anm_reload_jammed_last_detector = 2.21
 
 ;Разрядка//////////////////////////////////////////////////////////////////////////
 use_unloadmag_anim = true
@@ -294,50 +232,6 @@ lock_time_anm_unload_mag_jammed = 0.8
 anm_unload_mag_jammed                        = pm_draw, idle_jammed    
 lock_time_anm_unload_mag_empty = 0.8
 anm_unload_mag_empty                         = pm_draw, idle_empty
-
-;Установка глушителя//////////////////////////////////////////////////////////////////////////
-;use_silattach_anim = true
-lock_time_anm_attach_sil = 4
-anm_attach_sil 				     = glock17_reload
-lock_time_anm_attach_sil_jammed = 4
-anm_attach_sil_jammed			     = glock17_reload
-lock_time_anm_attach_sil_empty = 4
-anm_attach_sil_empty			     = glock17_reload
-
-;Снятие глушителя//////////////////////////////////////////////////////////////////////////
-;use_sildetach_anim = true
-lock_time_anm_detach_sil = 2.5
-anm_detach_sil 								= glock17_reload
-lock_time_anm_detach_sil_jammed = 2.5
-anm_detach_sil_jammed							= glock17_reload
-lock_time_anm_detach_sil_empty = 2.5
-anm_detach_sil_empty							= glock17_reload
-
-;Доставание детектора//////////////////////////////////////////////////////////////////////////
-use_prepare_detector_anim = true
-anm_prepare_detector                             = pm_hand_hide
-lock_time_anm_prepare_detector = 0.5
-anm_prepare_detector_jammed                      = pm_hand_hide, idle_jammed
-lock_time_anm_prepare_detector_jammed = 0.5
-anm_prepare_detector_empty                       = pm_hand_hide, idle_empty
-lock_time_anm_prepare_detector_empty = 0.5
-
-anm_draw_detector                                = pm_hand_hide_end
-lock_time_anm_draw_detector = 0.40
-anm_draw_detector_jammed                         = pm_hand_hide_end, idle_jammed
-lock_time_anm_draw_detector_jammed = 0.40
-anm_draw_detector_empty                          = pm_hand_hide_end, idle_empty
-lock_time_anm_draw_detector_empty = 0.40
-
-;Убирание детектора//////////////////////////////////////////////////////////////////////////
-use_finish_detector_anim = true
-anm_finish_detector                             = pm_hand_draw
-lock_time_anm_finish_detector = 0.60
-anm_finish_detector_jammed                      = pm_hand_draw, idle_jammed
-lock_time_anm_finish_detector_jammed = 0.60
-anm_finish_detector_empty                       = pm_hand_draw, idle_empty
-lock_time_anm_finish_detector_empty = 0.60
-
 
 ;включение налобника//////////////////////////////////////////////////////////////////////////
 anm_headlamp_on = pm_headflash
@@ -377,4 +271,3 @@ anm_nv_on_jammed = pm_nv_on, idle_jammed
 anm_nv_off = pm_nv_off
 anm_nv_off_empty = pm_nv_off, idle_empty
 anm_nv_off_jammed = pm_nv_off, idle_jammed
-
