@@ -401,16 +401,17 @@ function CUIDescriptionWnd:ShowDescription(item)
 		else description = ""
 	end
 
-	-- generic description
-	self.item_name:SetTextST(inv_name)
-
 	-- artefacts
 	if item:is_artefact() 
 	  and string.find(self.section, "af_") 
 	  and not has_alife_info("encyclopedy_zone_artifact_" .. self.section) 
 	then
-		description = game.translate_string("enc_zone_artifact_unknown")
+		inv_name = game.translate_string("enc_zone_artifact_unknown_name")
+		description = game.translate_string("enc_zone_artifact_unknown_description")
 	end
+	
+	-- generic description
+	self.item_name:SetTextST(inv_name)
 	
 	if not isWeapon(item) or IsBinocular(item) then
 		self.descr:SetText(description)	

@@ -7,8 +7,7 @@
 // v2p_name: output for vertex shader.
 // p_name : input for pixel shader.
 ////////////////////////////////////////////////////////////////
-#include "common\ogsr_shaders_cfg.h"
-////////////////////////////////////////////////////////////////
+
 // TL0uv
 struct v_TL0uv_positiont
 {
@@ -250,17 +249,11 @@ struct v2p_dumb
 struct v2p_volume
 {
     float4 tc : TEXCOORD0;
-#ifdef USE_SJITTER
-    float4 tcJ : TEXCOORD1;
-#endif
     float4 hpos : SV_Position; // Clip-space position  (for rasterization)
 };
 struct p_volume
 {
     float4 tc : TEXCOORD0;
-#ifdef USE_SJITTER
-    float4 tcJ : TEXCOORD1;
-#endif
 };
 ////////////////////////////////////////////////////////////////
 // Static
@@ -297,9 +290,6 @@ struct f_deffer
     float4 C : SV_Target1; // r, g, b,  gloss
     float2 Velocity : SV_Target2; // XY - motion vectors
     float4 H : SV_Target3;
-#ifdef EXTEND_F_DEFFER
-    uint mask : SV_COVERAGE;
-#endif
 };
 
 struct gbuffer_data
@@ -310,9 +300,6 @@ struct gbuffer_data
     float hemi; // AO
     float3 C;
     float gloss;
-#ifdef REFLECTIONS_ONLY_ON_TERRAIN
-    bool refl_flag;
-#endif
 };
 
 ////////////////////////////////////////////////////////////////
@@ -476,11 +463,7 @@ struct p_screen
 struct v2p_screen
 {
     float2 tc0 : TEXCOORD0;
-#ifdef SM_2_0
-    float4 HPos : POSITION; // Clip-space position (for rasterization)
-#else
     float4 HPos : POSITIONT; // Clip-space position (for rasterization)
-#endif
 };
 ////////////////////////////////////////////////////////////////
 

@@ -135,9 +135,14 @@ function CRandomTask:__init()
 		curr_task_info.reward_reputation	= utils.cfg_get_number(sys_ini, id, "reward_reputation", nil, false)
 		curr_task_info.reward_relation		= parse_key_value(utils.cfg_get_string(sys_ini, id, "reward_relation", nil, false, ""))
 		
-		local infos = utils.cfg_get_string(sys_ini, id, "reward_infoportion", nil, false, "")
-		if infos ~= nil then
-			curr_task_info.reward_infoportion = parse_names(infos) 
+		local reward_infos = utils.cfg_get_string(sys_ini, id, "reward_infoportion", nil, false, "")
+		
+		if reward_infos ~= nil then
+			curr_task_info.reward_infoportion = parse_names(reward_infos) 
+		end
+		
+		if sys_ini:line_exist(id, "prepayment_infoportion") then
+			curr_task_info.prepayment_infoportion		= sys_ini:r_string(id, "prepayment_infoportion")
 		end
 		
 		if sys_ini:line_exist(id, "condlist") then
@@ -418,6 +423,12 @@ function CRandomTask:action_give_task(actor, npc, p1, p2)
 		--'  вест на пистолет  узнецова
 		if task_desc.target == "wpn_aps" and not has_item_to_bring(task_desc) then
 			db.actor:give_info_portion("tm_find_item_1_proceed") 
+		end
+		--
+	elseif task_desc.type == "artefact" then
+		--' јрты
+		if task_desc.prepayment_infoportion and not has_alife_info(task_desc.prepayment_infoportion) then
+			db.actor:give_info_portion(task_desc.prepayment_infoportion) 
 		end
 		--
 	end

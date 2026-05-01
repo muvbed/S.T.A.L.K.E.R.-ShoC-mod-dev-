@@ -69,7 +69,7 @@
 			<pda_section>pda_quests</pda_section>
 
 			<main_wnd>
-				<auto_static start_time="0" length_sec="5" x="334" y="75" width="50" height="50" alignment="c" stretch="1"
+				<auto_static start_time="0" length_sec="5" x="328" y="75" width="50" height="50" alignment="c" stretch="1"
 					light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w2</window_name>
 					<texture>ui_highlight</texture>
@@ -121,7 +121,7 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_map</pda_section>
 			<main_wnd>
-				<auto_static start_time="0" length_sec="4" x="387" y="75" width="50" height="50" alignment="c" stretch="1"
+				<auto_static start_time="0" length_sec="4" x="382" y="75" width="50" height="50" alignment="c" stretch="1"
 					light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<texture>ui_highlight</texture>
@@ -167,65 +167,6 @@
 			</main_wnd>
 		</item>
 
-		<delme_item><!--…Еще сможешь добавлять или убирать собственные пометки на карте... -->
-			<length_sec>5</length_sec>
-			<pause_state>off</pause_state>
-			<guard_key/>
-			<function_on_start>xr_effects.pda_off</function_on_start>
-			<function_on_stop>xr_effects.pda_on</function_on_stop>
-			<sound>characters_voice\scenario\trader\trader_tutorial_pda_8</sound>
-			<cursor_pos/>
-			<grab_input>1</grab_input>
-			<pda_section>pda_quests</pda_section>
-			<main_wnd>
-				<auto_static start_time="1" length_sec="4" x="819" y="135" width="30" height="30" alignment="c" stretch="1"
-					light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
-					<window_name>w1</window_name>
-					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
-				</auto_static>
-				<auto_static start_time="1" length_sec="4" x="839" y="135" width="30" height="30" alignment="c" stretch="1"
-					light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
-					<window_name>w2</window_name>
-					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
-				</auto_static>
-			</main_wnd>
-		</delme_item>
-
-		<item><!--вобщем разберешься…там не сложно…В ПДА есть раздел Контакты -->
-			<length_sec>7</length_sec>
-			<pause_state>off</pause_state>
-			<guard_key/>
-			<function_on_start>xr_effects.pda_off</function_on_start>
-			<function_on_stop>xr_effects.pda_on</function_on_stop>
-			<sound>characters_voice\scenario\trader\trader_tutorial_pda_9</sound>
-			<cursor_pos/>
-			<grab_input>1</grab_input>
-			<pda_section>pda_quests</pda_section>
-			<main_wnd/>
-		</item>
-
-		<item><!--В контактах список сталкеров, которые находятся в радиусе 50 метров.
-					Плюс их короткое описание, ранг, группировка и вероятное отношение к тебе.
-					Запомни, пока ты - нейтрал, и только от тебя зависит, как к тебе будут относится потом.
-					Если поможешь кому, то обрати внимание, как изменится его отношение к тебе...  -->
-			<length_sec>27</length_sec>
-			<pause_state>off</pause_state>
-			<guard_key/>
-			<function_on_start>xr_effects.pda_off</function_on_start>
-			<function_on_stop>xr_effects.pda_on</function_on_stop>
-			<sound>characters_voice\scenario\trader\trader_tutorial_pda_11</sound>
-			<cursor_pos/>
-			<grab_input>1</grab_input>
-			<pda_section>pda_contacts</pda_section>
-			<main_wnd>
-				<auto_static start_time="0" length_sec="4" x="506" y="75" width="50" height="50" alignment="c" stretch="1"
-					light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
-					<window_name>w1</window_name>
-					<texture>ui_highlight</texture>
-				</auto_static>
-			</main_wnd>
-		</item>
-
 		<item><!--.. ну тут и говорить нечего - там записывается вся информация, которая тебе нужна,
 					плюс новости…даже то, что я тебе сейчас втолковываю, ты там найдешь…Потом…В разделе ПДА
 					под названием Рейтинг…кх-хх-->
@@ -239,7 +180,7 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_diary</pda_section>
 			<main_wnd>
-				<auto_static start_time="0" length_sec="4" x="440" y="75" width="50" height="50" alignment="c" stretch="1"
+				<auto_static start_time="0" length_sec="4" x="436" y="75" width="50" height="50" alignment="c" stretch="1"
 					light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<texture>ui_highlight</texture>
@@ -260,7 +201,7 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_ranking</pda_section>
 			<main_wnd>
-				<auto_static start_time="0" length_sec="4" x="566" y="75" width="50" height="50" alignment="c" stretch="1"
+				<auto_static start_time="0" length_sec="4" x="516" y="75" width="50" height="50" alignment="c" stretch="1"
 					light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<texture>ui_highlight</texture>
@@ -279,7 +220,7 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_statistics</pda_section>
 			<main_wnd>
-				<auto_static start_time="0" length_sec="4" x="621" y="75" width="50" height="50" alignment="c" stretch="1"
+				<auto_static start_time="0" length_sec="4" x="572" y="75" width="50" height="50" alignment="c" stretch="1"
 					light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<texture>ui_highlight</texture>
@@ -299,7 +240,7 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_encyclopedia</pda_section>
 			<main_wnd>
-				<auto_static start_time="0" length_sec="6" x="677" y="75" width="50" height="50" alignment="c" stretch="1"
+				<auto_static start_time="0" length_sec="6" x="629" y="75" width="50" height="50" alignment="c" stretch="1"
 					light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<texture>ui_highlight</texture>

@@ -2,7 +2,11 @@
 -- Общие функции
 -- ----------------------------------------------------------------------------------------------------
 function pda_on()
-	cmd("g_3d_pda", "on")
+    local AR = res_type.get_AR()
+
+    if AR == 2 then
+		cmd("g_3d_pda", "on")
+	end
 end
 
 function pda_off()

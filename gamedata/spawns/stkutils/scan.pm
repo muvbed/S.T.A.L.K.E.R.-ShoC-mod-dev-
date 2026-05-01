@@ -161,6 +161,7 @@ use constant section_to_clsid => {
 	'dog_weak' => 'SM_DOG_S',
 	'flesh_strong' => 'SM_FLESH',
 	'flesh_normal' => 'SM_FLESH',
+	'cat_weak' => 'SM_CAT_S',
 	'm_flesh_e' => 'SM_FLESH',
 	'gigant_normal' => 'SM_GIANT',
 	'm_gigant_e' => 'SM_GIANT',

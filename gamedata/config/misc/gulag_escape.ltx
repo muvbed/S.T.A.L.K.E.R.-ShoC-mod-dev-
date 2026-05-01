@@ -824,20 +824,6 @@ ignore_types = corpse
 ;-------------------------------------------------------------------------------------------------
 ;-- ESCAPE FACTORY BANDITS
 ;-------------------------------------------------------------------------------------------------
-[logic@esc_fabrika_bandit_walker1]
-active = walker1@esc_fabrika_bandit
-combat_ignore = combat_ignore
-
-[walker1@esc_fabrika_bandit]
-path_walk = day_walk1
-path_look = day_look1
-def_state_moving = raid
-def_state_moving_fire = raid_fire
-def_state_campering = threat
-def_state_campering_fire = threat_fire
-combat_ignore_cond = {=check_fighting(004)}
-danger = danger_condition@esc_fabrika_bandit
-
 [danger_condition@esc_fabrika_bandit]
 ignore_distance = 70
 
@@ -848,21 +834,6 @@ combat_ignore = combat_ignore
 [walker2@esc_fabrika_bandit]
 path_walk = day_walk2
 path_look = day_look2
-combat_ignore_cond = {=check_fighting(004)}
-danger = danger_condition@esc_fabrika_bandit
-
-
-[logic@esc_fabrika_bandit_walker3]
-active = walker3@esc_fabrika_bandit
-combat_ignore = combat_ignore
-
-[walker3@esc_fabrika_bandit]
-path_walk = day_walk3
-path_look = day_look3
-def_state_moving = raid
-def_state_moving_fire = raid_fire
-def_state_campering = threat
-def_state_campering_fire = threat_fire
 combat_ignore_cond = {=check_fighting(004)}
 danger = danger_condition@esc_fabrika_bandit
 
@@ -908,17 +879,6 @@ combat_ignore_cond = {=check_fighting(004)}
 danger = danger_condition@esc_fabrika_bandit
 
 
-[camper@esc_fabrika_bandit_walker1]
-active = walker11@esc_fabrika_bandit
-combat_ignore = combat_ignore
-danger = danger_condition@esc_fabrika_bandit
-
-[walker11@esc_fabrika_bandit]
-path_walk = day_alarm_walk1
-path_look = day_alarm_look1
-combat_ignore_cond = {=check_fighting(004)}
-danger = danger_condition@esc_fabrika_bandit
-
 
 [camper@esc_fabrika_bandit_walker2]
 active = walker22@esc_fabrika_bandit
@@ -930,19 +890,6 @@ path_walk = day_alarm_walk2
 path_look = day_alarm_look2
 combat_ignore_cond = {=check_fighting(004)}
 danger = danger_condition@esc_fabrika_bandit
-
-
-[camper@esc_fabrika_bandit_walker3]
-active = walker33@esc_fabrika_bandit
-combat_ignore = combat_ignore
-danger = danger_condition@esc_fabrika_bandit
-
-[walker33@esc_fabrika_bandit]
-path_walk = day_alarm_walk3
-path_look = day_alarm_look3
-combat_ignore_cond = {=check_fighting(004)}
-danger = danger_condition@esc_fabrika_bandit
-
 
 [camper@esc_fabrika_bandit_walker4]
 active = walker44@esc_fabrika_bandit
@@ -1496,23 +1443,6 @@ active = kamp@esc_killer_kamp_offline
 [kamp@esc_killer_kamp_offline]
 center_point = kamp_wait
 
-;--------------------------
-;-------- ЗАСАДА ----------
-;--------------------------
-[logic@esc_ambush1]
-active = walker@esc_ambush1
-
-[walker@esc_ambush1]
-path_walk = walk1
-path_look = look1
-
-
-[logic@esc_ambush2]
-active = walker@esc_ambush2
-
-[walker@esc_ambush2]
-path_walk = walk2
-path_look = look2
 
 ;------------------------------
 ;------ Трупы у вагона --------
@@ -1873,17 +1803,15 @@ home_min_radius = 20
 home_max_radius = 40
 
 ;-------------------------
-;------- Flesh 2 ---------
+;-------- Cats -----------
 ;-------------------------
-[logic@esc_flesh_2_camp]
-active = mob_camp@esc_flesh_2_camp
+[logic@esc_cats]
+active = mob_home@esc_cats
 
-[mob_camp@esc_flesh_2_camp]
-path_look = look
-path_home = walk
-time_change_point = 60000
-home_min_radius = 15
-home_max_radius = 30
+[mob_home@esc_cats]
+path_home = home
+home_min_radius = 5
+home_max_radius = 10
 
 
 ;------------------------

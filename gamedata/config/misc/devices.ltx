@@ -316,3 +316,52 @@ attach_angle_offset		= -1.5708,0.1919,3.1416    ;устанавливается в радианах Angl
 attach_position_offset	= 0.075, 0.066, 0.023
 attach_bone_name		= bip01_l_hand
 auto_attach				= false
+
+[matras]:identity_immunities
+GroupControlSection 	= spawn_group
+discovery_dependency 	=
+$spawn    				= "devices\matras"
+$prefetch   			= 32
+class   				= II_ANTIR
+cform           		= skeleton
+visual          		= equipments\item_sleep_bag.ogf
+description  			= enc_amk_matras
+
+inv_name   				= amk_matras
+inv_name_short  		= amk_matras_s
+inv_weight   			= 1
+
+inv_grid_width  		= 2
+inv_grid_height  		= 2
+inv_grid_x   			= 16
+inv_grid_y   			= 32
+cost    				= 4000
+
+; eatable item
+eat_health 				= 0
+eat_satiety 			= 0
+eat_power 				= 0
+eat_radiation 			= 0
+eat_alcohol 			= 0
+wounds_heal_perc 		= 0
+eat_portions_num 		= 1000000
+
+[matches]:identity_immunities
+GroupControlSection 	= spawn_group
+discovery_dependency 	=
+$spawn    				= "devices\matches"
+$prefetch   			= 32
+class   				= II_ATTCH
+cform           		= skeleton
+visual					= equipments\item_spichki.ogf
+description				= matches_desc
+
+inv_name				= matches
+inv_name_short			= matches
+inv_weight   			= 0.05
+
+inv_grid_width			= 1
+inv_grid_height			= 1
+inv_grid_x				= 16
+inv_grid_y				= 27
+cost    				= 150

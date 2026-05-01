@@ -103,4 +103,9 @@
 		<texture>ui_button_ordinary</texture>
 		<text align="c" font="letterica16" color="white_1">ui_st_leave</text>
     </button>
+    
+    <!-- Звуки действий при торговле -->
+	<action_sounds>
+		<snd_properties>interface\inv_properties</snd_properties>
+	</action_sounds>
 </window>

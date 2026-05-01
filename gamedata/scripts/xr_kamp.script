@@ -353,7 +353,6 @@ function CKampManager:proceedState( npc )
       else
         t.begin       = nil
         self.director = npc_id
-        self.censor   = nil
       end
       self.kamp_state = v.st
       self.begin      = time_global()
@@ -516,10 +515,7 @@ function CKampManager:updateNpc( npc )
   elseif sound == "reac_joke" then
     sound = ""
     if self.npc[ npc_id ].new == true then
-      if self.censor == nil then
-        xr_sound.set_sound_play( npc, "reac_joke", math.random( 2000,3000 ) )
-        self.censor = npc_id
-      end
+      xr_sound.set_sound_play( npc, "reac_joke", math.random( 2000,3000 ) )
       self.npc[ npc_id ].new = false
     end
   else
@@ -711,7 +707,6 @@ function CKampManager:reset_director( npc )
   if self.director ~= npc:id() then return end
   self.npc[ npc:id() ].begin = nil
   self.director   = nil
-  self.censor     = nil
   self.kamp_state = "idle"
   self.begin      = time_global()
   for kk, vv in pairs( self.npc ) do

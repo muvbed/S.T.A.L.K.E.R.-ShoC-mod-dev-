@@ -427,7 +427,7 @@ end
 
 -- Сонливость ГГ от котов
 function cat_attack(obj)
-    ogse_signals.get_mgr():reschedule(2500)
+    ogse_signals.get_mgr():reschedule(5000)
 
     local npc = obj:get_enemy()
     local DamagedThreshold = utils.cfg_get_number(sys_ini, obj:section(), "DamagedThreshold", false, false, false, "")
@@ -439,7 +439,7 @@ function cat_attack(obj)
         local dist = obj:position():distance_to(npc:position())
         if dist <= 20 then
         	npc.power = -0.05
-        	ogse_sleep_mgr.add_need_for_sleep(2)
+        	ogse_sleep_mgr.add_need_for_sleep(1)
         	
             level.add_pp_effector("gape.ppe", 7151, false)
             xr_sound.get_safe_sound_object("monsters\\cat\\psy", sound_object.s2d):play_at_pos(npc, npc:position())

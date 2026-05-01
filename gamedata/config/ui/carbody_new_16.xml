@@ -98,5 +98,6 @@
 		<snd_attach_addon>interface\inv_attach_addon</snd_attach_addon>
 		<snd_detach_addon>interface\inv_detach_addon</snd_detach_addon>
 		<snd_item_use>interface\inv_slot</snd_item_use>
+		<snd_unload_wpn>interface\inv_unload_ammo</snd_unload_wpn>
 	</action_sounds>
 </window>

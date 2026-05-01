@@ -50,19 +50,12 @@ function table_update_pda() --обновляем таблицу реально существующих и живых НПС
           and IsNpcStalker(sobj) 
           and sobj:alive() 
         then
-        	local character_name = sobj:character_name()
-			local words = {}
-			
-			for word in character_name:gmatch("%S+") do
-			    table.insert(words, game.translate_string(word))
-			end
-			
-			local charname = table.concat(words, " ")
+			local cname = get_charname(sobj:character_name()) 
 
             table.insert(tab, { 
               id = sobj.id, 
-              --name = charname, 
-              name = sobj:character_name(),
+              name = cname, 
+              --name = sobj:character_name(), -- для 3.460 и ниже
               SID = sobj.m_story_id 
             })
         end

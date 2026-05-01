@@ -138,7 +138,10 @@
 	<string id="enc_zone_anomalies_zharka">
 	    <text>В неактивном состоянии выглядит как едва заметное дрожание горячего воздуха. Однако при попадании в зону действия любого предмета или живого существа мгновенно формирует компактную область, разогретую до температуры порядка 1500 К. Ночью обнаруживается только с помощью детекторов или бросания металлических предметов. Образует три вида артефактов: "Каплю", "Огненный шар" и "Кристалл".</text>
 	</string>
-	<string id="enc_zone_artifact_unknown">
+	<string id="enc_zone_artifact_unknown_name">
+	    <text>Артефакт</text>
+	</string>
+	<string id="enc_zone_artifact_unknown_description">
 	    <text>Детальная информация отсутствует.</text>
 	</string>
 	<string id="enc_zone_artifact_af-ameba-mica">

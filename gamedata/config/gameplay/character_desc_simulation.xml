@@ -2586,7 +2586,7 @@
 		<reputation>10</reputation>
 
 		<visual>actors\soldier\soldier_bandana_5</visual>		
-		<snd_config>characters_voice\human_01\military\</snd_config>
+		<snd_config>characters_voice\human_04\military\</snd_config>
 		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -2646,7 +2646,7 @@
 		<reputation>6</reputation>
 
 		<visual>actors\soldier\soldier_bandana</visual>
-		<snd_config>characters_voice\human_01\military\</snd_config>
+		<snd_config>characters_voice\human_04\military\</snd_config>
 		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -2741,7 +2741,7 @@
 		<critical_wound_weights>75,25,25</critical_wound_weights>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>		
-		<snd_config>characters_voice\human_02\military\</snd_config>
+		<snd_config>characters_voice\human_04\military\</snd_config>
 		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -2834,7 +2834,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_obichniy</visual>		
-		<snd_config>characters_voice\human_02\military\</snd_config>
+		<snd_config>characters_voice\human_04\military\</snd_config>
 		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -2896,7 +2896,7 @@
 		<reputation>-9</reputation>
 
 		<visual>actors\soldier\soldier_bandana_5</visual>		
-		<snd_config>characters_voice\human_02\military\</snd_config>
+		<snd_config>characters_voice\human_04\military\</snd_config>
 		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n

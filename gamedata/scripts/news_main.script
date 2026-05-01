@@ -83,14 +83,16 @@ function hear_fight(npc1, npc2)
         if npc2 then gns = get_nearest_stalker(get_object_levelname(npc2), get_object_position(npc2), 400, 0) end
 		
         if gns then
+        	local gns_name = get_charname(gns:character_name())
+        	
             if npc1 and npc2 then --война между людьми
-                amk.send_tip(news_data.war_between_mans[math.random(#news_data.war_between_mans)] .. " " .. get_point_description(get_object_levelname(npc1), get_object_position(npc1)) .. ".", gns:character_name(),
+                amk.send_tip(news_data.war_between_mans[math.random(#news_data.war_between_mans)] .. " " .. get_point_description(get_object_levelname(npc1), get_object_position(npc1)) .. ".", gns_name,
                     60 + math.random(40), 15, "common_channel")
             elseif npc1 and (not npc2) then
-                amk.send_tip(news_data.mans_at_mons[math.random(#news_data.mans_at_mons)] .. " " .. get_point_description(get_object_levelname(npc1), get_object_position(npc1)) .. ".", gns:character_name(),
+                amk.send_tip(news_data.mans_at_mons[math.random(#news_data.mans_at_mons)] .. " " .. get_point_description(get_object_levelname(npc1), get_object_position(npc1)) .. ".", gns_name,
                     60 + math.random(40), 15, "common_channel")
             elseif (not npc1) and npc2 then
-                amk.send_tip(news_data.mons_at_mans[math.random(#news_data.mons_at_mans)] .. " " .. get_point_description(get_object_levelname(npc2), get_object_position(npc2)) .. ".", gns:character_name(),
+                amk.send_tip(news_data.mons_at_mans[math.random(#news_data.mons_at_mans)] .. " " .. get_point_description(get_object_levelname(npc2), get_object_position(npc2)) .. ".", gns_name,
                     60 + math.random(40), 15, "common_channel")
             end
         end
@@ -126,7 +128,7 @@ function get_npc_name(obj)
     if m_s_name == nil then
         m_s_name = ""
     end
-    return m_s_name
+    return get_charname(m_s_name)
 end
 
 function get_npc_community(obj)

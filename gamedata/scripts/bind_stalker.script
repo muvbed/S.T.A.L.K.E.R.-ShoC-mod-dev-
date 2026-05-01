@@ -50,6 +50,7 @@ function actor_binder:net_spawn(data)
 	cmd("g_cop_death_anim 0") -- Отключаем Death Anims, с ними куча багов.
 	cmd("unbind use_medkit")
 	cmd("unbind use_bandage")
+	cmd("unbind contacts")
 	
 	if isIndoor(level.name()) then  --SSS18
 		get_console():execute("ssfx_is_underground 1")

@@ -32,11 +32,11 @@ local min_sleep_deprivation_effector_interval = 15.0 * 1000 -- [ms]
 -- максимальный интервал между проявлениями недосыпа, соответствует минимальному недосыпу
 local max_sleep_deprivation_effector_interval = 60.0 * 1000 -- [ms]
 local sleep_thresholds = {
-	{value = 0.00, color = GetARGB(255,   0, 255, 0)}, -- зелёный
-	{value = 0.25, color = GetARGB(255, 200, 255, 0)}, -- салатный
-	{value = 0.50, color = GetARGB(255, 255, 255, 0)}, -- жёлтый
-	{value = 0.75, color = GetARGB(255, 255, 200, 0)}, -- оранжевый
-	{value = 0.90, color = GetARGB(255, 255,   0, 0)}, -- красный
+	{value = 0.00, color = GetARGB(255, 123, 176, 115)}, -- зелёный
+	{value = 0.25, color = GetARGB(255, 170, 190, 90)},  -- салатный
+	{value = 0.50, color = GetARGB(255, 176, 147, 114)}, -- жёлтый
+	{value = 0.75, color = GetARGB(255, 200, 110, 60)},  -- оранжевый
+	{value = 0.90, color = GetARGB(255, 200,  42, 46)},  -- красный
 }
 local sleep_thresholds_number = #sleep_thresholds
 

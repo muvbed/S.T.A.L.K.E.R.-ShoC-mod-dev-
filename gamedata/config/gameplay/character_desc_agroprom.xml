@@ -334,7 +334,7 @@
 		<money min="200" max="600" infinitive="0"></money>
 		
 		<visual>actors\soldier\soldier_bandana_5</visual>		
-		<snd_config>characters_voice\human_01\military\</snd_config>
+		<snd_config>characters_voice\human_04\military\</snd_config>
 		<crouch_type>0</crouch_type>
 
 		<supplies>
@@ -396,7 +396,7 @@
 		<reputation>-7</reputation>
 
 		<visual>actors\soldier\soldier_bandana</visual>
-		<snd_config>characters_voice\human_01\military\</snd_config>
+		<snd_config>characters_voice\human_04\military\</snd_config>
 		<crouch_type>0</crouch_type>
 
 		<supplies>
@@ -491,7 +491,7 @@
 		<reputation>-83</reputation>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>		
-		<snd_config>characters_voice\human_01\military\</snd_config>
+		<snd_config>characters_voice\human_04\military\</snd_config>
 		<crouch_type>0</crouch_type>
 
 		<supplies>
@@ -619,7 +619,7 @@
 		<reputation>-15</reputation>
 
 		<visual>actors\soldier\soldier_bandana</visual>		
-		<snd_config>characters_voice\human_01\military\</snd_config>
+		<snd_config>characters_voice\human_04\military\</snd_config>
 		<crouch_type>0</crouch_type>
 
 		<supplies>

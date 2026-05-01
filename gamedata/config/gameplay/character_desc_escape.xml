@@ -638,7 +638,7 @@
 		<rank>223</rank>
 		<reputation>6</reputation>
 		
-		<snd_config>characters_voice\human_01\military\</snd_config>
+		<snd_config>characters_voice\human_04\military\</snd_config>
 		<crouch_type>0</crouch_type>
 
 		<visual>actors\soldier\soldier_obichniy</visual>		
@@ -696,7 +696,7 @@
 		<rank>207</rank>
 		<reputation>10</reputation>
 		
-		<snd_config>characters_voice\human_01\military\</snd_config>
+		<snd_config>characters_voice\human_04\military\</snd_config>
 		<crouch_type>0</crouch_type>
 
 		<visual>actors\soldier\soldier_bandana_2</visual>		
@@ -783,7 +783,7 @@
 		<rank>223</rank>
 		<reputation>6</reputation>
 		
-		<snd_config>characters_voice\human_01\military\</snd_config>
+		<snd_config>characters_voice\human_04\military\</snd_config>
 		<crouch_type>0</crouch_type>
 
 		<visual>actors\soldier\soldier_obichniy</visual>		
@@ -870,7 +870,7 @@
 		<rank>263</rank>
 		<reputation>-18</reputation>
 		
-		<snd_config>characters_voice\human_02\military\</snd_config>
+		<snd_config>characters_voice\human_04\military\</snd_config>
 		<crouch_type>0</crouch_type>
 
 		<visual>actors\soldier\soldier_bandana_3</visual>		
@@ -957,7 +957,7 @@
 		<rank>205</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\military\</snd_config>
+		<snd_config>characters_voice\human_04\military\</snd_config>
 		<crouch_type>0</crouch_type>
 
 		<visual>actors\soldier\soldier_obichniy</visual>		
@@ -1044,7 +1044,7 @@
 		<rank>809</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_02\military\</snd_config>
+		<snd_config>characters_voice\human_04\military\</snd_config>
 		<crouch_type>0</crouch_type>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>		

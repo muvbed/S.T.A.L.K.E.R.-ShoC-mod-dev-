@@ -1,42 +1,42 @@
-	<string id="ogse_healing_first_intoxication_warning_text">
-		<text>Эффективность аптечек снижена!</text>
+<string id="ogse_healing_first_intoxication_warning_text">
+		<text>Эффективность препаратов снижена</text>
 	</string>
 	<string id="ogse_healing_second_intoxication_warning_text">
-		<text>Эффективность аптечек снижена до среднего уровня!</text>
+		<text>Эффективность препаратов снижена до среднего уровня</text>
 	</string>
 	<string id="ogse_healing_third_intoxication_warning_text">
-		<text>Эффективность аптечек снижена до критического уровня!</text>
+		<text>Эффективность препаратов снижена до критического уровня</text>
 	</string>
 	<string id="ogse_healing_forth_intoxication_warning_text">
-		<text>Интоксикация превышает критический уровень!</text>
+		<text>Препарат неэффективен при текущем уровне интоксикации</text>
 	</string>
 	<string id="ogse_healing_text_using_voda_text">
-		<text>Эффективность аптечки восстановлена полностью.</text>
+		<text>Эффективность препаратов восстановлена</text>
 	</string>
 	<string id="ogse_healing_text_already_using_text">
-		<text>Невозможно повторно использовать аптечку!</text>
+		<text>Недоступно на время действия предыдущего препарата</text>
 	</string>
 	<string id="ogse_sleep_mgr_warn_1_text">
-	    <text>Вы не можете спать во время Выброса</text>
+	    <text>Невозможно спать во время Выброса</text>
 	</string>
 	<string id="ogse_sleep_mgr_warn_3_text">
-	    <text>Вы проснулись от острого ощущения опасности</text>
+	    <text>Пробуждение от острого ощущения опасности</text>
 	</string>
 	<string id="ogse_sleep_mgr_warn_4_text">
-	    <text>Нельзя спать, так как ваше состояние ухудшается</text>
+	    <text>Невозможно уснуть, пока состояние здоровья ухудшается</text>
 	</string>
 	<string id="ogse_sleep_mgr_warn_5_text">
-	    <text>Вы не можете спать, когда поблизости есть враги</text>
+	    <text>Невозможно уснуть, когда поблизости есть враги</text>
 	</string>
 	<string id="ogse_sleep_mgr_warn_7_text">
-	    <text>Нельзя спать прямо под дождём — найдите укрытие</text>
+	    <text>Невозможно уснуть под дождём, нужно найти укрытие</text>
 	</string>
 	<string id="ogse_sleep_mgr_warn_8_text">
 	    <text>Это место слишком опасно для сна</text>
 	</string>
 	<string id="ogse_sleep_mgr_warn_9_text">
-	    <text>Вы не можете спать из-за действия энергетика</text>
+	    <text>Невозможно уснуть, пока действует энергетик</text>
 	</string>        
 	<string id="ogse_sleep_mgr_warn_12_text">
-	    <text>Вы не хотите спать</text>
+	    <text>Сонливость отсутствует</text>
 	</string>

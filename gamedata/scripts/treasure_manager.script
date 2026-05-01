@@ -35,7 +35,7 @@ function give_money(npc)
 			local money = npc:money()
 			if money ~= nil and money ~=0 then
 				local deadmoney = money
-				local news_texti = "%c[255,238,155,23]Имя: %c[default]"..npc:character_name().."\\n%c[255,238,155,23]Обнаружено денег: %c[default]"..game.translate_string(tostring(deadmoney).." руб.")
+				local news_texti = "%c[255,238,155,23]Имя: %c[default]"..get_charname(npc:character_name()).."\\n%c[255,238,155,23]Обнаружено денег: %c[default]"..game.translate_string(tostring(deadmoney).." руб.")
 				db.actor:give_game_news(news_texti, "ui\\ui_iconsTotal", Frect():set(0,0,83,47), 1, 4000)
 				db.actor:give_money(deadmoney)
 				npc:give_money(-money)

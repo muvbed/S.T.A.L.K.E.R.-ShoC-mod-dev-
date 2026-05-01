@@ -754,35 +754,36 @@ function on_enemies_found(victim, vdata, victim_map, victim_number)
                                     local m_where = news_main.get_point_description(
                                         news_main.get_object_levelname(defender.player),
                                         news_main.get_object_position(defender.player))
+                                    local defender_name = get_charname(defender.player:character_name())
                                     if attacker.player:community() == "military" then
                                         local text, place, name =
                                             news_data.military_attack_to_stalker
                                             [math.random(#news_data.military_attack_to_stalker)], m_where,
-                                            defender.player:character_name()
+                                            defender_name
                                         news_main.message_offwar(text, place, name)
                                     elseif attacker.player:community() == "bandit" then
                                         local text, place, name =
                                             news_data.bandit_attack_to_stalker
                                             [math.random(#news_data.bandit_attack_to_stalker)], m_where,
-                                            defender.player:character_name()
+                                            defender_name
                                         news_main.message_offwar(text, place, name)
                                     elseif attacker.player:community() == "monolith" then
                                         local text, place, name =
                                             news_data.monolith_attack_to_stalker
                                             [math.random(#news_data.monolith_attack_to_stalker)], m_where,
-                                            defender.player:character_name()
+                                            defender_name
                                         news_main.message_offwar(text, place, name)
                                     elseif attacker.player:community() == "killer" then
                                         local text, place, name =
                                             news_data.killer_attack_to_stalker
                                             [math.random(#news_data.killer_attack_to_stalker)], m_where,
-                                            defender.player:character_name()
+                                            defender_name
                                         news_main.message_offwar(text, place, name)
                                     elseif string.find(attacker.player:community(), "zombied") then
                                         local text, place, name =
                                             news_data.zombied_attack_to_stalker
                                             [math.random(#news_data.zombied_attack_to_stalker)], m_where,
-                                            defender.player:character_name()
+                                            defender_name
                                         news_main.message_offwar(text, place, name)
                                     end
 
@@ -791,35 +792,36 @@ function on_enemies_found(victim, vdata, victim_map, victim_number)
                                     local m_where = news_main.get_point_description(
                                         news_main.get_object_levelname(attacker.player),
                                         news_main.get_object_position(attacker.player))
+                                    local attacker_name = get_charname(attacker.player:character_name())
                                     if defender.player:community() == "military" then
                                         local text, place, name =
                                             news_data.military_defender_to_stalker
                                             [math.random(#news_data.military_defender_to_stalker)], m_where,
-                                            attacker.player:character_name()
+                                            attacker_name
                                         news_main.message_offwar(text, place, name)
                                     elseif defender.player:community() == "bandit" then
                                         local text, place, name =
                                             news_data.bandit_defender_to_stalker
                                             [math.random(#news_data.bandit_defender_to_stalker)], m_where,
-                                            attacker.player:character_name()
+                                            attacker_name
                                         news_main.message_offwar(text, place, name)
                                     elseif defender.player:community() == "monolith" then
                                         local text, place, name =
                                             news_data.monolith_defender_to_stalker
                                             [math.random(#news_data.monolith_defender_to_stalker)], m_where,
-                                            attacker.player:character_name()
+                                            attacker_name
                                         news_main.message_offwar(text, place, name)
                                     elseif attacker.player:community() == "killer" then
                                         local text, place, name =
                                             news_data.killer_defender_to_stalker
                                             [math.random(#news_data.killer_defender_to_stalker)], m_where,
-                                            attacker.player:character_name()
+                                            attacker_name
                                         news_main.message_offwar(text, place, name)
                                     elseif string.find(attacker.player:community(), "zombied") then
                                         local text, place, name =
                                             news_data.zombied_defender_to_stalker
                                             [math.random(#news_data.zombied_defender_to_stalker)], m_where,
-                                            attacker.player:character_name()
+                                            attacker_name
                                         news_main.message_offwar(text, place, name)
                                     end
                                 end
@@ -1152,7 +1154,7 @@ function on_monsters_found(victim, vdata, victim_map, victim_number)
                                         if state == 0 and math.random() < news_main.off_prob then
                                             local text, place, name =
                                                 news_data.human_good_attack[math.random(#news_data.human_good_attack)],
-                                                m_where, attacker.player:character_name()
+                                                m_where, get_charname(attacker.player:character_name())
                                             news_main.message_offwar(text, place, name)
                                             state = 1
                                         end
@@ -1197,7 +1199,7 @@ function on_monsters_found(victim, vdata, victim_map, victim_number)
                             if state == 0 then
                                 news_main.hear_fight(nil, defender.player)
                                 local text, place, name = news_data.svidetel[math.random(#news_data.svidetel)], wwhere,
-                                    svidetel:character_name()
+                                    get_charname(svidetel:character_name())
                                 news_main.message_offwar(text, place, name)
                                 state = 1
                             end
@@ -1230,18 +1232,19 @@ function on_monsters_found(victim, vdata, victim_map, victim_number)
                                             news_main.hear_fight(nil, defender.player)
                                         end
                                         if state == 0 and math.random() < news_main.off_prob then
+                                        	local defender_name = get_charname(defender.player:character_name())
                                             if m_where then
                                                 amk.send_tip(
                                                     news_data.human_good_defend
                                                     [math.random(#news_data.human_good_defend)] .. " " .. m_where,
-                                                    defender.player:character_name(), 3, 15, "common_channel")
+                                                    defender_name, 3, 15, "common_channel")
                                                 state = 1
                                             else
                                                 state = 1
                                                 amk.send_tip(
                                                     news_data.human_good_defend
                                                     [math.random(#news_data.human_good_defend)],
-                                                    defender.player:character_name(), 3, 15, "common_channel")
+                                                    defender_name, 3, 15, "common_channel")
                                             end
                                         end
                                         -- Забитрать вещички с трупа не будем. Хотя, может некоторые клептоманы...

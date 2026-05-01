@@ -41,7 +41,7 @@
 	<!-- TAB CONTROL -->
 	<tab x="170" y="-38" width="768" height="144">
 		<!-- BUTTONS -->
-		<button x="6" y="6" width="36" height="120">
+		<button x="0" y="6" width="36" height="120">
 			<text align="l" x="0" y="46" font="letterica18" color="grey_2">pda_btn_quests</text>
 			<text_color>
 				<t color="white_4"/> <d color="grey_5"/> <e color="grey_2"/> <h color="white_4"/>
@@ -49,7 +49,7 @@
 			<sound_h>device\pda\pda_tap_hover</sound_h>
 			<sound_t>device\pda\pda_tap_active</sound_t>
 		</button>
-		<button x="365" y="6" width="40" height="120">
+		<button x="0" y="6" width="40" height="120">
 			<text align="l" x="0" y="46" font="letterica18"  color="grey_2">pda_btn_map</text>
 			<text_color>
 				<t  color="white_4"/> <d color="grey_5"/> <e color="grey_2"/> <h color="white_4"/>
@@ -57,7 +57,7 @@
 			<sound_h>device\pda\pda_tap_hover</sound_h>
 			<sound_t>device\pda\pda_tap_active</sound_t>
 		</button>
-		<button x="432" y="6" width="60" height="120">
+		<button x="0" y="6" width="60" height="120">
 			<text align="l" x="-2" y="46" font="letterica18"  color="grey_2">pda_btn_diary</text>
 			<text_color>
 				<t color="white_4"/> <d color="grey_5"/> <e color="grey_2"/> <h color="white_4"/>
@@ -65,15 +65,8 @@
 			<sound_h>device\pda\pda_tap_hover</sound_h>
 			<sound_t>device\pda\pda_tap_active</sound_t>
 		</button>
-		<button x="595" y="6" width="60" height="120">
-			<text align="l" x="0" y="46" font="letterica18"  color="grey_2">pda_btn_contacts</text>
-			<text_color>
-				<t  color="white_4"/> <d color="grey_5"/> <e color="grey_2"/> <h color="white_4"/>
-			</text_color>
-			<sound_h>device\pda\pda_tap_hover</sound_h>
-			<sound_t>device\pda\pda_tap_active</sound_t>
-		</button>
-		<button x="675" y="6" width="53" height="120">
+		<button></button>
+		<button x="0" y="6" width="53" height="120">
 			<text align="l" x="0" y="46" font="letterica18"  color="grey_2">pda_btn_ranking</text>
 			<text_color>
 				<t  color="white_4"/> <d color="grey_5"/> <e color="grey_2"/> <h color="white_4"/>
@@ -81,7 +74,7 @@
 			<sound_h>device\pda\pda_tap_hover</sound_h>
 			<sound_t>device\pda\pda_tap_active</sound_t>
 		</button>
-		<button x="745" y="6" width="78" height="120">
+		<button x="0" y="6" width="78" height="120">
 			<text align="l" x="0" y="46" font="letterica18"  color="grey_2">pda_btn_statistics</text>
 			<text_color>
 				<t  color="white_4"/> <d color="grey_5"/> <e color="grey_2"/> <h color="white_4"/>
@@ -89,7 +82,7 @@
 			<sound_h>device\pda\pda_tap_hover</sound_h>
 			<sound_t>device\pda\pda_tap_active</sound_t>
 		</button>
-		<button x="819" y="6" width="78" height="120">
+		<button x="0" y="6" width="78" height="120">
 			<text align="l" x="-4" y="46"  font="letterica18"  color="grey_2">pda_btn_encyclopedia</text>
 			<text_color>
 				<t  color="white_4"/> <d color="grey_5"/> <e color="grey_2"/> <h color="white_4"/>

@@ -1762,3 +1762,18 @@ function r_string_ex( section, line, def )
 	end
 	return def
 end
+
+-- Парсинг имён
+function get_charname(name)
+    if not name:find(" ") then
+        return game.translate_string(name)
+    end
+    
+    local words = {}
+    
+    for word in name:gmatch("%S+") do
+        table.insert(words, game.translate_string(word))
+    end
+    
+    return table.concat(words, " ")
+end

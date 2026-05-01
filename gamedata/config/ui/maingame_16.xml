@@ -107,7 +107,7 @@
 	<pick_up_item x="437" y="400" width="150" height="100"/>
 
 	<!-- Панель артефактов -->
-	<artefact_panel x="10" y="800" width="730" height="50" cell_width="38" cell_height="50" stretch="1" scale="0.5"/>
+	<artefact_panel x="99999" y="800" width="730" height="50" cell_width="38" cell_height="50" stretch="1" scale="0.5"/>
 
 	<!-- Звук появления нового НПС на карте -->
 	<new_contact_snd>detectors\contact_1</new_contact_snd>

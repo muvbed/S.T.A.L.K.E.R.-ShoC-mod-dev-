@@ -88,7 +88,7 @@ end
 --показываем типс
 function send_tip(news_text, header, timeout, showtime, sender, sound)
 	if timeout == nil then timeout = 0 end
-	if delay_of_sms_f() then timeout = timeout + math.random(5 + 15) end
+	if delay_of_sms_f() then timeout = timeout + math.random(3) end
 	if not db.actor then return end
 	if ogse_sleep_mgr.is_sleep_active() then showtime = 1 end
 	if news_text == nil then return end

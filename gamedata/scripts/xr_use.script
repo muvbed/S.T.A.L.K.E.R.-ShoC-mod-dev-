@@ -48,6 +48,7 @@ function notify_on_use(victim, who)
 			end
 		elseif xr_wounded.is_wounded(victim) then
 			-- ёзание раненого
+			xr_sound.set_sound_play(victim, "help_wounded")
 		elseif xr_sleeper.is_npc_asleep(victim) then
 			-- ёзание сп€щего
 			xr_sound.set_sound_play(victim, "use_no_sleep")

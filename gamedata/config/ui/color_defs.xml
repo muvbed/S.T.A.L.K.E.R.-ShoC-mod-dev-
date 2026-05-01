@@ -8,7 +8,7 @@
 	<color name="dark_yellow"			r="139" 	g="117" 	b="91"/>
 	<color name="brown"					r="41" 		g="35" 		b="27"/>
 	<color name="orange"				r="160" 	g="110" 	b="0" />
-	<color name="red"					r="200" 	g="42" 		b="46" 	a="186"/>
+	<color name="red"					r="200" 	g="42" 		b="46" />
 	<color name="green"					r="123" 	g="176" 	b="115" />
 	<color name="dark_green"			r="0" 		g="161" 	b="5" />
 	<color name="blue"					r="11"  	g="178" 	b="248" />
