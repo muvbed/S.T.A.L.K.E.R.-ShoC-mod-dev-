@@ -1,16 +1,18 @@
-[grenade_separator]:bread
-$spawn                   	= "scripts\grenade_separator"
+[separator]:bread
+$spawn                   	= "scripts\separator"
 inv_weight			      	= 0
 inv_grid_x					= 8 
 inv_grid_y					= 38 
 
 ; Гранаты на поясе
-[af_1]:af_medusa
+[af_1]:af_rusty_sea-urchin
 af_actor_properties			= on
 actor_properties			= on
 jump_height					= .0
 particles					=
-radiation_restore_speed		= 0.0000
+radiation_restore_speed		= 0.0
+bleeding_restore_speed  	= 0.0
+
 hit_absorbation_sect		= af_1_absorbation
 
 [af_1_absorbation]
@@ -30,11 +32,11 @@ inv_grid_height				= 1
 inv_grid_x					= 9
 inv_grid_y					= 9
 visual						= weapons\grenade\wpn_f_1.ogf
-inv_name					= gunsl_wpn_grenade_f1
-inv_name_short				= gunsl_wpn_grenade_f1
+inv_name					= grenade-f1
+inv_name_short				= grenade-f1
 inv_weight					= 0.6
 cost						= 210
-description					= gunsl_wpn_grenade_f1_descr
+description					= enc_weapons1_grenade-f1
 
 [fake_grenade_rgd5]:af_1
 inv_grid_width				= 1
@@ -42,11 +44,11 @@ inv_grid_height				= 1
 inv_grid_x					= 10
 inv_grid_y					= 9
 visual						= weapons\grenade\wpn_rgd_5.ogf
-inv_name					= gunsl_wpn_grenade_rgd5
-inv_name_short				= gunsl_wpn_grenade_rgd5
+inv_name					= grenade-rgd5
+inv_name_short				= grenade-rgd5
 inv_weight					= 0.31
 cost						= 100
-description					= gunsl_wpn_grenade_rgd5_descr
+description					= enc_weapons1_grenade-rgd5
 
 [grenade_f1_1]:grenade_f1
 quest_item					= true

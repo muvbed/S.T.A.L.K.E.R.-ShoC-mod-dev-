@@ -5,9 +5,9 @@ device_pda 			= 1, prob = 1.00 \n
 sigaret	   			= 1, prob = 0.75 \n
 matches				= 1, prob = 0.25 \n
 
-medkit_army			= 1, prob = 0.20 \n
-bandage 			= 3, prob = 0.25 \n
+medkit_army			= 1, prob = 0.15 \n
+bandage 			= 2, prob = 0.10 \n
 antirad				= 1, prob = 0.05 \n
 
-conserva			= 1, prob = 0.20 \n
-voda				= 1, prob = 0.10 \n
+conserva			= 1, prob = 0.15 \n
+voda				= 1, prob = 0.15 \n

@@ -17,9 +17,10 @@ belt_id = {}
 belt_status = false
 
 local need_update = true
+local need_update_simple = false
 local inventory_open = false
 local separator_spawned = false
-local separator = "grenade_separator"
+local separator = "separator"
 
 local flag
 
@@ -38,7 +39,7 @@ function on_change_outfit()
 end
 
 function on_update()
-	if (need_update == false) then return end
+	if (need_update == false and need_update_simple == false) then return end
 
 	-- —павним раздел€ющий елемент
 	if separator_spawned == false then
@@ -53,16 +54,24 @@ function on_update()
 		return
 	end
 
-	belt = {}
-	belt_id = {}
-	flag = 0
-	
-	if grenade_ctrl then
-		db.actor:inventory_for_each(scan_inv)
-		grenade_ctrl.update_tbl()
+	if need_update then
+		belt = {}
+		belt_id = {}
+		flag = 0
+		
+		if grenade_ctrl then
+			db.actor:inventory_for_each(scan_inv)
+			grenade_ctrl.update_tbl()
+		end
+		
+		need_update = false
 	end
 
-	need_update = false
+	if need_update_simple then
+		update_inventory_window()
+		need_update_simple = false
+	end
+	
 	db.actor:inventory_for_each(del_separator)	
 	separator_spawned = false
 end
@@ -181,9 +190,10 @@ function on_inventory_info(npc, info_id)
 	if grenade_ctrl then grenade_ctrl.on_info(info_id) end
 end
 
-function on_reset(separator_type)
-	if string.find(tostring_all(separator_type), "separator") then
-		separator = separator_type
+function on_reset(mode)
+	if mode == "trade" then
+		need_update_simple = true
+	elseif mode == "grenade" then
 		need_update = true
 	else
 		update_inventory_window()

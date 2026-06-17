@@ -1456,7 +1456,7 @@ path_walk = esc_wounded_walk
 path_look = esc_wounded_look
 wounded = wounded@esc_corps_wounded_heavy
 on_info = {+tutorial_wounded_help} remark@thanks_esc_corps_wounded
-danger = danger_condition@tolik
+danger = danger_condition@tolik_start
 meet = meet@esc_corps_wounded
 on_info2 = {+esc_kill_bandits_quest_kill} %=hit_npc(esc_killers_kamp_wait:bip01_spine1:1000:0)%
 
@@ -1465,7 +1465,7 @@ anim = wait
 target = actor
 snd = esc_tolik_thanks
 on_signal = sound_end| remark@wait_esc_corps_wounded %=run_tutorial_if_newbie(part_12_relations)%
-danger = danger_condition@tolik
+danger = danger_condition@tolik_start
 meet = no_meet
 abuse = false
 
@@ -1526,6 +1526,8 @@ victim_wpn		= 2|actor
 use				= true
 use_wpn			= true
 
+[danger_condition@tolik_start]
+ignore_distance = 100
 
 [danger_condition@tolik]
 ignore_distance = 0
@@ -1810,8 +1812,8 @@ active = mob_home@esc_cats
 
 [mob_home@esc_cats]
 path_home = home
-home_min_radius = 5
-home_max_radius = 10
+home_min_radius = 10
+home_max_radius = 20
 
 
 ;------------------------

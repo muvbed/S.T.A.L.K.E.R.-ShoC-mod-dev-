@@ -198,6 +198,7 @@ sar_monolith
 type = eliminate_lager
 community = actor
 ;init_condition = {=actor_on_level(l02_garbage) +agroprom_military_case_have}
+condlist = {+agroprom_military_case_done}
 text = tm_eliminate_camp_1_text
 description = tm_eliminate_camp_1_descr
 parent = trader
@@ -209,7 +210,7 @@ reward_rank = 5
 reward_item = grenade_rgd5, grenade_rgd5
 time = 86400
 idle_time = 86400
-prior = 3
+prior = 5
 
 [tm_eliminate_camp_2]
 type = eliminate_lager
@@ -275,7 +276,7 @@ reward_rank = 10
 reward_item = grenade_rgd5
 time = 86400
 idle_time = 86400
-prior = 5
+prior = 3
 
 [tm_eliminate_camp_6]
 type = eliminate_lager

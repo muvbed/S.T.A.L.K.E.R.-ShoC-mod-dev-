@@ -34,7 +34,7 @@ local lowered_anm_classes = {
 
 function allow_animation()
 	local active_item = db.actor:active_item()
-	return game.hud_motion_allowed() and not level.only_allow_movekeys()
+	return game.hud_motion_allowed() and not level.only_movekeys_allowed()
 		and ( not active_item or active_item:get_hud_item_state() == 0 )
 		and not db.actor.inventory:is_active_slot_blocked()
 end

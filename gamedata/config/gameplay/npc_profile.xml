@@ -143,9 +143,6 @@
 		<class>gar_sniper</class>
 	</character>
 
-	<character id="gar_bandit_dm_a">
-        <class>gar_bandit_dm_a</class>
-    </character>
     <character id="gar_bandit_dm_b">
         <class>gar_bandit_dm_b</class>
     </character>

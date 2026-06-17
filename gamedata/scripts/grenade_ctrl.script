@@ -29,7 +29,7 @@ function on_item_take(obj)
         spawn_in_inv("fake_" .. sec)
     elseif grenades_1[sec] and not grenades_on_belt[obj:id()] then
         del_item(obj:id())
-        ogse_signals.get_mgr():call( "on_inventory_reset", "grenade_separator" )
+        ogse_signals.get_mgr():call( "on_inventory_reset", "grenade" )
         f = true
     end
 end
@@ -71,7 +71,7 @@ function on_info(info_id)
     	or (info_id == "ui_trade_hide" and not db.actor:is_talking())
     then
     	dsh.timeout(1, function() 
-        	ogse_signals.get_mgr():call( "on_inventory_reset", "grenade_separator" )
+        	ogse_signals.get_mgr():call( "on_inventory_reset", "grenade" )
         	f = true
         end)
     end
@@ -80,17 +80,33 @@ end
 function update_tbl()
     if f then
         local sect = ""
+        local last_grenade_id = nil
+
         for id, v in pairs(inventory.belt_id) do
             sect = level.object_by_id(id):section()
             if string.sub(sect, 1, 5) == "fake_" then
                 for fake_sect, _ in pairs(fake_grenades) do
                     if sect == fake_sect then
-                        grenades_on_belt[spawn_in_inv(string.sub(sect, 6, -1) .. "_1")] = id
+                        local grenade_id = spawn_in_inv(string.sub(sect, 6, -1) .. "_1")
+                        
+                        grenades_on_belt[grenade_id] = id
+                        last_grenade_id = grenade_id
                         break
                     end
                 end
             end
         end
+
+        if last_grenade_id then
+            dsh.timeout(1, function() 
+                local actor_grenade = level.object_by_id(last_grenade_id)
+                
+                if actor_grenade then
+                    db.actor:move_to_slot(actor_grenade, true)
+                end
+            end)
+        end
+
         f = false
     end
 end

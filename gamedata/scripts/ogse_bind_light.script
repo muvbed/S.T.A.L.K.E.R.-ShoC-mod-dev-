@@ -318,10 +318,10 @@ function light_binder:save(packet)
 		end
 	end
 	if self.object:is_projector() then
-		xr_logic.pstor_store(self.object, "current_yaw",   self.object.current_yaw)
-		xr_logic.pstor_store(self.object, "current_pitch", self.object.current_pitch)
-		xr_logic.pstor_store(self.object, "target_yaw",    self.object.target_yaw)
-		xr_logic.pstor_store(self.object, "target_pitch",  self.object.target_pitch)
+		xr_logic.pstor_store(self.object, "current_yaw",   self.object:get_projector().current_yaw)
+		xr_logic.pstor_store(self.object, "current_pitch", self.object:get_projector().current_pitch)
+		xr_logic.pstor_store(self.object, "target_yaw",    self.object:get_projector().target_yaw)
+		xr_logic.pstor_store(self.object, "target_pitch",  self.object:get_projector().target_pitch)
 	end
 	--
 	xr_logic.save_obj(self.object, packet, not self.initialized)

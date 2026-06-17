@@ -688,34 +688,6 @@
 		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
-	
-	<specific_character id="gar_bandit_dm_a" team_default = "1">
-		<name>GENERATE_NAME_bandit</name>
-		<icon>ui_npc_u_green_stalker_2</icon>
-		<bio>esc_bandit_novice_bio</bio>
-		
-		<class>gar_bandit_dm_a</class>
-		<community>prebandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
-		
-		<rank>251</rank>
-		<reputation>-145</reputation>
-		
-		<snd_config>characters_voice\human_01\bandit\</snd_config>
-		<crouch_type>1</crouch_type>
-
-		<visual>actors\novice\green_stalker_2</visual>
-		<supplies>
-			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_fmj \n
-#include "gameplay\character_items_std.xml"
-		</supplies>
-		
-#include "gameplay\character_criticals_4.xml"
-
-		<start_dialog>hello_dialog</start_dialog>
-#include "gameplay\character_dialogs.xml"	
-	</specific_character>
 
 	<specific_character id="gar_bandit_dm_b" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>

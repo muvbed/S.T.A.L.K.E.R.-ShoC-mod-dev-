@@ -66,6 +66,10 @@ idle_light_range_delta 		= 0.25
 idle_light_anim				= koster_00
 idle_light_height			= 0.70			;подъем источника света на высоту
 
+idle_light_volumetric_enable    = true
+idle_light_volumetric_intensity = 0.15
+idle_light_volumetric_distance  = 1
+
 awaking_time				= 500
 blowout_time				= 1000	
 accamulate_time				= 0
@@ -147,7 +151,7 @@ idle_light_anim				= koster_01
 idle_light_height			= 0.70				;подъем источника света на высоту
 
 idle_light_volumetric_enable    = true
-idle_light_volumetric_intensity = 0.25
+idle_light_volumetric_intensity = 0.15
 idle_light_volumetric_distance  = 1
 
 awaking_time				= 1000
@@ -223,11 +227,16 @@ light_range		    		= 8.0
 light_time 		    		= 0.35
 light_height				= 0.75			
 
-idle_light					= off
+
+idle_light					= on
 idle_light_range			= 8.0
 idle_light_range_delta 		= 0.2
 idle_light_anim				= koster_01
 idle_light_height			= 0.70			
+
+idle_light_volumetric_enable    = true
+idle_light_volumetric_intensity = 0.15
+idle_light_volumetric_distance  = 1
 
 awaking_time				= 10
 blowout_time				= 50	
@@ -237,7 +246,6 @@ visible_by_detector 		= off
 
 blowout_wind				= off
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 spawn_blowout_artefacts 	= off
 
 [zone_emi]
@@ -378,6 +386,10 @@ idle_light_range            = 8.0
 idle_light_range_delta      = 0.25
 idle_light_anim             = koster_00
 idle_light_height           = 0.70
+
+idle_light_volumetric_enable    = true
+idle_light_volumetric_intensity = 0.15
+idle_light_volumetric_distance  = 1
 
 awaking_time                = -1
 blowout_time                = -1

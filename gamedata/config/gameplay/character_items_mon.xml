@@ -1,8 +1,8 @@
 device_torch 		= 1, prob = 1.00 \n
 device_pda 			= 1, prob = 1.00 \n
 
-medkit 				= 1, prob = 0.25 \n
-bandage 			= 3, prob = 0.25 \n
+medkit 				= 1, prob = 0.15 \n
+bandage 			= 2, prob = 0.10 \n
 
-conserva			= 1, prob = 0.20 \n
-voda				= 1, prob = 0.10 \n
+conserva			= 1, prob = 0.15 \n
+voda				= 1, prob = 0.15 \n

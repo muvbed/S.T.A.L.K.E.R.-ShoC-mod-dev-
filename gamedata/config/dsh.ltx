@@ -47,16 +47,15 @@ dsh_walking = true
 ;================================================================
 [dsh.gulag.override.esc2_st_fabric]
 communities = bandit, stalker, dolg, ecolog
-capacity = 10
-switch_0 = {=is_day}, {=gulag_empty(esc2_most)}, {!gulag_community_pop(esc2_st_fabric:bandit:6)}
-switch_1 = {=gulag_community_pop(esc2_st_fabric:bandit:6) !gulag_empty(esc2_most) !is_day}
+capacity = 5
+switch_0 = {=is_day}, {=gulag_empty(esc2_most)}, {!gulag_community_pop(esc2_st_fabric:bandit:3)}
+switch_1 = {=gulag_community_pop(esc2_st_fabric:bandit:3) !gulag_empty(esc2_most) !is_day}
 dsh_walking = true
 ;================================================================
 [dsh.gulag.override.esc2_most]
 communities = stalker
-capacity = 5
-switch_0 = {!is_day}, {!gulag_population_comed_ge(esc2_most:5)}, {!gulag_community_pop(esc2_st_fabric:bandit:1)}
-switch_1 = {=is_day =gulag_population_comed_ge(esc2_most:5) =gulag_community_pop(esc2_st_fabric:bandit:1)}
+switch_0 = {!is_day}, {!gulag_population_comed_ge(esc2_most:3)}, {!gulag_community_pop(esc2_st_fabric:bandit:1)}
+switch_1 = {=is_day =gulag_population_comed_ge(esc2_most:3) =gulag_community_pop(esc2_st_fabric:bandit:1)}
 dsh_walking = true
 cond = {+esc_kill_bandits_quest_kill}, {+esc_kill_bandits_quest_done}
 ;================================================================
@@ -79,7 +78,6 @@ cond = {-gar_dm_novice_change_st}
 ;
 ;================================================================
 [dsh.gulag.override.gar_smart_graveyard] ;Сталкеры на кладбище техники, в т.ч. Бес.
-capacity = 10 ;7
 communities = stalker
 cond = {+gar_hellcar_dialog_end}, {+gar_hellcar_death} ;Не будем этот смарт закрывать.
 dsh_walking = true
@@ -98,7 +96,6 @@ any = {+gar_hellcar_dialog_end}, {+gar_hellcar_death}
 ;================================================================
 ;
 [dsh.gulag.override.gar_smart_garage] ;Сталкеры в ангаре. На них периодически нападают бандиты.
-capacity = 12; 6
 communities = stalker, dolg, ecolog
 dsh_walking = true
 ;================================================================
@@ -120,7 +117,6 @@ communities = killer, bandit, stalker
 dsh_walking = true
 ;================================================================
 [dsh.gulag.override.gar_smart_bandit_large_lager] ;бандиты, периодически нападающие на ангар
-capacity = 11; 8
 dsh_walking = true
 ;================================================================
 ; костер на посту Долга
@@ -143,7 +139,6 @@ allow_sector = 10, 190
 on_cleanup = dsh.cleanup_bar_ecologs
 
 [dsh.gulag.override.ros_smart_stalker_bandits1] ;Гулаг сталкеров на ДТ перед стройкой если идти со стороны янтаря
-capacity = 10
 communities = stalker, dolg, ecolog
 cond = {+bar_rescue_research_chasing_start}, {+bar_rescue_research_fail}
 dsh_walking = true
@@ -190,24 +185,11 @@ on_cleanup = ogse_fixes.cleanup_val_rob_restrictors ;При закрытии с�
 ; Сталкеры в ТД, на ферме, смарт откроется после того как кидалы стали врагами.
 [dsh.gulag.override.val_smart_bandit_1]
 communities = stalker, dolg, ecolog
-capacity    = 13
+capacity    = 9
 cond        = {+val_rob_disable}
 switch_0    = {!is_day}, {=is_weather_rain}, {=gulag_empty(val_smart_monster_lair_6)}
-switch_1    = {=is_day !is_weather_rain =gulag_population_ge(val_smart_bandit_1:8) !gulag_empty(val_smart_monster_lair_6)}
+switch_1    = {=is_day !is_weather_rain =gulag_population_ge(val_smart_bandit_1:6) !gulag_empty(val_smart_monster_lair_6)}
 dsh_walking = true
-;================================================================
-; Мутанты, на которых охотятся сталкеры из лагеря выше.
-[dsh.gulag.override.val_smart_monster_lair_6]
-capacity = 10 ;5
-;================================================================
-; Мутанты возле моста
-[dsh.gulag.override.val_smart_monster_lair_1]
-communities = boar,flesh
-capacity = 10 ;2
-;================================================================
-; Собаки недалеко от фермы
-[dsh.gulag.override.val_smart_monster_lair_2]
-capacity = 6 ;2
 ;================================================================
 ;**********************************************************************************
 ;

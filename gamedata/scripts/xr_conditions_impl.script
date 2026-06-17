@@ -79,11 +79,6 @@ end
 function gar_dm_nearest_bandit(actor, npc, which)
 	local dists = {}
 	local n = 1
-	local gar_dm_bandit1 = level_object_by_sid(101)
-	if gar_dm_bandit1 and gar_dm_bandit1:alive() then
-		dists[n] = { who = gar_dm_bandit1, dist = distance_between(actor, gar_dm_bandit1) }
-		n = n + 1
-	end
 	local gar_dm_bandit2 = level_object_by_sid(102)
 	if gar_dm_bandit2 and gar_dm_bandit2:alive() then
 		dists[n] = { who = gar_dm_bandit2, dist = distance_between(actor, gar_dm_bandit2) }

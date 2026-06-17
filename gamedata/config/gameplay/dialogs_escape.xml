@@ -1521,6 +1521,11 @@
             </phrase>
             <phrase id="25">
                 <text>esc_bridge_soldiers_start_25</text>
+                <next>26</next>
+            </phrase>
+            <phrase id="26">
+                <text>esc_bridge_soldiers_start_26</text>
+                <action>dialogs.break_dialog</action>
             </phrase>
         </phrase_list>
     </dialog>
@@ -1552,6 +1557,11 @@
             </phrase>
             <phrase id="25">
                 <text>esc_bridge_soldiers_start_25</text>
+                <next>26</next>
+            </phrase>
+            <phrase id="26">
+                <text>esc_bridge_soldiers_start_26</text>
+                <action>dialogs.break_dialog</action>
             </phrase>
             <phrase id="2">
                 <text/>

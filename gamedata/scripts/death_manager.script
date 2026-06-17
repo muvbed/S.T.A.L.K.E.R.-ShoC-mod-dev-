@@ -41,8 +41,7 @@ remove_this_shit_immediately = { -- Таблица с секциями предметов, которые надо у
 	["hand_radio"] 						= true,
 	["sigaret"] 						= true,
 	["bolt"] 							= true,
-	["grenade_separator"] 				= true,
-	["zip_separator"] 					= true,
+	["separator"] 						= true,
 	["m_phantom"] 						= true,
 }
 

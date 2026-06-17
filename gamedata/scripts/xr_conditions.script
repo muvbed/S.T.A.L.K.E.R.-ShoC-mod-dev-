@@ -642,14 +642,14 @@ function gar_dm_2nd_nearest_bandit(actor, npc)
 	return actor and xr_conditions_impl.gar_dm_nearest_bandit(actor, npc, 2)
 end
 
--- в указанном гулаге осталось не более 5 бандитов в онлайне(живых и не раненных) /диалог gar_hellcar_start/
+-- в указанном гулаге осталось не более 0 бандитов в онлайне(живых и не раненных) /диалог gar_hellcar_start/
 function gar_damaged_bandits(actor, npc)
-	return xr_conditions_impl.gulag_active_population_on("gar_bandit_agr") <= 5
+	return xr_conditions_impl.gulag_active_population_on("gar_bandit_agr") <= 0
 end
 
--- в указанном гулаге более 5 бандитов(живых и не раненных) /диалог gar_hellcar_start/
+-- в указанном гулаге более 0 бандитов(живых и не раненных) /диалог gar_hellcar_start/
 function gar_not_damaged_bandits(actor, npc)
-	return xr_conditions_impl.gulag_active_population("gar_bandit_agr") > 5
+	return xr_conditions_impl.gulag_active_population("gar_bandit_agr") > 0
 end
 
 -- в указанном гулаге бандитов нулевая популяция в онлайне(живых и не раненных) /диалог gar_seriy_start/

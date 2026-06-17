@@ -3,8 +3,8 @@ device_pda 			= 1, prob = 1.00 \n
 detector_simple 	= 1, prob = 0.05 \n
 matches				= 1, prob = 0.10 \n
 
-medkit 				= 1, prob = 0.15 \n
-bandage 			= 2, prob = 0.20 \n
+medkit 				= 1, prob = 0.10 \n
+bandage 			= 2, prob = 0.05 \n
 antirad				= 1, prob = 0.05 \n
 
 bread_fake			= 1, prob = 0.25 \n
